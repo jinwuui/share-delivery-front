@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/routes/route.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,7 +14,8 @@ class Home extends StatelessWidget {
             20,
             (index) => GestureDetector(
               onTap: () {
-                Get.toNamed('/detailPage');
+                Get.toNamed(Routes.DELIVERY_ROOM_DETAIL);
+                // Get.toNamed('/detailPage');
               },
               child: deliveryRoom(),
             ),
