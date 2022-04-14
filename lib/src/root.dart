@@ -16,6 +16,14 @@ class Root extends GetView<RootController> {
       () => Scaffold(
         appBar: AppBar(
           title: const Text("딜리버리버리"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Get.toNamed(Routes.DELIVERY_ROOM_LIST_ON_MAP);
+              },
+              icon: Icon(Icons.map_outlined),
+            ),
+          ],
         ),
         body: IndexedStack(
           index: controller.rootPageIndex.value,

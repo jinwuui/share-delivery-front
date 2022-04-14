@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/ui/home/setting_gathering_place.dart';
 
 class DeliveryRoomRegister extends StatelessWidget {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class DeliveryRoomRegister extends StatelessWidget {
           TextButton(
             onPressed: () {
               // TODO: 모집글 등록 로직 필요
-              print("모집글 등록 로직 필요");
+              print("완료 - 모집글 등록 로직 필요");
               Get.back();
             },
             child: const Text("완료"),
@@ -36,7 +37,7 @@ class DeliveryRoomRegister extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(border: Border.all(width: 0.5)),
-            child: TextField(
+            child: const TextField(
               minLines: 2,
               maxLines: 2,
               decoration: InputDecoration(hintText: "글"),
@@ -47,12 +48,12 @@ class DeliveryRoomRegister extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(border: Border.all(width: 0.5)),
-                  child: TextField(
+                  child: const TextField(
                     decoration: InputDecoration(hintText: "배달 가게 링크"),
                   ),
                 ),
               ),
-              TextButton(
+              OutlinedButton(
                 onPressed: () {
                   // TODO : 클립보드 복사 로직 필요
                 },
@@ -66,9 +67,9 @@ class DeliveryRoomRegister extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("참여 인원"),
-                TextButton(onPressed: () {}, child: Text("2")),
-                TextButton(onPressed: () {}, child: Text("3")),
-                TextButton(onPressed: () {}, child: Text("4")),
+                OutlinedButton(onPressed: () {}, child: Text("2")),
+                OutlinedButton(onPressed: () {}, child: Text("3")),
+                OutlinedButton(onPressed: () {}, child: Text("4")),
               ],
             ),
           ),
@@ -83,7 +84,14 @@ class DeliveryRoomRegister extends StatelessWidget {
                     decoration: InputDecoration(hintText: "집결지"),
                   ),
                 ),
-                TextButton(onPressed: () {}, child: Text("설정"))
+                OutlinedButton(
+                    onPressed: () {
+                      Get.bottomSheet(
+                        SettingGatheringPlace(),
+                        isScrollControlled: true,
+                      );
+                    },
+                    child: Text("설정"))
               ],
             ),
           ),
@@ -97,9 +105,12 @@ class DeliveryRoomRegister extends StatelessWidget {
                     decoration: InputDecoration(hintText: "마감 시간"),
                   ),
                 ),
-                Text(
-                  "TODO: 마감시간 picker 필요",
-                  style: TextStyle(color: Colors.red),
+                Row(
+                  children: [
+                    OutlinedButton(onPressed: () {}, child: Text("5분")),
+                    OutlinedButton(onPressed: () {}, child: Text("10분")),
+                    OutlinedButton(onPressed: () {}, child: Text("20분")),
+                  ],
                 ),
               ],
             ),
