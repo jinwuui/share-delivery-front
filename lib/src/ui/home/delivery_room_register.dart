@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/ui/home/setting_gathering_place.dart';
+import 'package:share_delivery/src/ui/home/pick_receiving_location.dart';
 
 class DeliveryRoomRegister extends StatelessWidget {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
@@ -87,7 +87,7 @@ class DeliveryRoomRegister extends StatelessWidget {
                 OutlinedButton(
                     onPressed: () {
                       Get.bottomSheet(
-                        SettingGatheringPlace(),
+                        PickReceivingLocation(),
                         isScrollControlled: true,
                       );
                     },
