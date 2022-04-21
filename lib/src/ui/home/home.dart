@@ -15,9 +15,8 @@ class Home extends StatelessWidget {
             (index) => GestureDetector(
               onTap: () {
                 Get.toNamed(Routes.DELIVERY_ROOM_DETAIL);
-                // Get.toNamed('/detailPage');
               },
-              child: deliveryRoom(),
+              child: deliveryRooms(),
             ),
           ),
         ),
@@ -25,21 +24,23 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget deliveryRoom() {
+  Widget deliveryRooms() {
     return Column(
       children: [
         Container(
           height: 120,
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey.shade200,
+          ),
         ),
         Divider(
-            endIndent: 20,
-            indent: 20,
-            color: Colors.grey.shade400,
-            thickness: 1.5),
+          endIndent: 20,
+          indent: 20,
+          color: Colors.grey.shade400,
+          thickness: 1.5,
+        ),
       ],
     );
   }
