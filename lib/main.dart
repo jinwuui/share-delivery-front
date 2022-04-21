@@ -1,24 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
-import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/root.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
 
 void main() {
-  // runApp 메소드의 시작 지점에서 Flutter 엔진과 위젯의 바인딩이 미리 완료되어 있게 만들어줌
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-
-  // 스플래시 이미지 ON
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-
-  Timer(const Duration(seconds: 1), () {
-    runApp(const MyApp());
-
-    // 스플래시 이미지 OFF // TODO: 앱 시작할 때 초기화(로딩, 로그인 확인 등등) 끝나고 사용
-    FlutterNativeSplash.remove();
-  });
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Share Delivery',
+      title: 'Flutter Demo',
       initialBinding: BindingsBuilder(() {
         Get.put(RootController());
       }),
@@ -37,8 +24,13 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color.fromRGBO(231, 129, 17, 1),
         ),
       ),
-      initialRoute: Routes.INITIAL,
-      getPages: AppPages.routes,
+      home: const Root(),
+      getPages: [
+        GetPage(
+          name: '/deliveryRoomDetail',
+          page: () => const DeliveryRoomDetail(),
+        ),
+      ],
     );
   }
 }
