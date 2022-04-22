@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/routes/route.dart';
 
 class DeliveryHistory extends StatelessWidget {
   const DeliveryHistory({Key? key}) : super(key: key);
@@ -8,7 +10,9 @@ class DeliveryHistory extends StatelessWidget {
     return Center(
       child: ListView.separated(
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+          },
           child: DeliveryHistoryPost(),
         ),
         separatorBuilder: (_, index) => Divider(
@@ -105,6 +109,9 @@ class DeliveryHistoryPost extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.people,
+                      ),
+                      SizedBox(
+                        width: 4,
                       ),
                       Text("4 / 4")
                     ],
