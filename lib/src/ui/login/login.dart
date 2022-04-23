@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/routes/route.dart';
@@ -20,9 +19,8 @@ class Login extends StatelessWidget {
                     Icons.flutter_dash_outlined,
                     size: 150,
                   ),
-                  Text("당신 근처의 배달 공유"),
-                  Text("배달비 절감부터 동네 맛집 공유까지"),
-                  Text("지금 내 동네를 선택하고 시작하세요!"),
+                  Text(
+                      "당신 근처의 배달 공유\n배달비 절감부터 동네 맛집 공유까지\n지금 내 동네를 선택하고 시작하세요!"),
                 ],
               ),
             ),

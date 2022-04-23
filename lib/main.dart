@@ -58,6 +58,7 @@ class MyApp extends GetWidget<AuthenticationController> {
         if (controller.state is UnAuthenticated) {
           return Login();
         } else if (controller.state is Authenticated) {
+          Get.back();
           return Root();
         } else {
           return SizedBox.shrink(

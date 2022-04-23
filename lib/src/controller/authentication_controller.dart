@@ -18,7 +18,7 @@ class AuthenticationController extends GetxController {
     super.onInit();
   }
 
-  // 파라미터에 사용자 인증 정보 넣기 -> 우리 앱은 전화번호?
+  // 파라미터에 사용자 인증 정보 넣기 -> 우리 앱은 전화번호
   Future<void> signIn(String email, String password) async {
     final user = await _authRepo.signInWithEmailAndPassword(email, password);
     _authenticationStateStream.value = Authenticated(user: user);

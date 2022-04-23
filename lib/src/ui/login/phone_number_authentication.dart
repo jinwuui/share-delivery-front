@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/login_controller.dart';
 
-class PhoneNumberAuthentication extends StatelessWidget {
+class PhoneNumberAuthentication extends StatefulWidget {
   const PhoneNumberAuthentication({Key? key}) : super(key: key);
+
+  @override
+  State<PhoneNumberAuthentication> createState() =>
+      _PhoneNumberAuthenticationState();
+}
+
+class _PhoneNumberAuthenticationState extends State<PhoneNumberAuthentication> {
+  final _controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -56,7 +66,10 @@ class PhoneNumberAuthentication extends StatelessWidget {
               elevation: 0,
               fixedSize: Size(Get.width * 0.9, Get.height * 0.06),
             ),
-            onPressed: /* _isButtonEnabled ? () {} : null */ () {},
+            onPressed: /* _isButtonEnabled ? () {} : null */ () {
+              // 로그인 시도 -> 지금은 테스트 단계이므로 바로 로그인 됨
+              _controller.login("testid", "testpw");
+            },
           ),
           Container(
             padding: EdgeInsets.all(10),
