@@ -34,7 +34,8 @@ class Login extends StatelessWidget {
                   fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
                 ),
                 onPressed: () {
-                  Get.toNamed(Routes.INIT_USER_LOCATION);
+                  Get.toNamed(Routes.PICK_USER_LOCATION,
+                      arguments: Routes.PHONE_NUMBER_AUTHENTICATION);
                 },
               ),
             ),

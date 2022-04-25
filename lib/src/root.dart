@@ -15,15 +15,25 @@ class Root extends GetView<RootController> {
     return Obx(
       () => Scaffold(
         appBar: AppBar(
-          title: const Text("딜리버리버리"),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Get.toNamed(Routes.DELIVERY_ROOM_LIST_ON_MAP);
-              },
-              icon: Icon(Icons.map_outlined),
-            ),
-          ],
+          shape: Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          leading: controller.rootPageIndex.value == 0
+              ? TextButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.PICK_USER_LOCATION);
+                  },
+                  child: Text(
+                    "위치 설정",
+                    style: TextStyle(fontSize: 15, color: Colors.black),
+                  ),
+                )
+              : SizedBox.shrink(),
+          leadingWidth: 80,
+          title: const Text(
+            "딜리버리버리",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         body: IndexedStack(
           index: controller.rootPageIndex.value,
@@ -69,7 +79,7 @@ class Root extends GetView<RootController> {
         ),
         floatingActionButton: controller.rootPageIndex.value == 0
             ? FloatingActionButton(
-                backgroundColor: const Color.fromRGBO(231, 129, 17, 1),
+                backgroundColor: Colors.orange,
                 onPressed: () {
                   Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
                   // Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);

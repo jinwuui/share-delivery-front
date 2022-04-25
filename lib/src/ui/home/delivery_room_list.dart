@@ -2,42 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_list.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_on_map.dart';
 
-class Home extends GetView<HomeController> {
-  const Home({Key? key}) : super(key: key);
+class DeliveryRoomList extends StatefulWidget {
+  const DeliveryRoomList({Key? key}) : super(key: key);
+
+  @override
+  State<DeliveryRoomList> createState() => _DeliveryRoomListState();
+}
+
+class _DeliveryRoomListState extends State<DeliveryRoomList>
+    with AutomaticKeepAliveClientMixin<DeliveryRoomList> {
+  final HomeController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    Get.put(HomeController());
-
-    return DefaultTabController(
-      length: 2,
-      child: Column(
-        children: [
-          TabBar(
-            // isScrollable: false,
-            labelPadding: const EdgeInsets.all(8),
-            indicatorColor: Colors.grey.shade300,
-            indicatorSize: TabBarIndicatorSize.tab,
-            tabs: [
-              Icon(Icons.list, color: Colors.black),
-              Icon(Icons.map_outlined, color: Colors.black),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              physics: NeverScrollableScrollPhysics(),
-              children: [DeliveryRoomList(), DeliveryRoomOnMap()],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget deliveryRoomList() {
     return Center(
       child: SingleChildScrollView(
         child: Column(
@@ -73,9 +51,6 @@ class Home extends GetView<HomeController> {
     );
   }
 
-  Widget deliveryRoomOnMap() {
-    return Container(
-      color: Colors.red,
-    );
-  }
+  @override
+  bool get wantKeepAlive => true;
 }

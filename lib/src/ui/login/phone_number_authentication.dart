@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/login_controller.dart';
+import 'package:share_delivery/src/controller/login/login_controller.dart';
 
-class PhoneNumberAuthentication extends StatefulWidget {
+class PhoneNumberAuthentication extends GetView<LoginController> {
   const PhoneNumberAuthentication({Key? key}) : super(key: key);
-
-  @override
-  State<PhoneNumberAuthentication> createState() =>
-      _PhoneNumberAuthenticationState();
-}
-
-class _PhoneNumberAuthenticationState extends State<PhoneNumberAuthentication> {
-  final _controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +60,7 @@ class _PhoneNumberAuthenticationState extends State<PhoneNumberAuthentication> {
             ),
             onPressed: /* _isButtonEnabled ? () {} : null */ () {
               // 로그인 시도 -> 지금은 테스트 단계이므로 바로 로그인 됨
-              _controller.login("testid", "testpw");
+              controller.login("testid", "testpw");
             },
           ),
           Container(

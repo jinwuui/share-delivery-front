@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/data/model/User.dart';
 import 'package:share_delivery/src/data/repository/authentication_repo.dart';
-import 'package:share_delivery/src/utils/authentication/authentication_state.dart';
+import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 
 class AuthenticationController extends GetxController {
   final AuthenticationRepo _authRepo;
@@ -34,12 +34,16 @@ class AuthenticationController extends GetxController {
 
     final User? user = await _authRepo.getCurrentUser();
 
-    if (user == null) {
-      print("user == null");
-      _authenticationStateStream.value = UnAuthenticated();
-    } else {
-      print("user != null");
-      _authenticationStateStream.value = Authenticated(user: user);
-    }
+    // 바로 홈화면으로 가고싶으면 아래 두 줄 주석 해제하시고 아래 if,else 문 전부 주석하세요
+    _authenticationStateStream.value =
+        Authenticated(user: User(name: "test", phoneNumber: "1234"));
+
+    // if (user == null) {
+    //   print("user == null");
+    //   _authenticationStateStream.value = UnAuthenticated();
+    // } else {
+    //   print("user != null");
+    //   _authenticationStateStream.value = Authenticated(user: user);
+    // }
   }
 }

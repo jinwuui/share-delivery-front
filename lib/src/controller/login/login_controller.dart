@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/authentication_controller.dart';
-import 'package:share_delivery/src/utils/login/login_state.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/login/state/login_state.dart';
 
 class LoginController extends GetxController {
   final AuthenticationController _authenticationController = Get.find();
@@ -18,6 +19,7 @@ class LoginController extends GetxController {
     // AuthenticationController 에서 로그인을 시도하고 login 성공/실패로 갈림
     try {
       await _authenticationController.signIn(email, password);
+      Get.offAllNamed(Routes.INITIAL);
       _loginStateStream.value = LoginState();
     } catch (e) {
       _loginStateStream.value = LoginFailure(error: e.toString());

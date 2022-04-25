@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
+import 'package:share_delivery/src/bindings/login/pick_user_location_binding.dart';
+import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_list_on_map.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/pick_place_on_map.dart';
 import 'package:share_delivery/src/ui/home/pick_receiving_location.dart';
-import 'package:share_delivery/src/ui/login/init_user_location.dart';
+import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
+import 'package:share_delivery/src/ui/login/pick_user_location.dart';
 
 abstract class Routes {
   static const INITIAL = "/";
@@ -15,14 +18,14 @@ abstract class Routes {
   static const DELIVERY_ROOM_DETAIL = "/deliveryRoomDetail";
   // 모집글 등록
   static const DELIVERY_ROOM_REGISTER = "/deliveryRoomRegister";
-  // 모집글 지도로 조회
-  static const DELIVERY_ROOM_LIST_ON_MAP = "/deliveryRoomListOnMap";
+  // 현재 위치 설정
+  static const PICK_USER_LOCATION = "/pickUserLocation";
   // 집결지 선택
   static const PICK_RECEIVING_LOCATION = "/pickReceivingLocation";
   static const PICK_PLACE_ON_MAP = "/pickPlaceOnMap";
 
   // 로그인
-  static const INIT_USER_LOCATION = "/initUserLocation";
+  static const LOGIN = "/login";
   static const PHONE_NUMBER_AUTHENTICATION = "/phoneNumberAuthentication";
 }
 
@@ -31,6 +34,7 @@ class AppPages {
     GetPage(
       name: Routes.INITIAL,
       page: () => const Root(),
+      binding: RootBinding(),
     ),
     GetPage(
       name: Routes.DELIVERY_ROOM_DETAIL,
@@ -41,10 +45,6 @@ class AppPages {
       page: () => const DeliveryRoomRegister(),
     ),
     GetPage(
-      name: Routes.DELIVERY_ROOM_LIST_ON_MAP,
-      page: () => const DeliveryRoomListOnMap(),
-    ),
-    GetPage(
       name: Routes.PICK_RECEIVING_LOCATION,
       page: () => const PickReceivingLocation(),
     ),
@@ -53,12 +53,22 @@ class AppPages {
       page: () => const PickPlaceOnMap(),
     ),
     GetPage(
-      name: Routes.INIT_USER_LOCATION,
-      page: () => const InitUserLocation(),
+      name: Routes.LOGIN,
+      page: () => const Login(),
+    ),
+    GetPage(
+      name: Routes.PICK_USER_LOCATION,
+      page: () => const PickUserLocation(),
+      binding: PickUserLocationBinding(),
     ),
     GetPage(
       name: Routes.PHONE_NUMBER_AUTHENTICATION,
       page: () => const PhoneNumberAuthentication(),
+      binding: PhoneNumberAuthenticationBinding(),
     ),
+    // GetPage(
+    //   name: Routes.PICK_USER_LOCATION,
+    //   page: () => const PickUserLocation(),
+    // )
   ];
 }
