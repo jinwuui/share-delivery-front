@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/root.dart';
-import 'package:share_delivery/src/ui/delivery_history/delivery_history.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_history_detail.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+// import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_list_on_map.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/pick_place_on_map.dart';
@@ -16,6 +16,7 @@ abstract class Routes {
   static const PICK_GATHERING_PLACE = "/pickGatheringPlace";
   static const PICK_PLACE_ON_MAP = "/pickPlaceOnMap";
   static const DELIVERY_HISTORY_DETAIL = "/deliveryHistoryDetail";
+  static const EXPANDED_IMAGE_PAGE = "/exapndedImagePage";
 }
 
 class AppPages {
@@ -24,10 +25,10 @@ class AppPages {
       name: Routes.INITIAL,
       page: () => const Root(),
     ),
-    GetPage(
-      name: Routes.DELIVERY_ROOM_DETAIL,
-      page: () => const DeliveryRoomDetail(),
-    ),
+    // GetPage(
+    //   name: Routes.DELIVERY_ROOM_DETAIL,
+    //   page: () => const DeliveryRoomDetail(),
+    // ),
     GetPage(
       name: Routes.DELIVERY_ROOM_REGISTER,
       page: () => const DeliveryRoomRegister(),
@@ -46,7 +47,11 @@ class AppPages {
     ),
     GetPage(
       name: Routes.DELIVERY_HISTORY_DETAIL,
-      page: () => const DeliveryHistoryDetail(),
+      page: () => const DeliveryRoomDetail(),
+    ),
+    GetPage(
+      name: Routes.EXPANDED_IMAGE_PAGE,
+      page: () => const ExpandedImagePage(),
     ),
   ];
 }
