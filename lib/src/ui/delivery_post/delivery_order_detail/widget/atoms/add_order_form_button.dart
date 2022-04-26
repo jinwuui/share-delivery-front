@@ -29,7 +29,7 @@ class AddOrderFormButton extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         margin: const EdgeInsets.all(10.0),
         width: 100.0,
-        height: 100.0,
+        height: 150.0,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
             color: Colors.grey.shade400),

@@ -23,4 +23,25 @@ class OrderFormRegisterController extends GetxController {
       rethrow;
     }
   }
+
+  Future<void> deleteImage(String imageURL) async {
+    orderFormList.value =
+        orderFormList.where(((element) => element.path != imageURL)).toList();
+  }
+  // final deliveryTime = DateTime.now().obs;
+
+  // Future<void> updateDeliveryTime(int minute) async {
+  //   DateTime newDate = DateTime.utc(
+  //       deliveryTime.value.year,
+  //       deliveryTime.value.month,
+  //       deliveryTime.value.day,
+  //       deliveryTime.value.hour,
+  //       deliveryTime.value.minute + minute);
+
+  //   try {
+  //     deliveryTime.value = newDate;
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 }
