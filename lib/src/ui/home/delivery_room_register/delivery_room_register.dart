@@ -5,15 +5,6 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
 
-// class DeliveryRoomRegister extends StatefulWidget {
-//   const DeliveryRoomRegister({Key? key}) : super(key: key);
-//
-//   @override
-//   State<DeliveryRoomRegister> createState() => _DeliveryRoomRegisterState();
-// }
-//
-// class _DeliveryRoomRegisterState extends State<DeliveryRoomRegister> {}
-
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
 
@@ -119,7 +110,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                         print(data.text);
                       }
                     },
-                    child: const Text("클립보드 복사"),
+                    child: const Text("붙여넣기"),
                   ),
                 ],
               ),

@@ -196,7 +196,7 @@ class _PickReceivingLocationState extends State<PickReceivingLocation> {
                 Icon(Icons.place_outlined),
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
-                  child: Text("이전 위치 텍스트"),
+                  child: Text("이전 위치 히스토리"),
                 ),
               ],
             ),
