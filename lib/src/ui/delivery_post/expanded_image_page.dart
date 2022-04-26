@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,6 +8,7 @@ class ExpandedImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageURL = Get.arguments;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -24,15 +27,20 @@ class ExpandedImagePage extends StatelessWidget {
         elevation: 0.0,
       ),
       body: Container(
-        padding: const EdgeInsets.all(20.0),
-        margin: const EdgeInsets.all(20.0),
-        decoration: BoxDecoration(
-          color: Colors.red,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(Get.arguments),
+        color: Colors.grey.shade300,
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          margin: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: imageURL.substring(0, 4) == "http"
+                  ? NetworkImage(imageURL)
+                  : FileImage(File(imageURL)) as ImageProvider,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
         ),
       ),
     );

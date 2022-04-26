@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/add_order_form_button.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/order_form_image.dart';
 
@@ -31,17 +35,18 @@ class RegisterOrderFormScreenShotSection extends StatelessWidget {
               color: Colors.white70,
             ),
             child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  OrderFormImage(
-                    imageURL:
-                        'https://cdn.pixabay.com/photo/2016/01/22/02/13/meat-1155132__340.jpg',
-                  ),
-                  AddOrderFormButton(),
-                ],
-              ),
-            ),
+                scrollDirection: Axis.horizontal,
+                child: Obx(() => Row(
+                      children: [
+                        ...Get.find<OrderFormRegisterController>()
+                            .orderFormList
+                            .map(
+                              (image) => OrderFormImage(imageURL: image.path),
+                            )
+                            .toList(),
+                        AddOrderFormButton()
+                      ],
+                    ))),
           )
         ],
       ),

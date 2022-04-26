@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_order_and_payment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/register_expected_delivery_time.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/register_order_form_screen_shot.dart';
@@ -13,6 +14,8 @@ class RegisterOrderForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OrderFormRegisterController());
+
     return Column(
       children: [
         RegisterOrderFormScreenShotSection(),
