@@ -17,13 +17,15 @@ class Home extends GetView<HomeController> {
       child: Column(
         children: [
           TabBar(
+            unselectedLabelColor: Colors.grey,
+            labelColor: Colors.black,
             // isScrollable: false,
             labelPadding: const EdgeInsets.all(8),
-            indicatorColor: Colors.grey.shade300,
+            indicatorColor: Colors.black,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs: [
-              Icon(Icons.list, color: Colors.black),
-              Icon(Icons.map_outlined, color: Colors.black),
+              Icon(Icons.list),
+              Icon(Icons.map_outlined),
             ],
           ),
           Expanded(

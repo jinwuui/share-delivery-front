@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/login/pick_user_location_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register.dart';
-import 'package:share_delivery/src/ui/home/pick_place_on_map.dart';
 import 'package:share_delivery/src/ui/home/pick_receiving_location.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
@@ -22,7 +22,6 @@ abstract class Routes {
   static const PICK_USER_LOCATION = "/pickUserLocation";
   // 집결지 선택
   static const PICK_RECEIVING_LOCATION = "/pickReceivingLocation";
-  static const PICK_PLACE_ON_MAP = "/pickPlaceOnMap";
 
   // 로그인
   static const LOGIN = "/login";
@@ -43,14 +42,11 @@ class AppPages {
     GetPage(
       name: Routes.DELIVERY_ROOM_REGISTER,
       page: () => const DeliveryRoomRegister(),
+      binding: DeliveryRoomRegisterBinding(),
     ),
     GetPage(
       name: Routes.PICK_RECEIVING_LOCATION,
       page: () => const PickReceivingLocation(),
-    ),
-    GetPage(
-      name: Routes.PICK_PLACE_ON_MAP,
-      page: () => const PickPlaceOnMap(),
     ),
     GetPage(
       name: Routes.LOGIN,

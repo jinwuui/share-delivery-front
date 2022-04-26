@@ -55,8 +55,8 @@ class _PickUserLocationState extends State<PickUserLocation> {
                 padding: const EdgeInsets.only(bottom: 70),
                 child: FloatingActionButton.small(
                   backgroundColor: Colors.white,
-                  child: Icon(Icons.location_searching_rounded,
-                      color: Colors.black),
+                  foregroundColor: Colors.black,
+                  child: Icon(Icons.location_searching_rounded),
                   onPressed: () {
                     controller.refreshLocation();
                     webViewController!.reload();

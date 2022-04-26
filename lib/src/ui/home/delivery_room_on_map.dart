@@ -18,11 +18,25 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
 
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: controller.getHTML(),
-      onWebViewCreated: (ctrl) => webViewController = ctrl,
-      javascriptMode: JavascriptMode.unrestricted,
-      javascriptChannels: controller.getChannels,
+    return Stack(
+      alignment: Alignment.topRight,
+      children: [
+        WebView(
+          initialUrl: controller.getHTML(),
+          onWebViewCreated: (ctrl) => webViewController = ctrl,
+          javascriptMode: JavascriptMode.unrestricted,
+          javascriptChannels: controller.getChannels,
+        ),
+        FloatingActionButton.small(
+          heroTag: "refresh",
+          onPressed: () {
+            webViewController!.reload();
+          },
+          child: Icon(Icons.refresh),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+        ),
+      ],
     );
     return Obx(
       () => Center(

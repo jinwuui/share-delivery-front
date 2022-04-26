@@ -1,32 +1,14 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class HomeController extends GetxController {
-  RxList<Offset> roomList = <Offset>[
-    Offset(35.81891264358996, 128.51603017201349),
-    Offset(35.81892254358912, 128.51606027201323),
-    Offset(35.81894234358266, 128.51607037201353),
-    Offset(35.81835244358914, 128.516080472013467),
-    Offset(35.81865274358923, 128.516010572013345),
-    Offset(35.81875294358922, 128.5160306720134),
-    Offset(35.8188527335896, 128.51604527201338),
-    Offset(35.81895264358900, 128.51630087201323),
-    Offset(35.81815264358936, 128.5167001227201345),
-  ].obs;
-
+class DeliveryRoomRegisterController extends GetxController {
   final Location location = Location();
   LocationData? locationData;
   var _serviceEnabled = false.obs;
-  RxInt count = 0.obs;
-
-  void increase() {
-    count++;
-  }
 
   @override
   void onInit() {
@@ -79,16 +61,6 @@ class HomeController extends GetxController {
           // create map
           var map = new kakao.maps.Map(container, options);
           
-          // create marker
-          var markerPosition  = new kakao.maps.LatLng(${locationData!.latitude}, ${locationData!.longitude});
-          var marker = new kakao.maps.Marker({
-              position: markerPosition
-          });
-          
-          marker.setMap(map);
-          
-          ${getDeliveryRoomHTML()}
-          
           kakao.maps.event.addListener(map, 'idle', function() {
                         
               var latlng = map.getCenter();
@@ -106,34 +78,6 @@ class HomeController extends GetxController {
       </html>
     ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString();
-  }
-
-  String getDeliveryRoomHTML() {
-    String positions = "";
-    for (Offset offset in roomList) {
-      positions += "new kakao.maps.LatLng(${offset.dx}, ${offset.dy}),";
-    }
-
-    return '''
-        var positions = [
-          $positions
-        ];
-    
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-            
-        for (var i = 0; i < positions.length; i ++) {
-            
-            var imageSize = new kakao.maps.Size(24, 35); 
-            
-            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-            
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: positions[i],
-                image : markerImage
-            });
-        }
-    ''';
   }
 
   Set<JavascriptChannel>? get getChannels {
