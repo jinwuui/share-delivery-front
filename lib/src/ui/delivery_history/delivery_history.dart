@@ -50,9 +50,10 @@ class DeliveryHistoryPost extends StatelessWidget {
                 height: 120.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://cdn.pixabay.com/photo/2016/01/22/02/13/meat-1155132__340.jpg')),
+                    fit: BoxFit.cover,
+                    image: NetworkImage(
+                        'https://cdn.pixabay.com/photo/2016/01/22/02/13/meat-1155132__340.jpg'),
+                  ),
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   color: Colors.grey,
                 ),
