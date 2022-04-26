@@ -32,26 +32,11 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
           onPressed: () {
             webViewController!.reload();
           },
-          child: Icon(Icons.refresh),
+          child: const Icon(Icons.refresh),
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
         ),
       ],
-    );
-    return Obx(
-      () => Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("${controller.count}"),
-            ElevatedButton(
-                onPressed: () {
-                  controller.increase();
-                },
-                child: Text("+"))
-          ],
-        ),
-      ),
     );
   }
 

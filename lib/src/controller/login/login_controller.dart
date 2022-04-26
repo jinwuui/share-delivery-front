@@ -10,6 +10,8 @@ class LoginController extends GetxController {
 
   LoginState get state => _loginStateStream.value;
 
+  RxBool isButtonEnabled = false.obs;
+
   // 사용자가 작성한 이메일 패스워드로 로그인 시도
   // TODO : 우린 전화번호로 변경해야함
   void login(String email, String password) async {
@@ -24,5 +26,9 @@ class LoginController extends GetxController {
     } catch (e) {
       _loginStateStream.value = LoginFailure(error: e.toString());
     }
+  }
+
+  void setIsButtonEnabled(bool value) {
+    isButtonEnabled.value = value;
   }
 }

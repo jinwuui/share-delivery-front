@@ -6,6 +6,10 @@ import 'package:location/location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
+  // 모집글 등록을 위한 상세 정보
+  final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
+  final RxList<bool> limitTimeSelections = <bool>[true, false, false].obs;
+
   final Location location = Location();
   LocationData? locationData;
   var _serviceEnabled = false.obs;
@@ -93,6 +97,26 @@ class DeliveryRoomRegisterController extends GetxController {
       return null;
     } else {
       return channels;
+    }
+  }
+
+  void selectNumOfPeopleSelections(int index) {
+    for (int i = 0; i < numOfPeopleSelections.length; i++) {
+      if (i == index) {
+        numOfPeopleSelections[i] = true;
+      } else {
+        numOfPeopleSelections[i] = false;
+      }
+    }
+  }
+
+  void selectLimitTimeSelections(int index) {
+    for (int i = 0; i < limitTimeSelections.length; i++) {
+      if (i == index) {
+        limitTimeSelections[i] = true;
+      } else {
+        limitTimeSelections[i] = false;
+      }
     }
   }
 }

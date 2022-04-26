@@ -16,20 +16,19 @@ class Root extends GetView<RootController> {
       () => SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            shape: Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+            shape: const Border(
+                bottom: BorderSide(color: Colors.black26, width: 0.5)),
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             leading: controller.rootPageIndex.value == 0
                 ? TextButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.PICK_USER_LOCATION);
-                    },
-                    child: Text(
+                    onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
+                    child: const Text(
                       "위치 설정",
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
             leadingWidth: 80,
             title: const Text(
               "딜리버리버리",
@@ -46,7 +45,7 @@ class Root extends GetView<RootController> {
             ],
           ),
           bottomNavigationBar: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 border:
                     Border(top: BorderSide(color: Colors.black54, width: 0.5))),
             height: 49,
@@ -88,10 +87,7 @@ class Root extends GetView<RootController> {
           floatingActionButton: controller.rootPageIndex.value == 0
               ? FloatingActionButton(
                   backgroundColor: Colors.orange,
-                  onPressed: () {
-                    Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
-                    // Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
-                  },
+                  onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
                   child: const Icon(Icons.add_rounded, size: 40),
                 )
               : const SizedBox.shrink(),

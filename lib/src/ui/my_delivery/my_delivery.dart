@@ -5,6 +5,6 @@ class MyDelivery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("내 배달 페이지"));
+    return const Center(child: Text("내 배달 페이지"));
   }
 }

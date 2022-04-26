@@ -35,15 +35,15 @@ class AuthenticationController extends GetxController {
     final User? user = await _authRepo.getCurrentUser();
 
     // 바로 홈화면으로 가고싶으면 아래 두 줄 주석 해제하시고 아래 if,else 문 전부 주석하세요
-    _authenticationStateStream.value =
-        Authenticated(user: User(name: "test", phoneNumber: "1234"));
+    // _authenticationStateStream.value =
+    //     Authenticated(user: User(name: "test", phoneNumber: "1234"));
 
-    // if (user == null) {
-    //   print("user == null");
-    //   _authenticationStateStream.value = UnAuthenticated();
-    // } else {
-    //   print("user != null");
-    //   _authenticationStateStream.value = Authenticated(user: user);
-    // }
+    if (user == null) {
+      print("user == null");
+      _authenticationStateStream.value = UnAuthenticated();
+    } else {
+      print("user != null");
+      _authenticationStateStream.value = Authenticated(user: user);
+    }
   }
 }
