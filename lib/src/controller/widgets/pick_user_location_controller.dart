@@ -63,6 +63,8 @@ class PickUserLocationController extends GetxController {
           // create map
           var map = new kakao.maps.Map(container, options);
           
+          var geocoder = new kakao.maps.services.Geocoder();
+
           kakao.maps.event.addListener(map, 'idle', function() {
                         
               var latlng = map.getCenter();
@@ -74,6 +76,47 @@ class PickUserLocationController extends GetxController {
               
               onIdle.postMessage(JSON.stringify(centerLatLng));
           });
+          
+          
+          kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+              // var latlng = map.getCenter();
+              // searchDetailAddrFromCoords(latlng, function(result, status) {
+              //     onClick.postMessage(status);
+              //    
+              //     if (status === kakao.maps.services.Status.OK) {
+              //         var detailAddr = !!result[0].road_address ? 'addr : ' + result[0].road_address.address_name + ' ' : '';
+              //         detailAddr += 'addr2 : ' + result[0].address.address_name + ' ';
+              //        
+              //         onClick.postMessage("onClick");
+              //     } else {
+              //        onClick.postMessage("onClick else");
+              //     }
+              // });
+              geocoder.addressSearch("대구광역시 달서구 조암로 149", function(result, status) {
+                // onClick.postMessage(status);
+                if (status === kakao.maps.services.Status.OK) {
+                  var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                  var marker = new kakao.maps.Marker({ map: map, position: coords, });
+                  // var infowindow = new kakao.maps.InfoWindow({ content: '<div style="width:150px;text-align:center;padding:6px 0;">Kakao</div>', });
+                  // infowindow.open(map, marker);
+                  map.setCenter(coords);
+                  // onClick.postMessage("addr ok");
+                } else {
+                  // onClick.postMessage("addr else");
+                }
+              });
+          });
+          
+
+          
+          function searchDetailAddrFromCoords(coords, callback) {
+              try {
+                geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+                onClick.postMessage("not error");
+              } catch (e) {
+                onClick.postMessage(e);
+              } 
+          }
 
         </script>
       </body>
@@ -87,6 +130,12 @@ class PickUserLocationController extends GetxController {
 
     channels.add(JavascriptChannel(
         name: 'onIdle',
+        onMessageReceived: (JavascriptMessage message) {
+          print(message.message);
+        }));
+
+    channels.add(JavascriptChannel(
+        name: 'onClick',
         onMessageReceived: (JavascriptMessage message) {
           print(message.message);
         }));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/login_controller.dart';
+import 'package:share_delivery/src/ui/login/phone_number_text_field.dart';
 
 class PhoneNumberAuthentication extends GetView<LoginController> {
   const PhoneNumberAuthentication({Key? key}) : super(key: key);
@@ -48,30 +49,7 @@ class PhoneNumberAuthentication extends GetView<LoginController> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  width: Get.width * 0.9,
-                  height: Get.height * 0.07,
-                  // padding: EdgeInsets.all(50),
-                  child: TextField(
-                    maxLength: 11,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.only(left: 15.0),
-                      hintText: "휴대폰 번호(- 없이 숫자만 입력)",
-                      border: OutlineInputBorder(),
-                      focusedBorder: OutlineInputBorder(),
-                      counterText: "",
-                    ),
-                    onChanged: (text) {
-                      if (text.length >= 8) {
-                        controller.setIsButtonEnabled(true);
-                      } else {
-                        controller.setIsButtonEnabled(false);
-                      }
-                    },
-                  ),
-                ),
+                PhoneNumberTextField(),
                 ElevatedButton(
                   // TODO : 휴대폰 번호 입력이 거의 다 되면 (길이로 체크?) 버튼 on 하기
                   child: const Text("인증문자 받기"),

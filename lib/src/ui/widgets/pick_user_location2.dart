@@ -3,72 +3,72 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/widgets/pick_user_location_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PickUserLocation extends StatefulWidget {
-  const PickUserLocation({Key? key}) : super(key: key);
+class PickUserLocation2 extends StatefulWidget {
+  const PickUserLocation2({Key? key}) : super(key: key);
 
   @override
-  _PickUserLocationState createState() => _PickUserLocationState();
+  _PickUserLocation2State createState() => _PickUserLocation2State();
 }
 
-class _PickUserLocationState extends State<PickUserLocation> {
+class _PickUserLocation2State extends State<PickUserLocation2> {
   WebViewController? webViewController;
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PickUserLocationController>(
-      builder: (controller) => SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            shape: const Border(
-              bottom: BorderSide(color: Colors.black12, width: 1),
-            ),
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            leading: IconButton(
-              icon: const Icon(Icons.close_rounded, color: Colors.black),
-              onPressed: () => Get.back(),
-            ),
-            title:
-                const Text("지도에서 위치 확인", style: TextStyle(color: Colors.black)),
-          ),
-          body: controller.locationData != null
-              ? Stack(
-                  children: [
-                    WebView(
-                      initialUrl: controller.getHTML(),
-                      onWebViewCreated: (ctrl) => webViewController = ctrl,
-                      javascriptMode: JavascriptMode.unrestricted,
-                      javascriptChannels: controller.getChannels,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Center(
-                        child: Icon(
-                          Icons.location_pin,
-                          size: 50,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : const Center(child: CircularProgressIndicator()),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 70),
-            child: FloatingActionButton.small(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              child: const Icon(Icons.location_searching_rounded),
-              onPressed: () {
-                controller.refreshLocation();
-                webViewController!.reload();
-              },
-            ),
-          ),
-          bottomSheet: addressSettingBar(),
-        ),
-      ),
-    );
+        builder: (controller) => SafeArea(
+              child: Scaffold(
+                appBar: AppBar(
+                  shape: const Border(
+                    bottom: BorderSide(color: Colors.black12, width: 1),
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  leading: IconButton(
+                    icon: const Icon(Icons.close_rounded, color: Colors.black),
+                    onPressed: () => Get.back(),
+                  ),
+                  title: const Text("지도에서 위치 확인",
+                      style: TextStyle(color: Colors.black)),
+                ),
+                body: controller.locationData != null
+                    ? Stack(
+                        children: [
+                          WebView(
+                            initialUrl: controller.getHTML(),
+                            onWebViewCreated: (ctrl) =>
+                                webViewController = ctrl,
+                            javascriptMode: JavascriptMode.unrestricted,
+                            javascriptChannels: controller.getChannels,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 40),
+                            child: Center(
+                              child: Icon(
+                                Icons.location_pin,
+                                size: 50,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+                floatingActionButton: Padding(
+                  padding: const EdgeInsets.only(bottom: 70),
+                  child: FloatingActionButton.small(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    child: const Icon(Icons.location_searching_rounded),
+                    onPressed: () {
+                      controller.refreshLocation();
+                      webViewController!.reload();
+                    },
+                  ),
+                ),
+                bottomSheet: addressSettingBar(),
+              ),
+            ));
   }
 
   Widget addressSettingBar() {

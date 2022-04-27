@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
-import 'package:share_delivery/src/data/repository/authentication_repo.dart';
+import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 
@@ -32,7 +32,7 @@ Future<void> initialize() async {
   await dotenv.load(fileName: ".env");
 
   // 인증 컨트롤러 Get 세팅
-  Get.put(AuthenticationController(AuthenticationRepo()));
+  Get.put(AuthenticationController(AuthenticationRepository()));
 }
 
 class MyApp extends GetView<AuthenticationController> {
