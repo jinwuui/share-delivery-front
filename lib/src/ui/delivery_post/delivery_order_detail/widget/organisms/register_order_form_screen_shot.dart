@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
@@ -41,7 +39,10 @@ class RegisterOrderFormScreenShotSection extends StatelessWidget {
                         ...Get.find<OrderFormRegisterController>()
                             .orderFormList
                             .map(
-                              (image) => OrderFormImage(imageURL: image.path),
+                              (image) => OrderFormImage(
+                                imageURL: image.path,
+                                deleteButton: true,
+                              ),
                             )
                             .toList(),
                         AddOrderFormButton()

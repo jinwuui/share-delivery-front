@@ -1,21 +1,17 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
 
 class DeliveryRecruitController extends GetxController {
   DeliveryRecruitController();
 
-  final deliveryOrderStatus = RxString('initial');
+  final userWithOrderList = <UserWithOrderModel>[].obs;
 
-  get status => deliveryOrderStatus;
-  set status(value) => deliveryOrderStatus.value = value;
-
-  changeStatus(value) {
-    print("change");
-    deliveryOrderStatus.value = value;
+  Future<void> addUserWithOrder(UserWithOrderModel userWithOrderModel) async {
+    userWithOrderList.add(userWithOrderModel);
   }
 
-  @override
-  void onInit() {
-    print("Delivery Order Controller INit");
-    super.onInit();
+  Future<void> deleteUserWithOrder(String userId) async {
+    userWithOrderList.value =
+        userWithOrderList.where((e) => e.userId != userId).toList();
   }
 }

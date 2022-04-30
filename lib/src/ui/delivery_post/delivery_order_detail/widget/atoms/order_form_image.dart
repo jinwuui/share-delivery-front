@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 
 class OrderFormImage extends StatelessWidget {
-  OrderFormImage({Key? key, required this.imageURL}) : super(key: key);
+  OrderFormImage({Key? key, required this.imageURL, required this.deleteButton})
+      : super(key: key);
 
   final String imageURL;
+  final bool deleteButton;
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +35,23 @@ class OrderFormImage extends StatelessWidget {
               color: Colors.grey,
             ),
           ),
-          Positioned(
-            right: 0,
-            child: IconButton(
-              onPressed: () {
-                Get.find<OrderFormRegisterController>().deleteImage(imageURL);
-              },
-              icon: Icon(
-                Icons.cancel_outlined,
-                color: Colors.red,
-                size: 25,
-              ),
-            ),
-          )
+          deleteButton
+              ? Positioned(
+                  right: -10,
+                  top: -10,
+                  child: IconButton(
+                    onPressed: () {
+                      Get.find<OrderFormRegisterController>()
+                          .deleteImage(imageURL);
+                    },
+                    icon: Icon(
+                      Icons.cancel_rounded,
+                      color: Colors.black,
+                      size: 25,
+                    ),
+                  ),
+                )
+              : SizedBox.shrink()
         ],
       ),
     );

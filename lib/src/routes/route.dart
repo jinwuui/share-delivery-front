@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/bindings/delivery_history/delivery_history_binding.dart';
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -5,6 +6,7 @@ class OrderFormRegisterController extends GetxController {
   OrderFormRegisterController();
 
   final orderFormList = <XFile>[].obs;
+  final discountMap = {}.obs;
 
   Future<void> pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -14,13 +16,19 @@ class OrderFormRegisterController extends GetxController {
       List<XFile> newList = [image!, ...orderFormList];
 
       if (newList.length > 2) {
-        throw Exception("사진 개수 초과");
+        throw ImagePickerException(message: "사진 개수 초과");
       }
 
       orderFormList.value = newList;
     } catch (e) {
-      print(e);
-      rethrow;
+      if (e.runtimeType == ImagePickerException) {
+        Get.snackbar(
+          '사진 개수 초과',
+          '3개 미만으로 올려주세요!',
+          backgroundColor: Colors.grey.shade200,
+          margin: EdgeInsets.all(20.0),
+        );
+      }
     }
   }
 
@@ -28,6 +36,26 @@ class OrderFormRegisterController extends GetxController {
     orderFormList.value =
         orderFormList.where(((element) => element.path != imageURL)).toList();
   }
+
+  Future<void> addDiscountItem(String k, String v) async {
+    if (discountMap.containsKey(k)) {
+      Get.snackbar(
+        "알림",
+        "이미 등록한 할인 정보 입니다.",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+      return;
+    }
+    discountMap[k] = v;
+  }
+
+  Future<void> deleteDiscountItem(String k) async {
+    discountMap.remove(k);
+  }
+
   // final deliveryTime = DateTime.now().obs;
 
   // Future<void> updateDeliveryTime(int minute) async {
@@ -44,4 +72,15 @@ class OrderFormRegisterController extends GetxController {
   //     print(e);
   //   }
   // }
+}
+
+class ImagePickerException implements Exception {
+  String message;
+
+  ImagePickerException({required this.message});
+
+  @override
+  String toString() {
+    return message;
+  }
 }
