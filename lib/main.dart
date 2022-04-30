@@ -1,5 +1,7 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/routes/route.dart';
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialBinding: BindingsBuilder(() {
         Get.put(RootController());
+        Get.put(NotificationController());
       }),
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
