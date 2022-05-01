@@ -3,20 +3,16 @@ import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
-import 'package:share_delivery/src/bindings/delivery_history/delivery_history_binding.dart';
 import 'package:share_delivery/src/root.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_list_on_map.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
+import 'package:share_delivery/src/ui/home/pick_place_on_map.dart';
+import 'package:share_delivery/src/ui/home/setting_gathering_place.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
 import 'package:share_delivery/src/ui/widgets/pick_user_location.dart';
-import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
-// import 'package:share_delivery/src/ui/home/delivery_room_detail.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_list_on_map.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_register.dart';
-import 'package:share_delivery/src/ui/home/pick_place_on_map.dart';
-import 'package:share_delivery/src/ui/home/setting_gathering_place.dart';
 
 abstract class Routes {
   // 기본 화면

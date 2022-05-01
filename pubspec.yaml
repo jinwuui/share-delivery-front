@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.6.1
-  # flutter_native_splash: ^2.1.5
+  flutter_native_splash: ^2.1.5
   numberpicker: ^2.1.1
   webview_flutter: ^3.0.2
   kakaomap_webview: ^0.5.1

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 
-class DeliveryRoomDetail extends GetView<HomeController> {
-  const DeliveryRoomDetail({Key? key}) : super(key: key);
+class DeliveryRoomInfo extends GetView<HomeController> {
+  const DeliveryRoomInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

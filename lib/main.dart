@@ -1,27 +1,28 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
-import 'package:share_delivery/src/data/provider/authentication_api_client.dart';
-import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
-import 'package:share_delivery/src/root.dart';
+import 'package:share_delivery/src/data/provider/authentication_api_client.dart';
+import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
   // runApp 메소드의 시작 지점에서 Flutter 엔진과 위젯의 바인딩이 미리 완료되어 있게 만들어줌
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
 
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -61,7 +62,6 @@ class MyApp extends GetView<AuthenticationController> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       initialBinding: BindingsBuilder(() {
         Get.put(RootController());
         Get.put(NotificationController());

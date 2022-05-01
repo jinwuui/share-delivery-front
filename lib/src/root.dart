@@ -39,7 +39,7 @@ class Root extends GetView<RootController> {
             index: controller.rootPageIndex.value,
             children: const [
               Home(),
-              MyDelivery(),
+              DeliveryHistory(),
               Community(),
               Profile(),
             ],
