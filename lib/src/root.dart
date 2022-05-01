@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/community/community.dart';
+import 'package:share_delivery/src/ui/delivery_history/delivery_history.dart';
 import 'package:share_delivery/src/ui/home/home.dart';
-import 'package:share_delivery/src/ui/my_delivery/my_delivery.dart';
 import 'package:share_delivery/src/ui/profile/profile.dart';
 
 class Root extends GetView<RootController> {
