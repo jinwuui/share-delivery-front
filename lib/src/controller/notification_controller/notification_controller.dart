@@ -2,6 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+// create new AndroidNotificationChannel
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  importance: Importance.max,
+);
+
+// Create the channel on the device
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
@@ -9,7 +21,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
-  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+  final FirebaseMessaging _messaging = FirebaseMessaging.instance;
   Rxn<RemoteMessage> message = Rxn<RemoteMessage>();
   late final String fcmToken;
 
@@ -32,64 +44,46 @@ class NotificationController extends GetxController {
       sound: true,
     );
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
 
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+    // background (callback 항상 최상단에 있어야 함)
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              icon: android.smallIcon,
+            ),
+          ),
+        );
       }
     });
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   Future<void> _getToken() async {
     fcmToken = (await _messaging.getToken())!;
   }
 }
-
-  // @override
-  // void onInit() {
-  //   _initNotification();
-  //   _getToken();
-  //   super.onInit();
-  // }
-
-  // Future<void> _getToken() async {
-  //   try {
-  //     String? token = await _messaging.getToken();
-  //     print(token);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  // void _initNotification() {
-  //   _messaging.requestNotificationPermissions(const IosNotificationSettings(
-  //       sound: true, badge: true, alert: true, provisional: true));
-
-  //   _messaging.configure(
-  //     onMessage: _onMessage,
-  //     onLaunch: _onLaunch,
-  //     onResume: _onResume,
-  //   );
-  // }
-
-  // Future<void> _onResume(Map<String, dynamic> message) {
-  //   print("_onResume : $message");
-  //   return null;
-  // }
-
-  // Future<void> _onLaunch(Map<String, dynamic> message) async {
-  //   print("_onLaunch : $message");
-  //   _actionOnNotification(message);
-  //   return null;
-  // }
-
-  // void _actionOnNotification(Map<String, dynamic> messageMap) {
-  //   message(messageMap);
-  // }
-
-  // Future<void> _onMessage(Map<String, dynamic> message) async {
-  //   print("_onMessage : $message");
-  // }
