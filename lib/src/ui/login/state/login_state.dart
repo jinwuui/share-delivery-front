@@ -7,6 +7,8 @@ class LoginState extends Equatable {
 
 class LoginLoading extends LoginState {}
 
+class LoginSuccess extends LoginState {}
+
 class LoginFailure extends LoginState {
   final String error;
 

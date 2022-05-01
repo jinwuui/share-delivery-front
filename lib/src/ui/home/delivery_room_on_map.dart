@@ -12,31 +12,34 @@ class DeliveryRoomOnMap extends StatefulWidget {
 
 class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
     with AutomaticKeepAliveClientMixin<DeliveryRoomOnMap> {
-  WebViewController? webViewController;
-
-  final HomeController controller = Get.find();
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.topRight,
-      children: [
-        WebView(
-          initialUrl: controller.getHTML(),
-          onWebViewCreated: (ctrl) => webViewController = ctrl,
-          javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: controller.getChannels,
-        ),
-        FloatingActionButton.small(
-          heroTag: "refresh",
-          onPressed: () {
-            webViewController!.reload();
-          },
-          child: const Icon(Icons.refresh),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-        ),
-      ],
+    HomeController controller = HomeController.to;
+
+    return Obx(
+      () => controller.isPrepared.value
+          ? Stack(
+              alignment: Alignment.topRight,
+              children: [
+                WebView(
+                  initialUrl: controller.getHTML(),
+                  onWebViewCreated: (ctrl) =>
+                      controller.setWebViewController(ctrl),
+                  javascriptMode: JavascriptMode.unrestricted,
+                  javascriptChannels: controller.getChannels,
+                ),
+                FloatingActionButton.small(
+                  heroTag: "refresh",
+                  onPressed: () => controller.reloadWebView(),
+                  child: const Icon(Icons.refresh),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                ),
+              ],
+            )
+          : const Center(
+              child: CircularProgressIndicator(color: Colors.grey),
+            ),
     );
   }
 

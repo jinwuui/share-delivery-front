@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 
@@ -7,6 +8,8 @@ import 'package:location/location.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
+  static HomeController get to => Get.find();
+
   RxList<Offset> roomList = <Offset>[
     Offset(35.81891264358996, 128.51603017201349),
     Offset(35.81892254358912, 128.51606027201323),
@@ -19,30 +22,43 @@ class HomeController extends GetxController {
     Offset(35.81815264358936, 128.5167001227201345),
   ].obs;
 
+  // 사용자 위치 관련
   final Location location = Location();
-  LocationData? locationData;
-  var _serviceEnabled = false.obs;
-  RxInt count = 0.obs;
+  Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
+  final RxBool _serviceEnabled = false.obs;
 
-  void increase() {
-    count++;
-  }
+  // 웹뷰 관련
+  Rx<Completer<WebViewController>> webViewController =
+      Completer<WebViewController>().obs;
+  RxBool isPrepared = false.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // 저장된 유저의 위치 불러오기
+    // 사용자 위치 불러오기
     getUserLocation();
+    // TODO : 모집글 불러오기
   }
 
+  // 사용자 위치 불러오기
   void getUserLocation() async {
+    if (await verifyLocationPermission()) {
+      locationData.value = await location.getLocation();
+      isPrepared.value = true;
+    } else {
+      print("ERROR: 위치 정보 엑세스 권한 없음");
+    }
+  }
+
+  // 위치 정보 엑세스 권한 검증
+  Future<bool> verifyLocationPermission() async {
     PermissionStatus _permissionGranted;
     _serviceEnabled.value = await location.serviceEnabled();
 
     if (!_serviceEnabled.value) {
       _serviceEnabled.value = await location.requestService();
       if (!_serviceEnabled.value) {
-        return;
+        return false;
       }
     }
 
@@ -50,14 +66,14 @@ class HomeController extends GetxController {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        return;
+        return false;
       }
     }
 
-    // TODO : 화면 중앙에 마커 띄워놓고 드래그해서 움직여서 자신의 위치 설정해야할듯
-    locationData = await location.getLocation();
+    return true;
   }
 
+  // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
     return Uri.dataFromString('''
       <html>
@@ -72,7 +88,7 @@ class HomeController extends GetxController {
           var container = document.getElementById('map'); // map for div
 
           var options = {
-            center: new kakao.maps.LatLng(${locationData!.latitude}, ${locationData!.longitude}), // center of map (current position)
+            center: new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude}), // center of map (current position)
             level: 3 // level of map
           };
 
@@ -80,7 +96,7 @@ class HomeController extends GetxController {
           var map = new kakao.maps.Map(container, options);
           
           // create marker
-          var markerPosition  = new kakao.maps.LatLng(${locationData!.latitude}, ${locationData!.longitude});
+          var markerPosition  = new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude});
           var marker = new kakao.maps.Marker({
               position: markerPosition
           });
@@ -108,6 +124,7 @@ class HomeController extends GetxController {
         .toString();
   }
 
+  // 모집글 마커 표시하기 위한 JS API
   String getDeliveryRoomHTML() {
     String positions = "";
     for (Offset offset in roomList) {
@@ -136,6 +153,7 @@ class HomeController extends GetxController {
     ''';
   }
 
+  // WebView JS Listener
   Set<JavascriptChannel>? get getChannels {
     Set<JavascriptChannel>? channels = {};
 
@@ -150,5 +168,15 @@ class HomeController extends GetxController {
     } else {
       return channels;
     }
+  }
+
+  void setWebViewController(WebViewController webViewController) {
+    this.webViewController.value.complete(webViewController);
+  }
+
+  void reloadWebView() {
+    webViewController.value.future.then((value) async {
+      value.reload();
+    });
   }
 }

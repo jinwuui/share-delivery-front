@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/login/login_controller.dart';
 
 class PhoneNumberTextField extends StatefulWidget {
   const PhoneNumberTextField({Key? key}) : super(key: key);
@@ -23,7 +24,14 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
       removeSpace(text);
     }
 
-    prevLen = textController.value.text.length;
+    LoginController loginController = Get.find<LoginController>();
+    if (text.length >= 10) {
+      loginController.setIsEnabledRequestSMSButton(true);
+      loginController.setPhoneNumber(textController.text);
+    } else {
+      loginController.setIsEnabledRequestSMSButton(false);
+    }
+    prevLen = textController.text.length;
   }
 
   void addSpace(String text) {
@@ -53,6 +61,7 @@ class _PhoneNumberTextFieldState extends State<PhoneNumberTextField> {
           contentPadding: EdgeInsets.only(left: 15.0),
           border: OutlineInputBorder(),
           focusedBorder: OutlineInputBorder(),
+          hintText: "휴대폰 번호 (- 없이 숫자만 입력)",
           counterText: "",
         ),
         onChanged: _onChanged,

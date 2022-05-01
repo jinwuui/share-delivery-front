@@ -3,20 +3,13 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/widgets/pick_user_location_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PickUserLocation extends StatefulWidget {
+class PickUserLocation extends GetView<PickUserLocationController> {
   const PickUserLocation({Key? key}) : super(key: key);
 
   @override
-  _PickUserLocationState createState() => _PickUserLocationState();
-}
-
-class _PickUserLocationState extends State<PickUserLocation> {
-  WebViewController? webViewController;
-
-  @override
   Widget build(BuildContext context) {
-    return GetBuilder<PickUserLocationController>(
-      builder: (controller) => SafeArea(
+    return Obx(
+      () => SafeArea(
         child: Scaffold(
           appBar: AppBar(
             shape: const Border(
@@ -31,12 +24,14 @@ class _PickUserLocationState extends State<PickUserLocation> {
             title:
                 const Text("지도에서 위치 확인", style: TextStyle(color: Colors.black)),
           ),
-          body: controller.locationData != null
+          body: controller.isPrepared.value
               ? Stack(
                   children: [
                     WebView(
+                      // initialUrl: "https://www.naver.com",
                       initialUrl: controller.getHTML(),
-                      onWebViewCreated: (ctrl) => webViewController = ctrl,
+                      onWebViewCreated: (ctrl) =>
+                          controller.setWebViewController(ctrl),
                       javascriptMode: JavascriptMode.unrestricted,
                       javascriptChannels: controller.getChannels,
                     ),
@@ -52,17 +47,16 @@ class _PickUserLocationState extends State<PickUserLocation> {
                     ),
                   ],
                 )
-              : const Center(child: CircularProgressIndicator()),
+              : const Center(
+                  child: CircularProgressIndicator(color: Colors.grey),
+                ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 70),
             child: FloatingActionButton.small(
               backgroundColor: Colors.white,
               foregroundColor: Colors.black,
               child: const Icon(Icons.location_searching_rounded),
-              onPressed: () {
-                controller.refreshLocation();
-                webViewController!.reload();
-              },
+              onPressed: () => controller.reloadWebView(),
             ),
           ),
           bottomSheet: addressSettingBar(),
@@ -77,7 +71,10 @@ class _PickUserLocationState extends State<PickUserLocation> {
       height: 140,
       width: double.infinity,
       decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.black12, width: 1))),
+        border: Border(
+          top: BorderSide(color: Colors.black12, width: 1),
+        ),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -109,6 +106,7 @@ class _PickUserLocationState extends State<PickUserLocation> {
               fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
             ),
             onPressed: () {
+              controller.saveLocationDataToLocal();
               if (Get.arguments == null) {
                 Get.back();
               } else {

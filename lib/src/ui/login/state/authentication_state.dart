@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:share_delivery/src/data/model/User.dart';
+import 'package:share_delivery/src/data/model/user.dart';
 
 class AuthenticationState extends Equatable {
   const AuthenticationState();

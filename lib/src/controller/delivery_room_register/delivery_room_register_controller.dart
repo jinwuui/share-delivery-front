@@ -3,16 +3,21 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/data/repository/delivery_room_register_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
+  final DeliveryRoomRegisterRepository repository;
+
+  DeliveryRoomRegisterController({required this.repository});
+
   // 모집글 등록을 위한 상세 정보
   final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
   final RxList<bool> limitTimeSelections = <bool>[true, false, false].obs;
 
   final Location location = Location();
   LocationData? locationData;
-  var _serviceEnabled = false.obs;
+  final _serviceEnabled = false.obs;
 
   @override
   void onInit() {

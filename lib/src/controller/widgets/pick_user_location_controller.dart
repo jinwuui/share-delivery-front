@@ -1,30 +1,55 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/data/repository/pick_user_location_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PickUserLocationController extends GetxController {
+  static PickUserLocationController get to => Get.find();
+
+  final PickUserLocationRepository repository;
+
+  PickUserLocationController({required this.repository});
+
+  // 사용자 위치 관련
   final Location location = Location();
-  LocationData? locationData;
-  RxBool _serviceEnabled = false.obs;
-  RxBool centerMarker = false.obs;
+  Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
+  final RxBool _serviceEnabled = false.obs;
+
+  // 웹뷰 관련
+  Rx<Completer<WebViewController>> webViewController =
+      Completer<WebViewController>().obs;
+  RxBool isPrepared = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
-    refreshLocation();
+    // 사용자의 위치 불러오기
+    await refreshLocation();
   }
 
-  void refreshLocation() async {
+  // 사용자 위치 불러오기
+  Future<void> refreshLocation() async {
+    if (await verifyLocationPermission()) {
+      locationData.value = await location.getLocation();
+      isPrepared.value = true;
+    } else {
+      print("ERROR: 위치 정보 엑세스 권한 없음");
+    }
+  }
+
+  // 위치 정보 엑세스 권한 검증
+  Future<bool> verifyLocationPermission() async {
     PermissionStatus _permissionGranted;
     _serviceEnabled.value = await location.serviceEnabled();
 
     if (!_serviceEnabled.value) {
       _serviceEnabled.value = await location.requestService();
       if (!_serviceEnabled.value) {
-        return;
+        return false;
       }
     }
 
@@ -32,16 +57,14 @@ class PickUserLocationController extends GetxController {
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        return;
+        return false;
       }
     }
 
-    // TODO : 화면 중앙에 마커 띄워놓고 드래그해서 움직여서 자신의 위치 설정해야할듯
-    locationData = await location.getLocation();
-    print(locationData.toString());
-    update();
+    return true;
   }
 
+  // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
     return Uri.dataFromString('''
       <html>
@@ -56,68 +79,25 @@ class PickUserLocationController extends GetxController {
           var container = document.getElementById('map'); // map for div
 
           var options = {
-            center: new kakao.maps.LatLng(${locationData!.latitude}, ${locationData!.longitude}), // center of map (current position)
+            center: new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude}), // center of map (current position)
             level: 3 // level of map
           };
-
+          
           // create map
           var map = new kakao.maps.Map(container, options);
           
-          var geocoder = new kakao.maps.services.Geocoder();
-
           kakao.maps.event.addListener(map, 'idle', function() {
                         
-              var latlng = map.getCenter();
+              var latLng = map.getCenter();
               
               var centerLatLng = {
-                lat: latlng.getLat(),
-                lng: latlng.getLng()
+                latitude: latLng.getLat(),
+                longitude: latLng.getLng()
               }
               
               onIdle.postMessage(JSON.stringify(centerLatLng));
           });
           
-          
-          kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
-              // var latlng = map.getCenter();
-              // searchDetailAddrFromCoords(latlng, function(result, status) {
-              //     onClick.postMessage(status);
-              //    
-              //     if (status === kakao.maps.services.Status.OK) {
-              //         var detailAddr = !!result[0].road_address ? 'addr : ' + result[0].road_address.address_name + ' ' : '';
-              //         detailAddr += 'addr2 : ' + result[0].address.address_name + ' ';
-              //        
-              //         onClick.postMessage("onClick");
-              //     } else {
-              //        onClick.postMessage("onClick else");
-              //     }
-              // });
-              geocoder.addressSearch("대구광역시 달서구 조암로 149", function(result, status) {
-                // onClick.postMessage(status);
-                if (status === kakao.maps.services.Status.OK) {
-                  var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                  var marker = new kakao.maps.Marker({ map: map, position: coords, });
-                  // var infowindow = new kakao.maps.InfoWindow({ content: '<div style="width:150px;text-align:center;padding:6px 0;">Kakao</div>', });
-                  // infowindow.open(map, marker);
-                  map.setCenter(coords);
-                  // onClick.postMessage("addr ok");
-                } else {
-                  // onClick.postMessage("addr else");
-                }
-              });
-          });
-          
-
-          
-          function searchDetailAddrFromCoords(coords, callback) {
-              try {
-                geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-                onClick.postMessage("not error");
-              } catch (e) {
-                onClick.postMessage(e);
-              } 
-          }
-
         </script>
       </body>
       </html>
@@ -125,13 +105,16 @@ class PickUserLocationController extends GetxController {
         .toString();
   }
 
+  // WebView JS Listener
   Set<JavascriptChannel>? get getChannels {
     Set<JavascriptChannel>? channels = {};
 
     channels.add(JavascriptChannel(
         name: 'onIdle',
         onMessageReceived: (JavascriptMessage message) {
-          print(message.message);
+          Map<String, dynamic> latLngMap = jsonDecode(message.message);
+          locationData.value = LocationData.fromMap(latLngMap);
+          print("onIdle");
         }));
 
     channels.add(JavascriptChannel(
@@ -145,5 +128,20 @@ class PickUserLocationController extends GetxController {
     } else {
       return channels;
     }
+  }
+
+  void setWebViewController(WebViewController webViewController) {
+    this.webViewController.value.complete(webViewController);
+    reloadWebView();
+  }
+
+  void reloadWebView() {
+    webViewController.value.future.then((value) async {
+      value.reload();
+    });
+  }
+
+  void saveLocationDataToLocal() {
+    repository.saveLocationDataToLocal(locationData.value);
   }
 }
