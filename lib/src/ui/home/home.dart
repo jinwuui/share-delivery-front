@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/routes/route.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -13,9 +14,9 @@ class Home extends StatelessWidget {
             20,
             (index) => GestureDetector(
               onTap: () {
-                Get.toNamed('/detailPage');
+                Get.toNamed(Routes.DELIVERY_ROOM_DETAIL);
               },
-              child: deliveryRoom(),
+              child: deliveryRooms(),
             ),
           ),
         ),
@@ -23,21 +24,23 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget deliveryRoom() {
+  Widget deliveryRooms() {
     return Column(
       children: [
         Container(
           height: 120,
           margin: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.grey.shade200),
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.grey.shade200,
+          ),
         ),
         Divider(
-            endIndent: 20,
-            indent: 20,
-            color: Colors.grey.shade400,
-            thickness: 1.5),
+          endIndent: 20,
+          indent: 20,
+          color: Colors.grey.shade400,
+          thickness: 1.5,
+        ),
       ],
     );
   }

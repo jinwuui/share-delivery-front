@@ -5,6 +5,13 @@ class DeliveryRoomDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Material(child: Center(child: Text("딜리버리 룸 디테일")));
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("상세조회"),
+      ),
+      body: const Center(
+        child: Text("딜리버리 룸 상세정보 조회"),
+      ),
+    );
   }
 }

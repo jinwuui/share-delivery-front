@@ -5,6 +5,6 @@ class Community extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("커뮤니티 페이지"));
+    return const Center(child: Text("커뮤니티 페이지"));
   }
 }
