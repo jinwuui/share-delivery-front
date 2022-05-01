@@ -19,10 +19,10 @@ import 'firebase_options.dart';
 Future<void> main() async {
   // runApp 메소드의 시작 지점에서 Flutter 엔진과 위젯의 바인딩이 미리 완료되어 있게 만들어줌
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
