@@ -1,8 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -34,6 +33,7 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _initNotification() async {
+    // init FirebaseMessaging permission
     _messaging.requestPermission(
       alert: true,
       announcement: true,
@@ -44,10 +44,18 @@ class NotificationController extends GetxController {
       sound: true,
     );
 
+    // init flutter local notification android channel
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
+
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     // background (callback 항상 최상단에 있어야 함)
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -75,15 +83,11 @@ class NotificationController extends GetxController {
       }
     });
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    // FirebaseMessaging.onMessageOpenedApp()
   }
 
   Future<void> _getToken() async {
     fcmToken = (await _messaging.getToken())!;
+    print(fcmToken);
   }
 }
