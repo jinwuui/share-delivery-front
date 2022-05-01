@@ -52,11 +52,15 @@ class DeliveryRoomDetail extends StatelessWidget {
                 color: Colors.grey.shade200,
                 child: TabBarView(children: [
                   Container(
-                    child: Text("Articles Body"),
+                    child: Center(
+                      child: Text("상세 정보"),
+                    ),
                   ),
                   OrderTabView(),
                   Container(
-                    child: Text("User Body"),
+                    child: Center(
+                      child: Text("채팅 방"),
+                    ),
                   ),
                 ]),
               ),

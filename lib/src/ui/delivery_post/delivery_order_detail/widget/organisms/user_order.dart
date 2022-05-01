@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/order_detail.dart';
 
 class UserOrder extends StatelessWidget {
-  const UserOrder({Key? key}) : super(key: key);
+  const UserOrder({Key? key, required this.userWithOrderModel})
+      : super(key: key);
+  final UserWithOrderModel userWithOrderModel;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +21,39 @@ class UserOrder extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           OrderDetail(),
-          SizedBox(
-            width: 80,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.orange,
-              ),
-              onPressed: () {},
-              child: Text(
-                "변경",
-              ),
+          Expanded(
+            // width: 80,
+            child: Column(
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    elevation: 0.0,
+                    side: BorderSide(width: 1.0, color: Colors.grey.shade300),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "확인",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    elevation: 0.0,
+                    side: BorderSide(width: 1.0, color: Colors.grey.shade300),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "취소",
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

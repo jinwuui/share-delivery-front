@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "812458932745",
+    "project_id": "fcm-share-delivery",
+    "storage_bucket": "fcm-share-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812458932745:android:59cee295223f1a584916d8",
+        "android_client_info": {
+          "package_name": "com.example.share_delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812458932745-km3227sse5o5fji8btockljia7m7l4dm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsXFBZLdvw4yXQgCIiBY5KWY4aHICki6E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812458932745-km3227sse5o5fji8btockljia7m7l4dm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

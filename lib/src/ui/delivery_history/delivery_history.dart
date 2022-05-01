@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
+import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 
 class DeliveryHistory extends StatelessWidget {
@@ -7,6 +9,11 @@ class DeliveryHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller =
+        Get.put<DeliveryHistoryController>(DeliveryHistoryController(
+      deliveryHistoryRepository: DeliveryHistoryRepository(),
+    ));
+
     return Center(
       child: ListView.separated(
         itemBuilder: (context, index) => GestureDetector(
@@ -103,19 +110,22 @@ class DeliveryHistoryPost extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("메뉴 이름"),
-                  Text("메뉴 가격"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.people,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text("4 / 4")
-                    ],
+                  // Text("메뉴 이름"),
+                  // Text("메뉴 가격"),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.people,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text("4 / 4")
+                      ],
+                    ),
                   )
                 ],
               ),
