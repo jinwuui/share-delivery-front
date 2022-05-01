@@ -79,7 +79,7 @@ class HomeController extends GetxController {
       <html>
       <head>
         <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
-        <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
+        <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
       </head>
       <body style="padding:0; margin:0;">
         <div id="map" style="width:100%;height:100%;"></div>

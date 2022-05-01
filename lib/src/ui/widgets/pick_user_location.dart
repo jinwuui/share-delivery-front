@@ -28,7 +28,6 @@ class PickUserLocation extends GetView<PickUserLocationController> {
               ? Stack(
                   children: [
                     WebView(
-                      // initialUrl: "https://www.naver.com",
                       initialUrl: controller.getHTML(),
                       onWebViewCreated: (ctrl) =>
                           controller.setWebViewController(ctrl),
