@@ -1,8 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(

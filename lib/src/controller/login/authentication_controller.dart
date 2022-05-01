@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:share_delivery/src/data/model/user.dart';
+import 'package:share_delivery/src/data/model/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 
@@ -22,14 +22,19 @@ class AuthenticationController extends GetxController {
     return repository.requestAuthSMS(phoneNumber);
   }
 
-  //
-  Future<void> signIn(
-      bool isNewUser, String phoneNumber, String authNumber) async {
+  Future<User> signUp(String phoneNumber, String authNumber) async {
+    User user = await repository.signUp(phoneNumber, authNumber);
+    _authenticationStateStream.value = Authenticated(user: user);
+    return user;
+  }
+
+  Future<void> signIn(String phoneNumber, String authNumber) async {
     print("sign In : $phoneNumber, $authNumber");
 
-    final User user = await repository.signInWithPhoneNumberAndAuthNumber(
-        isNewUser, phoneNumber, authNumber);
-    _authenticationStateStream.value = Authenticated(user: user);
+    bool result = await repository.signIn(phoneNumber, authNumber);
+    if (result) {
+      // TODO : 로그인 성공/실패 로직 처리
+    }
   }
 
   void signOut() async {
@@ -40,8 +45,8 @@ class AuthenticationController extends GetxController {
   void _getAuthenticatedUser() async {
     _authenticationStateStream.value = AuthenticationLoading();
 
-    // final User? user = await repository.getCurrentUser(); // 홈 화면으로
-    User? user; // 로그인 화면으로
+    final User? user = await repository.getCurrentUser(); // 홈 화면으로
+    // User? user; // 로그인 화면으로
 
     if (user == null) {
       print("user == null");

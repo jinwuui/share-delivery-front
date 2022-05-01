@@ -5,10 +5,15 @@ import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
+
+  final HomeRepository repository;
+
+  HomeController({required this.repository});
 
   RxList<Offset> roomList = <Offset>[
     Offset(35.81891264358996, 128.51603017201349),
@@ -38,16 +43,24 @@ class HomeController extends GetxController {
     // 사용자 위치 불러오기
     getUserLocation();
     // TODO : 모집글 불러오기
+    findDeliveryRooms();
   }
 
   // 사용자 위치 불러오기
   void getUserLocation() async {
-    if (await verifyLocationPermission()) {
-      locationData.value = await location.getLocation();
-      isPrepared.value = true;
-    } else {
-      print("ERROR: 위치 정보 엑세스 권한 없음");
+    LocationData result = repository.findRecentUserLocation();
+
+    print("로컬에 저장된 최근 사용자 위치: $result");
+    if (result.isMock == true) {
+      if (await verifyLocationPermission()) {
+        result = await location.getLocation();
+      } else {
+        print("ERROR: 위치 정보 엑세스 권한 없음");
+      }
     }
+
+    locationData.value = result;
+    isPrepared.value = true;
   }
 
   // 위치 정보 엑세스 권한 검증
@@ -71,6 +84,16 @@ class HomeController extends GetxController {
     }
 
     return true;
+  }
+
+  void findDeliveryRooms() {
+    print("- home controller - 모집글 조회");
+    double? lat = locationData.value.latitude;
+    double? lng = locationData.value.longitude;
+
+    if (lat != null && lng != null) {
+      repository.findDeliveryRooms(lat, lng);
+    }
   }
 
   // 카카오 지도 JS API 로 지도 띄우기
