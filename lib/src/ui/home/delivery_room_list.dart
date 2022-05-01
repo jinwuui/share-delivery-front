@@ -23,7 +23,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
             20,
             (index) => GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.DELIVERY_ROOM_DETAIL);
+                Get.toNamed(Routes.DELIVERY_ROOM_INFO);
               },
               child: Column(
                 children: [
