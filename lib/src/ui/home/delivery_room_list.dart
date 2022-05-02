@@ -32,7 +32,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
           height: 0.5,
           thickness: 1,
         ),
-        itemCount: 5,
+        itemCount: 6,
       ),
     );
 

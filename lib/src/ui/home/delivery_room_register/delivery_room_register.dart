@@ -123,6 +123,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                         print("< null >");
                       } else {
                         print(data.text);
+                        controller.storeLink.text = data.text!;
                       }
                     },
                     child: const Text("붙여넣기"),

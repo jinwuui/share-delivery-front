@@ -28,7 +28,22 @@ class HomeController extends GetxController {
       status: "NULL",
       createdDate: DateTime.now(),
       receivingLocation: ReceivingLocation(
-          description: "CU 편의점 앞", latitude: -1, longitude: -1),
+          description: "CU 편의점 앞",
+          latitude: 35.8113342,
+          longitude: 128.5181884),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "참새 1호", mannerScore: 36.3),
+      content: "BHC 드실분?",
+      limitPerson: 2,
+      shareStoreLink: "www.yogiyo.com/stores?id=1524",
+      linkPlatformType: "YOGIYO",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation: ReceivingLocation(
+          description: "해피 동물병원 앞",
+          latitude: 35.8112382,
+          longitude: 128.5171884),
     ),
     DeliveryRoom(
       leader: Leader(nickname: "비둘기 1호", mannerScore: 36.3),
@@ -39,18 +54,7 @@ class HomeController extends GetxController {
       status: "NULL",
       createdDate: DateTime.now(),
       receivingLocation: ReceivingLocation(
-          description: "GS편의점 앞", latitude: -1, longitude: -1),
-    ),
-    DeliveryRoom(
-      leader: Leader(nickname: "참새 1호", mannerScore: 36.3),
-      content: "BHC 드실분?",
-      limitPerson: 2,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
-      status: "NULL",
-      createdDate: DateTime.now(),
-      receivingLocation: ReceivingLocation(
-          description: "해피 동물병원 앞", latitude: -1, longitude: -1),
+          description: "GS편의점 앞", latitude: 35.8117392, longitude: 128.5111684),
     ),
     DeliveryRoom(
       leader: Leader(nickname: "종달새 2호", mannerScore: 37.8),
@@ -60,8 +64,8 @@ class HomeController extends GetxController {
       linkPlatformType: "BAEMIN",
       status: "NULL",
       createdDate: DateTime.now(),
-      receivingLocation:
-          ReceivingLocation(description: "다이소 앞", latitude: -1, longitude: -1),
+      receivingLocation: ReceivingLocation(
+          description: "다이소 앞", latitude: 35.8118312, longitude: 128.5181484),
     ),
     DeliveryRoom(
       leader: Leader(nickname: "종달새 3호", mannerScore: 36.5),
@@ -72,7 +76,7 @@ class HomeController extends GetxController {
       status: "NULL",
       createdDate: DateTime.now(),
       receivingLocation: ReceivingLocation(
-          description: "크림 빌라 앞", latitude: -1, longitude: -1),
+          description: "크림 빌라 앞", latitude: 35.8139322, longitude: 128.5141384),
     ),
     DeliveryRoom(
       leader: Leader(nickname: "참새 2호", mannerScore: 38.0),
@@ -82,21 +86,21 @@ class HomeController extends GetxController {
       linkPlatformType: "BAEMIN",
       status: "NULL",
       createdDate: DateTime.now(),
-      receivingLocation:
-          ReceivingLocation(description: "우체국 앞", latitude: -1, longitude: -1),
+      receivingLocation: ReceivingLocation(
+          description: "우체국 앞", latitude: 35.8126332, longitude: 128.5197184),
     ),
   ].obs;
 
   RxList<Offset> roomList = <Offset>[
-    Offset(35.81891264358996, 128.51603017201349),
-    Offset(35.81892254358912, 128.51606027201323),
-    Offset(35.81894234358266, 128.51607037201353),
-    Offset(35.81835244358914, 128.516080472013467),
-    Offset(35.81865274358923, 128.516010572013345),
-    Offset(35.81875294358922, 128.5160306720134),
-    Offset(35.8188527335896, 128.51604527201338),
-    Offset(35.81895264358900, 128.51630087201323),
-    Offset(35.81815264358936, 128.5167001227201345),
+    Offset(35.8113342, 128.5181884),
+    Offset(35.8109352, 128.5197884),
+    Offset(35.8115362, 128.5196884),
+    Offset(35.8116372, 128.5144884),
+    Offset(35.8112382, 128.5171884),
+    Offset(35.8117392, 128.5111684),
+    Offset(35.8118312, 128.5181484),
+    Offset(35.8139322, 128.5141384),
+    Offset(35.8126332, 128.5197184),
   ].obs;
 
   // 사용자 위치 관련
@@ -106,6 +110,8 @@ class HomeController extends GetxController {
 
   // 웹뷰 관련
   Rx<Completer<WebViewController>> webViewController =
+      Completer<WebViewController>().obs;
+  Rx<Completer<WebViewController>> webViewController2 =
       Completer<WebViewController>().obs;
   RxBool isPrepared = false.obs;
 
@@ -269,10 +275,64 @@ class HomeController extends GetxController {
     this.webViewController.value.complete(webViewController);
   }
 
+  void setWebViewController2(WebViewController webViewController2) {
+    this.webViewController2.value.complete(webViewController2);
+  }
+
   void reloadWebView() {
     webViewController.value.future.then((value) async {
       // TODO: 에러 수정 필요
       value.reload();
     });
+  }
+
+  // 카카오 지도 JS API 로 지도 띄우기
+  String getReceivingLocationHTML(double lat, double lng) {
+    return Uri.dataFromString('''
+      <html>
+      <head>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+        <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
+      </head>
+      <body style="padding:0; margin:0;">
+        <div id="map" style="width:100%;height:100%;"></div>
+        <script>
+
+          var container = document.getElementById('map'); // map for div
+
+          var options = {
+            center: new kakao.maps.LatLng($lat, $lng), // center of map (current position)
+            level: 3 // level of map
+          };
+
+          // create map
+          var map = new kakao.maps.Map(container, options);
+          
+          // create marker
+          var markerPosition  = new kakao.maps.LatLng($lat, $lng);
+          var marker = new kakao.maps.Marker({
+              position: markerPosition
+          });
+          
+          marker.setMap(map);
+          
+          
+          kakao.maps.event.addListener(map, 'idle', function() {
+                        
+              var latlng = map.getCenter();
+              
+              var centerLatLng = {
+                lat: latlng.getLat(),
+                lng: latlng.getLng()
+              }
+              
+              onIdle.postMessage(JSON.stringify(centerLatLng));
+          });
+
+        </script>
+      </body>
+      </html>
+    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString();
   }
 }
