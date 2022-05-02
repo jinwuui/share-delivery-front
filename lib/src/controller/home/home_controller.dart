@@ -67,8 +67,8 @@ class HomeController extends GetxController {
       leader: Leader(nickname: "종달새 3호", mannerScore: 36.5),
       content: "청년피자 드실분?",
       limitPerson: 3,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
+      shareStoreLink: "www.yogiyo.com/stores?id=1524",
+      linkPlatformType: "YOGIYO",
       status: "NULL",
       createdDate: DateTime.now(),
       receivingLocation: ReceivingLocation(

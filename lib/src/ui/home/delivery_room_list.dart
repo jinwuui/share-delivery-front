@@ -21,7 +21,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
       child: ListView.separated(
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            Get.toNamed(Routes.DELIVERY_ROOM_INFO + "?index=$index");
+            Get.toNamed(Routes.DELIVERY_ROOM_INFO, arguments: index);
           },
           child: DeliveryHistoryDummyPost(index: index),
         ),
