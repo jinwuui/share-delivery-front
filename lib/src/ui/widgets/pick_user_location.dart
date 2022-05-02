@@ -8,6 +8,9 @@ class PickUserLocation extends GetView<PickUserLocationController> {
 
   @override
   Widget build(BuildContext context) {
+    // keyboard 클릭시 마커 삭제
+    bool isKeyboardShowing = MediaQuery.of(context).viewInsets.vertical > 0;
+
     return Obx(
       () => SafeArea(
         child: Scaffold(
@@ -34,16 +37,18 @@ class PickUserLocation extends GetView<PickUserLocationController> {
                       javascriptMode: JavascriptMode.unrestricted,
                       javascriptChannels: controller.getChannels,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Center(
-                        child: Icon(
-                          Icons.location_pin,
-                          size: 50,
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ),
+                    !isKeyboardShowing
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 40),
+                            child: Center(
+                              child: Icon(
+                                Icons.location_pin,
+                                size: 50,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink(),
                   ],
                 )
               : const Center(
