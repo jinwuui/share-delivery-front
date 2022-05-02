@@ -6,6 +6,7 @@ import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.d
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
@@ -17,6 +18,7 @@ abstract class Routes {
 
   // 모집글 상세정보
   static const DELIVERY_ROOM_DETAIL = "/deliveryRoomDetail";
+  static const DELIVERY_ROOM_INFO = "/deliveryRoomInfo";
 
   // 모집글 등록
   static const DELIVERY_ROOM_REGISTER = "/deliveryRoomRegister";
@@ -38,10 +40,14 @@ class AppPages {
       page: () => const Root(),
       binding: RootBinding(),
     ),
-    // GetPage(
-    //   name: Routes.DELIVERY_ROOM_DETAIL,
-    //   page: () => const DeliveryRoomDetail(),
-    // ),
+    GetPage(
+      name: Routes.DELIVERY_ROOM_DETAIL,
+      page: () => const DeliveryRoomDetail(),
+    ),
+    GetPage(
+      name: Routes.DELIVERY_ROOM_INFO,
+      page: () => const DeliveryRoomInfo(),
+    ),
     GetPage(
       name: Routes.DELIVERY_ROOM_REGISTER,
       page: () => const DeliveryRoomRegister(),

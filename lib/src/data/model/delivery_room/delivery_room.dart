@@ -9,10 +9,8 @@ part 'delivery_room.g.dart';
 class DeliveryRoom with _$DeliveryRoom {
   const factory DeliveryRoom({
     required Leader leader,
-    required String leaderNickname,
-    required double leaderMannerScore,
     required String content,
-    required String limitPerson,
+    required int limitPerson,
     required String shareStoreLink,
     required String linkPlatformType,
     required String status,

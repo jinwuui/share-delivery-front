@@ -12,15 +12,27 @@ class AuthenticationApiClient {
   /// @description 인증 SMS 발송 요청
   /// @param phoneNumber: 사용자 휴대폰 번호
   Future<String> requestAuthSMS(String phoneNumber) async {
-    return "";
+    // return "";
+    print(phoneNumber);
+    phoneNumber = phoneNumber.replaceAll(" ", "");
+    print(phoneNumber);
     try {
       // TODO : 인증 SMS 발송 요청하기
       print("-- 인증 SMS 발송 요청");
-      Uri url = Uri.parse("$host/api/auth/verification-sms");
-      final Response response =
-          await http.post(url, body: {"phoneNumber": phoneNumber});
+      // final queryParameters = {
+      //   "phoneNumber": phoneNumber,
+      // };
+      final uri =
+          Uri.parse('$host/api/auth/verification-sms?phoneNumber=$phoneNumber');
+      final response = await http.get(uri);
 
-      if (response.statusCode == 200) {
+      print(response.body);
+
+      // Uri url = Uri.parse("$host/api/auth/verification-sms");
+      // final Response response =
+      //     await http.post(url, body: {"phoneNumber": phoneNumber});
+
+      if (response.statusCode == 202) {
         return response.body;
       } else {
         throw Exception(response.body);
@@ -46,7 +58,7 @@ class AuthenticationApiClient {
         "authNumber": authNumber,
       });
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         Map<String, dynamic> userMap = jsonDecode(response.body);
         result = User.fromJson(userMap);
       } else {
