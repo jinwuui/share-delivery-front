@@ -13,11 +13,12 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(DeliveryRecruitController());
+    // 더미 데이터
     controller.userWithOrderList.add(
       UserWithOrderModel(
           userId: 'park', orderDate: DateTime.now(), menuList: []),
     );
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -71,7 +72,8 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
               seconds: 1,
             ),
           );
-          Get.find<DeliveryOrderController>().changeStatus('loading');
+          DeliveryOrderController.to
+              .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
         },
         child: Text("주문 진행 확인"),
       ),

@@ -8,7 +8,7 @@ class AuthenticationApiClient {
   /// @description 인증 SMS 발송 요청
   /// @param phoneNumber: 사용자 휴대폰 번호
   Future<String> requestAuthSMS(String phoneNumber) async {
-    return "";
+    // return "";
     try {
       // TODO : 인증 SMS 발송 요청하기
       Uri url = Uri.parse("$host/api/auth/verification-sms");
@@ -29,7 +29,7 @@ class AuthenticationApiClient {
   /// @description 회원가입 (인증번호 검증)
   /// @param phoneNumber: 사용자 휴대폰 번호, authNumber: 인증번호
   signUp(String phoneNumber, String authNumber) async {
-    return null;
+    // return null;
     try {
       // TODO : 폰 번호와 인증 번호로 토큰 받아오기
       Uri url = Uri.parse("$host/api/auth/users");
@@ -51,7 +51,7 @@ class AuthenticationApiClient {
   /// @description 로그인 (인증번호 검증)
   /// @param phoneNumber: 사용자 휴대폰 번호, authNumber: 인증번호
   verifyAuthNumber(String phoneNumber, String authNumber) async {
-    return null;
+    // return null;
     try {
       // TODO : 폰 번호와 인증 번호로 토큰 받아오기
       Uri url = Uri.parse("$host/api/auth/login");

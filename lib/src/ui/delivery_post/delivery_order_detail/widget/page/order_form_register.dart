@@ -57,7 +57,8 @@ class RegisterOrderForm extends StatelessWidget {
             ),
           );
 
-          Get.find<DeliveryOrderController>().changeStatus('loaded');
+          DeliveryOrderController.to
+              .changeStatus(DeliveryOrderStatus.orderCompleted);
         },
         child: Text("배달 주문 정보 등록 완료"),
       ),

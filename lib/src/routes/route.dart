@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/bindings/delivery_recruit/delivery_room_detail_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
@@ -85,6 +86,7 @@ class AppPages {
     GetPage(
       name: Routes.DELIVERY_HISTORY_DETAIL,
       page: () => const DeliveryRoomDetail(),
+      binding: DeliveryRoomDetailBinding(),
     ),
     GetPage(
       name: Routes.EXPANDED_IMAGE_PAGE,

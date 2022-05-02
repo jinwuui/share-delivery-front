@@ -1,18 +1,29 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:share_delivery/src/data/repository/pick_user_location_repository.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-class PickUserLocationController extends GetxController {
-  static PickUserLocationController get to => Get.find();
+class ReceivingLocationController extends GetxController {
+  ReceivingLocationController();
 
-  final PickUserLocationRepository repository;
+  static ReceivingLocationController get to => Get.find();
 
-  PickUserLocationController({required this.repository});
+  RxList<Offset> roomList = <Offset>[
+    Offset(35.81891264358996, 128.51603017201349),
+    Offset(35.81892254358912, 128.51606027201323),
+    Offset(35.81894234358266, 128.51607037201353),
+    Offset(35.81835244358914, 128.516080472013467),
+    Offset(35.81865274358923, 128.516010572013345),
+    Offset(35.81875294358922, 128.5160306720134),
+    Offset(35.8188527335896, 128.51604527201338),
+    Offset(35.81895264358900, 128.51630087201323),
+    Offset(35.81815264358936, 128.5167001227201345),
+  ].obs;
 
   // 사용자 위치 관련
   final Location location = Location();
@@ -25,44 +36,16 @@ class PickUserLocationController extends GetxController {
   RxBool isPrepared = false.obs;
 
   @override
-  Future<void> onInit() async {
+  void onInit() {
     super.onInit();
-    // 사용자의 위치 불러오기
-    await refreshLocation();
+    // TODO: 모집글 수령위치로 변경
+    getUserLocation();
   }
 
   // 사용자 위치 불러오기
-  Future<void> refreshLocation() async {
-    if (await verifyLocationPermission()) {
-      locationData.value = await location.getLocation();
-      print(locationData);
-      isPrepared.value = true;
-    } else {
-      print("ERROR: 위치 정보 엑세스 권한 없음");
-    }
-  }
-
-  // 위치 정보 엑세스 권한 검증
-  Future<bool> verifyLocationPermission() async {
-    PermissionStatus _permissionGranted;
-    _serviceEnabled.value = await location.serviceEnabled();
-
-    if (!_serviceEnabled.value) {
-      _serviceEnabled.value = await location.requestService();
-      if (!_serviceEnabled.value) {
-        return false;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return false;
-      }
-    }
-
-    return true;
+  void getUserLocation() async {
+    locationData.value = await location.getLocation();
+    isPrepared.value = true;
   }
 
   // 카카오 지도 JS API 로 지도 띄우기
@@ -70,7 +53,7 @@ class PickUserLocationController extends GetxController {
     return Uri.dataFromString('''
       <html>
       <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
         <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
       </head>
       <body style="padding:0; margin:0;">
@@ -83,22 +66,31 @@ class PickUserLocationController extends GetxController {
             center: new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude}), // center of map (current position)
             level: 3 // level of map
           };
-          
+
           // create map
           var map = new kakao.maps.Map(container, options);
           
+          // create marker
+          var markerPosition  = new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude});
+          var marker = new kakao.maps.Marker({
+              position: markerPosition
+          });
+          
+          marker.setMap(map);
+          
+          
           kakao.maps.event.addListener(map, 'idle', function() {
                         
-              var latLng = map.getCenter();
+              var latlng = map.getCenter();
               
               var centerLatLng = {
-                latitude: latLng.getLat(),
-                longitude: latLng.getLng()
+                lat: latlng.getLat(),
+                lng: latlng.getLng()
               }
               
               onIdle.postMessage(JSON.stringify(centerLatLng));
           });
-          
+
         </script>
       </body>
       </html>
@@ -113,14 +105,6 @@ class PickUserLocationController extends GetxController {
     channels.add(JavascriptChannel(
         name: 'onIdle',
         onMessageReceived: (JavascriptMessage message) {
-          Map<String, dynamic> latLngMap = jsonDecode(message.message);
-          locationData.value = LocationData.fromMap(latLngMap);
-          print("onIdle");
-        }));
-
-    channels.add(JavascriptChannel(
-        name: 'onClick',
-        onMessageReceived: (JavascriptMessage message) {
           print(message.message);
         }));
 
@@ -133,16 +117,11 @@ class PickUserLocationController extends GetxController {
 
   void setWebViewController(WebViewController webViewController) {
     this.webViewController.value.complete(webViewController);
-    reloadWebView();
   }
 
   void reloadWebView() {
     webViewController.value.future.then((value) async {
       value.reload();
     });
-  }
-
-  void saveLocationDataToLocal() {
-    repository.saveLocationDataToLocal(locationData.value);
   }
 }
