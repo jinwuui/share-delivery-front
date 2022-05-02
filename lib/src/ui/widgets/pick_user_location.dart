@@ -111,22 +111,24 @@ class PickUserLocation extends GetView<PickUserLocationController> {
           //     ],
           //   ),
           // ),
-          ElevatedButton(
-            child: const Text("이 위치로 설정"),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.orange,
-              textStyle: const TextStyle(fontSize: 17),
-              elevation: 0,
-              fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
+          Expanded(
+            child: ElevatedButton(
+              child: const Text("이 위치로 설정"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                textStyle: const TextStyle(fontSize: 17),
+                elevation: 0,
+                fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
+              ),
+              onPressed: () {
+                controller.saveLocationDataToLocal();
+                if (Get.arguments == null) {
+                  Get.back();
+                } else {
+                  Get.toNamed(Get.arguments);
+                }
+              },
             ),
-            onPressed: () {
-              controller.saveLocationDataToLocal();
-              if (Get.arguments == null) {
-                Get.back();
-              } else {
-                Get.toNamed(Get.arguments);
-              }
-            },
           ),
         ],
       ),
