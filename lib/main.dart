@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
-import 'package:share_delivery/src/data/provider/authentication_api_client.dart';
+import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
+import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
@@ -47,6 +48,7 @@ Future<void> initialize() async {
     AuthenticationController(
       repository: AuthenticationRepository(
         apiClient: AuthenticationApiClient(),
+        localClient: AuthenticationLocalClient(),
       ),
     ),
   );

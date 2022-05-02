@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:share_delivery/src/data/repository/delivery_room_register_repository.dart';
+import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
@@ -11,10 +13,33 @@ class DeliveryRoomRegisterController extends GetxController {
 
   DeliveryRoomRegisterController({required this.repository});
 
+  // 모집글 등록 정보
+  final TextEditingController content = TextEditingController();
+  final TextEditingController storeLink = TextEditingController();
+  final TextEditingController descriptionOfReceivingLocation =
+      TextEditingController();
+  double receivingLocationLat = -1.0;
+  double receivingLocationLng = -1.0;
+
+  int limitPerson = -1;
+  RxInt pickedStoreCategory = (-1).obs;
+
   // 모집글 등록을 위한 상세 정보
   final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
-  final RxList<bool> limitTimeSelections = <bool>[true, false, false].obs;
-
+  final List<Map> storeCategories = [
+    {"한식": "KOREAN"},
+    {"치킨": "CHICKEN"},
+    {"피자": "PIZZA"},
+    {"분식": "BOONSIK"},
+    {"중식": "CHINA"},
+    {"찜/탕": "STEAM_AND_SOUP"},
+    {"피자": "PIZZA"},
+    {"일식": "JAPAN"},
+    {"패스트푸드": "FASTFOOD"},
+    {"야식": "LATE_NIGHT"},
+    {"도시락": "LUNCHBOX"},
+  ];
+  // "CHICKEN", "PIZZA", "CHINA", "JAPAN", "BOONSIK", "KOREA", "FASTFOOD", "LATE_NIGHT", "LUNCHBOX", "STEAM_AND_SOUP"
   final Location location = Location();
   LocationData? locationData;
   final _serviceEnabled = false.obs;
@@ -72,11 +97,11 @@ class DeliveryRoomRegisterController extends GetxController {
           
           kakao.maps.event.addListener(map, 'idle', function() {
                         
-              var latlng = map.getCenter();
+              var latLng = map.getCenter();
               
               var centerLatLng = {
-                lat: latlng.getLat(),
-                lng: latlng.getLng()
+                latitude: latLng.getLat(),
+                longitude: latLng.getLng()
               }
               
               onIdle.postMessage(JSON.stringify(centerLatLng));
@@ -96,6 +121,9 @@ class DeliveryRoomRegisterController extends GetxController {
         name: 'onIdle',
         onMessageReceived: (JavascriptMessage message) {
           print(message.message);
+          Map<String, dynamic> msgMap = jsonDecode(message.message);
+          receivingLocationLat = msgMap["latitude"];
+          receivingLocationLng = msgMap["longitude"];
         }));
 
     if (channels.isEmpty) {
@@ -106,6 +134,8 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   void selectNumOfPeopleSelections(int index) {
+    limitPerson = index + 2;
+
     for (int i = 0; i < numOfPeopleSelections.length; i++) {
       if (i == index) {
         numOfPeopleSelections[i] = true;
@@ -115,13 +145,60 @@ class DeliveryRoomRegisterController extends GetxController {
     }
   }
 
-  void selectLimitTimeSelections(int index) {
-    for (int i = 0; i < limitTimeSelections.length; i++) {
-      if (i == index) {
-        limitTimeSelections[i] = true;
+  void setPickedStoreCategory(int index) {
+    pickedStoreCategory.value = index;
+  }
+
+  String getPickedStoreCategory() {
+    return pickedStoreCategory.value != -1
+        ? storeCategories[pickedStoreCategory.value].keys.first
+        : "";
+  }
+
+  Future<bool> registerDeliveryRoom() async {
+    try {
+      Map deliveryRoomInfo = _getDeliveryRoomInfo();
+
+      if (validateDeliveryRoom(deliveryRoomInfo)) {
+        return repository.registerDeliveryRoom(deliveryRoomInfo);
       } else {
-        limitTimeSelections[i] = false;
+        throw Exception("잘못된 정보 입력");
       }
+    } catch (e) {
+      return false;
     }
+  }
+
+  bool validateDeliveryRoom(Map deliveryRoomInfo) {
+    return true;
+  }
+
+  Map _getDeliveryRoomInfo() {
+    Map deliveryRoomInfo = {};
+
+    // 완성
+    deliveryRoomInfo["content"] = content.text;
+    deliveryRoomInfo["receivingLocation"] = {
+      "description": descriptionOfReceivingLocation.text,
+      "latitude": receivingLocationLat,
+      "longitude": receivingLocationLng,
+    };
+    deliveryRoomInfo["limitPerson"] = limitPerson;
+    deliveryRoomInfo["storeCategory"] =
+        storeCategories[pickedStoreCategory.value].values.first;
+    deliveryRoomInfo["shareStoreLink"] = storeLink.text;
+    deliveryRoomInfo["linkPlatformType"] = _getLinkPlatformType();
+
+    // TODO : 미완성
+    deliveryRoomInfo["deliveryTip"];
+    deliveryRoomInfo["menuList"];
+    deliveryRoomInfo["optionList"];
+
+    print("_getDeliveryRoomInfo: $deliveryRoomInfo");
+    return deliveryRoomInfo;
+  }
+
+  String _getLinkPlatformType() {
+    return "BAEMIN";
   }
 }

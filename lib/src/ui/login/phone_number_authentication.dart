@@ -15,7 +15,11 @@ class PhoneNumberAuthentication extends GetView<LoginController> {
     // TODO : login 구현 끝나면 삭제할 것
     await Future.delayed(Duration(milliseconds: 500));
 
-    await controller.login();
+    if (controller.isNewUser) {
+      await controller.signUp();
+    } else {
+      await controller.login();
+    }
 
     // 로그인 결과
     Type loginStatus = controller.state.runtimeType;

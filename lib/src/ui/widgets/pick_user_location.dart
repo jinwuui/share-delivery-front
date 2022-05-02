@@ -78,24 +78,39 @@ class PickUserLocation extends GetView<PickUserLocationController> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            width: double.infinity,
-            // color: Colors.yellow,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "TODO: 여기에 주소 나와야함",
-                  style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20),
-                ),
-                buttonChangeAddressType(),
-              ],
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            width: Get.width * 0.9,
+            height: Get.height * 0.07,
+            child: TextField(
+              maxLength: 13,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(left: 15.0),
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(),
+                hintText: "내 위치 (ex. 집, 회사)",
+                counterText: "",
+              ),
             ),
           ),
+          // Container(
+          //   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+          //   width: double.infinity,
+          //   // color: Colors.yellow,
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       const Text(
+          //         "TODO: 여기에 주소 나와야함",
+          //         style: TextStyle(
+          //             decoration: TextDecoration.lineThrough,
+          //             color: Colors.red,
+          //             fontWeight: FontWeight.w700,
+          //             fontSize: 20),
+          //       ),
+          //       buttonChangeAddressType(),
+          //     ],
+          //   ),
+          // ),
           ElevatedButton(
             child: const Text("이 위치로 설정"),
             style: ElevatedButton.styleFrom(

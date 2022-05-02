@@ -217,40 +217,50 @@ class _PickReceivingLocationState extends State<PickReceivingLocation> {
       width: double.infinity,
       decoration: BoxDecoration(
           border: Border(top: BorderSide(color: Colors.black12, width: 1))),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            width: double.infinity,
-            // color: Colors.yellow,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "TODO: 여기에 주소 나와야함",
-                  style: TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: Colors.red,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20),
+      child: GetBuilder<DeliveryRoomRegisterController>(
+        builder: (controller) => Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+              width: Get.width * 0.9,
+              height: Get.height * 0.07,
+              child: TextField(
+                controller: controller.descriptionOfReceivingLocation,
+                maxLength: 13,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(left: 15.0),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(),
+                  hintText: "집결지 설명 (ex. CU앞, OO건물)",
+                  counterText: "",
                 ),
-                buttonChangeAddressType(),
-              ],
+              ),
             ),
-          ),
-          ElevatedButton(
-            child: Text("이 위치로 설정"),
-            style: ElevatedButton.styleFrom(
-              textStyle: TextStyle(fontSize: 17),
-              elevation: 0,
-              fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
+            ElevatedButton(
+              child: Text("이 위치로 설정"),
+              style: ElevatedButton.styleFrom(
+                textStyle: TextStyle(fontSize: 17),
+                elevation: 0,
+                fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
+                primary: Colors.orange,
+              ),
+              onPressed: () {
+                if (controller.descriptionOfReceivingLocation.text.isNotEmpty) {
+                  Get.back();
+                } else {
+                  Get.snackbar(
+                    "위치 설정 실패",
+                    "집결지 설명을 작성해주세요!",
+                    backgroundColor: Colors.black,
+                    colorText: Colors.white,
+                    duration: Duration(milliseconds: 1000),
+                  );
+                }
+              },
             ),
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

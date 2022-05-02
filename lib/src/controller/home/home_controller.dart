@@ -5,10 +5,87 @@ import 'dart:ui';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
+import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
+
+  final HomeRepository repository;
+
+  HomeController({required this.repository});
+
+  RxList<DeliveryRoom> deliveryRooms = <DeliveryRoom>[
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "BBQ 드실분?",
+      limitPerson: 3,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞", latitude: -1, longitude: -1),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "비둘기 1호", mannerScore: 36.3),
+      content: "도미노피자 드실분?",
+      limitPerson: 2,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation: ReceivingLocation(
+          description: "GS편의점 앞", latitude: -1, longitude: -1),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "참새 1호", mannerScore: 36.3),
+      content: "BHC 드실분?",
+      limitPerson: 2,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation: ReceivingLocation(
+          description: "해피 동물병원 앞", latitude: -1, longitude: -1),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 2호", mannerScore: 37.8),
+      content: "굽네치킨 드실분?",
+      limitPerson: 4,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation:
+          ReceivingLocation(description: "다이소 앞", latitude: -1, longitude: -1),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 3호", mannerScore: 36.5),
+      content: "청년피자 드실분?",
+      limitPerson: 3,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation: ReceivingLocation(
+          description: "크림 빌라 앞", latitude: -1, longitude: -1),
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "참새 2호", mannerScore: 38.0),
+      content: "신전 떡볶이 드실분?",
+      limitPerson: 3,
+      shareStoreLink: "www.baemin.com/stores?id=1524",
+      linkPlatformType: "BAEMIN",
+      status: "NULL",
+      createdDate: DateTime.now(),
+      receivingLocation:
+          ReceivingLocation(description: "우체국 앞", latitude: -1, longitude: -1),
+    ),
+  ].obs;
 
   RxList<Offset> roomList = <Offset>[
     Offset(35.81891264358996, 128.51603017201349),
@@ -38,16 +115,24 @@ class HomeController extends GetxController {
     // 사용자 위치 불러오기
     getUserLocation();
     // TODO : 모집글 불러오기
+    findDeliveryRooms();
   }
 
   // 사용자 위치 불러오기
   void getUserLocation() async {
-    if (await verifyLocationPermission()) {
-      locationData.value = await location.getLocation();
-      isPrepared.value = true;
-    } else {
-      print("ERROR: 위치 정보 엑세스 권한 없음");
+    LocationData result = repository.findRecentUserLocation();
+
+    print("로컬에 저장된 최근 사용자 위치: $result");
+    if (result.isMock == true) {
+      if (await verifyLocationPermission()) {
+        result = await location.getLocation();
+      } else {
+        print("ERROR: 위치 정보 엑세스 권한 없음");
+      }
     }
+
+    locationData.value = result;
+    isPrepared.value = true;
   }
 
   // 위치 정보 엑세스 권한 검증
@@ -71,6 +156,16 @@ class HomeController extends GetxController {
     }
 
     return true;
+  }
+
+  void findDeliveryRooms() {
+    print("- home controller - 모집글 조회");
+    double? lat = locationData.value.latitude;
+    double? lng = locationData.value.longitude;
+
+    if (lat != null && lng != null) {
+      repository.findDeliveryRooms(lat, lng);
+    }
   }
 
   // 카카오 지도 JS API 로 지도 띄우기
@@ -176,6 +271,7 @@ class HomeController extends GetxController {
 
   void reloadWebView() {
     webViewController.value.future.then((value) async {
+      // TODO: 에러 수정 필요
       value.reload();
     });
   }

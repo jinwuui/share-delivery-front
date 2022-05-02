@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
 
 class DeliveryRoomInfo extends GetView<HomeController> {
   const DeliveryRoomInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(Get.arguments);
+    print(Get.arguments.runtimeType);
+    // DeliveryRoom _deliveryRoom = controller.deliveryRooms.value[Get.arguments];
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),
@@ -38,14 +42,21 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "모집 마감",
+                              "주도자",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
                               ),
                             ),
                             Text(
-                              "10:58",
+                              "김아무개",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              "36.5",
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20,
@@ -107,6 +118,31 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                             primary: Color.fromRGBO(42, 193, 188, 1),
                             // primary: Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔
                             textStyle: const TextStyle(fontSize: 17),
+                            elevation: 0,
+                            fixedSize: Size(Get.width * 0.7, Get.height * 0.05),
+                          ),
+                          onPressed: () {
+                            // TODO : 모집글 참여 로직 필요
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(height: 15),
+                  Container(
+                    // color: Colors.green,
+                    child: Column(
+                      children: [
+                        OutlinedButton(
+                          child: Text(
+                            "집결지 보러가기",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            primary: Colors.black,
+                            // primary: Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔
+                            textStyle: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.w600),
                             elevation: 0,
                             fixedSize: Size(Get.width * 0.7, Get.height * 0.05),
                           ),

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_register/pick_store_category.dart';
 
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
@@ -27,10 +28,21 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 // TODO: 모집글 등록 로직 필요
                 print("완료 - 모집글 등록 로직 필요");
-                Get.back();
+
+                if (await controller.registerDeliveryRoom()) {
+                  Get.back();
+                } else {
+                  Get.snackbar(
+                    "등록 실패",
+                    "모든 정보를 작성해주세요!",
+                    backgroundColor: Colors.black,
+                    colorText: Colors.white,
+                    duration: Duration(milliseconds: 1000),
+                  );
+                }
               },
               child: const Text("완료", style: TextStyle(color: Colors.black)),
             ),
@@ -78,7 +90,9 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const TextField(
+              TextField(
+                controller: controller.content,
+                // controller: controller.deliveryRoomContent,
                 textInputAction: TextInputAction.next,
                 maxLength: 30,
                 decoration: InputDecoration(
@@ -91,7 +105,8 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
               Row(
                 children: [
                   Expanded(
-                    child: const TextField(
+                    child: TextField(
+                      controller: controller.storeLink,
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         hintText: "배달 가게 링크",
@@ -126,7 +141,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                     children: [
                       toggleBtnText("2"),
                       toggleBtnText("3"),
-                      toggleBtnText("4")
+                      toggleBtnText("4"),
                     ],
                     isSelected: controller.numOfPeopleSelections,
                     onPressed: (int index) {
@@ -139,47 +154,33 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("집결지"),
-                  // TODO : 주소 얻어오는거 가능해지면 주소로 변경할 것
-                  // Expanded(
-                  //   child: TextField(
-                  //     readOnly: true,
-                  //     decoration: InputDecoration(
-                  //       hintText: "집결지",
-                  //       border: InputBorder.none,
-                  //       focusedBorder: InputBorder.none,
-                  //     ),
-                  //   ),
-                  // ),
+                  Text(
+                      "집결지 : ${controller.descriptionOfReceivingLocation.text.isEmpty ? "" : controller.descriptionOfReceivingLocation.text}"),
                   OutlinedButton(
-                      onPressed: () {
-                        Get.bottomSheet(
-                          const PickReceivingLocation(),
-                          isScrollControlled: true,
-                        );
-                      },
-                      child: const Text("설정"))
+                    onPressed: () {
+                      Get.bottomSheet(
+                        const PickReceivingLocation(),
+                        isScrollControlled: true,
+                      );
+                    },
+                    child: const Text("설정"),
+                  )
                 ],
               ),
               const Divider(height: 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("마감 시간"),
-                  ToggleButtons(
-                    color: Colors.grey,
-                    fillColor: Colors.orange,
-                    selectedColor: Colors.white,
-                    children: [
-                      toggleBtnText("5분"),
-                      toggleBtnText("10분"),
-                      toggleBtnText("20분")
-                    ],
-                    isSelected: controller.limitTimeSelections,
-                    onPressed: (int index) {
-                      controller.selectLimitTimeSelections(index);
+                  Text("음식 카테고리 : ${controller.getPickedStoreCategory()}"),
+                  OutlinedButton(
+                    onPressed: () {
+                      Get.bottomSheet(
+                        const PickStoreCategory(),
+                        isScrollControlled: true,
+                      );
                     },
-                  ),
+                    child: const Text("설정"),
+                  )
                 ],
               ),
             ],

@@ -31,7 +31,7 @@ class Root extends GetView<RootController> {
                 : const SizedBox.shrink(),
             leadingWidth: 80,
             title: const Text(
-              "딜리버리버리",
+              "",
               style: TextStyle(color: Colors.black),
             ),
           ),

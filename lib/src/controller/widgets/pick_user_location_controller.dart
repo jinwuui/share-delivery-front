@@ -143,6 +143,7 @@ class PickUserLocationController extends GetxController {
   }
 
   void saveLocationDataToLocal() {
+    print("-- 사용자가 선택한 위치를 로컬에 저장");
     repository.saveLocationDataToLocal(locationData.value);
   }
 }

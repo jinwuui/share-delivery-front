@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:get/get.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 
