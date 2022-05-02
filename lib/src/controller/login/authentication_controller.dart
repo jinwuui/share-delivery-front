@@ -45,8 +45,8 @@ class AuthenticationController extends GetxController {
   void _getAuthenticatedUser() async {
     _authenticationStateStream.value = AuthenticationLoading();
 
-    // final User? user = await repository.getCurrentUser(); // 홈 화면으로
-    User? user; // 로그인 화면으로
+    final User? user = await repository.getCurrentUser(); // 홈 화면으로
+    // User? user; // 로그인 화면으로
 
     if (user == null) {
       print("user == null");

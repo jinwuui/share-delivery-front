@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 
 import 'delivery_order_detail/delivery_order_tabview.dart';
 
@@ -51,11 +52,12 @@ class DeliveryRoomDetail extends StatelessWidget {
               child: Container(
                 color: Colors.grey.shade200,
                 child: TabBarView(children: [
-                  Container(
-                    child: Center(
-                      child: Text("상세 정보"),
-                    ),
-                  ),
+                  DeliveryRoomInfo(),
+                  // Container(
+                  //   child: Center(
+                  //     child: Text("상세 정보"),
+                  //   ),
+                  // ),
                   OrderTabView(),
                   Container(
                     child: Center(
