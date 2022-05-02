@@ -9,8 +9,10 @@ class DeliveryRoomInfo extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     print(Get.arguments);
-    print(Get.arguments.runtimeType);
-    // DeliveryRoom _deliveryRoom = controller.deliveryRooms.value[Get.arguments];
+    print("?? : ${Get.arguments.runtimeType}");
+    DeliveryRoom _deliveryRoom = controller.deliveryRooms.value[Get.arguments];
+    print("room : $_deliveryRoom");
+
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),
@@ -19,14 +21,16 @@ class DeliveryRoomInfo extends GetView<HomeController> {
           width: double.infinity,
           color: Colors.white,
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Container(
+                    height: Get.height * 0.2,
                     color: Colors.red,
+                    alignment: Alignment.topLeft,
                     child: Text(
-                      "모집글 내용모집글 내용모집글 내용모집글 내용모집글 내용",
+                      _deliveryRoom.content,
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w600,
@@ -42,21 +46,33 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "주도자",
+                              "방장",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
                               ),
                             ),
                             Text(
-                              "김아무개",
+                              _deliveryRoom.leader.nickname,
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20,
                               ),
                             ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Text(
-                              "36.5",
+                              "매너 온도",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              _deliveryRoom.leader.mannerScore.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 20,
@@ -76,7 +92,9 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                               ),
                             ),
                             Text(
-                              "2 / 3",
+                              (_deliveryRoom.limitPerson - 1).toString() +
+                                  " / " +
+                                  _deliveryRoom.limitPerson.toString(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 20,
@@ -92,13 +110,13 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                     color: Colors.green,
                     child: Column(
                       children: [
-                        Text(
-                          "지금 참여하면 배달비  3000 -> 2000",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                          ),
-                        ),
+                        // Text(
+                        //   "지금 참여하면 배달비  3000 -> 2000",
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.w600,
+                        //     fontSize: 20,
+                        //   ),
+                        // ),
                         ElevatedButton(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
