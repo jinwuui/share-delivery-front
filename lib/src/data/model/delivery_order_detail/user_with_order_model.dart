@@ -7,16 +7,18 @@
 
 class UserWithOrderModel {
   final String userId;
+  final String nickname;
   final DateTime orderDate;
-  final List<Map<String, String>> menuList;
+  final Map<String, int> menuList;
 
   UserWithOrderModel({
     required this.userId,
     required this.orderDate,
     required this.menuList,
+    required this.nickname,
   });
 
   @override
   String toString() =>
-      'UserWithOrderModel(userId: $userId, orderDate: $orderDate, menuList: $menuList)';
+      'UserWithOrderModel(userId: $userId, orderDate: $orderDate, menuList: $menuList, nickname: $nickname)';
 }
