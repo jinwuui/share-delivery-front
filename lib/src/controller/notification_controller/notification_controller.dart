@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 
 // create new AndroidNotificationChannel
@@ -10,6 +11,13 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'High Importance Notifications', // title
   importance: Importance.max,
 );
+
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
 
 // Create the channel on the device
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -55,6 +63,10 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _initNotification() async {
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
     // init FirebaseMessaging permission
     _messaging.requestPermission(
       alert: true,
@@ -84,7 +96,6 @@ class NotificationController extends GetxController {
 
     // foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       showNotificationView(message);
 
@@ -102,21 +113,14 @@ class NotificationController extends GetxController {
   void _handleMessage(RemoteMessage message) {
     print(message);
     print(message.data);
-    print(DeliveryOrderStatus.recuritmentCompleted.toString());
+
     final eventType = message.data['type'];
     if (eventType == "recuritmentCompleted") {
-      print("hello");
       DeliveryOrderController.to
           .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
+      //TODO: tonamed 시 widget rebuild 되는지 테스트
       Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+      DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
     } else if (eventType == "deliveryRoomUpdated") {}
   }
 }
-
-/*
-enum DeliveryOrderStatus {
-  recuritmentWaiting,
-  recuritmentCompleted,
-  orderCompleted
-}
-*/
