@@ -1,4 +1,4 @@
-import 'package:location/location.dart';
+import 'package:share_delivery/src/data/model/user/user_location.dart';
 import 'package:share_delivery/src/data/provider/home/home_api_client.dart';
 import 'package:share_delivery/src/data/provider/home/home_local_client.dart';
 
@@ -8,7 +8,7 @@ class HomeRepository {
 
   HomeRepository({required this.apiClient, required this.localClient});
 
-  LocationData findRecentUserLocation() {
+  UserLocation? findRecentUserLocation() {
     return localClient.findRecentUserLocation();
   }
 

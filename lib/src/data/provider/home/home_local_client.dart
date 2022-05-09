@@ -1,18 +1,22 @@
 import 'dart:convert';
 
-import 'package:location/location.dart';
+import 'package:share_delivery/src/data/model/user/user_location.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
 class HomeLocalClient {
-  LocationData findRecentUserLocation() {
-    LocationData result = LocationData.fromMap({"isMock": true});
-    String? jsonString = SharedPrefsUtil.instance.getString("userLocation");
+  UserLocation? findRecentUserLocation() {
+    List<String>? userLocations =
+        SharedPrefsUtil.instance.getStringList("userLocation");
 
-    if (jsonString != null) {
-      Map<String, dynamic> locationDataMap = jsonDecode(jsonString);
-      return LocationData.fromMap(locationDataMap);
-    }
+    print("userLocations : $userLocations");
+    if (userLocations == null) return null;
 
-    return result;
+    String recentLocation = userLocations.first;
+    // String test =
+    //     "{\"description\": \"복지센터\", \"latitude\": 35.81729283680531, longitude: 128.5139882102289}";
+
+    Map<String, dynamic> jsonMap = jsonDecode(recentLocation);
+    print(jsonMap);
+    return UserLocation.fromJson(jsonMap);
   }
 }

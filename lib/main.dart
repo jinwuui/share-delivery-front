@@ -62,6 +62,12 @@ class MyApp extends GetView<AuthenticationController> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.state is Authenticated) {
+      print("is Auth");
+    }
+     else {
+       print("no");
+    }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: BindingsBuilder(() {

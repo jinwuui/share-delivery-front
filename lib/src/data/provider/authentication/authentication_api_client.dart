@@ -12,25 +12,16 @@ class AuthenticationApiClient {
   /// @description 인증 SMS 발송 요청
   /// @param phoneNumber: 사용자 휴대폰 번호
   Future<String> requestAuthSMS(String phoneNumber) async {
-    // return "";
-    print(phoneNumber);
     phoneNumber = phoneNumber.replaceAll(" ", "");
-    print(phoneNumber);
+
     try {
-      // TODO : 인증 SMS 발송 요청하기
       print("-- 인증 SMS 발송 요청");
-      // final queryParameters = {
-      //   "phoneNumber": phoneNumber,
-      // };
+
       final uri =
           Uri.parse('$host/api/auth/verification-sms?phoneNumber=$phoneNumber');
       final response = await http.get(uri);
 
-      print(response.body);
-
-      // Uri url = Uri.parse("$host/api/auth/verification-sms");
-      // final Response response =
-      //     await http.post(url, body: {"phoneNumber": phoneNumber});
+      print("-=-=-=-=-=-=-=- ${response.body}");
 
       if (response.statusCode == 202) {
         return response.body;
@@ -89,6 +80,7 @@ class AuthenticationApiClient {
         "fcmToken": "dummy token",
       });
 
+      print("여기느 어딥니까?");
       if (response.statusCode == 200) {
         tokens = jsonDecode(response.body);
       } else {

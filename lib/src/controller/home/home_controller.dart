@@ -8,7 +8,9 @@ import 'package:location/location.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
 import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/model/user/user_location.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
+import 'package:share_delivery/src/utils/GetSnackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
@@ -126,18 +128,23 @@ class HomeController extends GetxController {
 
   // 사용자 위치 불러오기
   void getUserLocation() async {
-    LocationData result = repository.findRecentUserLocation();
+    UserLocation? userLocation = repository.findRecentUserLocation();
 
-    print("로컬에 저장된 최근 사용자 위치: $result");
-    if (result.isMock == true) {
-      if (await verifyLocationPermission()) {
-        result = await location.getLocation();
-      } else {
-        print("ERROR: 위치 정보 엑세스 권한 없음");
+    if (userLocation != null) {
+      locationData.value = LocationData.fromMap({
+        "latitude": userLocation.latitude,
+        "longitude": userLocation.longitude,
+      });
+    } else {
+      if (!(await verifyLocationPermission())) {
+        GetSnackbar.on("알림", "위치 정보를 허용해주세요.");
+        return;
       }
+
+      LocationData curLocation = await location.getLocation();
+      locationData.value = curLocation;
     }
 
-    locationData.value = result;
     isPrepared.value = true;
   }
 

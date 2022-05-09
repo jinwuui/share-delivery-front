@@ -21,9 +21,16 @@ class AuthenticationRepository {
     try {
       Map<String, String> tokens =
           await apiClient.verifyAuthNumber(phoneNumber, authNumber);
-      localClient.saveTokens(tokens);
+
+      // TODO : 로그인 검사 위해서 아래 코드 지울 것
+      return true;
+
+      if (tokens["accessToken"] != null) {
+        localClient.saveTokens(tokens);
+      } else {
+        throw Exception();
+      }
     } catch (e) {
-      print(e);
       return false;
     }
 
@@ -32,9 +39,7 @@ class AuthenticationRepository {
 
   signOut() {}
 
-  getCurrentUser() {
-    // TODO : 로컬에 저장된 현재 유저 조회할 것
-    return User(
-        accountId: -1, status: '', phoneNumber: '', nickname: '', role: '');
+  User? getSavedUser() {
+    return localClient.getSavedUser();
   }
 }

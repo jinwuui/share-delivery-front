@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -156,6 +155,7 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   Future<bool> registerDeliveryRoom() async {
+    return true;
     try {
       Map deliveryRoomInfo = _getDeliveryRoomInfo();
 

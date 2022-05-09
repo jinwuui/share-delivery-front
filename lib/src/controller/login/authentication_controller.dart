@@ -33,7 +33,17 @@ class AuthenticationController extends GetxController {
 
     bool result = await repository.signIn(phoneNumber, authNumber);
     if (result) {
+      _authenticationStateStream.value = Authenticated(
+        user: User(
+            accountId: -1,
+            phoneNumber: "phoneNumber",
+            nickname: "nickname",
+            status: "status",
+            role: "role"),
+      );
       // TODO : 로그인 성공/실패 로직 처리
+    } else {
+      _authenticationStateStream.value = UnAuthenticated();
     }
   }
 
@@ -45,14 +55,15 @@ class AuthenticationController extends GetxController {
   void _getAuthenticatedUser() async {
     _authenticationStateStream.value = AuthenticationLoading();
 
-    final User? user = await repository.getCurrentUser(); // 홈 화면으로
-    // User? user; // 로그인 화면으로
+    final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
+    _authenticationStateStream.value = Authenticated(
+        user: User(
+            accountId: 1, phoneNumber: "", nickname: "", status: "", role: ""));
+    return;
 
     if (user == null) {
-      print("user == null");
       _authenticationStateStream.value = UnAuthenticated();
     } else {
-      print("user != null");
       _authenticationStateStream.value = Authenticated(user: user);
     }
   }
