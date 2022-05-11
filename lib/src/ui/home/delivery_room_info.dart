@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/model/delivery_room/leader/leader.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location/receiving_location.dart';
 
 class DeliveryRoomInfo extends GetView<HomeController> {
   const DeliveryRoomInfo({Key? key}) : super(key: key);
@@ -16,11 +14,12 @@ class DeliveryRoomInfo extends GetView<HomeController> {
       _deliveryRoom = DeliveryRoom(
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
+        person: 1,
         limitPerson: 3,
-        shareStoreLink: "www.baemin.com/stores?id=1524",
-        linkPlatformType: "BAEMIN",
+        storeLink: "www.baemin.com/stores?id=1524",
+        platformType: "BAEMIN",
         status: "NULL",
-        createdDate: DateTime.now(),
+        createdDateTime: DateTime.now(),
         receivingLocation: ReceivingLocation(
             description: "CU 편의점 앞",
             latitude: 35.8113342,
@@ -93,11 +92,12 @@ class DeliveryRoomInfo extends GetView<HomeController> {
       _deliveryRoom = DeliveryRoom(
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
+        person: 1,
         limitPerson: 3,
-        shareStoreLink: "www.baemin.com/stores?id=1524",
-        linkPlatformType: "BAEMIN",
+        storeLink: "www.baemin.com/stores?id=1524",
+        platformType: "BAEMIN",
         status: "NULL",
-        createdDate: DateTime.now(),
+        createdDateTime: DateTime.now(),
         receivingLocation: ReceivingLocation(
             description: "CU 편의점 앞",
             latitude: 35.8113342,
@@ -239,7 +239,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                           ),
                           Icon(Icons.east),
                           Text(
-                            _deliveryRoom.linkPlatformType == "BAEMIN"
+                            _deliveryRoom.platformType == "BAEMIN"
                                 ? "배민"
                                 : "요기요",
                             style: TextStyle(fontWeight: FontWeight.w800),
@@ -247,7 +247,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                         ],
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: _deliveryRoom.linkPlatformType == "BAEMIN"
+                        primary: _deliveryRoom.platformType == "BAEMIN"
                             ? Color.fromRGBO(42, 193, 188, 1)
                             : Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔
                         textStyle: const TextStyle(fontSize: 17),
@@ -275,11 +275,12 @@ class DeliveryRoomInfo extends GetView<HomeController> {
       _deliveryRoom = DeliveryRoom(
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
+        person: 1,
         limitPerson: 3,
-        shareStoreLink: "www.baemin.com/stores?id=1524",
-        linkPlatformType: "BAEMIN",
+        storeLink: "www.baemin.com/stores?id=1524",
+        platformType: "BAEMIN",
         status: "NULL",
-        createdDate: DateTime.now(),
+        createdDateTime: DateTime.now(),
         receivingLocation: ReceivingLocation(
             description: "CU 편의점 앞",
             latitude: 35.8113342,
@@ -424,7 +425,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                               ),
                               Icon(Icons.east),
                               Text(
-                                _deliveryRoom.linkPlatformType == "BAEMIN"
+                                _deliveryRoom.platformType == "BAEMIN"
                                     ? "배민"
                                     : "요기요",
                                 style: TextStyle(fontWeight: FontWeight.w800),
@@ -432,7 +433,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                             ],
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: _deliveryRoom.linkPlatformType == "BAEMIN"
+                            primary: _deliveryRoom.platformType == "BAEMIN"
                                 ? Color.fromRGBO(42, 193, 188, 1)
                                 : Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔
                             textStyle: const TextStyle(fontSize: 17),

@@ -8,11 +8,12 @@ class DeliveryRoom with _$DeliveryRoom {
   const factory DeliveryRoom({
     required Leader leader,
     required String content,
+    required int person,
     required int limitPerson,
-    required String shareStoreLink,
-    required String linkPlatformType,
+    required String storeLink,
+    required String platformType,
     required String status,
-    required DateTime createdDate,
+    required DateTime createdDateTime,
     required ReceivingLocation receivingLocation,
   }) = _DeliveryRoom;
 

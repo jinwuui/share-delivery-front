@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,7 @@ import 'package:location/location.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
-import 'package:share_delivery/src/utils/GetSnackbar.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
@@ -18,90 +17,38 @@ class HomeController extends GetxController {
 
   HomeController({required this.repository});
 
-  RxList<DeliveryRoom> deliveryRooms = <DeliveryRoom>[
+  final deliveryRooms = <DeliveryRoom>[
     DeliveryRoom(
       leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
       content: "BBQ 드실분?",
+      person: 1,
       limitPerson: 3,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
       status: "NULL",
-      createdDate: DateTime.now(),
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
-          latitude: 35.8113342,
-          longitude: 128.5181884),
+          latitude: 35.820848788632226,
+          longitude: 128.518205019348),
     ),
     DeliveryRoom(
-      leader: Leader(nickname: "참새 1호", mannerScore: 36.3),
-      content: "BHC 드실분?",
-      limitPerson: 2,
-      shareStoreLink: "www.yogiyo.com/stores?id=1524",
-      linkPlatformType: "YOGIYO",
-      status: "NULL",
-      createdDate: DateTime.now(),
-      receivingLocation: ReceivingLocation(
-          description: "해피 동물병원 앞",
-          latitude: 35.8112382,
-          longitude: 128.5171884),
-    ),
-    DeliveryRoom(
-      leader: Leader(nickname: "비둘기 1호", mannerScore: 36.3),
-      content: "도미노피자 드실분?",
-      limitPerson: 2,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
-      status: "NULL",
-      createdDate: DateTime.now(),
-      receivingLocation: ReceivingLocation(
-          description: "GS편의점 앞", latitude: 35.8117392, longitude: 128.5111684),
-    ),
-    DeliveryRoom(
-      leader: Leader(nickname: "종달새 2호", mannerScore: 37.8),
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
       content: "굽네치킨 드실분?",
+      person: 2,
       limitPerson: 4,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
       status: "NULL",
-      createdDate: DateTime.now(),
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
-          description: "다이소 앞", latitude: 35.8118312, longitude: 128.5181484),
-    ),
-    DeliveryRoom(
-      leader: Leader(nickname: "종달새 3호", mannerScore: 36.5),
-      content: "청년피자 드실분?",
-      limitPerson: 3,
-      shareStoreLink: "www.yogiyo.com/stores?id=1524",
-      linkPlatformType: "YOGIYO",
-      status: "NULL",
-      createdDate: DateTime.now(),
-      receivingLocation: ReceivingLocation(
-          description: "크림 빌라 앞", latitude: 35.8139322, longitude: 128.5141384),
-    ),
-    DeliveryRoom(
-      leader: Leader(nickname: "참새 2호", mannerScore: 38.0),
-      content: "신전 떡볶이 드실분?",
-      limitPerson: 3,
-      shareStoreLink: "www.baemin.com/stores?id=1524",
-      linkPlatformType: "BAEMIN",
-      status: "NULL",
-      createdDate: DateTime.now(),
-      receivingLocation: ReceivingLocation(
-          description: "우체국 앞", latitude: 35.8126332, longitude: 128.5197184),
+          description: "CU 편의점 앞",
+          latitude: 35.821730657601044,
+          longitude: 128.5190184847488),
     ),
   ].obs;
 
-  RxList<Offset> roomList = <Offset>[
-    Offset(35.8113342, 128.5181884),
-    Offset(35.8109352, 128.5197884),
-    Offset(35.8115362, 128.5196884),
-    Offset(35.8116372, 128.5144884),
-    Offset(35.8112382, 128.5171884),
-    Offset(35.8117392, 128.5111684),
-    Offset(35.8118312, 128.5181484),
-    Offset(35.8139322, 128.5141384),
-    Offset(35.8126332, 128.5197184),
-  ].obs;
+  RxInt idxCurInfo = (-1).obs;
 
   // 사용자 위치 관련
   final Location location = Location();
@@ -114,18 +61,19 @@ class HomeController extends GetxController {
   Rx<Completer<WebViewController>> webViewController2 =
       Completer<WebViewController>().obs;
   RxBool isPrepared = false.obs;
+  RxBool showInfo = false.obs;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     // 사용자 위치 불러오기
-    getUserLocation();
+    await getUserLocation();
     // TODO : 모집글 불러오기
     findDeliveryRooms();
   }
 
   // 사용자 위치 불러오기
-  void getUserLocation() async {
+  Future<void> getUserLocation() async {
     UserLocation? userLocation = repository.findRecentUserLocation();
 
     if (userLocation != null) {
@@ -176,7 +124,7 @@ class HomeController extends GetxController {
     int radius = 5;
 
     if (lat != null && lng != null) {
-      repository.findDeliveryRooms(lat, lng, radius);
+      deliveryRooms.value = repository.findDeliveryRooms(lat, lng, radius);
     }
   }
 
@@ -224,6 +172,17 @@ class HomeController extends GetxController {
               onIdle.postMessage(JSON.stringify(centerLatLng));
           });
 
+          function onClickListener(i) {
+          
+              var markerInfo = {
+                // lat: latlng.getLat(),
+                // lng: latlng.getLng(),
+                index: i
+              }
+              
+              onClick.postMessage(JSON.stringify(markerInfo));
+          }
+
         </script>
       </body>
       </html>
@@ -234,8 +193,9 @@ class HomeController extends GetxController {
   // 모집글 마커 표시하기 위한 JS API
   String getDeliveryRoomHTML() {
     String positions = "";
-    for (Offset offset in roomList) {
-      positions += "new kakao.maps.LatLng(${offset.dx}, ${offset.dy}),";
+    for (DeliveryRoom room in deliveryRooms) {
+      positions +=
+          "new kakao.maps.LatLng(${room.receivingLocation.latitude}, ${room.receivingLocation.longitude}),";
     }
 
     return '''
@@ -245,16 +205,22 @@ class HomeController extends GetxController {
     
         var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
             
-        for (var i = 0; i < positions.length; i ++) {
+        for (let i = 0; i < positions.length; i++) {
             
-            var imageSize = new kakao.maps.Size(24, 35); 
+            var imageSize = new kakao.maps.Size(29, 40); 
             
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
             
             var marker = new kakao.maps.Marker({
                 map: map,
                 position: positions[i],
+                clickable: true,
                 image : markerImage
+            });
+            let index = i;
+            // kakao.maps.event.addListener(marker, 'click', onClickListener(i));
+            kakao.maps.event.addListener(marker, 'click', function() {
+              onClick.postMessage(index);
             });
         }
     ''';
@@ -267,6 +233,16 @@ class HomeController extends GetxController {
     channels.add(JavascriptChannel(
         name: 'onIdle',
         onMessageReceived: (JavascriptMessage message) {
+          print(message.message);
+        }));
+
+    channels.add(JavascriptChannel(
+        name: 'onClick',
+        onMessageReceived: (JavascriptMessage message) {
+          print("onClick");
+          showInfo.value = true;
+          idxCurInfo.value = int.parse(message.message);
+          print("showinfo $showInfo");
           print(message.message);
         }));
 
@@ -287,7 +263,7 @@ class HomeController extends GetxController {
 
   void reloadWebView() {
     webViewController.value.future.then((value) async {
-      getUserLocation();
+      await getUserLocation();
       value.loadUrl(getHTML());
     });
   }
@@ -340,5 +316,9 @@ class HomeController extends GetxController {
       </html>
     ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString();
+  }
+
+  void hideInfo() {
+    showInfo.value = false;
   }
 }

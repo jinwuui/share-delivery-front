@@ -6,7 +6,7 @@ import 'package:share_delivery/src/controller/delivery_room_register/delivery_ro
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_store_category.dart';
-import 'package:share_delivery/src/utils/GetSnackbar.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);

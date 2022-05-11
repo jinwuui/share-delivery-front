@@ -6,7 +6,7 @@ import 'package:share_delivery/src/controller/login/authentication_controller.da
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/ui/login/state/login_state.dart';
-import 'package:share_delivery/src/utils/GetSnackbar.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class LoginController extends GetxController {
   final AuthenticationController _authenticationController = Get.find();

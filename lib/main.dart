@@ -14,10 +14,12 @@ import 'package:share_delivery/src/data/repository/authentication_repository.dar
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  TimeUtil.setLocalMessages();
   // runApp 메소드의 시작 지점에서 Flutter 엔진과 위젯의 바인딩이 미리 완료되어 있게 만들어줌
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,9 +66,8 @@ class MyApp extends GetView<AuthenticationController> {
   Widget build(BuildContext context) {
     if (controller.state is Authenticated) {
       print("is Auth");
-    }
-     else {
-       print("no");
+    } else {
+      print("no");
     }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
