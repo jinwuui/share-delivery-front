@@ -322,3 +322,321 @@ abstract class _DeliveryRoom implements DeliveryRoom {
   _$DeliveryRoomCopyWith<_DeliveryRoom> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+Leader _$LeaderFromJson(Map<String, dynamic> json) {
+  return _Leader.fromJson(json);
+}
+
+/// @nodoc
+mixin _$Leader {
+  String get nickname => throw _privateConstructorUsedError;
+  double get mannerScore => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $LeaderCopyWith<Leader> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LeaderCopyWith<$Res> {
+  factory $LeaderCopyWith(Leader value, $Res Function(Leader) then) =
+      _$LeaderCopyWithImpl<$Res>;
+  $Res call({String nickname, double mannerScore});
+}
+
+/// @nodoc
+class _$LeaderCopyWithImpl<$Res> implements $LeaderCopyWith<$Res> {
+  _$LeaderCopyWithImpl(this._value, this._then);
+
+  final Leader _value;
+  // ignore: unused_field
+  final $Res Function(Leader) _then;
+
+  @override
+  $Res call({
+    Object? nickname = freezed,
+    Object? mannerScore = freezed,
+  }) {
+    return _then(_value.copyWith(
+      nickname: nickname == freezed
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
+              as String,
+      mannerScore: mannerScore == freezed
+          ? _value.mannerScore
+          : mannerScore // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$LeaderCopyWith<$Res> implements $LeaderCopyWith<$Res> {
+  factory _$LeaderCopyWith(_Leader value, $Res Function(_Leader) then) =
+      __$LeaderCopyWithImpl<$Res>;
+  @override
+  $Res call({String nickname, double mannerScore});
+}
+
+/// @nodoc
+class __$LeaderCopyWithImpl<$Res> extends _$LeaderCopyWithImpl<$Res>
+    implements _$LeaderCopyWith<$Res> {
+  __$LeaderCopyWithImpl(_Leader _value, $Res Function(_Leader) _then)
+      : super(_value, (v) => _then(v as _Leader));
+
+  @override
+  _Leader get _value => super._value as _Leader;
+
+  @override
+  $Res call({
+    Object? nickname = freezed,
+    Object? mannerScore = freezed,
+  }) {
+    return _then(_Leader(
+      nickname: nickname == freezed
+          ? _value.nickname
+          : nickname // ignore: cast_nullable_to_non_nullable
+              as String,
+      mannerScore: mannerScore == freezed
+          ? _value.mannerScore
+          : mannerScore // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_Leader implements _Leader {
+  const _$_Leader({required this.nickname, required this.mannerScore});
+
+  factory _$_Leader.fromJson(Map<String, dynamic> json) =>
+      _$$_LeaderFromJson(json);
+
+  @override
+  final String nickname;
+  @override
+  final double mannerScore;
+
+  @override
+  String toString() {
+    return 'Leader(nickname: $nickname, mannerScore: $mannerScore)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Leader &&
+            const DeepCollectionEquality().equals(other.nickname, nickname) &&
+            const DeepCollectionEquality()
+                .equals(other.mannerScore, mannerScore));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(nickname),
+      const DeepCollectionEquality().hash(mannerScore));
+
+  @JsonKey(ignore: true)
+  @override
+  _$LeaderCopyWith<_Leader> get copyWith =>
+      __$LeaderCopyWithImpl<_Leader>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_LeaderToJson(this);
+  }
+}
+
+abstract class _Leader implements Leader {
+  const factory _Leader(
+      {required final String nickname,
+      required final double mannerScore}) = _$_Leader;
+
+  factory _Leader.fromJson(Map<String, dynamic> json) = _$_Leader.fromJson;
+
+  @override
+  String get nickname => throw _privateConstructorUsedError;
+  @override
+  double get mannerScore => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$LeaderCopyWith<_Leader> get copyWith => throw _privateConstructorUsedError;
+}
+
+ReceivingLocation _$ReceivingLocationFromJson(Map<String, dynamic> json) {
+  return _ReceivingLocation.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ReceivingLocation {
+  String get description => throw _privateConstructorUsedError;
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ReceivingLocationCopyWith<ReceivingLocation> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ReceivingLocationCopyWith<$Res> {
+  factory $ReceivingLocationCopyWith(
+          ReceivingLocation value, $Res Function(ReceivingLocation) then) =
+      _$ReceivingLocationCopyWithImpl<$Res>;
+  $Res call({String description, double latitude, double longitude});
+}
+
+/// @nodoc
+class _$ReceivingLocationCopyWithImpl<$Res>
+    implements $ReceivingLocationCopyWith<$Res> {
+  _$ReceivingLocationCopyWithImpl(this._value, this._then);
+
+  final ReceivingLocation _value;
+  // ignore: unused_field
+  final $Res Function(ReceivingLocation) _then;
+
+  @override
+  $Res call({
+    Object? description = freezed,
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ReceivingLocationCopyWith<$Res>
+    implements $ReceivingLocationCopyWith<$Res> {
+  factory _$ReceivingLocationCopyWith(
+          _ReceivingLocation value, $Res Function(_ReceivingLocation) then) =
+      __$ReceivingLocationCopyWithImpl<$Res>;
+  @override
+  $Res call({String description, double latitude, double longitude});
+}
+
+/// @nodoc
+class __$ReceivingLocationCopyWithImpl<$Res>
+    extends _$ReceivingLocationCopyWithImpl<$Res>
+    implements _$ReceivingLocationCopyWith<$Res> {
+  __$ReceivingLocationCopyWithImpl(
+      _ReceivingLocation _value, $Res Function(_ReceivingLocation) _then)
+      : super(_value, (v) => _then(v as _ReceivingLocation));
+
+  @override
+  _ReceivingLocation get _value => super._value as _ReceivingLocation;
+
+  @override
+  $Res call({
+    Object? description = freezed,
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_ReceivingLocation(
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String,
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_ReceivingLocation implements _ReceivingLocation {
+  const _$_ReceivingLocation(
+      {required this.description,
+      required this.latitude,
+      required this.longitude});
+
+  factory _$_ReceivingLocation.fromJson(Map<String, dynamic> json) =>
+      _$$_ReceivingLocationFromJson(json);
+
+  @override
+  final String description;
+  @override
+  final double latitude;
+  @override
+  final double longitude;
+
+  @override
+  String toString() {
+    return 'ReceivingLocation(description: $description, latitude: $latitude, longitude: $longitude)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ReceivingLocation &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ReceivingLocationCopyWith<_ReceivingLocation> get copyWith =>
+      __$ReceivingLocationCopyWithImpl<_ReceivingLocation>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ReceivingLocationToJson(this);
+  }
+}
+
+abstract class _ReceivingLocation implements ReceivingLocation {
+  const factory _ReceivingLocation(
+      {required final String description,
+      required final double latitude,
+      required final double longitude}) = _$_ReceivingLocation;
+
+  factory _ReceivingLocation.fromJson(Map<String, dynamic> json) =
+      _$_ReceivingLocation.fromJson;
+
+  @override
+  String get description => throw _privateConstructorUsedError;
+  @override
+  double get latitude => throw _privateConstructorUsedError;
+  @override
+  double get longitude => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$ReceivingLocationCopyWith<_ReceivingLocation> get copyWith =>
+      throw _privateConstructorUsedError;
+}

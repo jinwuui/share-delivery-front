@@ -1,4 +1,4 @@
-import 'package:share_delivery/src/data/model/user/user_location.dart';
+import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/provider/home/home_api_client.dart';
 import 'package:share_delivery/src/data/provider/home/home_local_client.dart';
 
@@ -12,8 +12,8 @@ class HomeRepository {
     return localClient.findRecentUserLocation();
   }
 
-  findDeliveryRooms(double lat, double lng) {
+  findDeliveryRooms(double lat, double lng, int rad) {
     print("-- home repo - 모집글 조회");
-    return apiClient.findDeliveryRooms(lat, lng);
+    return apiClient.findDeliveryRooms(lat, lng, rad);
   }
 }

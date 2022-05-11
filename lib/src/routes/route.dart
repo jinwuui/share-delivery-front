@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
+import 'package:share_delivery/src/bindings/delivery_room_register/writing_menu_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
@@ -8,6 +9,7 @@ import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
+import 'package:share_delivery/src/ui/home/delivery_room_register/writing_menu.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
 import 'package:share_delivery/src/ui/widgets/pick_user_location.dart';
@@ -24,6 +26,7 @@ abstract class Routes {
   static const DELIVERY_ROOM_REGISTER = "/deliveryRoomRegister";
   static const DELIVERY_HISTORY_DETAIL = "/deliveryHistoryDetail";
   static const EXPANDED_IMAGE_PAGE = "/exapndedImagePage";
+  static const WRITING_MENU = "/writingMenu";
 
   // 현재 위치 설정
   static const PICK_USER_LOCATION = "/pickUserLocation";
@@ -51,7 +54,10 @@ class AppPages {
     GetPage(
       name: Routes.DELIVERY_ROOM_REGISTER,
       page: () => const DeliveryRoomRegister(),
-      binding: DeliveryRoomRegisterBinding(),
+      bindings: [
+        DeliveryRoomRegisterBinding(),
+        WritingMenuBinding(),
+      ],
     ),
     GetPage(
       name: Routes.LOGIN,
@@ -78,6 +84,10 @@ class AppPages {
     GetPage(
       name: Routes.EXPANDED_IMAGE_PAGE,
       page: () => const ExpandedImagePage(),
+    ),
+    GetPage(
+      name: Routes.WRITING_MENU,
+      page: () => const WritingMenu(),
     ),
   ];
 }

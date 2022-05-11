@@ -2,21 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http/http.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
 
 class HomeApiClient {
   final String? host = dotenv.env['SERVER_HOST'];
 
-  findDeliveryRooms(double lat, double lng) async {
+  findDeliveryRooms(double lat, double lng, int rad) async {
     print("--- home api client - 모집글 조회");
 
     try {
-      final queryParameters = {
-        'lat': lat,
-        'lng': lng,
-      };
+      final queryParameters = {'lat': lat, 'lng': lng, 'radius': rad};
 
       // access token 확인
       // String? accessToken = SharedPrefsUtil.instance.getString("accessToken");
@@ -33,8 +31,10 @@ class HomeApiClient {
        */
 
       // http 요청
-      Uri uri = Uri.https(host!, '/api/delivery-rooms', queryParameters);
-      Response response = await http.get(uri, headers: {
+      // Uri uri = Uri.https(host!, '/api/delivery-rooms', queryParameters);
+      final Uri uri =
+          Uri.parse('$host/api/delivery-rooms?lat=$lat&lng=$lng&radius=$rad');
+      http.Response response = await http.get(uri, headers: {
         HttpHeaders.authorizationHeader: accessToken,
       });
 
@@ -51,7 +51,9 @@ class HomeApiClient {
         return [];
       } else if (response.statusCode == 401) {
         // NOTE: 토큰 만료
-
+        AuthenticationController ctrl = Get.find();
+        await ctrl.refreshToken();
+        return findDeliveryRooms(lat, lng, rad);
       } else {
         // NOTE: 그외 에러
         throw Exception(response.body);

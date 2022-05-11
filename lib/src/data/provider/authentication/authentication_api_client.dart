@@ -80,7 +80,32 @@ class AuthenticationApiClient {
         "fcmToken": "dummy token",
       });
 
-      print("여기느 어딥니까?");
+      if (response.statusCode == 200) {
+        tokens = jsonDecode(response.body);
+      } else {
+        throw Exception(response.body);
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    return tokens;
+  }
+
+  Future<Map<String, String>> refreshToken(
+      Map<String, String> oldTokens) async {
+    Map<String, String> tokens = {};
+
+    try {
+      // TODO : 만료된 access token, refresh token 으로 갱신 요청
+      print("-- access 토큰 갱신 : 만료된 토큰과 refresh 토큰으로 access 토큰 갱신 요청");
+
+      Uri url = Uri.parse("$host/api/auth/refreshed-token");
+      final Response response = await http.post(url, body: {
+        "expiredAccessToken": oldTokens["accessToken"],
+        "refreshToken": oldTokens["refreshToken"],
+      });
+
       if (response.statusCode == 200) {
         tokens = jsonDecode(response.body);
       } else {

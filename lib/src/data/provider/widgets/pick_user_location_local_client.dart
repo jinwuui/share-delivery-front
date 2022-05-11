@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:share_delivery/src/data/model/user/user_location.dart';
+import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
 class PickUserLocationLocalClient {
@@ -12,7 +12,7 @@ class PickUserLocationLocalClient {
         SharedPrefsUtil.instance.getStringList("userLocation");
     locationList ??= [];
 
-    locationList.add(jsonString);
+    locationList.insert(0, jsonString);
     SharedPrefsUtil.instance.setStringList("userLocation", locationList);
   }
 }

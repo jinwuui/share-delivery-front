@@ -13,6 +13,16 @@ class AuthenticationLocalClient {
     }
   }
 
+  Map<String, String> findTokens() {
+    Map<String, String> tokens = {};
+
+    tokens["accessToken"] = SharedPrefsUtil.instance.getString("accessToken")!;
+    tokens["refreshToken"] =
+        SharedPrefsUtil.instance.getString("refreshToken")!;
+
+    return tokens;
+  }
+
   User? getSavedUser() {
     try {
       String? userStr = SharedPrefsUtil.instance.getString('user');

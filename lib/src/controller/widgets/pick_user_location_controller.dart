@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/repository/pick_user_location_repository.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -147,6 +148,9 @@ class PickUserLocationController extends GetxController {
     print("-- 사용자가 선택한 위치를 로컬에 저장");
     repository.saveLocationDataToLocal(
         locationDescription.text, locationData.value);
+
+    HomeController homeController = Get.find();
+    homeController.reloadWebView();
   }
 
   void changePage(String? next) {

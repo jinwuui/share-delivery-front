@@ -12,6 +12,8 @@ class DeliveryRoomRegisterController extends GetxController {
 
   DeliveryRoomRegisterController({required this.repository});
 
+  int page = 0;
+
   // 모집글 등록 정보
   final TextEditingController content = TextEditingController();
   final TextEditingController storeLink = TextEditingController();
@@ -38,6 +40,7 @@ class DeliveryRoomRegisterController extends GetxController {
     {"야식": "LATE_NIGHT"},
     {"도시락": "LUNCHBOX"},
   ];
+
   // "CHICKEN", "PIZZA", "CHINA", "JAPAN", "BOONSIK", "KOREA", "FASTFOOD", "LATE_NIGHT", "LUNCHBOX", "STEAM_AND_SOUP"
   final Location location = Location();
   LocationData? locationData;

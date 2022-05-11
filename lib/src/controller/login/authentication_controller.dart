@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/data/model/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class AuthenticationController extends GetxController {
   final AuthenticationRepository repository;
@@ -15,7 +16,14 @@ class AuthenticationController extends GetxController {
   @override
   void onInit() {
     _getAuthenticatedUser();
+    SmsAutoFill().listenForCode;
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    SmsAutoFill().unregisterListener();
+    super.onClose();
   }
 
   Future<String> requestAuthSMS(String phoneNumber) {
@@ -66,5 +74,9 @@ class AuthenticationController extends GetxController {
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
+  }
+
+  Future<void> refreshToken() async {
+    await repository.refreshToken();
   }
 }

@@ -1,6 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
 
 part 'delivery_room.freezed.dart';
 part 'delivery_room.g.dart';
@@ -20,4 +18,26 @@ class DeliveryRoom with _$DeliveryRoom {
 
   factory DeliveryRoom.fromJson(Map<String, dynamic> json) =>
       _$DeliveryRoomFromJson(json);
+}
+
+@Freezed()
+class Leader with _$Leader {
+  const factory Leader({
+    required String nickname,
+    required double mannerScore,
+  }) = _Leader;
+
+  factory Leader.fromJson(Map<String, dynamic> json) => _$LeaderFromJson(json);
+}
+
+@Freezed()
+class ReceivingLocation with _$ReceivingLocation {
+  const factory ReceivingLocation({
+    required String description,
+    required double latitude,
+    required double longitude,
+  }) = _ReceivingLocation;
+
+  factory ReceivingLocation.fromJson(Map<String, dynamic> json) =>
+      _$ReceivingLocationFromJson(json);
 }

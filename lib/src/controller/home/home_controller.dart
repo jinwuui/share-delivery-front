@@ -6,9 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
-import 'package:share_delivery/src/data/model/user/user_location.dart';
+import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/utils/GetSnackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -175,9 +173,10 @@ class HomeController extends GetxController {
     print("- home controller - 모집글 조회");
     double? lat = locationData.value.latitude;
     double? lng = locationData.value.longitude;
+    int radius = 5;
 
     if (lat != null && lng != null) {
-      repository.findDeliveryRooms(lat, lng);
+      repository.findDeliveryRooms(lat, lng, radius);
     }
   }
 
@@ -288,8 +287,8 @@ class HomeController extends GetxController {
 
   void reloadWebView() {
     webViewController.value.future.then((value) async {
-      // TODO: 에러 수정 필요
-      value.reload();
+      getUserLocation();
+      value.loadUrl(getHTML());
     });
   }
 

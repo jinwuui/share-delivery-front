@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/login/login_controller.dart';
 import 'package:share_delivery/src/ui/login/phone_number_text_field.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class PhoneNumberAuthentication extends GetView<LoginController> {
   const PhoneNumberAuthentication({Key? key}) : super(key: key);
@@ -77,55 +78,52 @@ class PhoneNumberAuthentication extends GetView<LoginController> {
   }
 
   Widget authInputForm(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-          width: Get.width * 0.9,
-          height: Get.height * 0.07,
-          child: TextField(
-            maxLength: 6,
-            keyboardType: TextInputType.number,
-            onChanged: (text) {
-              if (text.isNotEmpty) {
-                controller.setIsEnabledVerifyButton(true);
-                controller.setAuthNumber(text);
-              } else {
-                controller.setIsEnabledVerifyButton(false);
-              }
-            },
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(left: 15.0),
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(),
-              hintText: "인증번호 입력",
-              counterText: "",
+    return Obx(
+      () => Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+            width: Get.width * 0.9,
+            height: Get.height * 0.07,
+            child: TextFieldPinAutoFill(
+              currentCode: controller.authNumber,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(left: 15.0),
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(),
+                hintText: "인증번호 입력",
+                counterText: "",
+              ),
+              onCodeChanged: (code) {
+                controller.setIsEnabledVerifyButton(code.isNotEmpty);
+                controller.setAuthNumber(code);
+              },
             ),
           ),
-        ),
-        ElevatedButton(
-          child: Text(
-            "인증번호 확인",
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 17,
+          ElevatedButton(
+            child: Text(
+              "인증번호 확인",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 17,
+              ),
             ),
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.orange,
-            textStyle: const TextStyle(fontSize: 20),
-            elevation: 0,
-            fixedSize: Size(Get.width * 0.9, Get.height * 0.06),
-          ),
-          onPressed: controller.isEnabledVerifyButton.value
-              ? () async {
-                  context.loaderOverlay.show();
-                  await controller.authenticate();
-                  context.loaderOverlay.hide();
-                }
-              : null,
-        )
-      ],
+            style: ElevatedButton.styleFrom(
+              primary: Colors.orange,
+              textStyle: const TextStyle(fontSize: 20),
+              elevation: 0,
+              fixedSize: Size(Get.width * 0.9, Get.height * 0.06),
+            ),
+            onPressed: controller.isEnabledVerifyButton.value
+                ? () async {
+                    context.loaderOverlay.show();
+                    await controller.authenticate();
+                    context.loaderOverlay.hide();
+                  }
+                : null,
+          )
+        ],
+      ),
     );
   }
 

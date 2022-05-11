@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/model/delivery_room/leader/leader.dart';
+import 'package:share_delivery/src/data/model/delivery_room/receiving_location/receiving_location.dart';
 
 class DeliveryRoomInfo extends GetView<HomeController> {
   const DeliveryRoomInfo({Key? key}) : super(key: key);
