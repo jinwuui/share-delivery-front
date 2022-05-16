@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
@@ -22,7 +22,10 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
       child: ListView.separated(
         itemCount: controller.deliveryRooms.length,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => Get.toNamed(Routes.DELIVERY_ROOM_INFO, arguments: index),
+          onTap: () {
+            controller.setCurSelectedIdx(index);
+            Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+          },
           child: DeliveryRoomPost(index: index),
         ),
         separatorBuilder: (_, __) => const Divider(
@@ -42,7 +45,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
             20,
             (index) => GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+                // Get.toNamed(Routes.DELIVERY_ROOM_INFO);
               },
               child: Column(
                 children: [
@@ -153,6 +156,10 @@ class DeliveryRoomPost extends GetView<HomeController> {
                       ),
                     ],
                   ),
+                  Text(controller
+                          .distanceBetween(_deliveryRoom.receivingLocation)
+                          .toString() +
+                      " m"),
                   SizedBox(
                     height: 20,
                   ),

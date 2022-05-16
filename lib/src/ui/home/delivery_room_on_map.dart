@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -63,7 +64,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       if (index != -1) {
         _info = controller.deliveryRooms[index];
       } else {
-        _info = dummyDeliveryRoom();
+        _info = emptyDeliveryRoom();
       }
 
       return AnimatedPositioned(
@@ -84,23 +85,58 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(_info.content),
-                  Row(
-                    children: [
-                      Text(TimeUtil.timeAgo(_info.createdDateTime.toLocal())),
-                      Text("${_info.person} / ${_info.limitPerson}")
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _info.content,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          TimeUtil.timeAgo(_info.createdDateTime.toLocal()),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.black38,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(Icons.people_alt_rounded,
+                                color: Colors.black38),
+                            SizedBox(width: 5),
+                            Text(
+                              "${_info.person} / ${_info.limitPerson}",
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.black38,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  print("참가");
-                },
-                child: Text("참가"),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    print("참가");
+                    Get.toNamed(Routes.PARTICIPATE_ROOM, arguments: _info);
+                  },
+                  child: Text("참가"),
+                ),
               ),
             ],
           ),
@@ -109,8 +145,9 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
     });
   }
 
-  DeliveryRoom dummyDeliveryRoom() {
+  DeliveryRoom emptyDeliveryRoom() {
     return DeliveryRoom(
+      roomId: -1,
       leader: Leader(
         nickname: '',
         mannerScore: -1,
@@ -118,6 +155,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       content: "content",
       person: -1,
       limitPerson: -1,
+      deliveryTip: -1,
       storeLink: "",
       platformType: "",
       status: "",

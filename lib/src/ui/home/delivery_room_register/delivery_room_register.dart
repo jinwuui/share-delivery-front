@@ -1,15 +1,40 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:safe_clipboard/safe_clipboard.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_store_category.dart';
-import 'package:share_delivery/src/utils/get_snackbar.dart';
+import 'package:share_delivery/src/ui/theme/container_theme.dart';
+import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
+
+  Future<void> getClipboard({
+    iOSDetectionPattern? iOSDetectionPattern,
+    AndroidClipMimeType? androidClipMimeType,
+  }) async {
+    String clipboardValue;
+    try {
+      clipboardValue = await SafeClipboard.get(
+            iOSDetectionPattern: iOSDetectionPattern,
+            androidClipMimeType: androidClipMimeType,
+          ) ??
+          'Null response';
+    } on PlatformException {
+      clipboardValue = 'Failed to get clipboard data';
+    }
+
+    print("clip:: $clipboardValue");
+    // if (!mounted) return;
+    //
+    // setState(() {
+    //   _lastValue = clipboardValue;
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +105,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
         padding: const EdgeInsets.all(15.0),
         child: GestureDetector(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextField(
                 controller: controller.content,
@@ -89,44 +114,6 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                 maxLength: 30,
                 decoration: InputDecoration(
                   hintText: "글 제목",
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                ),
-              ),
-              const Divider(height: 0),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: controller.storeLink,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        hintText: "배달 가게 링크",
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      ClipboardData? data =
-                          await Clipboard.getData(Clipboard.kTextPlain);
-                      if (data == null) {
-                        GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
-                      } else {
-                        print(data.text);
-                        controller.storeLink.text = data.text!;
-                      }
-                    },
-                    child: const Text("붙여넣기"),
-                  ),
-                ],
-              ),
-              const Divider(height: 0),
-              TextField(
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  hintText: "배달팁",
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
@@ -152,6 +139,24 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                   ),
                 ],
               ),
+              const Divider(height: 0),
+              Column(
+                children: [
+                  const Text("예상 배달비"),
+                  NumberPicker(
+                    value: controller.deliveryTip.value,
+                    minValue: 0,
+                    maxValue: 10000,
+                    step: 500,
+                    axis: Axis.horizontal,
+                    decoration: deliveryTipBox,
+                    selectedTextStyle: deliveryTipStyle,
+                    onChanged: (value) => controller.setDeliveryTip(value),
+                  ),
+                ],
+              ),
+              const Divider(height: 0),
+              storeInfo(),
               const Divider(height: 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,6 +194,43 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget storeInfo() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              denseTextField(controller.storeName, "가게이름"),
+              denseTextField(controller.deliveryAppTypeOfStoreLink, "배달 어플"),
+              // denseTextField(controller.storeLink, "링크"),
+            ],
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () async {
+            ClipboardData? data = await Clipboard.getData('text/plain');
+            controller.parsingStoreLink(data);
+          },
+          child: const Text("붙여넣기"),
+        ),
+      ],
+    );
+  }
+
+  Widget denseTextField(TextEditingController controller, String hintText) {
+    return TextField(
+      controller: controller,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        isDense: true,
+      ),
+      style: Get.width < 400 ? TextStyle(fontSize: 14) : null,
     );
   }
 

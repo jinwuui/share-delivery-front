@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
@@ -23,6 +24,7 @@ class HomeController extends GetxController {
       content: "BBQ 드실분?",
       person: 1,
       limitPerson: 3,
+      deliveryTip: 3000,
       storeLink: "www.baemin.com/stores?id=1524",
       platformType: "BAEMIN",
       status: "NULL",
@@ -31,12 +33,14 @@ class HomeController extends GetxController {
           description: "CU 편의점 앞",
           latitude: 35.820848788632226,
           longitude: 128.518205019348),
+      roomId: 456,
     ),
     DeliveryRoom(
       leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
       content: "굽네치킨 드실분?",
       person: 2,
       limitPerson: 4,
+      deliveryTip: 3000,
       storeLink: "www.baemin.com/stores?id=1524",
       platformType: "BAEMIN",
       status: "NULL",
@@ -45,6 +49,7 @@ class HomeController extends GetxController {
           description: "CU 편의점 앞",
           latitude: 35.821730657601044,
           longitude: 128.5190184847488),
+      roomId: 123,
     ),
   ].obs;
 
@@ -62,6 +67,9 @@ class HomeController extends GetxController {
       Completer<WebViewController>().obs;
   RxBool isPrepared = false.obs;
   RxBool showInfo = false.obs;
+
+  // 모집글 상세 정보 관련
+  int curSelectedIdx = -1;
 
   @override
   Future<void> onInit() async {
@@ -320,5 +328,24 @@ class HomeController extends GetxController {
 
   void hideInfo() {
     showInfo.value = false;
+  }
+
+  void setCurSelectedIdx(int index) {
+    curSelectedIdx = index;
+  }
+
+  DeliveryRoom getDeliveryRoomInfo() {
+    if (curSelectedIdx == -1) throw Exception("out of range");
+
+    return deliveryRooms[curSelectedIdx];
+  }
+
+  int distanceBetween(ReceivingLocation receivingLocation) {
+    return Geolocator.distanceBetween(
+      locationData.value.latitude!,
+      locationData.value.longitude!,
+      receivingLocation.latitude,
+      receivingLocation.longitude,
+    ).round();
   }
 }

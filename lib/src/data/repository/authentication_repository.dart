@@ -1,4 +1,4 @@
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
 

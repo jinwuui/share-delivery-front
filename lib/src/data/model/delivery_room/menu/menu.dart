@@ -6,9 +6,9 @@ part 'menu.g.dart';
 @Freezed()
 class Menu with _$Menu {
   const factory Menu({
-    required String menuName,
-    required int menuPrice,
-    required int amount,
+    required String name,
+    required int price,
+    required int quantity,
     @Default([]) List<Menu> optionList,
   }) = _Menu;
 

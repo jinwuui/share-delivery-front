@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
 class AuthenticationLocalClient {

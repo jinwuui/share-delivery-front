@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 
 class AuthenticationApiClient {
   final String? host = dotenv.env['SERVER_HOST'];

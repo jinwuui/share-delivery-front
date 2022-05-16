@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
@@ -17,12 +19,17 @@ class DeliveryRoomRegisterController extends GetxController {
   // 모집글 등록 정보
   final TextEditingController content = TextEditingController();
   final TextEditingController storeLink = TextEditingController();
+  final TextEditingController storeName = TextEditingController();
+  final TextEditingController deliveryAppTypeOfStoreLink =
+      TextEditingController();
+
   final TextEditingController descriptionOfReceivingLocation =
       TextEditingController();
   double receivingLocationLat = -1.0;
   double receivingLocationLng = -1.0;
 
   int limitPerson = -1;
+  RxInt deliveryTip = 2000.obs;
   RxInt pickedStoreCategory = (-1).obs;
 
   // 모집글 등록을 위한 상세 정보
@@ -203,5 +210,43 @@ class DeliveryRoomRegisterController extends GetxController {
 
   String _getLinkPlatformType() {
     return "BAEMIN";
+  }
+
+  void parsingStoreLink(ClipboardData? data) {
+    if (data == null) {
+      GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
+      return;
+    }
+    String? clip = data.text;
+
+    if (clip == null) {
+      GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
+      return;
+    }
+
+    late String appType;
+    if (clip.contains("배달의민족")) {
+      appType = "배달의민족";
+    } else {
+      appType = "요기요";
+    }
+
+    String storeName =
+        clip.substring(clip.indexOf("'") + 1, clip.lastIndexOf("'"));
+
+    late String storeLink;
+    if (appType == "배달의민족") {
+      storeLink = "https://dummyURL";
+    } else {
+      storeLink = clip.substring(clip.indexOf("http"));
+    }
+
+    this.storeLink.text = storeLink;
+    this.storeName.text = storeName;
+    deliveryAppTypeOfStoreLink.text = appType;
+  }
+
+  void setDeliveryTip(int deliveryTip) {
+    this.deliveryTip.value = deliveryTip;
   }
 }

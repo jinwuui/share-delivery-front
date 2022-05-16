@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
+import 'package:share_delivery/src/controller/home/participate_room/participate_room_controller.dart';
+import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
-class WritingMenu extends GetView<WritingMenuController> {
-  const WritingMenu({Key? key}) : super(key: key);
+class ParticipateRoom extends GetView<ParticipateRoomController> {
+  const ParticipateRoom({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,10 @@ class WritingMenu extends GetView<WritingMenuController> {
           body: SingleChildScrollView(
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("주문할 메뉴를 입력하세요!", style: infoTextStyle),
+                ),
                 ListView.separated(
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
@@ -49,28 +54,17 @@ class WritingMenu extends GetView<WritingMenuController> {
         icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
       ),
       title: const Text(
-        "메뉴 작성",
+        "참여하기",
         style: TextStyle(color: Colors.black),
       ),
       actions: [
         TextButton(
           onPressed: () async {
-            // TODO: 모집글 등록 로직 필요
-            print("완료 - 모집글 등록 로직 필요");
-
-            // if (await controller.registerDeliveryRoom()) {
-            //   Get.offNamedUntil(Routes.WRITING_MENU, (route) => false);
-            // } else {
-            //   Get.snackbar(
-            //     "등록 실패",
-            //     "모든 정보를 작성해주세요!",
-            //     backgroundColor: Colors.black,
-            //     colorText: Colors.white,
-            //     duration: Duration(milliseconds: 1000),
-            //   );
-            // }
+            // TODO: 모집글 참여 신청 로직 필요
+            print('ParticipateRoom.appBar');
+            controller.participateDeliveryRoom(Get.arguments);
           },
-          child: const Text("완료", style: TextStyle(color: Colors.black)),
+          child: const Text("신청", style: TextStyle(color: Colors.black)),
         ),
       ],
     );
@@ -137,7 +131,7 @@ class WritingMenu extends GetView<WritingMenuController> {
                       onPressed: () => controller.decreaseAmount(idx),
                       icon: Icon(Icons.remove_rounded),
                     ),
-                    GetBuilder<WritingMenuController>(
+                    GetBuilder<ParticipateRoomController>(
                       builder: (ctrl) =>
                           Text("${ctrl.menuList[idx].quantity}개"),
                     ),

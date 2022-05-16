@@ -20,20 +20,32 @@ class Root extends GetView<RootController> {
                 bottom: BorderSide(color: Colors.black26, width: 0.5)),
             elevation: 0,
             backgroundColor: Colors.white,
-            leading: controller.rootPageIndex.value == 0
-                ? TextButton(
-                    onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
-                    child: const Text(
-                      "위치 설정",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
+            titleSpacing: 0.0,
+            title: controller.rootPageIndex.value == 0
+                ? Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
+                        child: const Text(
+                          "위치 설정",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                      Container(
+                        color: Colors.black,
+                        height: 20,
+                        width: 1,
+                      ),
+                      TextButton(
+                        onPressed: () => Get.toNamed(Routes.FAST_MATCHING),
+                        child: const Text(
+                          "빠른 매칭",
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                      ),
+                    ],
                   )
-                : const SizedBox.shrink(),
-            leadingWidth: 80,
-            title: const Text(
-              "",
-              style: TextStyle(color: Colors.black),
-            ),
+                : SizedBox.shrink(),
           ),
           body: IndexedStack(
             index: controller.rootPageIndex.value,

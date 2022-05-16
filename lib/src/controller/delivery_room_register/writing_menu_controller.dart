@@ -41,12 +41,12 @@ class WritingMenuController extends GetxController {
   }
 
   void increaseAmount(int idx) {
-    if (menuList[idx].amount < 99) menuList[idx].amount++;
+    if (menuList[idx].quantity < 99) menuList[idx].quantity++;
     update();
   }
 
   void decreaseAmount(int idx) {
-    if (menuList[idx].amount > 0) menuList[idx].amount--;
+    if (menuList[idx].quantity > 0) menuList[idx].quantity--;
     update();
   }
 }
@@ -54,7 +54,7 @@ class WritingMenuController extends GetxController {
 class MenuInfo {
   late final TextEditingController name;
   late final TextEditingController price;
-  int amount = 1;
+  int quantity = 1;
   late final int seq;
   late final int parent;
   late final List<MenuInfo> options;
