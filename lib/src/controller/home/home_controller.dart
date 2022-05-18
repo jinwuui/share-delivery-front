@@ -125,14 +125,17 @@ class HomeController extends GetxController {
     return true;
   }
 
-  void findDeliveryRooms() {
+  Future<void> findDeliveryRooms() async {
     print("- home controller - 모집글 조회");
     double? lat = locationData.value.latitude;
     double? lng = locationData.value.longitude;
     int radius = 5;
 
     if (lat != null && lng != null) {
-      deliveryRooms.value = repository.findDeliveryRooms(lat, lng, radius);
+      var result = await repository.findDeliveryRooms(lat, lng, radius);
+      if (result.isNotEmpty) {
+        deliveryRooms.value = result;
+      }
     }
   }
 

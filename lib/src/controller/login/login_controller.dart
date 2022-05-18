@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/ui/login/state/login_state.dart';
@@ -21,10 +22,11 @@ class LoginController extends GetxController {
   RxBool isEnabledRequestSMSButton = false.obs;
   RxBool isEnabledVerifyButton = false.obs;
   RxBool onTextFieldSMS = false.obs;
-  bool isNewUser = false;
+  bool isNewUser = true;
 
   Rx<ScrollController> scrollController = ScrollController().obs;
 
+  // 인증 SMS 요청하기
   void requestAuthSMS() {
     if (isEnabledSendRequest.value) {
       isEnabledSendRequest.value = false;
@@ -39,24 +41,23 @@ class LoginController extends GetxController {
     FocusManager.instance.primaryFocus?.unfocus();
   }
 
-  // 인증 SMS 요청하기
+  // 컨트롤러에게 인증 SMS 요청하기
   void requestAuthSMS2Controller() async {
     onTextFieldSMS.value = true;
+    phoneNumber = phoneNumber.replaceAll(" ", "");
 
-    String result = await _authenticationController.requestAuthSMS(phoneNumber);
+    Map<String, dynamic> result =
+        await _authenticationController.requestAuthSMS(phoneNumber);
 
-    if (result == "ERROR") {
+    if (result["verificationType"] == "ERROR") {
       print("ERROR");
       GetSnackbar.err("요청 에러", "다시 클릭해주세요.");
-    } else {
-      if (result == "SIGNUP") {
-        isNewUser = true;
-      } else if (result == "LOGIN") {
-        isNewUser = false;
-      }
-
-      onTextFieldSMS.value = true;
+      return;
     }
+
+    isNewUser = result["verificationType"] == "LOGIN" ? false : true;
+    print("isNewUser $isNewUser");
+    onTextFieldSMS.value = true;
   }
 
   void changeToAuthUI() {
@@ -76,6 +77,7 @@ class LoginController extends GetxController {
 
   Future<void> authenticate() async {
     await Future.delayed(Duration(milliseconds: 500));
+    phoneNumber = phoneNumber.replaceAll(" ", "");
 
     if (isNewUser) {
       print("is new user");
@@ -99,7 +101,9 @@ class LoginController extends GetxController {
   // 사용자가 작성한 이메일 패스워드로 회원 가입 시도
   Future<void> signUp() async {
     try {
-      await _authenticationController.signUp(phoneNumber, authNumber);
+      User user =
+          await _authenticationController.signUp(phoneNumber, authNumber);
+      if (user.accountId != -1) isNewUser = false;
     } catch (e) {
       print(e);
     }

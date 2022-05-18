@@ -9,7 +9,7 @@ class AuthenticationRepository {
   AuthenticationRepository(
       {required this.apiClient, required this.localClient});
 
-  Future<String> requestAuthSMS(String phoneNumber) {
+  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
     return apiClient.requestAuthSMS(phoneNumber);
   }
 
@@ -21,9 +21,6 @@ class AuthenticationRepository {
     try {
       Map<String, String> tokens =
           await apiClient.verifyAuthNumber(phoneNumber, authNumber);
-
-      // TODO : 로그인 검사 위해서 아래 코드 지울 것
-      return true;
 
       if (tokens["accessToken"] != null) {
         localClient.saveTokens(tokens);

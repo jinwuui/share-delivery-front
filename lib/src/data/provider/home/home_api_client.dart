@@ -10,12 +10,12 @@ import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delive
 class HomeApiClient {
   final String? host = dotenv.env['SERVER_HOST'];
 
-  findDeliveryRooms(double lat, double lng, int rad) async {
+  Future<List<DeliveryRoom>> findDeliveryRooms(
+      double lat, double lng, int rad) async {
     print("--- home api client - 모집글 조회");
+    List<DeliveryRoom> result = <DeliveryRoom>[];
 
     try {
-      final queryParameters = {'lat': lat, 'lng': lng, 'radius': rad};
-
       // access token 확인
       // String? accessToken = SharedPrefsUtil.instance.getString("accessToken");
       String? accessToken = 'dummy';
@@ -31,35 +31,38 @@ class HomeApiClient {
        */
 
       // http 요청
-      // Uri uri = Uri.https(host!, '/api/delivery-rooms', queryParameters);
       final Uri uri =
           Uri.parse('$host/api/delivery-rooms?lat=$lat&lng=$lng&radius=$rad');
       http.Response response = await http.get(uri, headers: {
         HttpHeaders.authorizationHeader: accessToken,
       });
 
+      print('HomeApiClient.findDeliveryRooms ${response.body}');
+
       // 응답 확인
       if (response.statusCode == 200) {
         // NOTE: 성공
         final decodeResult = jsonDecode(response.body).cast();
 
-        return decodeResult
+        result = decodeResult
             .map<DeliveryRoom>((json) => DeliveryRoom.fromJson(json))
             .toList();
       } else if (response.statusCode == 204) {
         // NOTE: 모집글 없음
-        return [];
+        throw Exception("204 : 모집글 없음");
       } else if (response.statusCode == 401) {
         // NOTE: 토큰 만료
         AuthenticationController ctrl = Get.find();
         await ctrl.refreshToken();
         return findDeliveryRooms(lat, lng, rad);
       } else {
-        // NOTE: 그외 에러
+        // NOTE: 그 외 에러
         throw Exception(response.body);
       }
     } catch (e) {
       print(e);
     }
+
+    return result;
   }
 }

@@ -26,20 +26,27 @@ class AuthenticationController extends GetxController {
     super.onClose();
   }
 
-  Future<String> requestAuthSMS(String phoneNumber) {
+  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
+    print('AuthenticationController.requestAuthSMS $phoneNumber');
     return repository.requestAuthSMS(phoneNumber);
   }
 
   Future<User> signUp(String phoneNumber, String authNumber) async {
+    print('AuthenticationController.signUp : $phoneNumber, $authNumber');
+
     User user = await repository.signUp(phoneNumber, authNumber);
     _authenticationStateStream.value = Authenticated(user: user);
     return user;
   }
 
   Future<void> signIn(String phoneNumber, String authNumber) async {
-    print("sign In : $phoneNumber, $authNumber");
+    print('AuthenticationController.signIn : $phoneNumber, $authNumber');
 
     bool result = await repository.signIn(phoneNumber, authNumber);
+
+    // TODO : 삭제해야함
+    result = true;
+
     if (result) {
       _authenticationStateStream.value = Authenticated(
         user: User(
@@ -77,6 +84,7 @@ class AuthenticationController extends GetxController {
   }
 
   Future<void> refreshToken() async {
+    print('AuthenticationController.refreshToken');
     await repository.refreshToken();
   }
 }
