@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 
 class OrderFormImage extends StatelessWidget {
-  OrderFormImage({Key? key, required this.imageURL, required this.deleteButton})
+  const OrderFormImage({Key? key, required this.imageURL, required this.deleteButton})
       : super(key: key);
 
   final String imageURL;

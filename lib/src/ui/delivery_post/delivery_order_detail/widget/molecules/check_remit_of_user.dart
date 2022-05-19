@@ -27,7 +27,7 @@ class _CheckRemitOfUserState extends State<CheckRemitOfUser> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "복동이" + " 님",
+                    "복동이" " 님",
                     style: TextStyle(fontWeight: FontWeight.w800),
                   ),
                 ),

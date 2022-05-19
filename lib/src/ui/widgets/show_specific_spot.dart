@@ -48,9 +48,9 @@ class ShowSpecificSpot extends GetView<ShowSpecificSpotController> {
       onWebViewCreated: (ctrl) => controller.setWebViewController(ctrl),
       javascriptMode: JavascriptMode.unrestricted,
       javascriptChannels: controller.getChannels,
-      gestureRecognizers: Set()
-        ..add(Factory<VerticalDragGestureRecognizer>(
-            () => VerticalDragGestureRecognizer())),
+      gestureRecognizers: <Factory<VerticalDragGestureRecognizer>>{}..add(
+          Factory<VerticalDragGestureRecognizer>(
+              () => VerticalDragGestureRecognizer())),
     );
   }
 }

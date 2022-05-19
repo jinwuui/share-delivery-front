@@ -10,7 +10,7 @@ import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget
 // 주문 진행 상태에 따라서 UI 변경 해야함 status 상태 하나 두어서 rebuild 시키기
 
 class OrderTabView extends StatefulWidget {
-  OrderTabView({Key? key}) : super(key: key);
+  const OrderTabView({Key? key}) : super(key: key);
 
   @override
   State<OrderTabView> createState() => _OrderTabViewState();

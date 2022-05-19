@@ -71,7 +71,7 @@ class PickUserLocationController extends GetxController {
     return Uri.dataFromString('''
       <html>
       <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
         <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
       </head>
       <body style="padding:0; margin:0;">

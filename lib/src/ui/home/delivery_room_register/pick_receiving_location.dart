@@ -112,7 +112,8 @@ class _PickReceivingLocationState extends State<PickReceivingLocation> {
                                   webViewController = ctrl,
                               javascriptMode: JavascriptMode.unrestricted,
                               javascriptChannels: controller.getChannels,
-                              gestureRecognizers: Set()
+                              gestureRecognizers: <
+                                  Factory<VerticalDragGestureRecognizer>>{}
                                 ..add(Factory<VerticalDragGestureRecognizer>(
                                     () => VerticalDragGestureRecognizer())),
                             ),

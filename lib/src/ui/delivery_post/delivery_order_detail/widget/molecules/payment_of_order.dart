@@ -6,7 +6,7 @@ import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 // extends GetView<OrderFormRegisterController>
 class PaymentOfOrder extends StatelessWidget {
-  PaymentOfOrder({Key? key}) : super(key: key);
+  const PaymentOfOrder({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

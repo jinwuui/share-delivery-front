@@ -1,4 +1,6 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/bindings/community/post_register/post_register_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/writing_menu_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
@@ -6,6 +8,8 @@ import 'package:share_delivery/src/bindings/participate_room/participate_room_bi
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
 import 'package:share_delivery/src/root.dart';
+import 'package:share_delivery/src/ui/community/post_register/post_register.dart';
+import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
@@ -17,7 +21,6 @@ import 'package:share_delivery/src/ui/home/participate_room/participate_room.dar
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
 import 'package:share_delivery/src/ui/widgets/pick_user_location.dart';
-import 'package:share_delivery/src/ui/widgets/show_specific_spot.dart';
 
 abstract class Routes {
   // 기본 화면
@@ -49,6 +52,10 @@ abstract class Routes {
   // 로그인
   static const LOGIN = "/login";
   static const PHONE_NUMBER_AUTHENTICATION = "/phoneNumberAuthentication";
+
+  // 커뮤니티
+  static const POST_REGISTER = "/postRegister";
+  static const SETTING_POST_CATEGORY = "/settingPostCategory";
 }
 
 class AppPages {
@@ -117,6 +124,18 @@ class AppPages {
       name: Routes.PARTICIPATE_ROOM,
       page: () => const ParticipateRoom(),
       binding: ParticipateRoomBinding(),
+    ),
+    GetPage(
+      name: Routes.POST_REGISTER,
+      page: () => const PostRegister(),
+      curve: Curves.easeOutBack,
+      binding: PostRegisterBinding(),
+    ),
+    GetPage(
+      name: Routes.SETTING_POST_CATEGORY,
+      page: () => const SettingPostCategory(),
+      transition: Transition.fadeIn,
+      curve: Curves.decelerate,
     ),
   ];
 }
