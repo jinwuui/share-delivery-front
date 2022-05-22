@@ -15,3 +15,10 @@ final orangeBtn = ElevatedButton.styleFrom(
   elevation: 0,
   fixedSize: Size(Get.width * 0.7, Get.height * 0.05),
 );
+
+final greyBtn = ElevatedButton.styleFrom(
+  primary: Colors.grey.shade700,
+  textStyle: const TextStyle(fontSize: 17),
+  elevation: 0,
+  fixedSize: Size(Get.width * 0.7, Get.height * 0.05),
+);

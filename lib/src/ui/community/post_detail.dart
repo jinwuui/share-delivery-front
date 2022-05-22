@@ -28,7 +28,6 @@ class PostDetail extends GetView<PostDetailController> {
                   children: [
                     profile(),
                     content(),
-                    // noComments(),
                     controller.comments.isEmpty ? noComments() : comments(),
                     const SizedBox(width: 30, height: 68),
                   ],

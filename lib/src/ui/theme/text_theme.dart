@@ -87,3 +87,22 @@ const TextStyle receivingLocationDone = TextStyle(
   fontWeight: FontWeight.w700,
   color: Colors.black,
 );
+
+// 빠른 매칭
+const TextStyle fastMatchingNickname = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w700,
+  color: Colors.black,
+);
+
+const TextStyle fastMatchingManner = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.w500,
+  color: Colors.black,
+);
+
+final TextStyle fastMatchingDistance = TextStyle(
+  fontSize: 16,
+  fontWeight: FontWeight.w700,
+  color: Colors.grey.shade600,
+);
