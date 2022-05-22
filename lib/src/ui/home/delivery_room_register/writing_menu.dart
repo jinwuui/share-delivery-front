@@ -57,18 +57,7 @@ class WritingMenu extends GetView<WritingMenuController> {
           onPressed: () async {
             // TODO: 모집글 등록 로직 필요
             print("완료 - 모집글 등록 로직 필요");
-
-            // if (await controller.registerDeliveryRoom()) {
-            //   Get.offNamedUntil(Routes.WRITING_MENU, (route) => false);
-            // } else {
-            //   Get.snackbar(
-            //     "등록 실패",
-            //     "모든 정보를 작성해주세요!",
-            //     backgroundColor: Colors.black,
-            //     colorText: Colors.white,
-            //     duration: Duration(milliseconds: 1000),
-            //   );
-            // }
+            controller.registerDeliveryRoom();
           },
           child: const Text("완료", style: TextStyle(color: Colors.black)),
         ),

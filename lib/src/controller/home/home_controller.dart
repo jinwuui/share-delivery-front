@@ -82,20 +82,26 @@ class HomeController extends GetxController {
 
   // 사용자 위치 불러오기
   Future<void> getUserLocation() async {
+    print('HomeController.getUserLocation 1');
     UserLocation? userLocation = repository.findRecentUserLocation();
 
     if (userLocation != null) {
+      print('HomeController.getUserLocation 2');
       locationData.value = LocationData.fromMap({
         "latitude": userLocation.latitude,
         "longitude": userLocation.longitude,
       });
     } else {
+      print('HomeController.getUserLocation 3 $_serviceEnabled.value');
       if (!(await verifyLocationPermission())) {
+        print('HomeController.getUserLocation 4 $_serviceEnabled.value');
         GetSnackbar.on("알림", "위치 정보를 허용해주세요.");
         return;
       }
 
+      print('HomeController.getUserLocation 5');
       LocationData curLocation = await location.getLocation();
+      print('HomeController.getUserLocation $curLocation');
       locationData.value = curLocation;
     }
 
@@ -104,9 +110,11 @@ class HomeController extends GetxController {
 
   // 위치 정보 엑세스 권한 검증
   Future<bool> verifyLocationPermission() async {
+    print('HomeController.verifyLocationPermission1');
     PermissionStatus _permissionGranted;
     _serviceEnabled.value = await location.serviceEnabled();
 
+    print('HomeController.verifyLocationPermission2');
     if (!_serviceEnabled.value) {
       _serviceEnabled.value = await location.requestService();
       if (!_serviceEnabled.value) {
@@ -114,6 +122,7 @@ class HomeController extends GetxController {
       }
     }
 
+    print('HomeController.verifyLocationPermission3');
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
       _permissionGranted = await location.requestPermission();
@@ -122,6 +131,7 @@ class HomeController extends GetxController {
       }
     }
 
+    print('HomeController.verifyLocationPermission4');
     return true;
   }
 
@@ -344,6 +354,13 @@ class HomeController extends GetxController {
   }
 
   int distanceBetween(ReceivingLocation receivingLocation) {
+    print('HomeController.distanceBetween $locationData');
+
+    print("locationData $locationData");
+
+
+    if (locationData.value.latitude == null || locationData.value.latitude == null) return -1;
+
     return Geolocator.distanceBetween(
       locationData.value.latitude!,
       locationData.value.longitude!,

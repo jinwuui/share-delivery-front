@@ -10,6 +10,7 @@ class PostRegisterController extends GetxController {
   RxString postTopic = "글의 주제를 선택해주세요!".obs;
   Rx<TextEditingController> postContent = TextEditingController().obs;
   RxBool isContentEmpty = true.obs;
+
   void setPostTopic(String topic) {
     postTopic.value = topic;
   }

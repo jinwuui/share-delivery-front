@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 class Community extends StatelessWidget {
@@ -13,22 +16,7 @@ class Community extends StatelessWidget {
       child: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {
-          return index == 0
-              ? categoryTab()
-              : Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.grey.shade300,
-                        width: 0.4,
-                      ),
-                    ),
-                  ),
-                  margin: const EdgeInsets.only(bottom: 7),
-                  height: 180,
-                  child: post(),
-                );
+          return index == 0 ? categoryTab() : post();
         },
       ),
     );
@@ -61,54 +49,65 @@ class Community extends StatelessWidget {
   }
 
   Widget post() {
-    return Column(
-      children: [
-        postInfo(),
-        postAction(),
-      ],
+    return Container(
+      decoration: bottomBorderBox,
+      margin: const EdgeInsets.only(bottom: 7),
+      height: 180,
+      child: Column(
+        children: [
+          postInfo(),
+          postAction(),
+        ],
+      ),
     );
   }
 
   Widget postInfo() {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                eachPostCategory("동네질문"),
-                Text(
-                  "안녕하세요 저는 박찬호 입니다. 호투를 하며 제 전성기 시절을 떠올리게하는 LA 다저스 시절이 가장 먼저 생각나기도 하고, 경기가 끝나면 나긋하게 ",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: postContentStyle,
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text("네고왕", style: postDetailStyle),
-                    const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.fiber_manual_record,
-                        size: 3,
-                        color: Colors.grey,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          Get.toNamed(Routes.POST_DETAIL);
+        },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  eachPostCategory("동네질문"),
+                  Text(
+                    "안녕하세요 저는 박찬호 입니다. 호투를 하며 제 전성기 시절을 떠올리게하는 LA 다저스 시절이 가장 먼저 생각나기도 하고, 경기가 끝나면 나긋하게 ",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: postContentStyle,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text("네고왕", style: postDetailStyle),
+                      const Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: Icon(
+                          Icons.fiber_manual_record,
+                          size: 3,
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                    Text("매너 온도", style: postDetailStyle),
-                  ],
-                ),
-                Text("7분전", style: postDetailStyle),
-              ],
-            ),
-          ],
+                      Text("매너 온도", style: postDetailStyle),
+                    ],
+                  ),
+                  Text("7분전", style: postDetailStyle),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -127,7 +126,11 @@ class Community extends StatelessWidget {
         children: [
           action("공감하기", Icons.add_reaction_outlined, null),
           SizedBox(width: 20),
-          action("답변하기", Icons.mode_comment_outlined, null),
+          action(
+            "답변하기",
+            Icons.mode_comment_outlined,
+            () => Get.toNamed(Routes.POST_DETAIL),
+          ),
         ],
       ),
     );
@@ -167,7 +170,7 @@ class Community extends StatelessWidget {
 
   Widget action(String content, IconData icon, var func) {
     return GestureDetector(
-      onTap: () => func,
+      onTap: func,
       child: Row(
         children: [
           Icon(
@@ -183,6 +186,15 @@ class Community extends StatelessWidget {
       ),
     );
   }
+
+  // Widget dropAction(String content, IconData icon, var func) {
+  //   return DropdownButton<Icon>(
+  //     value: controller.drop,
+  //     onChanged: () {},
+  //     items: <Icon>[],
+  //
+  //   );
+  // }
 
   Widget eachPostCategory(String category) {
     return Container(

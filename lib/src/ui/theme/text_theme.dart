@@ -33,6 +33,10 @@ final TextStyle postActionStyle = TextStyle(
   color: Colors.grey.shade600,
 );
 
+const TextStyle postTitleStyle = TextStyle(
+  fontWeight: FontWeight.w800,
+);
+
 const TextStyle postDetailStyle = TextStyle(
   // fontWeight: FontWeight.w500,
   color: Colors.grey,
@@ -45,13 +49,23 @@ const TextStyle postContentStyle = TextStyle(
   // color: Colors.grey.shade500,
 );
 
-const TextStyle postRegisterTitle = TextStyle(
+const TextStyle detailContentStyle = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 20,
+);
+
+const TextStyle commentStyle = TextStyle(
+  fontWeight: FontWeight.w500,
+  fontSize: 18,
+);
+
+const TextStyle appBarTitle = TextStyle(
   color: Colors.black,
   fontSize: 18,
   fontWeight: FontWeight.w700,
 );
 
-const TextStyle postRegisterDone = TextStyle(
+const TextStyle appBarAction = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w700,
   color: Colors.black,
@@ -66,4 +80,10 @@ const TextStyle pickedPostCategory = TextStyle(
   fontSize: 17,
   color: Colors.deepOrange,
   fontWeight: FontWeight.w700,
+);
+
+const TextStyle receivingLocationDone = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.w700,
+  color: Colors.black,
 );

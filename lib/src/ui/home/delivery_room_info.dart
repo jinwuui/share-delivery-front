@@ -10,23 +10,10 @@ import 'package:share_delivery/src/ui/widgets/show_specific_spot.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DeliveryRoomInfo extends GetView<HomeController> {
-  // late int index;
-  // late var controller;
-
   const DeliveryRoomInfo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // if (Get.arguments == null) {
-    //   return Center(child: CircularProgressIndicator());
-    // }
-    //
-    // print('DeliveryRoomInfo.build');
-    // index = Get.arguments["index"];
-    // print("index: $index");
-    // controller = Get.arguments["controller"];
-    // print("controller: $controller");
-
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),

@@ -79,10 +79,11 @@ class LoginController extends GetxController {
     await Future.delayed(Duration(milliseconds: 500));
     phoneNumber = phoneNumber.replaceAll(" ", "");
 
-    if (isNewUser) {
-      print("is new user");
-      await signUp();
-    }
+    // NOTE : 완료되면 해제 필요
+    // if (isNewUser) {
+    //   print("is new user");
+    //   await signUp();
+    // }
 
     await login();
 

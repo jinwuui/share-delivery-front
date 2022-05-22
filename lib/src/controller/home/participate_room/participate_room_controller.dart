@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
+import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/home/participate_room_repository.dart';
@@ -59,6 +60,7 @@ class ParticipateRoomController extends GetxController {
   }
 
   Future<void> participateDeliveryRoom(DeliveryRoom deliveryRoom) async {
+    await Future.delayed(Duration(milliseconds: 500));
     print('ParticipateRoomController.participateDeliveryRoom');
 
     if (!validateMenuList()) {
@@ -74,7 +76,18 @@ class ParticipateRoomController extends GetxController {
     String result =
         await repository.participateDeliveryRoom(deliveryRoom.roomId, list);
     if (result == "ACCEPTED") {
+      // NOTE : 모집글 참여 신청 완료 시, 페이지 이동
+
+      // NOTE : 1안 - 홈화면까지 pop -> DELIVERY_HISTORY_DETAIL 로 이동
       Get.until((route) => Get.currentRoute == Routes.INITIAL);
+      Get.find<RootController>().changeRootPageIndex(1);
+      Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+
+      // NOTE : 2안 - 홈화면까지 pop -> DELIVERY_HISTORY_DETAIL 로 이동 (뒤로가기 버튼이 안 생김...)
+      // Get.offNamedUntil(
+      //   Routes.DELIVERY_HISTORY_DETAIL,
+      //   (route) => Get.currentRoute == Routes.INITIAL,
+      // );
     } else if (result == "EXCEPTION") {
       print("exception - participateDeliveryRoom");
     } else {

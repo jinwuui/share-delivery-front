@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/home/participate_room/participate_room_controller.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/ui/widgets/loader_overlay.dart';
 
 class ParticipateRoom extends GetView<ParticipateRoomController> {
   const ParticipateRoom({Key? key}) : super(key: key);
@@ -10,8 +12,8 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
   Widget build(BuildContext context) {
     return Obx(
       () => SafeArea(
-        child: Scaffold(
-          appBar: appBar(),
+        child: MyLoaderOverlay(
+          appBar: appBar(context),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -44,7 +46,7 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
     );
   }
 
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
       shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
       elevation: 0,
@@ -62,7 +64,9 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
           onPressed: () async {
             // TODO: 모집글 참여 신청 로직 필요
             print('ParticipateRoom.appBar');
-            controller.participateDeliveryRoom(Get.arguments);
+            context.loaderOverlay.show();
+            await controller.participateDeliveryRoom(Get.arguments);
+            context.loaderOverlay.hide();
           },
           child: const Text("신청", style: TextStyle(color: Colors.black)),
         ),

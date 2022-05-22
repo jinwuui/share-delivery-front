@@ -5,10 +5,10 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:safe_clipboard/safe_clipboard.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_store_category.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
@@ -92,7 +92,13 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
       ),
       actions: [
         IconButton(
-          onPressed: () => Get.toNamed(Routes.WRITING_MENU),
+          onPressed: () {
+            if (controller.validateDeliveryRoom()) {
+              Get.toNamed(Routes.WRITING_MENU);
+            } else {
+              GetSnackbar.on("입력 에러", "등록 정보를 모두 채워주세요!");
+            }
+          },
           icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
         ),
       ],
@@ -111,7 +117,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                 controller: controller.content,
                 // controller: controller.deliveryRoomContent,
                 textInputAction: TextInputAction.next,
-                maxLength: 30,
+                maxLength: 50,
                 decoration: InputDecoration(
                   hintText: "글 제목",
                   border: InputBorder.none,
@@ -162,14 +168,10 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                      "집결지 : ${controller.descriptionOfReceivingLocation.text.isEmpty ? "" : controller.descriptionOfReceivingLocation.text}"),
+                      "집결지 : ${controller.receivingLocation == null ? "" : controller.receivingLocation!.description}"),
                   OutlinedButton(
-                    onPressed: () {
-                      Get.bottomSheet(
-                        const PickReceivingLocation(),
-                        isScrollControlled: true,
-                      );
-                    },
+                    onPressed: () =>
+                        Get.toNamed(Routes.PICK_RECEIVING_LOCATION),
                     child: const Text("설정"),
                   )
                 ],

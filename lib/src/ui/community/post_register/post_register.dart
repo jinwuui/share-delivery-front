@@ -272,8 +272,6 @@ class PostRegister extends GetView<PostRegisterController> {
   }
 
   PreferredSizeWidget appBar() {
-    // print("isnull? ${controller.postContent.text.trim().isEmpty}");
-
     return AppBar(
       shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
       elevation: 0,
@@ -285,7 +283,7 @@ class PostRegister extends GetView<PostRegisterController> {
           color: Colors.black,
         ),
       ),
-      title: const Text("생활 공유", style: postRegisterTitle),
+      title: const Text("생활 공유", style: appBarTitle),
       actions: [
         TextButton(
           onPressed: controller.isContentEmpty.value
@@ -296,7 +294,7 @@ class PostRegister extends GetView<PostRegisterController> {
           child: Text("완료"),
           style: TextButton.styleFrom(
             primary: Colors.black,
-            textStyle: postRegisterDone,
+            textStyle: appBarAction,
           ),
         ),
       ],

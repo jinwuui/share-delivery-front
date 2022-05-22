@@ -69,7 +69,7 @@ class SettingPostCategory extends GetView<PostRegisterController> {
         onPressed: () => Get.back(),
         icon: const Icon(Icons.arrow_back_rounded, color: Colors.black),
       ),
-      title: const Text("주제 선택", style: postRegisterTitle),
+      title: const Text("주제 선택", style: appBarTitle),
     );
   }
 

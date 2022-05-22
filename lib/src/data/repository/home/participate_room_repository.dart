@@ -8,7 +8,7 @@ class ParticipateRoomRepository {
 
   Future<String> participateDeliveryRoom(
       int roomId, List<Menu> menuList) async {
-    // return "ACCEPTED";
+    return "ACCEPTED";
     print('ParticipateRoomRepository.participateDeliveryRoom');
     return await apiClient.requestParticipating(roomId, menuList);
   }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/login/login_controller.dart';
 import 'package:share_delivery/src/ui/login/phone_number_text_field.dart';
+import 'package:share_delivery/src/ui/widgets/loader_overlay.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class PhoneNumberAuthentication extends GetView<LoginController> {
@@ -12,63 +13,60 @@ class PhoneNumberAuthentication extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Obx(
       () => SafeArea(
-        child: LoaderOverlay(
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: appBar(),
-            body: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: SingleChildScrollView(
-                controller: controller.scrollController.value,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Icon(Icons.lock_outlined, size: 100),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              "휴대폰 가입으로 이용해주세요.\n번호는 물론 안전하게 보관 됩니다.",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 17,
-                              ),
+        child: MyLoaderOverlay(
+          appBar: appBar(),
+          body: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: SingleChildScrollView(
+              controller: controller.scrollController.value,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Icon(Icons.lock_outlined, size: 100),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "휴대폰 가입으로 이용해주세요.\n번호는 물론 안전하게 보관 됩니다.",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                    PhoneNumberTextField(),
-                    ElevatedButton(
-                      child: Text(
-                        controller.onTextFieldSMS.value
-                            ? "인증문자 다시 받기 (04분 53초)"
-                            : "인증문자 받기",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 17,
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.orange,
-                        textStyle: const TextStyle(fontSize: 20),
-                        elevation: 0,
-                        fixedSize: Size(Get.width * 0.9, Get.height * 0.06),
-                      ),
-                      onPressed: controller.isEnabledRequestSMSButton.value
-                          ? () => controller.requestAuthSMS()
-                          : null,
+                      ],
                     ),
-                    controller.onTextFieldSMS.value
-                        ? authInputForm(context)
-                        : findAccountUsingEmail(),
-                    SizedBox(height: Get.height < 700 ? 400 : 500),
-                  ],
-                ),
+                  ),
+                  PhoneNumberTextField(),
+                  ElevatedButton(
+                    child: Text(
+                      controller.onTextFieldSMS.value
+                          ? "인증문자 다시 받기 (04분 53초)"
+                          : "인증문자 받기",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.orange,
+                      textStyle: const TextStyle(fontSize: 20),
+                      elevation: 0,
+                      fixedSize: Size(Get.width * 0.9, Get.height * 0.06),
+                    ),
+                    onPressed: controller.isEnabledRequestSMSButton.value
+                        ? () => controller.requestAuthSMS()
+                        : null,
+                  ),
+                  controller.onTextFieldSMS.value
+                      ? authInputForm(context)
+                      : findAccountUsingEmail(),
+                  SizedBox(height: Get.height < 700 ? 400 : 500),
+                ],
               ),
             ),
           ),
