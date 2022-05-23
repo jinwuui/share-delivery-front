@@ -75,7 +75,7 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     // 사용자 위치 불러오기
-    await getUserLocation();
+    // await getUserLocation();
     // TODO : 모집글 불러오기
     findDeliveryRooms();
   }
