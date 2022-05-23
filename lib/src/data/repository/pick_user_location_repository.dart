@@ -1,4 +1,5 @@
 import 'package:location/location.dart';
+import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/provider/widgets/pick_user_location_local_client.dart';
 
 class PickUserLocationRepository {
@@ -6,7 +7,12 @@ class PickUserLocationRepository {
 
   PickUserLocationRepository({required this.localClient});
 
-  void saveLocationDataToLocal(LocationData locationData) {
-    localClient.register(locationData);
+  void saveLocationDataToLocal(String description, LocationData locationData) {
+    UserLocation userLocation = UserLocation(
+        description: description,
+        latitude: locationData.latitude!,
+        longitude: locationData.longitude!);
+
+    localClient.register(userLocation);
   }
 }

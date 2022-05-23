@@ -1,7 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
+import 'package:share_delivery/src/routes/route.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -10,12 +12,40 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   importance: Importance.max,
 );
 
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+const AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('@mipmap/ic_launcher');
+
+final InitializationSettings initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid);
+
 // Create the channel on the device
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
+  showNotificationView(message);
+}
+
+Future<void> showNotificationView(RemoteMessage message) async {
+  RemoteNotification? notification = message.notification;
+  AndroidNotification? android = message.notification?.android;
+
+  if (notification != null && android != null) {
+    flutterLocalNotificationsPlugin.show(
+      notification.hashCode,
+      notification.title,
+      notification.body,
+      NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel.id,
+          channel.name,
+          icon: android.smallIcon,
+        ),
+      ),
+    );
+  }
 }
 
 class NotificationController extends GetxController {
@@ -33,6 +63,11 @@ class NotificationController extends GetxController {
   }
 
   Future<void> _initNotification() async {
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+    );
+
+    // init FirebaseMessaging permission
     _messaging.requestPermission(
       alert: true,
       announcement: true,
@@ -43,36 +78,11 @@ class NotificationController extends GetxController {
       sound: true,
     );
 
+    // init flutter local notification android channel
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-
-    // background (callback 항상 최상단에 있어야 함)
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
-    // foreground
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              icon: android.smallIcon,
-            ),
-          ),
-        );
-      }
-    });
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -80,9 +90,37 @@ class NotificationController extends GetxController {
       badge: true,
       sound: true,
     );
+
+    // background (callback 항상 최상단에 있어야 함)
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    // foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // local notification to show to users using the created channel.
+      showNotificationView(message);
+
+      _handleMessage(message);
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
   Future<void> _getToken() async {
     fcmToken = (await _messaging.getToken())!;
+    print(fcmToken);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    print(message);
+    print(message.data);
+
+    final eventType = message.data['type'];
+    if (eventType == "recuritmentCompleted") {
+      DeliveryOrderController.to
+          .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
+      //TODO: tonamed 시 widget rebuild 되는지 테스트
+      Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+      DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
+    } else if (eventType == "deliveryRoomUpdated") {}
   }
 }

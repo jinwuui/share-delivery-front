@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/order_detail.dart';
 
@@ -20,42 +22,37 @@ class UserOrder extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          OrderDetail(),
           Expanded(
-            // width: 80,
-            child: Column(
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.transparent,
-                    elevation: 0.0,
-                    side: BorderSide(width: 1.0, color: Colors.grey.shade300),
+              flex: 3,
+              child: OrderDetail(userWithOrderModel: userWithOrderModel)),
+          userWithOrderModel.userId != "park"
+              ? Expanded(
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.transparent,
+                          elevation: 0.0,
+                          side: BorderSide(
+                              width: 1.0, color: Colors.grey.shade300),
+                        ),
+                        onPressed: () {
+                          Get.snackbar("주문 취소", "다른 사용자의 주문을 취소하였습니다.");
+
+                          DeliveryRecruitController.to
+                              .deleteUserWithOrder(userWithOrderModel.userId);
+                        },
+                        child: Text(
+                          "취소",
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () {},
-                  child: Text(
-                    "확인",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.transparent,
-                    elevation: 0.0,
-                    side: BorderSide(width: 1.0, color: Colors.grey.shade300),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    "취소",
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );

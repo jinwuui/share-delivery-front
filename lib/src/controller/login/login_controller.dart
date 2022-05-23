@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/ui/login/state/login_state.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class LoginController extends GetxController {
   final AuthenticationController _authenticationController = Get.find();
@@ -16,34 +22,89 @@ class LoginController extends GetxController {
   RxBool isEnabledRequestSMSButton = false.obs;
   RxBool isEnabledVerifyButton = false.obs;
   RxBool onTextFieldSMS = false.obs;
-  bool isNewUser = false;
+  bool isNewUser = true;
 
   Rx<ScrollController> scrollController = ScrollController().obs;
 
-  void requestAuthSMS() async {
-    String result = await _authenticationController.requestAuthSMS(phoneNumber);
-    if (result == "ERROR") {
-      // TODO : "다시 발송 요청 해주십쇼" 메시지 화면에 출력
-      print("ERROR");
-      Get.snackbar("요청 에러", "다시 클릭해주세요.");
+  // 인증 SMS 요청하기
+  void requestAuthSMS() {
+    if (isEnabledSendRequest.value) {
+      isEnabledSendRequest.value = false;
+
+      GetSnackbar.on("요청 성공", "인증번호가 문자로 전송됐습니다.");
+      requestAuthSMS2Controller();
+      changeToAuthUI();
     } else {
-      // TODO : 인증 번호 작성을 위한 폼펙터로 변경
+      GetSnackbar.err("요청 실패", "10초 이내에는 인증번호를 요청할 수 없습니다.");
+    }
 
-      if (result == "NEW") {
-        isNewUser = true;
-      } else if (result == "EXIST") {
-        isNewUser = false;
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
+  // 컨트롤러에게 인증 SMS 요청하기
+  void requestAuthSMS2Controller() async {
+    onTextFieldSMS.value = true;
+    phoneNumber = phoneNumber.replaceAll(" ", "");
+
+    Map<String, dynamic> result =
+        await _authenticationController.requestAuthSMS(phoneNumber);
+
+    if (result["verificationType"] == "ERROR") {
+      print("ERROR");
+      GetSnackbar.err("요청 에러", "다시 클릭해주세요.");
+      return;
+    }
+
+    isNewUser = result["verificationType"] == "LOGIN" ? false : true;
+    print("isNewUser $isNewUser");
+    onTextFieldSMS.value = true;
+  }
+
+  void changeToAuthUI() {
+    scrollController.value.animateTo(
+      Get.height * 0.23,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.ease,
+    );
+    Timer(Duration(seconds: 10), () {
+      try {
+        isEnabledSendRequest.value = true;
+      } catch (e) {
+        print("NOT FOUND CONTROLLER");
       }
+    });
+  }
 
-      onTextFieldSMS.value = true;
+  Future<void> authenticate() async {
+    await Future.delayed(Duration(milliseconds: 500));
+    phoneNumber = phoneNumber.replaceAll(" ", "");
+
+    // NOTE : 완료되면 해제 필요
+    // if (isNewUser) {
+    //   print("is new user");
+    //   await signUp();
+    // }
+
+    await login();
+
+    // 로그인 결과
+    Type loginStatus = state.runtimeType;
+
+    if (loginStatus == LoginFailure) {
+      GetSnackbar.err("인증 실패!", "다시 시도해주세요.");
+      print(state.props);
+    } else if (loginStatus == LoginSuccess) {
+      print("Login Success");
+      Get.offAllNamed(Routes.INITIAL);
     }
   }
 
   // 사용자가 작성한 이메일 패스워드로 회원 가입 시도
   Future<void> signUp() async {
     try {
-      await _authenticationController.signUp(phoneNumber, authNumber);
-      await login();
+      User user =
+          await _authenticationController.signUp(phoneNumber, authNumber);
+      if (user.accountId != -1) isNewUser = false;
     } catch (e) {
       print(e);
     }
@@ -57,14 +118,14 @@ class LoginController extends GetxController {
     try {
       await _authenticationController.signIn(phoneNumber, authNumber);
 
-      _loginStateStream.value = LoginSuccess();
+      if (_authenticationController.state.runtimeType == Authenticated) {
+        _loginStateStream.value = LoginSuccess();
+      } else {
+        throw Exception("로그인을 실패하였습니다 - 인증 번호 틀림!");
+      }
     } catch (e) {
       _loginStateStream.value = LoginFailure(error: e.toString());
     }
-  }
-
-  void setIsEnabledSendRequest(bool value) {
-    isEnabledSendRequest.value = value;
   }
 
   void setIsEnabledRequestSMSButton(bool value) {

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 class DeliveryRoomList extends StatefulWidget {
   const DeliveryRoomList({Key? key}) : super(key: key);
@@ -19,20 +20,21 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
   Widget build(BuildContext context) {
     return Center(
       child: ListView.separated(
+        itemCount: controller.deliveryRooms.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            Get.toNamed(Routes.DELIVERY_ROOM_INFO, arguments: index);
+            controller.setCurSelectedIdx(index);
+            Get.toNamed(Routes.DELIVERY_ROOM_INFO);
           },
-          child: DeliveryHistoryDummyPost(index: index),
+          child: DeliveryRoomPost(index: index),
         ),
-        separatorBuilder: (_, index) => Divider(
+        separatorBuilder: (_, __) => const Divider(
           endIndent: 20,
           indent: 20,
-          color: Colors.grey.shade300,
+          color: Color.fromRGBO(224, 224, 224, 1),
           height: 0.5,
           thickness: 1,
         ),
-        itemCount: 5,
       ),
     );
 
@@ -43,7 +45,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
             20,
             (index) => GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+                // Get.toNamed(Routes.DELIVERY_ROOM_INFO);
               },
               child: Column(
                 children: [
@@ -75,16 +77,14 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
   bool get wantKeepAlive => true;
 }
 
-class DeliveryHistoryDummyPost extends GetView<HomeController> {
+class DeliveryRoomPost extends GetView<HomeController> {
   final int index;
-  const DeliveryHistoryDummyPost({Key? key, required this.index})
-      : super(key: key);
+  const DeliveryRoomPost({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DeliveryRoom _deliveryRoom = controller.deliveryRooms.value[index];
+    DeliveryRoom _deliveryRoom = controller.deliveryRooms[index];
 
-    // print(controller.deliveryRooms.value[index]);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -115,7 +115,7 @@ class DeliveryHistoryDummyPost extends GetView<HomeController> {
                   width: 120,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.orange,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8.0),
                       bottomRight: Radius.circular(8.0),
@@ -135,7 +135,7 @@ class DeliveryHistoryDummyPost extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${_deliveryRoom.content}",
+                    _deliveryRoom.content,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
@@ -143,33 +143,35 @@ class DeliveryHistoryDummyPost extends GetView<HomeController> {
                   ),
                   Row(
                     children: [
-                      Text("수령장소"),
+                      Text(_deliveryRoom.receivingLocation.description),
                       SizedBox(
                         height: 10,
                         child:
                             VerticalDivider(thickness: 1, color: Colors.grey),
                       ),
-                      Text("5분전"),
+                      Text(
+                        TimeUtil.timeAgo(
+                          _deliveryRoom.createdDateTime.toLocal(),
+                        ),
+                      ),
                     ],
                   ),
+                  Text(controller
+                          .distanceBetween(_deliveryRoom.receivingLocation)
+                          .toString() +
+                      " m"),
                   SizedBox(
                     height: 20,
                   ),
-                  // Text("메뉴 이름"),
-                  // Text("메뉴 가격"),
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.people,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
+                        Icon(Icons.people),
+                        SizedBox(width: 4),
                         Text(
-                            "${_deliveryRoom.limitPerson - 1} / ${_deliveryRoom.limitPerson} ")
+                            "${_deliveryRoom.person} / ${_deliveryRoom.limitPerson}")
                       ],
                     ),
                   )

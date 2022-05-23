@@ -5,4 +5,8 @@ class SharedPrefsUtil {
 
   static Future<SharedPreferences> init() async =>
       instance = await SharedPreferences.getInstance();
+
+  static void delete(String key) async {
+    instance.remove(key);
+  }
 }

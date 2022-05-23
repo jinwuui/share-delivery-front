@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/payment_of_order.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/user_order.dart';
 
@@ -13,29 +14,38 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(DeliveryRecruitController());
-    controller.userWithOrderList.add(
-      UserWithOrderModel(
-          userId: 'park', orderDate: DateTime.now(), menuList: []),
-    );
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...controller.userWithOrderList
-                .map((e) => UserOrder(
-                      userWithOrderModel: e,
-                    ))
-                .toList(),
-            // UserOrder(),
-            // UserOrder(),
-            // UserOrder(),
-            // UserOrder(),
-            _buildAmountOfOrder(),
-          ],
+    return controller.obx(
+      (userWithOrderList) => Scaffold(
+        body: SingleChildScrollView(
+          child: Obx(
+            () => Column(
+              children: [
+                ...userWithOrderList!
+                    .map((e) => UserOrder(
+                          userWithOrderModel: e,
+                        ))
+                    .toList(),
+                _buildAmountOfOrder(),
+              ],
+            ),
+          ),
         ),
+        bottomNavigationBar: _buildCheckComplitedButton(),
       ),
-      bottomNavigationBar: _buildCheckComplitedButton(),
+      onLoading: Center(child: CircularProgressIndicator()),
+      onError: (error) {
+        return Center(
+          child: Text(
+            'Error: $error',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
+      },
     );
   }
 
@@ -54,9 +64,7 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
 
   Widget _buildCheckComplitedButton() {
     return Container(
-      // margin: EdgeInsets.symmetric(vertical: 30),
       margin: const EdgeInsets.all(10.0),
-
       height: 50,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
@@ -71,45 +79,12 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
               seconds: 1,
             ),
           );
-          Get.find<DeliveryOrderController>().changeStatus('loading');
+          DeliveryRecruitController.to.completeRecurit();
+          DeliveryOrderController.to
+              .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
         },
         child: Text("주문 진행 확인"),
       ),
     );
   }
 }
-
-
-/*
-  Widget _buildOrderPaymentMoney() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 50.0),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("총 주문 금액 "),
-              Text("54000"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("배달비 "),
-              Text("4000"),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("총 예상 결제 금액 "),
-              Text("58000"),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-*/

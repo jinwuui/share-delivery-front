@@ -15,26 +15,6 @@ class Root extends GetView<RootController> {
     return Obx(
       () => SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            shape: const Border(
-                bottom: BorderSide(color: Colors.black26, width: 0.5)),
-            elevation: 0,
-            backgroundColor: Colors.white,
-            leading: controller.rootPageIndex.value == 0
-                ? TextButton(
-                    onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
-                    child: const Text(
-                      "위치 설정",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-            leadingWidth: 80,
-            title: const Text(
-              "",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
           body: IndexedStack(
             index: controller.rootPageIndex.value,
             children: const [
@@ -46,8 +26,10 @@ class Root extends GetView<RootController> {
           ),
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
-                border:
-                    Border(top: BorderSide(color: Colors.black54, width: 0.5))),
+              border: Border(
+                top: BorderSide(color: Colors.black54, width: 0.5),
+              ),
+            ),
             height: 49,
             child: BottomNavigationBar(
               elevation: 0,
@@ -84,15 +66,28 @@ class Root extends GetView<RootController> {
               showUnselectedLabels: true,
             ),
           ),
-          floatingActionButton: controller.rootPageIndex.value == 0
-              ? FloatingActionButton(
-                  backgroundColor: Colors.orange,
-                  onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
-                  child: const Icon(Icons.add_rounded, size: 40),
-                )
+          floatingActionButton: controller.rootPageIndex.value == 0 ||
+                  controller.rootPageIndex.value == 2
+              ? fab(controller.rootPageIndex.value)
               : const SizedBox.shrink(),
         ),
       ),
     );
+  }
+
+  Widget fab(int index) {
+    if (index == 0) {
+      return FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
+        child: const Icon(Icons.add_rounded, size: 40),
+      );
+    } else {
+      return FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: () => Get.toNamed(Routes.POST_REGISTER),
+        child: const Icon(Icons.edit, size: 30),
+      );
+    }
   }
 }

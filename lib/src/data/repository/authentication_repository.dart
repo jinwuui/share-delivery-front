@@ -1,4 +1,4 @@
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
 
@@ -9,7 +9,7 @@ class AuthenticationRepository {
   AuthenticationRepository(
       {required this.apiClient, required this.localClient});
 
-  Future<String> requestAuthSMS(String phoneNumber) {
+  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
     return apiClient.requestAuthSMS(phoneNumber);
   }
 
@@ -21,9 +21,13 @@ class AuthenticationRepository {
     try {
       Map<String, String> tokens =
           await apiClient.verifyAuthNumber(phoneNumber, authNumber);
-      localClient.saveTokens(tokens);
+
+      if (tokens["accessToken"] != null) {
+        localClient.saveTokens(tokens);
+      } else {
+        throw Exception();
+      }
     } catch (e) {
-      print(e);
       return false;
     }
 
@@ -32,9 +36,19 @@ class AuthenticationRepository {
 
   signOut() {}
 
-  getCurrentUser() {
-    // TODO : 로컬에 저장된 현재 유저 조회할 것
-    return User(
-        accountId: -1, status: '', phoneNumber: '', nickname: '', role: '');
+  User? getSavedUser() {
+    return localClient.getSavedUser();
+  }
+
+  Future<void> refreshToken() async {
+    // ApiClient 에서 API 요청 시에, 토큰이 만료되면 실행
+    // 1. 로컬에서 토큰 들고오기
+    Map<String, String> tokens = localClient.findTokens();
+
+    // 2. 토큰 받아오기
+    Map<String, String> newTokens = await apiClient.refreshToken(tokens);
+
+    // 3. 받아온 토큰을 로컬에 저장하기
+    localClient.saveTokens(newTokens);
   }
 }
