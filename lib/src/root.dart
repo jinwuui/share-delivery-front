@@ -15,26 +15,6 @@ class Root extends GetView<RootController> {
     return Obx(
       () => SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            shape: const Border(
-                bottom: BorderSide(color: Colors.black26, width: 0.5)),
-            elevation: 0,
-            backgroundColor: Colors.white,
-            leading: controller.rootPageIndex.value == 0
-                ? TextButton(
-                    onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
-                    child: const Text(
-                      "위치 설정",
-                      style: TextStyle(fontSize: 15, color: Colors.black),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-            leadingWidth: 80,
-            title: const Text(
-              "",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
           body: IndexedStack(
             index: controller.rootPageIndex.value,
             children: const [
