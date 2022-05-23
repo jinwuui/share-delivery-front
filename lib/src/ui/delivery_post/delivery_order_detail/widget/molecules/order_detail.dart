@@ -3,7 +3,7 @@ import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_or
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/element_with_money.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/user_with_date.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
-import 'package:share_delivery/src/utils/datetime_to_minute.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 class OrderDetail extends StatelessWidget {
   final UserWithOrderModel userWithOrderModel;
