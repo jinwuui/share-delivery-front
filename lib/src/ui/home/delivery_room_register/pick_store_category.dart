@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
+import 'package:share_delivery/src/utils/store_categories.dart';
 
 class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   const PickStoreCategory({Key? key}) : super(key: key);
@@ -54,7 +54,7 @@ class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
           child: Container(
             color: Colors.grey.shade200,
             child: GridView.builder(
-              itemCount: controller.storeCategories.length,
+              itemCount: foodCategories.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 mainAxisSpacing: 5,
@@ -71,11 +71,11 @@ class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   }
 
   Widget category(int index) {
-    String _storeCategory = controller.storeCategories[index].keys.first;
+    String _storeCategory = foodCategories[index].keys.first;
 
     return GestureDetector(
       onTap: () {
-        print(controller.storeCategories[index][_storeCategory]);
+        print(foodCategories[index][_storeCategory]);
         controller.setPickedStoreCategory(index);
         Get.back();
       },

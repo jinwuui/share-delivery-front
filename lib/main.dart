@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_persistent_keyboard_height/flutter_persistent_keyboard_height.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
@@ -15,6 +16,7 @@ import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/datetime_to_minute.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 import 'firebase_options.dart';
 
@@ -65,6 +67,11 @@ class MyApp extends GetView<AuthenticationController> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.state is Authenticated) {
+      print("is Auth");
+    } else {
+      print("no");
+    }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: BindingsBuilder(() {
@@ -81,6 +88,8 @@ class MyApp extends GetView<AuthenticationController> {
       initialRoute:
           controller.state is Authenticated ? Routes.INITIAL : Routes.LOGIN,
       getPages: AppPages.routes,
+      builder: (context, child) =>
+          PersistentKeyboardHeightProvider(child: child!),
     );
   }
 }

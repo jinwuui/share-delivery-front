@@ -1,53 +1,47 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:numberpicker/numberpicker.dart';
+import 'package:safe_clipboard/safe_clipboard.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_store_category.dart';
+import 'package:share_delivery/src/ui/theme/container_theme.dart';
+import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
+
+  Future<void> getClipboard({
+    iOSDetectionPattern? iOSDetectionPattern,
+    AndroidClipMimeType? androidClipMimeType,
+  }) async {
+    String clipboardValue;
+    try {
+      clipboardValue = await SafeClipboard.get(
+            iOSDetectionPattern: iOSDetectionPattern,
+            androidClipMimeType: androidClipMimeType,
+          ) ??
+          'Null response';
+    } on PlatformException {
+      clipboardValue = 'Failed to get clipboard data';
+    }
+
+    print("clip:: $clipboardValue");
+    // if (!mounted) return;
+    //
+    // setState(() {
+    //   _lastValue = clipboardValue;
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          shape: Border(bottom: BorderSide(color: Colors.black12, width: 1)),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          leading: TextButton(
-            onPressed: () => Get.back(),
-            child: const Text("닫기", style: TextStyle(color: Colors.black)),
-          ),
-          title: const Text(
-            "배달 모집글 등록",
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                // TODO: 모집글 등록 로직 필요
-                print("완료 - 모집글 등록 로직 필요");
-
-                if (await controller.registerDeliveryRoom()) {
-                  Get.back();
-                } else {
-                  Get.snackbar(
-                    "등록 실패",
-                    "모든 정보를 작성해주세요!",
-                    backgroundColor: Colors.black,
-                    colorText: Colors.white,
-                    duration: Duration(milliseconds: 1000),
-                  );
-                }
-              },
-              child: const Text("완료", style: TextStyle(color: Colors.black)),
-            ),
-          ],
-        ),
+        appBar: appBar(),
         body: Stack(
           children: [
             fillDetails(),
@@ -56,29 +50,58 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                     bottom: MediaQuery.of(context).viewInsets.bottom,
                     left: 0,
                     right: 0,
-                    duration: Duration(milliseconds: 100),
+                    duration: const Duration(milliseconds: 100),
                     child: Container(
-                      padding: EdgeInsets.only(right: 10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.only(right: 10),
+                      decoration: const BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: Colors.black12, width: 1)),
+                            bottom: BorderSide(color: Colors.black12, width: 1),
+                          ),
                           color: Colors.white),
                       height: 50,
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: IconButton(
-                          icon: Icon(Icons.keyboard_hide_outlined, size: 25),
+                          icon: const Icon(Icons.keyboard_hide_outlined,
+                              size: 25),
                           onPressed: () =>
                               FocusManager.instance.primaryFocus?.unfocus(),
                         ),
                       ),
                     ),
                   )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
           ],
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget appBar() {
+    return AppBar(
+      shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
+      elevation: 0,
+      backgroundColor: Colors.white,
+      leading: TextButton(
+        onPressed: () => Get.back(),
+        child: const Text("닫기", style: TextStyle(color: Colors.black)),
+      ),
+      title: const Text(
+        "배달 모집글 등록",
+        style: TextStyle(color: Colors.black),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            if (controller.validateDeliveryRoom()) {
+              Get.toNamed(Routes.WRITING_MENU);
+            } else {
+              GetSnackbar.on("입력 에러", "등록 정보를 모두 채워주세요!");
+            }
+          },
+          icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
+        ),
+      ],
     );
   }
 
@@ -88,47 +111,18 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
         padding: const EdgeInsets.all(15.0),
         child: GestureDetector(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextField(
                 controller: controller.content,
                 // controller: controller.deliveryRoomContent,
                 textInputAction: TextInputAction.next,
-                maxLength: 30,
+                maxLength: 50,
                 decoration: InputDecoration(
                   hintText: "글 제목",
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
-              ),
-              const Divider(height: 0),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: controller.storeLink,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        hintText: "배달 가게 링크",
-                        border: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      ClipboardData? data =
-                          await Clipboard.getData(Clipboard.kTextPlain);
-                      if (data == null) {
-                        print("< null >");
-                      } else {
-                        print(data.text);
-                        controller.storeLink.text = data.text!;
-                      }
-                    },
-                    child: const Text("붙여넣기"),
-                  ),
-                ],
               ),
               const Divider(height: 0),
               Row(
@@ -152,18 +146,32 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                 ],
               ),
               const Divider(height: 0),
+              Column(
+                children: [
+                  const Text("예상 배달비"),
+                  NumberPicker(
+                    value: controller.deliveryTip.value,
+                    minValue: 0,
+                    maxValue: 10000,
+                    step: 500,
+                    axis: Axis.horizontal,
+                    decoration: deliveryTipBox,
+                    selectedTextStyle: deliveryTipStyle,
+                    onChanged: (value) => controller.setDeliveryTip(value),
+                  ),
+                ],
+              ),
+              const Divider(height: 0),
+              storeInfo(),
+              const Divider(height: 0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                      "집결지 : ${controller.descriptionOfReceivingLocation.text.isEmpty ? "" : controller.descriptionOfReceivingLocation.text}"),
+                      "집결지 : ${controller.receivingLocation == null ? "" : controller.receivingLocation!.description}"),
                   OutlinedButton(
-                    onPressed: () {
-                      Get.bottomSheet(
-                        const PickReceivingLocation(),
-                        isScrollControlled: true,
-                      );
-                    },
+                    onPressed: () =>
+                        Get.toNamed(Routes.PICK_RECEIVING_LOCATION),
                     child: const Text("설정"),
                   )
                 ],
@@ -188,6 +196,43 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget storeInfo() {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            children: [
+              denseTextField(controller.storeName, "가게이름"),
+              denseTextField(controller.deliveryAppTypeOfStoreLink, "배달 어플"),
+              // denseTextField(controller.storeLink, "링크"),
+            ],
+          ),
+        ),
+        OutlinedButton(
+          onPressed: () async {
+            ClipboardData? data = await Clipboard.getData('text/plain');
+            controller.parsingStoreLink(data);
+          },
+          child: const Text("붙여넣기"),
+        ),
+      ],
+    );
+  }
+
+  Widget denseTextField(TextEditingController controller, String hintText) {
+    return TextField(
+      controller: controller,
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        isDense: true,
+      ),
+      style: Get.width < 400 ? TextStyle(fontSize: 14) : null,
     );
   }
 

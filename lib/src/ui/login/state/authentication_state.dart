@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 
 class AuthenticationState extends Equatable {
   const AuthenticationState();

@@ -26,8 +26,10 @@ class Root extends GetView<RootController> {
           ),
           bottomNavigationBar: Container(
             decoration: const BoxDecoration(
-                border:
-                    Border(top: BorderSide(color: Colors.black54, width: 0.5))),
+              border: Border(
+                top: BorderSide(color: Colors.black54, width: 0.5),
+              ),
+            ),
             height: 49,
             child: BottomNavigationBar(
               elevation: 0,
@@ -64,15 +66,28 @@ class Root extends GetView<RootController> {
               showUnselectedLabels: true,
             ),
           ),
-          floatingActionButton: controller.rootPageIndex.value == 0
-              ? FloatingActionButton(
-                  backgroundColor: Colors.orange,
-                  onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
-                  child: const Icon(Icons.add_rounded, size: 40),
-                )
+          floatingActionButton: controller.rootPageIndex.value == 0 ||
+                  controller.rootPageIndex.value == 2
+              ? fab(controller.rootPageIndex.value)
               : const SizedBox.shrink(),
         ),
       ),
     );
+  }
+
+  Widget fab(int index) {
+    if (index == 0) {
+      return FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
+        child: const Icon(Icons.add_rounded, size: 40),
+      );
+    } else {
+      return FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: () => Get.toNamed(Routes.POST_REGISTER),
+        child: const Icon(Icons.edit, size: 30),
+      );
+    }
   }
 }

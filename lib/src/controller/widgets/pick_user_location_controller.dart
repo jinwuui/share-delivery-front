@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/repository/pick_user_location_repository.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PickUserLocationController extends GetxController {
@@ -18,6 +21,7 @@ class PickUserLocationController extends GetxController {
   final Location location = Location();
   Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
   final RxBool _serviceEnabled = false.obs;
+  final TextEditingController locationDescription = TextEditingController();
 
   // 웹뷰 관련
   Rx<Completer<WebViewController>> webViewController =
@@ -144,6 +148,20 @@ class PickUserLocationController extends GetxController {
 
   void saveLocationDataToLocal() {
     print("-- 사용자가 선택한 위치를 로컬에 저장");
-    repository.saveLocationDataToLocal(locationData.value);
+    repository.saveLocationDataToLocal(
+        locationDescription.text, locationData.value);
+
+    // TODO : 새로고침 -> 홈화면이랑 로그인 위치설정화면이랑 겹쳐서 안돌아감
+    if (Get.previousRoute == Routes.INITIAL) {
+      Get.find<HomeController>().reloadWebView();
+    }
+  }
+
+  void changePage(String? next) {
+    if (next == null) {
+      Get.back();
+    } else {
+      Get.toNamed(Get.arguments);
+    }
   }
 }

@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
-import 'package:share_delivery/src/data/model/user/user.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class AuthenticationController extends GetxController {
   final AuthenticationRepository repository;
@@ -15,25 +16,49 @@ class AuthenticationController extends GetxController {
   @override
   void onInit() {
     _getAuthenticatedUser();
+    SmsAutoFill().listenForCode;
     super.onInit();
   }
 
-  Future<String> requestAuthSMS(String phoneNumber) {
+  @override
+  void onClose() {
+    SmsAutoFill().unregisterListener();
+    super.onClose();
+  }
+
+  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
+    print('AuthenticationController.requestAuthSMS $phoneNumber');
     return repository.requestAuthSMS(phoneNumber);
   }
 
   Future<User> signUp(String phoneNumber, String authNumber) async {
+    print('AuthenticationController.signUp : $phoneNumber, $authNumber');
+
     User user = await repository.signUp(phoneNumber, authNumber);
     _authenticationStateStream.value = Authenticated(user: user);
     return user;
   }
 
   Future<void> signIn(String phoneNumber, String authNumber) async {
-    print("sign In : $phoneNumber, $authNumber");
+    print('AuthenticationController.signIn : $phoneNumber, $authNumber');
 
     bool result = await repository.signIn(phoneNumber, authNumber);
+
+    // TODO : 삭제해야함
+    result = true;
+
     if (result) {
+      _authenticationStateStream.value = Authenticated(
+        user: User(
+            accountId: -1,
+            phoneNumber: "phoneNumber",
+            nickname: "nickname",
+            status: "status",
+            role: "role"),
+      );
       // TODO : 로그인 성공/실패 로직 처리
+    } else {
+      _authenticationStateStream.value = UnAuthenticated();
     }
   }
 
@@ -45,15 +70,21 @@ class AuthenticationController extends GetxController {
   void _getAuthenticatedUser() async {
     _authenticationStateStream.value = AuthenticationLoading();
 
-    final User? user = await repository.getCurrentUser(); // 홈 화면으로
-    // User? user; // 로그인 화면으로
+    final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
+    _authenticationStateStream.value = Authenticated(
+        user: User(
+            accountId: 1, phoneNumber: "", nickname: "", status: "", role: ""));
+    return;
 
     if (user == null) {
-      print("user == null");
       _authenticationStateStream.value = UnAuthenticated();
     } else {
-      print("user != null");
       _authenticationStateStream.value = Authenticated(user: user);
     }
+  }
+
+  Future<void> refreshToken() async {
+    print('AuthenticationController.refreshToken');
+    await repository.refreshToken();
   }
 }

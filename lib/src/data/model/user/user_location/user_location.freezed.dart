@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'receiving_location.dart';
+part of 'user_location.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,38 +14,37 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ReceivingLocation _$ReceivingLocationFromJson(Map<String, dynamic> json) {
-  return _ReceivingLocation.fromJson(json);
+UserLocation _$UserLocationFromJson(Map<String, dynamic> json) {
+  return _UserLocation.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ReceivingLocation {
+mixin _$UserLocation {
   String get description => throw _privateConstructorUsedError;
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ReceivingLocationCopyWith<ReceivingLocation> get copyWith =>
+  $UserLocationCopyWith<UserLocation> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ReceivingLocationCopyWith<$Res> {
-  factory $ReceivingLocationCopyWith(
-          ReceivingLocation value, $Res Function(ReceivingLocation) then) =
-      _$ReceivingLocationCopyWithImpl<$Res>;
+abstract class $UserLocationCopyWith<$Res> {
+  factory $UserLocationCopyWith(
+          UserLocation value, $Res Function(UserLocation) then) =
+      _$UserLocationCopyWithImpl<$Res>;
   $Res call({String description, double latitude, double longitude});
 }
 
 /// @nodoc
-class _$ReceivingLocationCopyWithImpl<$Res>
-    implements $ReceivingLocationCopyWith<$Res> {
-  _$ReceivingLocationCopyWithImpl(this._value, this._then);
+class _$UserLocationCopyWithImpl<$Res> implements $UserLocationCopyWith<$Res> {
+  _$UserLocationCopyWithImpl(this._value, this._then);
 
-  final ReceivingLocation _value;
+  final UserLocation _value;
   // ignore: unused_field
-  final $Res Function(ReceivingLocation) _then;
+  final $Res Function(UserLocation) _then;
 
   @override
   $Res call({
@@ -71,25 +70,25 @@ class _$ReceivingLocationCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ReceivingLocationCopyWith<$Res>
-    implements $ReceivingLocationCopyWith<$Res> {
-  factory _$ReceivingLocationCopyWith(
-          _ReceivingLocation value, $Res Function(_ReceivingLocation) then) =
-      __$ReceivingLocationCopyWithImpl<$Res>;
+abstract class _$$_UserLocationCopyWith<$Res>
+    implements $UserLocationCopyWith<$Res> {
+  factory _$$_UserLocationCopyWith(
+          _$_UserLocation value, $Res Function(_$_UserLocation) then) =
+      __$$_UserLocationCopyWithImpl<$Res>;
   @override
   $Res call({String description, double latitude, double longitude});
 }
 
 /// @nodoc
-class __$ReceivingLocationCopyWithImpl<$Res>
-    extends _$ReceivingLocationCopyWithImpl<$Res>
-    implements _$ReceivingLocationCopyWith<$Res> {
-  __$ReceivingLocationCopyWithImpl(
-      _ReceivingLocation _value, $Res Function(_ReceivingLocation) _then)
-      : super(_value, (v) => _then(v as _ReceivingLocation));
+class __$$_UserLocationCopyWithImpl<$Res>
+    extends _$UserLocationCopyWithImpl<$Res>
+    implements _$$_UserLocationCopyWith<$Res> {
+  __$$_UserLocationCopyWithImpl(
+      _$_UserLocation _value, $Res Function(_$_UserLocation) _then)
+      : super(_value, (v) => _then(v as _$_UserLocation));
 
   @override
-  _ReceivingLocation get _value => super._value as _ReceivingLocation;
+  _$_UserLocation get _value => super._value as _$_UserLocation;
 
   @override
   $Res call({
@@ -97,7 +96,7 @@ class __$ReceivingLocationCopyWithImpl<$Res>
     Object? latitude = freezed,
     Object? longitude = freezed,
   }) {
-    return _then(_ReceivingLocation(
+    return _then(_$_UserLocation(
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -116,14 +115,14 @@ class __$ReceivingLocationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ReceivingLocation implements _ReceivingLocation {
-  const _$_ReceivingLocation(
+class _$_UserLocation implements _UserLocation {
+  const _$_UserLocation(
       {required this.description,
       required this.latitude,
       required this.longitude});
 
-  factory _$_ReceivingLocation.fromJson(Map<String, dynamic> json) =>
-      _$$_ReceivingLocationFromJson(json);
+  factory _$_UserLocation.fromJson(Map<String, dynamic> json) =>
+      _$$_UserLocationFromJson(json);
 
   @override
   final String description;
@@ -134,14 +133,14 @@ class _$_ReceivingLocation implements _ReceivingLocation {
 
   @override
   String toString() {
-    return 'ReceivingLocation(description: $description, latitude: $latitude, longitude: $longitude)';
+    return 'UserLocation(description: $description, latitude: $latitude, longitude: $longitude)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ReceivingLocation &&
+            other is _$_UserLocation &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.latitude, latitude) &&
@@ -158,23 +157,23 @@ class _$_ReceivingLocation implements _ReceivingLocation {
 
   @JsonKey(ignore: true)
   @override
-  _$ReceivingLocationCopyWith<_ReceivingLocation> get copyWith =>
-      __$ReceivingLocationCopyWithImpl<_ReceivingLocation>(this, _$identity);
+  _$$_UserLocationCopyWith<_$_UserLocation> get copyWith =>
+      __$$_UserLocationCopyWithImpl<_$_UserLocation>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ReceivingLocationToJson(this);
+    return _$$_UserLocationToJson(this);
   }
 }
 
-abstract class _ReceivingLocation implements ReceivingLocation {
-  const factory _ReceivingLocation(
+abstract class _UserLocation implements UserLocation {
+  const factory _UserLocation(
       {required final String description,
       required final double latitude,
-      required final double longitude}) = _$_ReceivingLocation;
+      required final double longitude}) = _$_UserLocation;
 
-  factory _ReceivingLocation.fromJson(Map<String, dynamic> json) =
-      _$_ReceivingLocation.fromJson;
+  factory _UserLocation.fromJson(Map<String, dynamic> json) =
+      _$_UserLocation.fromJson;
 
   @override
   String get description => throw _privateConstructorUsedError;
@@ -184,6 +183,6 @@ abstract class _ReceivingLocation implements ReceivingLocation {
   double get longitude => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$ReceivingLocationCopyWith<_ReceivingLocation> get copyWith =>
+  _$$_UserLocationCopyWith<_$_UserLocation> get copyWith =>
       throw _privateConstructorUsedError;
 }
