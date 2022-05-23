@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_dto.dart';
 
 part 'delivery_order_detail_api_client.g.dart';

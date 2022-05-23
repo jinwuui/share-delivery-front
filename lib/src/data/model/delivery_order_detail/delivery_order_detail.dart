@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 
 part 'delivery_order_detail.freezed.dart';
 part 'delivery_order_detail.g.dart';

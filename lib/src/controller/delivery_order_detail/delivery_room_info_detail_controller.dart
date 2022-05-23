@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/model/delivery_room/leader.dart';
-import 'package:share_delivery/src/data/model/delivery_room/receiving_location.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 
 class DeliveryRoomInfoDetailController extends GetxController
@@ -14,19 +12,20 @@ class DeliveryRoomInfoDetailController extends GetxController
 
   // late final Rx<DeliveryRoom> deliveryRoom;
   Rx<DeliveryRoom> deliveryRoom = DeliveryRoom(
-    deliveryRoomId: "test",
-    leader: Leader(mannerScore: 0, nickname: ''),
-    content: "",
-    limitPerson: 0,
-    shareStoreLink: "",
-    linkPlatformType: "",
-    status: "",
-    createdDate: DateTime.now(),
+    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+    content: "BBQ 드실분?",
+    person: 1,
+    limitPerson: 3,
+    deliveryTip: 3000,
+    storeLink: "www.baemin.com/stores?id=1524",
+    platformType: "BAEMIN",
+    status: "NULL",
+    createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
     receivingLocation: ReceivingLocation(
-      description: "",
-      latitude: 0,
-      longitude: 0,
-    ),
+        description: "CU 편의점 앞",
+        latitude: 35.820848788632226,
+        longitude: 128.518205019348),
+    roomId: 456,
   ).obs;
 
   @override

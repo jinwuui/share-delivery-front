@@ -46,8 +46,8 @@ class DeliveryRecruitController extends GetxController
 
   Future<void> deleteUserWithOrder(String userId) async {
     try {
-      String roomId =
-          DeliveryRoomInfoDetailController.to.deliveryRoom.value.deliveryRoomId;
+      // String roomId =
+      //     DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
 
       //TODO: API
       // await repository.rejectUserOrder(userId, roomId);

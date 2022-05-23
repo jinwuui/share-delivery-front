@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room.dart';
 
 class DeliveryRoomInfoDetail extends GetView<DeliveryRoomInfoDetailController> {
   const DeliveryRoomInfoDetail({Key? key}) : super(key: key);
@@ -133,7 +132,7 @@ class DeliveryRoomInfoDetail extends GetView<DeliveryRoomInfoDetailController> {
                             ),
                             Icon(Icons.east),
                             Text(
-                              _deliveryRoom.linkPlatformType == "BAEMIN"
+                              _deliveryRoom.platformType == "BAEMIN"
                                   ? "배민"
                                   : "요기요",
                               style: TextStyle(fontWeight: FontWeight.w800),
@@ -141,7 +140,7 @@ class DeliveryRoomInfoDetail extends GetView<DeliveryRoomInfoDetailController> {
                           ],
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: _deliveryRoom.linkPlatformType == "BAEMIN"
+                          primary: _deliveryRoom.platformType == "BAEMIN"
                               ? Color.fromRGBO(42, 193, 188, 1)
                               : Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔
                           textStyle: const TextStyle(fontSize: 17),
