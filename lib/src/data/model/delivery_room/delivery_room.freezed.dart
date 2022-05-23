@@ -20,6 +20,7 @@ DeliveryRoom _$DeliveryRoomFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$DeliveryRoom {
+  String get deliveryRoomId => throw _privateConstructorUsedError;
   Leader get leader => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int get limitPerson => throw _privateConstructorUsedError;
@@ -41,7 +42,8 @@ abstract class $DeliveryRoomCopyWith<$Res> {
           DeliveryRoom value, $Res Function(DeliveryRoom) then) =
       _$DeliveryRoomCopyWithImpl<$Res>;
   $Res call(
-      {Leader leader,
+      {String deliveryRoomId,
+      Leader leader,
       String content,
       int limitPerson,
       String shareStoreLink,
@@ -64,6 +66,7 @@ class _$DeliveryRoomCopyWithImpl<$Res> implements $DeliveryRoomCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? deliveryRoomId = freezed,
     Object? leader = freezed,
     Object? content = freezed,
     Object? limitPerson = freezed,
@@ -74,6 +77,10 @@ class _$DeliveryRoomCopyWithImpl<$Res> implements $DeliveryRoomCopyWith<$Res> {
     Object? receivingLocation = freezed,
   }) {
     return _then(_value.copyWith(
+      deliveryRoomId: deliveryRoomId == freezed
+          ? _value.deliveryRoomId
+          : deliveryRoomId // ignore: cast_nullable_to_non_nullable
+              as String,
       leader: leader == freezed
           ? _value.leader
           : leader // ignore: cast_nullable_to_non_nullable
@@ -132,7 +139,8 @@ abstract class _$DeliveryRoomCopyWith<$Res>
       __$DeliveryRoomCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Leader leader,
+      {String deliveryRoomId,
+      Leader leader,
       String content,
       int limitPerson,
       String shareStoreLink,
@@ -159,6 +167,7 @@ class __$DeliveryRoomCopyWithImpl<$Res> extends _$DeliveryRoomCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? deliveryRoomId = freezed,
     Object? leader = freezed,
     Object? content = freezed,
     Object? limitPerson = freezed,
@@ -169,6 +178,10 @@ class __$DeliveryRoomCopyWithImpl<$Res> extends _$DeliveryRoomCopyWithImpl<$Res>
     Object? receivingLocation = freezed,
   }) {
     return _then(_DeliveryRoom(
+      deliveryRoomId: deliveryRoomId == freezed
+          ? _value.deliveryRoomId
+          : deliveryRoomId // ignore: cast_nullable_to_non_nullable
+              as String,
       leader: leader == freezed
           ? _value.leader
           : leader // ignore: cast_nullable_to_non_nullable
@@ -207,20 +220,24 @@ class __$DeliveryRoomCopyWithImpl<$Res> extends _$DeliveryRoomCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_DeliveryRoom implements _DeliveryRoom {
+class _$_DeliveryRoom extends _DeliveryRoom {
   const _$_DeliveryRoom(
-      {required this.leader,
+      {required this.deliveryRoomId,
+      required this.leader,
       required this.content,
       required this.limitPerson,
       required this.shareStoreLink,
       required this.linkPlatformType,
       required this.status,
       required this.createdDate,
-      required this.receivingLocation});
+      required this.receivingLocation})
+      : super._();
 
   factory _$_DeliveryRoom.fromJson(Map<String, dynamic> json) =>
       _$$_DeliveryRoomFromJson(json);
 
+  @override
+  final String deliveryRoomId;
   @override
   final Leader leader;
   @override
@@ -240,7 +257,7 @@ class _$_DeliveryRoom implements _DeliveryRoom {
 
   @override
   String toString() {
-    return 'DeliveryRoom(leader: $leader, content: $content, limitPerson: $limitPerson, shareStoreLink: $shareStoreLink, linkPlatformType: $linkPlatformType, status: $status, createdDate: $createdDate, receivingLocation: $receivingLocation)';
+    return 'DeliveryRoom(deliveryRoomId: $deliveryRoomId, leader: $leader, content: $content, limitPerson: $limitPerson, shareStoreLink: $shareStoreLink, linkPlatformType: $linkPlatformType, status: $status, createdDate: $createdDate, receivingLocation: $receivingLocation)';
   }
 
   @override
@@ -248,6 +265,8 @@ class _$_DeliveryRoom implements _DeliveryRoom {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _DeliveryRoom &&
+            const DeepCollectionEquality()
+                .equals(other.deliveryRoomId, deliveryRoomId) &&
             const DeepCollectionEquality().equals(other.leader, leader) &&
             const DeepCollectionEquality().equals(other.content, content) &&
             const DeepCollectionEquality()
@@ -267,6 +286,7 @@ class _$_DeliveryRoom implements _DeliveryRoom {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(deliveryRoomId),
       const DeepCollectionEquality().hash(leader),
       const DeepCollectionEquality().hash(content),
       const DeepCollectionEquality().hash(limitPerson),
@@ -287,9 +307,10 @@ class _$_DeliveryRoom implements _DeliveryRoom {
   }
 }
 
-abstract class _DeliveryRoom implements DeliveryRoom {
+abstract class _DeliveryRoom extends DeliveryRoom {
   const factory _DeliveryRoom(
-      {required final Leader leader,
+      {required final String deliveryRoomId,
+      required final Leader leader,
       required final String content,
       required final int limitPerson,
       required final String shareStoreLink,
@@ -297,10 +318,13 @@ abstract class _DeliveryRoom implements DeliveryRoom {
       required final String status,
       required final DateTime createdDate,
       required final ReceivingLocation receivingLocation}) = _$_DeliveryRoom;
+  const _DeliveryRoom._() : super._();
 
   factory _DeliveryRoom.fromJson(Map<String, dynamic> json) =
       _$_DeliveryRoom.fromJson;
 
+  @override
+  String get deliveryRoomId => throw _privateConstructorUsedError;
   @override
   Leader get leader => throw _privateConstructorUsedError;
   @override

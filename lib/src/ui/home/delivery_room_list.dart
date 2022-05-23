@@ -115,7 +115,7 @@ class DeliveryHistoryDummyPost extends GetView<HomeController> {
                   width: 120,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.orange,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8.0),
                       bottomRight: Radius.circular(8.0),

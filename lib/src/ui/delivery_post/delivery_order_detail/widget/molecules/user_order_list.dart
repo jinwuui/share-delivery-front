@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/element_with_money.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/order_detail.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 // TODO: user order controller
@@ -8,36 +12,23 @@ class UserOrderList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<ElementWithMoney> orderList = [];
+
+    OrderFormRegisterController.to.orderList.forEach((element) {
+      element.forEach((key, value) => orderList.add(ElementWithMoney(
+          elementName: key,
+          money: value.toString(),
+          axisAlignment: MainAxisAlignment.start,
+          textStyle: menuTextStyle)));
+    });
+
     return Container(
       padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ElementWithMoney(
-            elementName: '황금올리브',
-            money: '14000',
-            axisAlignment: MainAxisAlignment.start,
-            textStyle: menuTextStyle,
-          ),
-          ElementWithMoney(
-            elementName: '자메이카',
-            money: '15000',
-            axisAlignment: MainAxisAlignment.start,
-            textStyle: menuTextStyle,
-          ),
-          ElementWithMoney(
-            elementName: '황올순살',
-            money: '16000',
-            axisAlignment: MainAxisAlignment.start,
-            textStyle: menuTextStyle,
-          ),
-          ElementWithMoney(
-            elementName: '메이플',
-            money: '17000',
-            axisAlignment: MainAxisAlignment.start,
-            textStyle: menuTextStyle,
-          ),
-        ],
+        children: DeliveryRecruitController.to.userWithOrderList
+            .map((element) => OrderDetail(userWithOrderModel: element))
+            .toList(),
       ),
     );
   }

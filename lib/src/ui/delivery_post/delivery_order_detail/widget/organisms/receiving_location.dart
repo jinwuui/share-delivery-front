@@ -8,6 +8,8 @@ class RecevingLocation extends GetView<ReceivingLocationController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ReceivingLocationController());
+
     return Container(
       padding: const EdgeInsets.all(20.0),
       child: Column(

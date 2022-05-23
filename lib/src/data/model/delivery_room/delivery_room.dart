@@ -7,7 +7,10 @@ part 'delivery_room.g.dart';
 
 @Freezed()
 class DeliveryRoom with _$DeliveryRoom {
+  const DeliveryRoom._();
+
   const factory DeliveryRoom({
+    required String deliveryRoomId,
     required Leader leader,
     required String content,
     required int limitPerson,

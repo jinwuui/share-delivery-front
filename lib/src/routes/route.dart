@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/bindings/delivery_recruit/delivery_room_detail_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
@@ -6,7 +7,9 @@ import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
 import 'package:share_delivery/src/root.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
-import 'package:share_delivery/src/ui/delivery_post/expanded_image_page.dart';
+import 'package:share_delivery/src/ui/profile/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/app_setting.dart';
+import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
@@ -32,6 +35,10 @@ abstract class Routes {
   // 로그인
   static const LOGIN = "/login";
   static const PHONE_NUMBER_AUTHENTICATION = "/phoneNumberAuthentication";
+
+  // 프로필
+  static const APP_SETTING = "/appSetting";
+  static const ACCOUNT_MANAGE = "/accountManage";
 }
 
 class AppPages {
@@ -80,6 +87,12 @@ class AppPages {
     GetPage(
       name: Routes.EXPANDED_IMAGE_PAGE,
       page: () => const ExpandedImagePage(),
+    ),
+    GetPage(
+      name: Routes.APP_SETTING,
+      page: () => const AppSetting(),
+      transition: Transition.rightToLeft,
+      curve: Curves.ease,
     ),
   ];
 }

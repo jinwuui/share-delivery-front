@@ -16,8 +16,6 @@ class DeliveryPaymentDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ReceivingLocationController());
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -25,11 +23,6 @@ class DeliveryPaymentDetail extends StatelessWidget {
           OrderFormScreenShotSection(),
           CheckOrderAndTotalPaymentSection(registerDiscountButton: false),
           CheckRemitOfUserSection(),
-          // Container(
-          //   width: 500,
-          //   height: 500,
-          //   child: DeliveryRoomOnMap(),
-          // ),
         ],
       ),
     );

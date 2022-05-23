@@ -237,27 +237,30 @@ class _PickReceivingLocationState extends State<PickReceivingLocation> {
                 ),
               ),
             ),
-            ElevatedButton(
-              child: Text("이 위치로 설정"),
-              style: ElevatedButton.styleFrom(
-                textStyle: TextStyle(fontSize: 17),
-                elevation: 0,
-                fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
-                primary: Colors.orange,
+            Expanded(
+              child: ElevatedButton(
+                child: Text("이 위치로 설정"),
+                style: ElevatedButton.styleFrom(
+                  textStyle: TextStyle(fontSize: 17),
+                  elevation: 0,
+                  fixedSize: Size(Get.width * 0.9, Get.height * 0.05),
+                  primary: Colors.orange,
+                ),
+                onPressed: () {
+                  if (controller
+                      .descriptionOfReceivingLocation.text.isNotEmpty) {
+                    Get.back();
+                  } else {
+                    Get.snackbar(
+                      "위치 설정 실패",
+                      "집결지 설명을 작성해주세요!",
+                      backgroundColor: Colors.black,
+                      colorText: Colors.white,
+                      duration: Duration(milliseconds: 1000),
+                    );
+                  }
+                },
               ),
-              onPressed: () {
-                if (controller.descriptionOfReceivingLocation.text.isNotEmpty) {
-                  Get.back();
-                } else {
-                  Get.snackbar(
-                    "위치 설정 실패",
-                    "집결지 설명을 작성해주세요!",
-                    backgroundColor: Colors.black,
-                    colorText: Colors.white,
-                    duration: Duration(milliseconds: 1000),
-                  );
-                }
-              },
             ),
           ],
         ),

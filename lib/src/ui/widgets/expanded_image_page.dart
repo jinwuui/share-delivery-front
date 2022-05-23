@@ -8,7 +8,8 @@ class ExpandedImagePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imageURL = Get.arguments;
+    String imageURL = Get.arguments['imagePath'];
+    String title = Get.arguments['title'];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -17,7 +18,7 @@ class ExpandedImagePage extends StatelessWidget {
           color: Colors.black, //change your color here
         ),
         title: Text(
-          "주문서 확인",
+          title,
           style: TextStyle(
             color: Colors.black,
             fontSize: 15,

@@ -156,6 +156,7 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   Future<bool> registerDeliveryRoom() async {
+    return true;
     try {
       Map deliveryRoomInfo = _getDeliveryRoomInfo();
 

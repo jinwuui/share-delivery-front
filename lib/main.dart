@@ -13,7 +13,7 @@ import 'package:share_delivery/src/data/provider/authentication/authentication_l
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
-import 'package:share_delivery/src/util/datetime_to_minute.dart';
+import 'package:share_delivery/src/utils/datetime_to_minute.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
 import 'firebase_options.dart';

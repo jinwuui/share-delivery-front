@@ -15,7 +15,10 @@ class OrderFormImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed('/exapndedImagePage', arguments: imageURL);
+        Get.toNamed(
+          '/exapndedImagePage',
+          arguments: {"imagePath": imageURL, "title": "주문서 확인"},
+        );
       },
       child: Stack(
         children: [

@@ -13,8 +13,6 @@ class RegisterOrderForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(OrderFormRegisterController());
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -42,12 +40,13 @@ class RegisterOrderForm extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           primary: Colors.orange,
         ),
-        onPressed: () {
+        onPressed: () async {
           if (Get.find<OrderFormRegisterController>().orderFormList.isEmpty) {
             Get.snackbar("주문 영수증 등록", "최소 1장의 주문 영수증을 등록해주세요!",
                 backgroundColor: Colors.white);
             return;
           }
+
           Get.snackbar(
             "주문 상세 정보 등록 완료",
             "배달 대기 화면으로 이동",
@@ -56,6 +55,9 @@ class RegisterOrderForm extends StatelessWidget {
               seconds: 1,
             ),
           );
+
+          await OrderFormRegisterController.to
+              .registerDeliveryRoomOrderDetail();
 
           DeliveryOrderController.to
               .changeStatus(DeliveryOrderStatus.orderCompleted);

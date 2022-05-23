@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
 
 import 'delivery_order_detail/delivery_order_tabview.dart';
 
@@ -62,7 +62,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                   child: TabBarView(
                       controller: DeliveryOrderTabController.to.controller,
                       children: [
-                        DeliveryRoomInfo(),
+                        DeliveryRoomInfoDetail(),
                         OrderTabView(),
                         Container(
                           child: Center(

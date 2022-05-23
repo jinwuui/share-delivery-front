@@ -30,7 +30,7 @@ class AuthenticationApiClient {
 
       // Uri url = Uri.parse("$host/api/auth/verification-sms");
       // final Response response =
-      //     await http.post(url, body: {"phoneNumber": phoneNumber});
+      // await http.post(url, body: {"phoneNumber": phoneNumber});
 
       if (response.statusCode == 202) {
         return response.body;

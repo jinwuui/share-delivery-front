@@ -1,99 +1,88 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
+import 'package:share_delivery/src/data/model/delivery_history/delivery_history_model.dart';
+import 'package:share_delivery/src/data/provider/delivery_history/delivery_history_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_repository.dart';
+
 import 'package:share_delivery/src/routes/route.dart';
 
-class DeliveryHistory extends StatelessWidget {
+class DeliveryHistory extends GetView<DeliveryHistoryController> {
   const DeliveryHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller =
-        Get.put<DeliveryHistoryController>(DeliveryHistoryController(
-      deliveryHistoryRepository: DeliveryHistoryRepository(),
-    ));
-    List<DeliveryHistoryPost> list = [
-      DeliveryHistoryPost(
-        content: '투존치킨 먹을사람',
-        date: '5분전',
-        person: '1',
-        receivingLocation: '디지털관 앞',
-        status: '인원 모집중',
-        categoryImage: 'https://cdn-icons-png.flaticon.com/512/123/123282.png',
+    //TODO: 바인딩 찾아보기
+    Dio dio = Dio();
+    final String? host = dotenv.env['SERVER_HOST'];
+    Get.put<DeliveryHistoryController>(
+      DeliveryHistoryController(
+        deliveryHistoryRepository: DeliveryHistoryRepository(
+          apiClient: DeliveryHistoryApiClient(dio, baseUrl: host!),
+        ),
       ),
-      DeliveryHistoryPost(
-        content: '맘터 바로먹을분',
-        date: '10분전',
-        person: '2',
-        receivingLocation: 'gs 앞',
-        status: '인원 모집중',
-        categoryImage: 'https://cdn-icons-png.flaticon.com/128/405/405996.png',
-      ),
-      DeliveryHistoryPost(
-        content: '한솥 배달',
-        date: '50분전',
-        person: '4',
-        receivingLocation: '오름 2동',
-        status: '모집 마감',
-        categoryImage: 'https://cdn-icons-png.flaticon.com/128/641/641871.png',
-      ),
-      DeliveryHistoryPost(
-        content: '멕시카나',
-        date: '50분전',
-        person: '4',
-        receivingLocation: '오름 3동',
-        status: '모집 마감',
-        categoryImage: 'https://cdn-icons-png.flaticon.com/512/123/123282.png',
-      ),
-      DeliveryHistoryPost(
-        content: 'BHC',
-        date: '50분전',
-        person: '4',
-        receivingLocation: '오름 3동',
-        status: '모집 마감',
-        categoryImage: 'https://cdn-icons-png.flaticon.com/512/123/123282.png',
-      ),
-    ];
+    );
 
-    return Center(
-      child: ListView.separated(
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
-          },
-          child: list[index],
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
         ),
-        separatorBuilder: (_, index) => Divider(
-          endIndent: 20,
-          indent: 20,
-          color: Colors.grey.shade300,
-          height: 0.5,
-          thickness: 1,
+        title: Text(
+          "내 배달",
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 15,
+          ),
         ),
-        itemCount: list.length,
+        backgroundColor: Colors.transparent,
+        bottom: PreferredSize(
+          child: Container(
+            color: Colors.grey.shade300,
+            height: 1.0,
+          ),
+          preferredSize: Size.fromHeight(1.0),
+        ),
+        elevation: 0.0,
+      ),
+      body: controller.obx(
+        (historyPostList) => Center(
+          child: ListView.separated(
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () {
+                Get.toNamed(
+                  Routes.DELIVERY_HISTORY_DETAIL,
+                  arguments: {'deliveryRoomId': "1"},
+                );
+              },
+              child: DeliveryHistoryPost(
+                deliveryHistoryModel: historyPostList![index],
+              ),
+            ),
+            separatorBuilder: (_, index) => Divider(
+              endIndent: 20,
+              indent: 20,
+              color: Colors.grey.shade300,
+              height: 0.5,
+              thickness: 1,
+            ),
+            itemCount: historyPostList!.length,
+          ),
+        ),
       ),
     );
   }
 }
 
 class DeliveryHistoryPost extends StatelessWidget {
-  final String status;
-  final String content;
-  final String receivingLocation;
-  final String date;
-  final String person;
-  final String categoryImage;
+  final DeliveryHistoryModel deliveryHistoryModel;
 
   const DeliveryHistoryPost({
     Key? key,
-    required this.status,
-    required this.content,
-    required this.receivingLocation,
-    required this.date,
-    required this.person,
-    required this.categoryImage,
+    required this.deliveryHistoryModel,
   }) : super(key: key);
 
   @override
@@ -116,7 +105,8 @@ class DeliveryHistoryPost extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(categoryImage),
+                    image: NetworkImage(
+                        "https://cdn-icons-png.flaticon.com/512/123/123282.png"),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   color: Colors.grey.shade300,
@@ -124,8 +114,9 @@ class DeliveryHistoryPost extends StatelessWidget {
               ),
               Center(
                 child: _buildDeliveryRoomStatus(
-                  status,
-                  status == "인원 모집중" ? Colors.orangeAccent : Colors.black54,
+                  deliveryHistoryModel.status.toString(),
+                  Colors.red, // TODO: status 별로 color 구분
+                  // status == "인원 모집중" ? Colors.orangeAccent : Colors.black54,
                 ),
               ),
             ],
@@ -139,7 +130,7 @@ class DeliveryHistoryPost extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    content,
+                    deliveryHistoryModel.content,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
@@ -147,13 +138,13 @@ class DeliveryHistoryPost extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(receivingLocation),
+                      Text(deliveryHistoryModel.receivingLocationDesc),
                       SizedBox(
                         height: 10,
                         child:
                             VerticalDivider(thickness: 1, color: Colors.grey),
                       ),
-                      Text(date),
+                      Text("5분전"), //TODO: date 받아오기
                     ],
                   ),
                   SizedBox(
@@ -170,7 +161,8 @@ class DeliveryHistoryPost extends StatelessWidget {
                         SizedBox(
                           width: 4,
                         ),
-                        Text("$person / 4")
+                        Text(
+                            "${deliveryHistoryModel.peopleNumber} / ${deliveryHistoryModel.limitPerson}")
                       ],
                     ),
                   )

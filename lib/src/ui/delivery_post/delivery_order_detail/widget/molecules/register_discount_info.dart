@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/custom_text_form_field.dart';
 
@@ -99,7 +100,6 @@ class _RegisterDiscountInfoState extends State<RegisterDiscountInfo> {
                     ),
                   ),
                 ),
-                // SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
               ],
             ),
           ),

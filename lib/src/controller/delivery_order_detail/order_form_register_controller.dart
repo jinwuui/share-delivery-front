@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
+import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 
 class OrderFormRegisterController extends GetxController {
-  OrderFormRegisterController();
+  final DeliveryOrderDetailRepository repository;
+
+  static OrderFormRegisterController get to => Get.find();
+  OrderFormRegisterController({required this.repository});
 
   final orderFormList = <XFile>[].obs;
+  final orderList = [].obs;
   final discountMap = {}.obs;
+
+  @override
+  void onInit() {
+    print("Delivery Order Controller INit");
+    for (var element in DeliveryRecruitController.to.userWithOrderList) {
+      orderList.add(element.menuList);
+    }
+    super.onInit();
+  }
+
+  Future<void> registerDeliveryRoomOrderDetail() async {
+    await repository.registerDeliveryRoomOrderDetail();
+  }
 
   Future<void> pickImage() async {
     final ImagePicker _picker = ImagePicker();
 
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
       List<XFile> newList = [image!, ...orderFormList];
 
       if (newList.length > 2) {
@@ -56,22 +77,9 @@ class OrderFormRegisterController extends GetxController {
     discountMap.remove(k);
   }
 
-  // final deliveryTime = DateTime.now().obs;
-
-  // Future<void> updateDeliveryTime(int minute) async {
-  //   DateTime newDate = DateTime.utc(
-  //       deliveryTime.value.year,
-  //       deliveryTime.value.month,
-  //       deliveryTime.value.day,
-  //       deliveryTime.value.hour,
-  //       deliveryTime.value.minute + minute);
-
-  //   try {
-  //     deliveryTime.value = newDate;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  Future<void> addOrder(String menu, String money) async {
+    discountMap[menu] = money;
+  }
 }
 
 class ImagePickerException implements Exception {

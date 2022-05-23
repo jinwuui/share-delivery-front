@@ -20,6 +20,7 @@ class HomeController extends GetxController {
 
   RxList<DeliveryRoom> deliveryRooms = <DeliveryRoom>[
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
       content: "BBQ 드실분?",
       limitPerson: 3,
@@ -33,6 +34,7 @@ class HomeController extends GetxController {
           longitude: 128.5181884),
     ),
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "참새 1호", mannerScore: 36.3),
       content: "BHC 드실분?",
       limitPerson: 2,
@@ -46,6 +48,7 @@ class HomeController extends GetxController {
           longitude: 128.5171884),
     ),
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "비둘기 1호", mannerScore: 36.3),
       content: "도미노피자 드실분?",
       limitPerson: 2,
@@ -57,6 +60,7 @@ class HomeController extends GetxController {
           description: "GS편의점 앞", latitude: 35.8117392, longitude: 128.5111684),
     ),
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "종달새 2호", mannerScore: 37.8),
       content: "굽네치킨 드실분?",
       limitPerson: 4,
@@ -68,6 +72,7 @@ class HomeController extends GetxController {
           description: "다이소 앞", latitude: 35.8118312, longitude: 128.5181484),
     ),
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "종달새 3호", mannerScore: 36.5),
       content: "청년피자 드실분?",
       limitPerson: 3,
@@ -79,6 +84,7 @@ class HomeController extends GetxController {
           description: "크림 빌라 앞", latitude: 35.8139322, longitude: 128.5141384),
     ),
     DeliveryRoom(
+      deliveryRoomId: "1",
       leader: Leader(nickname: "참새 2호", mannerScore: 38.0),
       content: "신전 떡볶이 드실분?",
       limitPerson: 3,

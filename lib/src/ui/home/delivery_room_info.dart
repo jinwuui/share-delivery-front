@@ -14,6 +14,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
     bool onMyDelivery = true;
     if (Get.arguments == null) {
       _deliveryRoom = DeliveryRoom(
+        deliveryRoomId: "1",
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
         limitPerson: 3,
@@ -91,6 +92,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
     bool onMyDelivery = true;
     if (Get.arguments == null) {
       _deliveryRoom = DeliveryRoom(
+        deliveryRoomId: "1",
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
         limitPerson: 3,
@@ -273,6 +275,7 @@ class DeliveryRoomInfo extends GetView<HomeController> {
     bool onMyDelivery = true;
     if (Get.arguments == null) {
       _deliveryRoom = DeliveryRoom(
+        deliveryRoomId: "1",
         leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
         content: "BBQ 드실분?",
         limitPerson: 3,

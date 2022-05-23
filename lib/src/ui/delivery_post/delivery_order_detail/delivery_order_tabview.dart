@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/order_form_register.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/payment_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/recruit_detail.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share_delivery/src/util/create_number_with_comma.dart';
+import 'package:share_delivery/src/utils/create_number_with_comma.dart';
 
 class ElementWithMoney extends StatelessWidget {
   const ElementWithMoney({
@@ -20,7 +20,7 @@ class ElementWithMoney extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(8.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: axisAlignment,
         children: [
           Text(elementName + " ", style: textStyle),
           Text(
