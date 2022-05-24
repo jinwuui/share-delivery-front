@@ -54,6 +54,7 @@ class PickReceivingLocationController extends GetxController {
       receivingLocationLat = locationData.value.latitude!;
       receivingLocationLng = locationData.value.longitude!;
       locationDescription.text = "";
+      await Future.delayed(Duration(milliseconds: 500));
       isPrepared.value = true;
     } else {
       print("ERROR: 위치 정보 엑세스 권한 없음");
@@ -100,9 +101,18 @@ class PickReceivingLocationController extends GetxController {
             center: new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude}), // center of map (current position)
             level: 3 // level of map
           };
-
+          
           // create map
           var map = new kakao.maps.Map(container, options);
+          
+          // create marker
+          var markerPosition  = new kakao.maps.LatLng(${locationData.value.latitude}, ${locationData.value.longitude});
+          var marker = new kakao.maps.Marker({
+              position: markerPosition
+          });
+          
+          marker.setMap(map);
+          
           
           kakao.maps.event.addListener(map, 'idle', function() {
                         

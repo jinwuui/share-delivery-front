@@ -1,40 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_detail_controller.dart';
+import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 class PostDetail extends GetView<PostDetailController> {
   const PostDetail({Key? key}) : super(key: key);
 
-  static const double normal = 10;
-  static const double big = 20;
+  static const double normal = 10.0;
+  static const double big = 20.0;
+  static const double parentAvatar = 16.0;
+  static const double childAvatar = 14.0;
 
   @override
   Widget build(BuildContext context) {
-    print(" controller.comments.isEmpty ${controller.comments.isEmpty}");
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),
-        body: Container(
-          color: Colors.white,
-          height: Get.height,
-          width: Get.width,
-          child: Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    profile(),
-                    content(),
-                    controller.comments.isEmpty ? noComments() : comments(),
-                    const SizedBox(width: 30, height: 68),
-                  ],
+        body: GestureDetector(
+          onTap: () {
+            if (MediaQuery.of(context).viewInsets.bottom != 0) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            }
+          },
+          child: Container(
+            color: Colors.white,
+            height: Get.height,
+            width: Get.width,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      profile(),
+                      content(),
+                      controller.comments.isEmpty ? noComments() : comments(),
+                      const SizedBox(width: 30, height: 68),
+                    ],
+                  ),
                 ),
-              ),
-              commentTextField(),
-            ],
+                commentTextField(),
+              ],
+            ),
           ),
         ),
       ),
@@ -53,19 +61,15 @@ class PostDetail extends GetView<PostDetailController> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                onPressed: () {},
-                padding: const EdgeInsets.fromLTRB(0, 0, 15, 15),
-                constraints: BoxConstraints(),
-                // padding: EdgeInsets.zero,
-                alignment: Alignment.topLeft,
-                icon: Icon(
-                  Icons.account_circle_outlined,
-                  color: Colors.grey[600],
-                  size: 40,
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: normal),
+                  child: CircleAvatar(
+                    radius: parentAvatar,
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
               ),
-              const SizedBox(width: normal),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,59 +157,76 @@ class PostDetail extends GetView<PostDetailController> {
       padding: EdgeInsets.only(
         top: 20,
         bottom: controller.isLastComment(idx) ? 30 : 0,
-        left: big - 4,
+        left: big,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
-              child: Icon(Icons.account_circle_outlined, size: 40),
-            ),
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Text("닉네임", style: postTitleStyle),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: normal),
+                  child: CircleAvatar(
+                    radius: parentAvatar,
+                    backgroundColor: Colors.grey,
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Row(
-                    children: [
-                      Text("매너온도 36.5", style: postDetailStyle),
-                      const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Icon(
-                          Icons.fiber_manual_record,
-                          size: 3,
-                          color: Colors.grey,
-                        ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Text("닉네임", style: postTitleStyle),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 0.0),
+                      child: Row(
+                        children: [
+                          Text("매너온도 36.5", style: postDetailStyle),
+                          const Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              size: 3,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text("7분 전", style: postDetailStyle),
+                        ],
                       ),
-                      Text("7분 전", style: postDetailStyle),
-                    ],
-                  ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text("답글쓰기"),
+                      style: commentBtn,
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: Text(
-                    "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
-                    style: commentStyle,
-                  ),
-                ),
-                Text("답글쓰기"),
-              ],
-            ),
+              ),
+              IconButton(
+                onPressed: () {
+                  print("icon button check");
+                },
+                padding: const EdgeInsets.fromLTRB(normal, 0, normal, normal),
+                constraints: BoxConstraints(),
+                icon: Icon(Icons.more_vert),
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: () {},
-            padding: EdgeInsets.fromLTRB(10, 0, big, 10),
-            constraints: BoxConstraints(),
-            icon: Icon(Icons.more_vert),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: parentAvatar * 2 + normal,
+              bottom: 6.0,
+              right: normal,
+            ),
+            child: Text(
+              "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
+              style: commentStyle,
+            ),
           ),
         ],
       ),
@@ -217,86 +238,90 @@ class PostDetail extends GetView<PostDetailController> {
       padding: EdgeInsets.only(
         top: 20,
         bottom: controller.isLastComment(idx) ? 30 : 0,
-        left: big * 2 + normal * 2 - 1,
+        left: big + parentAvatar * 2 + normal,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          GestureDetector(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 5, 5),
-              // color: Colors.blue,
-              child: Icon(
-                Icons.account_circle_outlined,
-                size: 33,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                child: Padding(
+                  padding: EdgeInsets.only(right: normal),
+                  child: CircleAvatar(
+                    radius: childAvatar,
+                    backgroundColor: Colors.grey,
+                  ),
+                ),
               ),
-            ),
-          ),
-          // Container(
-          //   color: Colors.red,
-          //   padding: EdgeInsets.fromLTRB(big, 0, normal, normal),
-          //   child: IconButton(
-          //     onPressed: () {
-          //       print("adf");
-          //     },
-          //     alignment: Alignment.center,
-          //     padding: EdgeInsets.zero,
-          //     constraints: BoxConstraints(),
-          //     icon: Icon(Icons.account_circle_outlined,
-          //         size: controller.isChildComment(idx) ? 25 : 30),
-          //   ),
-          // ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Text("닉네임", style: postTitleStyle),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: Row(
-                    children: [
-                      Text("매너온도 36.5", style: postDetailStyle),
-                      const Padding(
-                        padding: EdgeInsets.all(4.0),
-                        child: Icon(
-                          Icons.fiber_manual_record,
-                          size: 3,
-                          color: Colors.grey,
-                        ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Text("닉네임", style: postTitleStyle),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: Row(
+                        children: [
+                          Text("매너온도 36.5", style: postDetailStyle),
+                          const Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              size: 3,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text("7분 전", style: postDetailStyle),
+                        ],
                       ),
-                      Text("7분 전", style: postDetailStyle),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: Text(
-                    "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
-                    style: commentStyle,
-                  ),
-                ),
-                Text("답글쓰기"),
-              ],
+              ),
+              IconButton(
+                onPressed: () {
+                  print("icon button check");
+                },
+                padding: const EdgeInsets.fromLTRB(normal, 0, normal, normal),
+                constraints: BoxConstraints(),
+                icon: Icon(Icons.more_vert),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: childAvatar * 2 + normal,
+              bottom: 6.0,
+              right: normal,
+            ),
+            child: Text(
+              "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
+              style: commentStyle,
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            padding: EdgeInsets.fromLTRB(10, 0, big, 10),
-            constraints: BoxConstraints(),
-            icon: Icon(Icons.more_vert),
-          ),
+          // controller.isLastComment(),
         ],
       ),
     );
-    // return Container(
-    //   color: idx % 2 == 1 ? Colors.red : Colors.blue,
-    //   height: ,
-    //   // width: double.infinity,
-    // );
+  }
+
+  Widget writeCommentBar() {
+    return GestureDetector(
+      onTap: () {
+        print("답글 쓰기");
+      },
+      child: Container(
+        color: Colors.pink,
+        width: double.infinity,
+        height: 30,
+        child: Text("답글 쓰기"),
+      ),
+    );
   }
 
   Widget postTopic(String category) {

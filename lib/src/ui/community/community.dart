@@ -11,14 +11,18 @@ class Community extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[200],
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return index == 0 ? categoryTab() : post();
-        },
+    return Scaffold(
+      appBar: appBar(),
+      body: Container(
+        color: Colors.grey[200],
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return index == 0 ? categoryTab() : post();
+          },
+        ),
       ),
+      floatingActionButton: fab(),
     );
   }
 
@@ -210,6 +214,28 @@ class Community extends StatelessWidget {
         style:
             TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w600),
       ),
+    );
+  }
+
+  PreferredSizeWidget appBar() {
+    return AppBar(
+      shape: const Border(
+        bottom: BorderSide(
+          color: Colors.black26,
+          width: 0.5,
+        ),
+      ),
+      elevation: 0,
+      backgroundColor: Colors.white,
+      // titleSpacing: 0.0,
+    );
+  }
+
+  Widget fab() {
+    return FloatingActionButton(
+      backgroundColor: Colors.orange,
+      onPressed: () => Get.toNamed(Routes.POST_REGISTER),
+      child: const Icon(Icons.edit, size: 30),
     );
   }
 }

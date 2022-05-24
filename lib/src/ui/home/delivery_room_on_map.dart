@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -131,11 +132,12 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
               Padding(
                 padding: const EdgeInsets.only(left: 20.0),
                 child: ElevatedButton(
+                  style: orangeFlexBtn,
                   onPressed: () {
                     print("참가");
                     Get.toNamed(Routes.PARTICIPATE_ROOM, arguments: _info);
                   },
-                  child: Text("참가"),
+                  child: Text("보기"),
                 ),
               ),
             ],

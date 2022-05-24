@@ -75,7 +75,7 @@ class HomeController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     // 사용자 위치 불러오기
-    // await getUserLocation();
+    await getUserLocation();
     // TODO : 모집글 불러오기
     findDeliveryRooms();
   }
@@ -287,56 +287,6 @@ class HomeController extends GetxController {
       await getUserLocation();
       value.loadUrl(getHTML());
     });
-  }
-
-  // 카카오 지도 JS API 로 지도 띄우기
-  String getReceivingLocationHTML(double lat, double lng) {
-    return Uri.dataFromString('''
-      <html>
-      <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
-        <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
-      </head>
-      <body style="padding:0; margin:0;">
-        <div id="map" style="width:100%;height:100%;"></div>
-        <script>
-
-          var container = document.getElementById('map'); // map for div
-
-          var options = {
-            center: new kakao.maps.LatLng($lat, $lng), // center of map (current position)
-            level: 3 // level of map
-          };
-
-          // create map
-          var map = new kakao.maps.Map(container, options);
-          
-          // create marker
-          var markerPosition  = new kakao.maps.LatLng($lat, $lng);
-          var marker = new kakao.maps.Marker({
-              position: markerPosition
-          });
-          
-          marker.setMap(map);
-          
-          
-          kakao.maps.event.addListener(map, 'idle', function() {
-                        
-              var latlng = map.getCenter();
-              
-              var centerLatLng = {
-                lat: latlng.getLat(),
-                lng: latlng.getLng()
-              }
-              
-              onIdle.postMessage(JSON.stringify(centerLatLng));
-          });
-
-        </script>
-      </body>
-      </html>
-    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString();
   }
 
   void hideInfo() {
