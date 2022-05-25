@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 
 class DeliveryRoomInfoDetail extends GetView<DeliveryRoomInfoDetailController> {
@@ -7,6 +8,7 @@ class DeliveryRoomInfoDetail extends GetView<DeliveryRoomInfoDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d("DeliveryRoomInfoDetail");
     return controller.obx(
       (_deliveryRoom) => Container(
         height: double.infinity,

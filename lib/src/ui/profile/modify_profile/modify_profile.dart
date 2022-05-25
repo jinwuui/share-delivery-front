@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/ui/profile/widget/profile_textform.dart';
+import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
 class ModifyProfile extends StatelessWidget {

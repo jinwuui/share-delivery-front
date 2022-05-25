@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 
 part 'delivery_order_detail.freezed.dart';
@@ -10,7 +10,7 @@ class DeliveryOrderDetailModel with _$DeliveryOrderDetailModel {
   const factory DeliveryOrderDetailModel({
     required String deliveryRoomId,
     required ReceivingLocation receivingLocation,
-    required List<UserWithOrderModel> orderList,
+    required List<OrderMenuModel> orderList,
     required DateTime createDate,
     required int totalOrderMoney,
     required int deliveryTip,

@@ -15,8 +15,9 @@ import 'package:share_delivery/src/ui/community/post_detail.dart';
 import 'package:share_delivery/src/ui/community/post_register/post_register.dart';
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
-import 'package:share_delivery/src/ui/profile/app_setting.dart';
-import 'package:share_delivery/src/ui/profile/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/select_bank.dart';
+import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
 import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
@@ -64,6 +65,7 @@ abstract class Routes {
   // 프로필
   static const APP_SETTING = "/appSetting";
   static const ACCOUNT_MANAGE = "/accountManage";
+  static const SELECT_BANK = "/selectBank";
   // 커뮤니티
   static const POST_REGISTER = "/postRegister";
   static const SETTING_POST_CATEGORY = "/settingPostCategory";
@@ -164,6 +166,10 @@ class AppPages {
       binding: PickReceivingLocationBinding(),
       transition: Transition.fadeIn,
       curve: Curves.decelerate,
+    ),
+    GetPage(
+      name: Routes.SELECT_BANK,
+      page: () => const SelectBank(),
     ),
   ];
 }

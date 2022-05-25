@@ -249,7 +249,7 @@ class __$$_DeliveryRoomCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DeliveryRoom implements _DeliveryRoom {
   const _$_DeliveryRoom(
-      {required this.roomId,
+      {this.roomId = -1,
       required this.leader,
       required this.content,
       required this.person,
@@ -265,6 +265,7 @@ class _$_DeliveryRoom implements _DeliveryRoom {
       _$$_DeliveryRoomFromJson(json);
 
   @override
+  @JsonKey()
   final int roomId;
   @override
   final Leader leader;
@@ -344,7 +345,7 @@ class _$_DeliveryRoom implements _DeliveryRoom {
 
 abstract class _DeliveryRoom implements DeliveryRoom {
   const factory _DeliveryRoom(
-      {required final int roomId,
+      {final int roomId,
       required final Leader leader,
       required final String content,
       required final int person,

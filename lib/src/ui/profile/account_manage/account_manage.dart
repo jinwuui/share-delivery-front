@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/ui/profile/widget/profile_textform.dart';
+import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AccountManage extends StatelessWidget {
@@ -101,13 +101,25 @@ class AccountManage extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                final url = Uri.parse("https://toss.me/");
+                Get.toNamed('/selectBank');
+              },
+              child: Text(
+                "은행 선택",
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                // TODO: 사용자 계좌 정보로 교체
+                final url = Uri.parse(
+                    "supertoss://send?amount=0&bank=NH농협&accountNo=3521264915483&origin=qr");
                 if (await canLaunchUrl(url)) {
                   launchUrl(
                     url,
                     mode: LaunchMode.externalNonBrowserApplication,
                   );
                 }
+                // supertoss://send?amount=0&bank=대구은행&accountNo=77802467094&origin=qr
               },
               child: Text(
                 "Test button",

@@ -23,7 +23,7 @@ DeliveryOrderDetailModel _$DeliveryOrderDetailModelFromJson(
 mixin _$DeliveryOrderDetailModel {
   String get deliveryRoomId => throw _privateConstructorUsedError;
   ReceivingLocation get receivingLocation => throw _privateConstructorUsedError;
-  List<UserWithOrderModel> get orderList => throw _privateConstructorUsedError;
+  List<OrderMenuModel> get orderList => throw _privateConstructorUsedError;
   DateTime get createDate => throw _privateConstructorUsedError;
   int get totalOrderMoney => throw _privateConstructorUsedError;
   int get deliveryTip => throw _privateConstructorUsedError;
@@ -44,7 +44,7 @@ abstract class $DeliveryOrderDetailModelCopyWith<$Res> {
   $Res call(
       {String deliveryRoomId,
       ReceivingLocation receivingLocation,
-      List<UserWithOrderModel> orderList,
+      List<OrderMenuModel> orderList,
       DateTime createDate,
       int totalOrderMoney,
       int deliveryTip,
@@ -86,7 +86,7 @@ class _$DeliveryOrderDetailModelCopyWithImpl<$Res>
       orderList: orderList == freezed
           ? _value.orderList
           : orderList // ignore: cast_nullable_to_non_nullable
-              as List<UserWithOrderModel>,
+              as List<OrderMenuModel>,
       createDate: createDate == freezed
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
@@ -119,16 +119,17 @@ class _$DeliveryOrderDetailModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeliveryOrderDetailModelCopyWith<$Res>
+abstract class _$$_DeliveryOrderDetailModelCopyWith<$Res>
     implements $DeliveryOrderDetailModelCopyWith<$Res> {
-  factory _$DeliveryOrderDetailModelCopyWith(_DeliveryOrderDetailModel value,
-          $Res Function(_DeliveryOrderDetailModel) then) =
-      __$DeliveryOrderDetailModelCopyWithImpl<$Res>;
+  factory _$$_DeliveryOrderDetailModelCopyWith(
+          _$_DeliveryOrderDetailModel value,
+          $Res Function(_$_DeliveryOrderDetailModel) then) =
+      __$$_DeliveryOrderDetailModelCopyWithImpl<$Res>;
   @override
   $Res call(
       {String deliveryRoomId,
       ReceivingLocation receivingLocation,
-      List<UserWithOrderModel> orderList,
+      List<OrderMenuModel> orderList,
       DateTime createDate,
       int totalOrderMoney,
       int deliveryTip,
@@ -140,16 +141,16 @@ abstract class _$DeliveryOrderDetailModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$DeliveryOrderDetailModelCopyWithImpl<$Res>
+class __$$_DeliveryOrderDetailModelCopyWithImpl<$Res>
     extends _$DeliveryOrderDetailModelCopyWithImpl<$Res>
-    implements _$DeliveryOrderDetailModelCopyWith<$Res> {
-  __$DeliveryOrderDetailModelCopyWithImpl(_DeliveryOrderDetailModel _value,
-      $Res Function(_DeliveryOrderDetailModel) _then)
-      : super(_value, (v) => _then(v as _DeliveryOrderDetailModel));
+    implements _$$_DeliveryOrderDetailModelCopyWith<$Res> {
+  __$$_DeliveryOrderDetailModelCopyWithImpl(_$_DeliveryOrderDetailModel _value,
+      $Res Function(_$_DeliveryOrderDetailModel) _then)
+      : super(_value, (v) => _then(v as _$_DeliveryOrderDetailModel));
 
   @override
-  _DeliveryOrderDetailModel get _value =>
-      super._value as _DeliveryOrderDetailModel;
+  _$_DeliveryOrderDetailModel get _value =>
+      super._value as _$_DeliveryOrderDetailModel;
 
   @override
   $Res call({
@@ -162,7 +163,7 @@ class __$DeliveryOrderDetailModelCopyWithImpl<$Res>
     Object? discountInfoList = freezed,
     Object? totalPaymentMoney = freezed,
   }) {
-    return _then(_DeliveryOrderDetailModel(
+    return _then(_$_DeliveryOrderDetailModel(
       deliveryRoomId: deliveryRoomId == freezed
           ? _value.deliveryRoomId
           : deliveryRoomId // ignore: cast_nullable_to_non_nullable
@@ -172,9 +173,9 @@ class __$DeliveryOrderDetailModelCopyWithImpl<$Res>
           : receivingLocation // ignore: cast_nullable_to_non_nullable
               as ReceivingLocation,
       orderList: orderList == freezed
-          ? _value.orderList
+          ? _value._orderList
           : orderList // ignore: cast_nullable_to_non_nullable
-              as List<UserWithOrderModel>,
+              as List<OrderMenuModel>,
       createDate: createDate == freezed
           ? _value.createDate
           : createDate // ignore: cast_nullable_to_non_nullable
@@ -205,7 +206,7 @@ class _$_DeliveryOrderDetailModel implements _DeliveryOrderDetailModel {
   const _$_DeliveryOrderDetailModel(
       {required this.deliveryRoomId,
       required this.receivingLocation,
-      required final List<UserWithOrderModel> orderList,
+      required final List<OrderMenuModel> orderList,
       required this.createDate,
       required this.totalOrderMoney,
       required this.deliveryTip,
@@ -220,9 +221,9 @@ class _$_DeliveryOrderDetailModel implements _DeliveryOrderDetailModel {
   final String deliveryRoomId;
   @override
   final ReceivingLocation receivingLocation;
-  final List<UserWithOrderModel> _orderList;
+  final List<OrderMenuModel> _orderList;
   @override
-  List<UserWithOrderModel> get orderList {
+  List<OrderMenuModel> get orderList {
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_orderList);
   }
@@ -248,12 +249,13 @@ class _$_DeliveryOrderDetailModel implements _DeliveryOrderDetailModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DeliveryOrderDetailModel &&
+            other is _$_DeliveryOrderDetailModel &&
             const DeepCollectionEquality()
                 .equals(other.deliveryRoomId, deliveryRoomId) &&
             const DeepCollectionEquality()
                 .equals(other.receivingLocation, receivingLocation) &&
-            const DeepCollectionEquality().equals(other.orderList, orderList) &&
+            const DeepCollectionEquality()
+                .equals(other._orderList, _orderList) &&
             const DeepCollectionEquality()
                 .equals(other.createDate, createDate) &&
             const DeepCollectionEquality()
@@ -272,7 +274,7 @@ class _$_DeliveryOrderDetailModel implements _DeliveryOrderDetailModel {
       runtimeType,
       const DeepCollectionEquality().hash(deliveryRoomId),
       const DeepCollectionEquality().hash(receivingLocation),
-      const DeepCollectionEquality().hash(orderList),
+      const DeepCollectionEquality().hash(_orderList),
       const DeepCollectionEquality().hash(createDate),
       const DeepCollectionEquality().hash(totalOrderMoney),
       const DeepCollectionEquality().hash(deliveryTip),
@@ -281,9 +283,9 @@ class _$_DeliveryOrderDetailModel implements _DeliveryOrderDetailModel {
 
   @JsonKey(ignore: true)
   @override
-  _$DeliveryOrderDetailModelCopyWith<_DeliveryOrderDetailModel> get copyWith =>
-      __$DeliveryOrderDetailModelCopyWithImpl<_DeliveryOrderDetailModel>(
-          this, _$identity);
+  _$$_DeliveryOrderDetailModelCopyWith<_$_DeliveryOrderDetailModel>
+      get copyWith => __$$_DeliveryOrderDetailModelCopyWithImpl<
+          _$_DeliveryOrderDetailModel>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -295,7 +297,7 @@ abstract class _DeliveryOrderDetailModel implements DeliveryOrderDetailModel {
   const factory _DeliveryOrderDetailModel(
       {required final String deliveryRoomId,
       required final ReceivingLocation receivingLocation,
-      required final List<UserWithOrderModel> orderList,
+      required final List<OrderMenuModel> orderList,
       required final DateTime createDate,
       required final int totalOrderMoney,
       required final int deliveryTip,
@@ -310,7 +312,7 @@ abstract class _DeliveryOrderDetailModel implements DeliveryOrderDetailModel {
   @override
   ReceivingLocation get receivingLocation => throw _privateConstructorUsedError;
   @override
-  List<UserWithOrderModel> get orderList => throw _privateConstructorUsedError;
+  List<OrderMenuModel> get orderList => throw _privateConstructorUsedError;
   @override
   DateTime get createDate => throw _privateConstructorUsedError;
   @override
@@ -323,6 +325,6 @@ abstract class _DeliveryOrderDetailModel implements DeliveryOrderDetailModel {
   int get totalPaymentMoney => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DeliveryOrderDetailModelCopyWith<_DeliveryOrderDetailModel> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_DeliveryOrderDetailModelCopyWith<_$_DeliveryOrderDetailModel>
+      get copyWith => throw _privateConstructorUsedError;
 }

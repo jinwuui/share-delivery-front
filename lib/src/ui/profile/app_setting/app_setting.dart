@@ -46,9 +46,9 @@ class AppSetting extends StatelessWidget {
     return Column(
       children: [
         _buildMenuTitle("기타"),
-        _buildMenuListTile("로그아웃", () => print('hello4')),
         _buildMenuListTile("버전 1.0.0", () => print('hello4')),
         _buildMenuListTile("오픈소스 라이선스", () => print('hello4')),
+        _buildMenuListTile("로그아웃", () => print('hello4')),
         _buildMenuListTile("회원탈퇴", () => print('hello4')),
       ],
     );

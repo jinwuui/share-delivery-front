@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
-import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReceivingLocationController extends GetxController {

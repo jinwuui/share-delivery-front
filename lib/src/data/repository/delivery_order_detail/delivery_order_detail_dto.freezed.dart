@@ -96,11 +96,11 @@ class _$DeliveryOrderDetailDTOCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeliveryOrderDetailDTOCopyWith<$Res>
+abstract class _$$_DeliveryOrderDetailDTOCopyWith<$Res>
     implements $DeliveryOrderDetailDTOCopyWith<$Res> {
-  factory _$DeliveryOrderDetailDTOCopyWith(_DeliveryOrderDetailDTO value,
-          $Res Function(_DeliveryOrderDetailDTO) then) =
-      __$DeliveryOrderDetailDTOCopyWithImpl<$Res>;
+  factory _$$_DeliveryOrderDetailDTOCopyWith(_$_DeliveryOrderDetailDTO value,
+          $Res Function(_$_DeliveryOrderDetailDTO) then) =
+      __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>;
   @override
   $Res call(
       {String orderForms,
@@ -112,15 +112,16 @@ abstract class _$DeliveryOrderDetailDTOCopyWith<$Res>
 }
 
 /// @nodoc
-class __$DeliveryOrderDetailDTOCopyWithImpl<$Res>
+class __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>
     extends _$DeliveryOrderDetailDTOCopyWithImpl<$Res>
-    implements _$DeliveryOrderDetailDTOCopyWith<$Res> {
-  __$DeliveryOrderDetailDTOCopyWithImpl(_DeliveryOrderDetailDTO _value,
-      $Res Function(_DeliveryOrderDetailDTO) _then)
-      : super(_value, (v) => _then(v as _DeliveryOrderDetailDTO));
+    implements _$$_DeliveryOrderDetailDTOCopyWith<$Res> {
+  __$$_DeliveryOrderDetailDTOCopyWithImpl(_$_DeliveryOrderDetailDTO _value,
+      $Res Function(_$_DeliveryOrderDetailDTO) _then)
+      : super(_value, (v) => _then(v as _$_DeliveryOrderDetailDTO));
 
   @override
-  _DeliveryOrderDetailDTO get _value => super._value as _DeliveryOrderDetailDTO;
+  _$_DeliveryOrderDetailDTO get _value =>
+      super._value as _$_DeliveryOrderDetailDTO;
 
   @override
   $Res call({
@@ -131,7 +132,7 @@ class __$DeliveryOrderDetailDTOCopyWithImpl<$Res>
     Object? discounts = freezed,
     Object? totalPaymentPrice = freezed,
   }) {
-    return _then(_DeliveryOrderDetailDTO(
+    return _then(_$_DeliveryOrderDetailDTO(
       orderForms: orderForms == freezed
           ? _value.orderForms
           : orderForms // ignore: cast_nullable_to_non_nullable
@@ -149,7 +150,7 @@ class __$DeliveryOrderDetailDTOCopyWithImpl<$Res>
           : deliveryTip // ignore: cast_nullable_to_non_nullable
               as int,
       discounts: discounts == freezed
-          ? _value.discounts
+          ? _value._discounts
           : discounts // ignore: cast_nullable_to_non_nullable
               as List<int>,
       totalPaymentPrice: totalPaymentPrice == freezed
@@ -202,7 +203,7 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DeliveryOrderDetailDTO &&
+            other is _$_DeliveryOrderDetailDTO &&
             const DeepCollectionEquality()
                 .equals(other.orderForms, orderForms) &&
             const DeepCollectionEquality().equals(other.orders, orders) &&
@@ -210,7 +211,8 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
                 .equals(other.totalOrderPrice, totalOrderPrice) &&
             const DeepCollectionEquality()
                 .equals(other.deliveryTip, deliveryTip) &&
-            const DeepCollectionEquality().equals(other.discounts, discounts) &&
+            const DeepCollectionEquality()
+                .equals(other._discounts, _discounts) &&
             const DeepCollectionEquality()
                 .equals(other.totalPaymentPrice, totalPaymentPrice));
   }
@@ -223,13 +225,13 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
       const DeepCollectionEquality().hash(orders),
       const DeepCollectionEquality().hash(totalOrderPrice),
       const DeepCollectionEquality().hash(deliveryTip),
-      const DeepCollectionEquality().hash(discounts),
+      const DeepCollectionEquality().hash(_discounts),
       const DeepCollectionEquality().hash(totalPaymentPrice));
 
   @JsonKey(ignore: true)
   @override
-  _$DeliveryOrderDetailDTOCopyWith<_DeliveryOrderDetailDTO> get copyWith =>
-      __$DeliveryOrderDetailDTOCopyWithImpl<_DeliveryOrderDetailDTO>(
+  _$$_DeliveryOrderDetailDTOCopyWith<_$_DeliveryOrderDetailDTO> get copyWith =>
+      __$$_DeliveryOrderDetailDTOCopyWithImpl<_$_DeliveryOrderDetailDTO>(
           this, _$identity);
 
   @override
@@ -264,6 +266,6 @@ abstract class _DeliveryOrderDetailDTO implements DeliveryOrderDetailDTO {
   int get totalPaymentPrice => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DeliveryOrderDetailDTOCopyWith<_DeliveryOrderDetailDTO> get copyWith =>
+  _$$_DeliveryOrderDetailDTOCopyWith<_$_DeliveryOrderDetailDTO> get copyWith =>
       throw _privateConstructorUsedError;
 }

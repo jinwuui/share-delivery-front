@@ -109,21 +109,20 @@ class _DeliveryOrderDetailApiClient implements DeliveryOrderDetailApiClient {
   }
 
   @override
-  Future<List<UserWithOrderModel>> getOrderList(deliveryRoomId) async {
+  Future<List<OrderMenuModel>> getOrderList(deliveryRoomId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<UserWithOrderModel>>(Options(
+        _setStreamType<List<OrderMenuModel>>(Options(
                 method: 'GET', headers: _headers, extra: _extra)
             .compose(
                 _dio.options, '/api/delivery-rooms/orders/${deliveryRoomId}',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
-        .map((dynamic i) =>
-            UserWithOrderModel.fromJson(i as Map<String, dynamic>))
+        .map((dynamic i) => OrderMenuModel.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }

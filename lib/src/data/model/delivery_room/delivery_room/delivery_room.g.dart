@@ -8,7 +8,7 @@ part of 'delivery_room.dart';
 
 _$_DeliveryRoom _$$_DeliveryRoomFromJson(Map<String, dynamic> json) =>
     _$_DeliveryRoom(
-      roomId: json['roomId'] as int,
+      roomId: json['roomId'] as int? ?? -1,
       leader: Leader.fromJson(json['leader'] as Map<String, dynamic>),
       content: json['content'] as String,
       person: json['person'] as int,

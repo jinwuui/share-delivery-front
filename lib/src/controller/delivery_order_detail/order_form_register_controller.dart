@@ -17,8 +17,8 @@ class OrderFormRegisterController extends GetxController {
   @override
   void onInit() {
     print("Delivery Order Controller INit");
-    for (var element in DeliveryRecruitController.to.userWithOrderList) {
-      orderList.add(element.menuList);
+    for (var element in DeliveryRecruitController.to.orderMenuList) {
+      orderList.add(element.menus);
     }
     super.onInit();
   }

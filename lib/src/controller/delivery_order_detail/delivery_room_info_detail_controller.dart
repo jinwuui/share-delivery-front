@@ -12,6 +12,7 @@ class DeliveryRoomInfoDetailController extends GetxController
 
   // late final Rx<DeliveryRoom> deliveryRoom;
   Rx<DeliveryRoom> deliveryRoom = DeliveryRoom(
+    roomId: 456,
     leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
     content: "BBQ 드실분?",
     person: 1,
@@ -22,10 +23,10 @@ class DeliveryRoomInfoDetailController extends GetxController
     status: "NULL",
     createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
     receivingLocation: ReceivingLocation(
-        description: "CU 편의점 앞",
-        latitude: 35.820848788632226,
-        longitude: 128.518205019348),
-    roomId: 456,
+      description: "CU 편의점 앞",
+      latitude: 35.820848788632226,
+      longitude: 128.518205019348,
+    ),
   ).obs;
 
   @override
@@ -38,8 +39,7 @@ class DeliveryRoomInfoDetailController extends GetxController
     try {
       change(null, status: RxStatus.loading());
 
-      deliveryRoom.value =
-          await repository.getDeliveryRoomInfoDetail(deliveryRoomId);
+      deliveryRoom.value = await getDeliveryRoomInfo(deliveryRoomId);
 
       change(deliveryRoom.value, status: RxStatus.success());
     } catch (err) {
@@ -47,5 +47,7 @@ class DeliveryRoomInfoDetailController extends GetxController
     }
   }
 
-  Future<void> getDeliveryRoomInfo() async {}
+  Future<DeliveryRoom> getDeliveryRoomInfo(String deliveryRoomId) async {
+    return await repository.getDeliveryRoomInfoDetail(deliveryRoomId);
+  }
 }

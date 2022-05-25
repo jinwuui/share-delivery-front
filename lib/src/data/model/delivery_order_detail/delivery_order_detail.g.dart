@@ -13,7 +13,7 @@ _$_DeliveryOrderDetailModel _$$_DeliveryOrderDetailModelFromJson(
       receivingLocation: ReceivingLocation.fromJson(
           json['receivingLocation'] as Map<String, dynamic>),
       orderList: (json['orderList'] as List<dynamic>)
-          .map((e) => UserWithOrderModel.fromJson(e as Map<String, dynamic>))
+          .map((e) => OrderMenuModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       createDate: DateTime.parse(json['createDate'] as String),
       totalOrderMoney: json['totalOrderMoney'] as int,
