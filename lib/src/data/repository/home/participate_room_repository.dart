@@ -20,10 +20,10 @@ class ParticipateRoomRepository {
           case DioError:
             final res = (obj as DioError).response;
             if (res!.statusCode == 403) {
+              print("     모집글 참여 에러 - 403");
               return "EXCEPTION";
             } else {
-              print(
-                  'ParticipateRoomRepository.participateDeliveryRoom ERROR: ${res.statusCode}');
+              print("     모집글 참여 에러 - ${res.statusCode}");
               return "ELSE";
             }
           default:

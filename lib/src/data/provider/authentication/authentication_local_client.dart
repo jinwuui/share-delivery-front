@@ -23,6 +23,18 @@ class AuthenticationLocalClient {
     return tokens;
   }
 
+  void saveUser(User user) {
+    Map<String, dynamic> userMap = user.toJson();
+    String userString = jsonEncode(userMap);
+
+    print('start - AuthenticationLocalClient.saveUser');
+    print(userMap);
+    print(userString);
+    print('end  -  AuthenticationLocalClient.saveUser');
+
+    SharedPrefsUtil.instance.setString("user", userString);
+  }
+
   User? getSavedUser() {
     try {
       String? userStr = SharedPrefsUtil.instance.getString('user');

@@ -13,8 +13,17 @@ class AuthenticationRepository {
     return apiClient.requestAuthSMS(phoneNumber);
   }
 
-  Future<User> signUp(String phoneNumber, String authNumber) {
-    return apiClient.signUp(phoneNumber, authNumber);
+  Future<User?> signUp(String phoneNumber, String authNumber) async {
+    User user = await apiClient.signUp(phoneNumber, authNumber);
+
+    if (user.accountId == -1) {
+      print("   회원가입 실패");
+      return null;
+    } else {
+      print("   회원가입 성공");
+      localClient.saveUser(user);
+      return user;
+    }
   }
 
   Future<bool> signIn(String phoneNumber, String authNumber) async {
@@ -34,8 +43,10 @@ class AuthenticationRepository {
     return true;
   }
 
+  // 로그아웃
   signOut() {}
 
+  // 로컬에 저장된 유저 객체 가져오기
   User? getSavedUser() {
     return localClient.getSavedUser();
   }

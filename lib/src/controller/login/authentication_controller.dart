@@ -31,12 +31,17 @@ class AuthenticationController extends GetxController {
     return repository.requestAuthSMS(phoneNumber);
   }
 
-  Future<User> signUp(String phoneNumber, String authNumber) async {
+  Future<void> signUp(String phoneNumber, String authNumber) async {
     print('AuthenticationController.signUp : $phoneNumber, $authNumber');
 
-    User user = await repository.signUp(phoneNumber, authNumber);
-    _authenticationStateStream.value = Authenticated(user: user);
-    return user;
+    User? user = await repository.signUp(phoneNumber, authNumber);
+
+    if (user != null) {
+      _authenticationStateStream.value = Authenticated(user: user);
+    } else {
+      _authenticationStateStream.value =
+          AuthenticationFailure(message: "회원 가입 실패");
+    }
   }
 
   Future<void> signIn(String phoneNumber, String authNumber) async {
