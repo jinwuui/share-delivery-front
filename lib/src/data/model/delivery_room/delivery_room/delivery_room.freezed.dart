@@ -539,9 +539,12 @@ ReceivingLocation _$ReceivingLocationFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ReceivingLocation {
+  int get id => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  double get latitude => throw _privateConstructorUsedError;
-  double get longitude => throw _privateConstructorUsedError;
+  String get address => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
+  bool get isFavorite => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -554,7 +557,13 @@ abstract class $ReceivingLocationCopyWith<$Res> {
   factory $ReceivingLocationCopyWith(
           ReceivingLocation value, $Res Function(ReceivingLocation) then) =
       _$ReceivingLocationCopyWithImpl<$Res>;
-  $Res call({String description, double latitude, double longitude});
+  $Res call(
+      {int id,
+      String description,
+      String address,
+      double lat,
+      double lng,
+      bool isFavorite});
 }
 
 /// @nodoc
@@ -568,23 +577,38 @@ class _$ReceivingLocationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? description = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? address = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+    Object? isFavorite = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
+      isFavorite: isFavorite == freezed
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -596,7 +620,13 @@ abstract class _$$_ReceivingLocationCopyWith<$Res>
           $Res Function(_$_ReceivingLocation) then) =
       __$$_ReceivingLocationCopyWithImpl<$Res>;
   @override
-  $Res call({String description, double latitude, double longitude});
+  $Res call(
+      {int id,
+      String description,
+      String address,
+      double lat,
+      double lng,
+      bool isFavorite});
 }
 
 /// @nodoc
@@ -612,23 +642,38 @@ class __$$_ReceivingLocationCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
     Object? description = freezed,
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? address = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+    Object? isFavorite = freezed,
   }) {
     return _then(_$_ReceivingLocation(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String,
-      latitude: latitude == freezed
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      address: address == freezed
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as String,
+      lat: lat == freezed
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: lng == freezed
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
+      isFavorite: isFavorite == freezed
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -637,23 +682,35 @@ class __$$_ReceivingLocationCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ReceivingLocation implements _ReceivingLocation {
   const _$_ReceivingLocation(
-      {required this.description,
-      required this.latitude,
-      required this.longitude});
+      {this.id = -1,
+      required this.description,
+      this.address = "dummy address",
+      required this.lat,
+      required this.lng,
+      this.isFavorite = false});
 
   factory _$_ReceivingLocation.fromJson(Map<String, dynamic> json) =>
       _$$_ReceivingLocationFromJson(json);
 
   @override
+  @JsonKey()
+  final int id;
+  @override
   final String description;
   @override
-  final double latitude;
+  @JsonKey()
+  final String address;
   @override
-  final double longitude;
+  final double lat;
+  @override
+  final double lng;
+  @override
+  @JsonKey()
+  final bool isFavorite;
 
   @override
   String toString() {
-    return 'ReceivingLocation(description: $description, latitude: $latitude, longitude: $longitude)';
+    return 'ReceivingLocation(id: $id, description: $description, address: $address, lat: $lat, lng: $lng, isFavorite: $isFavorite)';
   }
 
   @override
@@ -661,19 +718,26 @@ class _$_ReceivingLocation implements _ReceivingLocation {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ReceivingLocation &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude));
+            const DeepCollectionEquality().equals(other.address, address) &&
+            const DeepCollectionEquality().equals(other.lat, lat) &&
+            const DeepCollectionEquality().equals(other.lng, lng) &&
+            const DeepCollectionEquality()
+                .equals(other.isFavorite, isFavorite));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(description),
-      const DeepCollectionEquality().hash(latitude),
-      const DeepCollectionEquality().hash(longitude));
+      const DeepCollectionEquality().hash(address),
+      const DeepCollectionEquality().hash(lat),
+      const DeepCollectionEquality().hash(lng),
+      const DeepCollectionEquality().hash(isFavorite));
 
   @JsonKey(ignore: true)
   @override
@@ -689,19 +753,28 @@ class _$_ReceivingLocation implements _ReceivingLocation {
 
 abstract class _ReceivingLocation implements ReceivingLocation {
   const factory _ReceivingLocation(
-      {required final String description,
-      required final double latitude,
-      required final double longitude}) = _$_ReceivingLocation;
+      {final int id,
+      required final String description,
+      final String address,
+      required final double lat,
+      required final double lng,
+      final bool isFavorite}) = _$_ReceivingLocation;
 
   factory _ReceivingLocation.fromJson(Map<String, dynamic> json) =
       _$_ReceivingLocation.fromJson;
 
   @override
+  int get id => throw _privateConstructorUsedError;
+  @override
   String get description => throw _privateConstructorUsedError;
   @override
-  double get latitude => throw _privateConstructorUsedError;
+  String get address => throw _privateConstructorUsedError;
   @override
-  double get longitude => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  @override
+  double get lng => throw _privateConstructorUsedError;
+  @override
+  bool get isFavorite => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_ReceivingLocationCopyWith<_$_ReceivingLocation> get copyWith =>

@@ -4,7 +4,7 @@ import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
 class AuthenticationLocalClient {
-  void saveTokens(Map<String, String> tokens) {
+  void saveTokens(Map<String, dynamic> tokens) {
     if (tokens["accessToken"] != null && tokens["refreshToken"] != null) {
       SharedPrefsUtil.instance
           .setString("accessToken", tokens["accessToken"] ?? "");
@@ -21,6 +21,18 @@ class AuthenticationLocalClient {
         SharedPrefsUtil.instance.getString("refreshToken")!;
 
     return tokens;
+  }
+
+  void saveUser(User user) {
+    Map<String, dynamic> userMap = user.toJson();
+    String userString = jsonEncode(userMap);
+
+    print('start - AuthenticationLocalClient.saveUser');
+    print(userMap);
+    print(userString);
+    print('end  -  AuthenticationLocalClient.saveUser');
+
+    SharedPrefsUtil.instance.setString("user", userString);
   }
 
   User? getSavedUser() {

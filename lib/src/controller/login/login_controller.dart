@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
-import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/ui/login/state/login_state.dart';
@@ -79,12 +78,22 @@ class LoginController extends GetxController {
     await Future.delayed(Duration(milliseconds: 500));
     phoneNumber = phoneNumber.replaceAll(" ", "");
 
-    // NOTE : 완료되면 해제 필요
-    // if (isNewUser) {
-    //   print("is new user");
-    //   await signUp();
-    // }
+    print(isNewUser ? "   === 새 유저" : "   === 기존 유저");
+    // 회원가입
+    if (isNewUser) {
+      await signUp();
+      isNewUser = false;
+    }
 
+    // 회원가입 성공 여부 확인
+    if (_authenticationController.state is AuthenticationFailure) {
+      print(
+          'LoginController.authenticate ${_authenticationController.state.props}');
+      GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
+      return;
+    }
+
+    // 로그인
     await login();
 
     // 로그인 결과
@@ -102,9 +111,15 @@ class LoginController extends GetxController {
   // 사용자가 작성한 이메일 패스워드로 회원 가입 시도
   Future<void> signUp() async {
     try {
-      User user =
-          await _authenticationController.signUp(phoneNumber, authNumber);
-      if (user.accountId != -1) isNewUser = false;
+      await _authenticationController.signUp(phoneNumber, authNumber);
+
+      if (_authenticationController.state is Authenticated) {
+        print('LoginController.signUp - 회원가입 성공');
+      } else if (_authenticationController.state is AuthenticationFailure) {
+        print('LoginController.signUp - 회원가입 실패');
+      } else {
+        print('LoginController.signUp - 예상치 못한 AuthenticationState');
+      }
     } catch (e) {
       print(e);
     }

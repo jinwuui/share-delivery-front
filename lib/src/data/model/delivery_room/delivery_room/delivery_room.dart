@@ -36,9 +36,12 @@ class Leader with _$Leader {
 @Freezed()
 class ReceivingLocation with _$ReceivingLocation {
   const factory ReceivingLocation({
+    @Default(-1) int id,
     required String description,
-    required double latitude,
-    required double longitude,
+    @Default("dummy address") String address,
+    required double lat,
+    required double lng,
+    @Default(false) bool isFavorite,
   }) = _ReceivingLocation;
 
   factory ReceivingLocation.fromJson(Map<String, dynamic> json) =>

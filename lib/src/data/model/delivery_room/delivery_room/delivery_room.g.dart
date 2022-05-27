@@ -49,15 +49,21 @@ Map<String, dynamic> _$$_LeaderToJson(_$_Leader instance) => <String, dynamic>{
 
 _$_ReceivingLocation _$$_ReceivingLocationFromJson(Map<String, dynamic> json) =>
     _$_ReceivingLocation(
+      id: json['id'] as int? ?? -1,
       description: json['description'] as String,
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
+      address: json['address'] as String? ?? "dummy address",
+      lat: (json['lat'] as num).toDouble(),
+      lng: (json['lng'] as num).toDouble(),
+      isFavorite: json['isFavorite'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$_ReceivingLocationToJson(
         _$_ReceivingLocation instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'description': instance.description,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'address': instance.address,
+      'lat': instance.lat,
+      'lng': instance.lng,
+      'isFavorite': instance.isFavorite,
     };

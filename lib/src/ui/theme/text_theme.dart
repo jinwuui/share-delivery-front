@@ -50,13 +50,13 @@ const TextStyle postContentStyle = TextStyle(
 );
 
 const TextStyle detailContentStyle = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontSize: 20,
+  // fontWeight: FontWeight.w400,
+  fontSize: 17,
 );
 
 const TextStyle commentStyle = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontSize: 18,
+  // fontWeight: FontWeight.w500,
+  fontSize: 17,
 );
 
 const TextStyle appBarTitle = TextStyle(

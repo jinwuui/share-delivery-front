@@ -320,7 +320,7 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
 
   Widget page2() {
     return SizedBox(
-      height: Get.height,
+      height: Get.height - kToolbarHeight - 10,
       width: Get.width,
       child: controller.isPrepared.value
           ? Stack(

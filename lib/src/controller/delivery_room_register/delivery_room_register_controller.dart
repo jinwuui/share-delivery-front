@@ -61,12 +61,13 @@ class DeliveryRoomRegisterController extends GetxController {
       Map<String, dynamic> deliveryRoomInfo = _getDeliveryRoomInfo();
       print(deliveryRoomInfo);
 
-      DeliveryRoom? deliveryRoom =
+      int? deliveryRoom =
           await repository.registerDeliveryRoom(deliveryRoomInfo);
-      if (true || deliveryRoom != null) {
-        // TODO : 홈화면으로 갔다가 내배달로 화면 전환하기
+      if (deliveryRoom != null) {
+        print("   모집글 등록 성공");
         Get.until((route) => Get.currentRoute == Routes.INITIAL);
       } else {
+        print("   모집글 등록 실패");
         throw Exception("등록 실패");
       }
     } catch (e) {
@@ -81,8 +82,8 @@ class DeliveryRoomRegisterController extends GetxController {
     deliveryRoomInfo["content"] = content.text;
     deliveryRoomInfo["receivingLocation"] = {
       "description": receivingLocation?.description,
-      "lat": receivingLocation?.latitude,
-      "lng": receivingLocation?.longitude,
+      "lat": receivingLocation?.lat,
+      "lng": receivingLocation?.lng,
     };
     deliveryRoomInfo["limitPerson"] = limitPerson;
     deliveryRoomInfo["storeCategory"] =
@@ -145,8 +146,8 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   void setReceivingLocation(String description, double lat, double lng) {
-    receivingLocation = ReceivingLocation(
-        description: description, latitude: lat, longitude: lng);
+    receivingLocation =
+        ReceivingLocation(description: description, lat: lat, lng: lng);
     print(
         'DeliveryRoomRegisterController.setReceivingLocation $receivingLocation');
   }

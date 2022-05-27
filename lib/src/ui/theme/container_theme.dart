@@ -23,3 +23,16 @@ const BoxDecoration bottomBorderBox = BoxDecoration(
     bottom: BorderSide(color: Colors.black12, width: 1),
   ),
 );
+//
+// const _distance = 14.0;
+// final BoxDecoration neumorphism = BoxDecoration(
+//   color: Colors.grey.shade200,
+//   borderRadius: BorderRadius.circular(15),
+//   boxShadow: [
+//     BoxShadow(
+//       offset: Offset(_distance, _distance),
+//       color: Colors.black26,
+//       blurRadius: _distance,
+//     )
+//   ],
+// );

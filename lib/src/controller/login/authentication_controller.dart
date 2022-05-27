@@ -31,12 +31,17 @@ class AuthenticationController extends GetxController {
     return repository.requestAuthSMS(phoneNumber);
   }
 
-  Future<User> signUp(String phoneNumber, String authNumber) async {
+  Future<void> signUp(String phoneNumber, String authNumber) async {
     print('AuthenticationController.signUp : $phoneNumber, $authNumber');
 
-    User user = await repository.signUp(phoneNumber, authNumber);
-    _authenticationStateStream.value = Authenticated(user: user);
-    return user;
+    User? user = await repository.signUp(phoneNumber, authNumber);
+
+    if (user != null) {
+      _authenticationStateStream.value = Authenticated(user: user);
+    } else {
+      _authenticationStateStream.value =
+          AuthenticationFailure(message: "회원 가입 실패");
+    }
   }
 
   Future<void> signIn(String phoneNumber, String authNumber) async {
@@ -50,11 +55,11 @@ class AuthenticationController extends GetxController {
     if (result) {
       _authenticationStateStream.value = Authenticated(
         user: User(
-            accountId: -1,
-            phoneNumber: "phoneNumber",
-            nickname: "nickname",
-            status: "status",
-            role: "role"),
+          accountId: -1,
+          phoneNumber: "phoneNumber",
+          nickname: "nickname",
+          status: "status",
+        ),
       );
       // TODO : 로그인 성공/실패 로직 처리
     } else {
@@ -71,20 +76,14 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
-    _authenticationStateStream.value = Authenticated(
-        user: User(
-            accountId: 1, phoneNumber: "", nickname: "", status: "", role: ""));
-    return;
+    // _authenticationStateStream.value = Authenticated(
+    //     user: User(accountId: 1, phoneNumber: "", nickname: "", status: ""));
+    // return;
 
     if (user == null) {
       _authenticationStateStream.value = UnAuthenticated();
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
-  }
-
-  Future<void> refreshToken() async {
-    print('AuthenticationController.refreshToken');
-    await repository.refreshToken();
   }
 }

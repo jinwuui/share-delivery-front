@@ -13,13 +13,22 @@ class AuthenticationRepository {
     return apiClient.requestAuthSMS(phoneNumber);
   }
 
-  Future<User> signUp(String phoneNumber, String authNumber) {
-    return apiClient.signUp(phoneNumber, authNumber);
+  Future<User?> signUp(String phoneNumber, String authNumber) async {
+    User user = await apiClient.signUp(phoneNumber, authNumber);
+
+    if (user.accountId == -1) {
+      print("   회원가입 실패");
+      return null;
+    } else {
+      print("   회원가입 성공");
+      localClient.saveUser(user);
+      return user;
+    }
   }
 
   Future<bool> signIn(String phoneNumber, String authNumber) async {
     try {
-      Map<String, String> tokens =
+      Map<String, dynamic> tokens =
           await apiClient.verifyAuthNumber(phoneNumber, authNumber);
 
       if (tokens["accessToken"] != null) {
@@ -34,21 +43,11 @@ class AuthenticationRepository {
     return true;
   }
 
+  // 로그아웃
   signOut() {}
 
+  // 로컬에 저장된 유저 객체 가져오기
   User? getSavedUser() {
     return localClient.getSavedUser();
-  }
-
-  Future<void> refreshToken() async {
-    // ApiClient 에서 API 요청 시에, 토큰이 만료되면 실행
-    // 1. 로컬에서 토큰 들고오기
-    Map<String, String> tokens = localClient.findTokens();
-
-    // 2. 토큰 받아오기
-    Map<String, String> newTokens = await apiClient.refreshToken(tokens);
-
-    // 3. 받아온 토큰을 로컬에 저장하기
-    localClient.saveTokens(newTokens);
   }
 }

@@ -124,6 +124,13 @@ class __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>
     Object? totalPaymentPrice = freezed,
   }) {
     return _then(_$_DeliveryOrderDetailDTO(
+<<<<<<< HEAD
+=======
+      orderForms: orderForms == freezed
+          ? _value.orderForms
+          : orderForms // ignore: cast_nullable_to_non_nullable
+              as String,
+>>>>>>> origin/feature/kakaoMapAPI
       orders: orders == freezed
           ? _value.orders
           : orders // ignore: cast_nullable_to_non_nullable
@@ -188,6 +195,11 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DeliveryOrderDetailDTO &&
+<<<<<<< HEAD
+=======
+            const DeepCollectionEquality()
+                .equals(other.orderForms, orderForms) &&
+>>>>>>> origin/feature/kakaoMapAPI
             const DeepCollectionEquality().equals(other.orders, orders) &&
             const DeepCollectionEquality()
                 .equals(other.totalOrderPrice, totalOrderPrice) &&
