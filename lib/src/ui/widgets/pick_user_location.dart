@@ -51,16 +51,15 @@ class PickUserLocation extends GetView<PickUserLocationController> {
   Widget addressDescription() {
     return SizedBox(
       height: Get.height * 0.10,
-      width: double.infinity,
       child: Center(
         child: Container(
-          color: Colors.white,
-          width: Get.width * 0.9,
-          height: Get.height * 0.08,
+          margin: EdgeInsets.all(15),
           child: TextField(
             controller: controller.locationDescription,
             maxLength: 13,
             decoration: const InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
               contentPadding: EdgeInsets.only(left: 15.0),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(),
