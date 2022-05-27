@@ -85,13 +85,13 @@ class LoginController extends GetxController {
       isNewUser = false;
     }
 
-    // 회원가입 성공 여부 확인
-    if (_authenticationController.state is AuthenticationFailure) {
-      print(
-          'LoginController.authenticate ${_authenticationController.state.props}');
-      GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
-      return;
-    }
+    // // 회원가입 성공 여부 확인
+    // if (_authenticationController.state is AuthenticationFailure) {
+    //   print(
+    //       'LoginController.authenticate ${_authenticationController.state.props}');
+    //   GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
+    //   return;
+    // }
 
     // 로그인
     await login();
