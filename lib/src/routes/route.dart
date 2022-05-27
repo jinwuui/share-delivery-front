@@ -8,6 +8,7 @@ import 'package:share_delivery/src/bindings/delivery_room_register/pick_receivin
 import 'package:share_delivery/src/bindings/home/fast_matching/fast_matching_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
+import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
 import 'package:share_delivery/src/root.dart';
@@ -181,6 +182,7 @@ class AppPages {
     GetPage(
       name: Routes.FRIEND,
       page: () => FriendPage(),
+      binding: FriendBinding(),
     ),
     GetPage(
       name: Routes.WRITING_COMMENT,

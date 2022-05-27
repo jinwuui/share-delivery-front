@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
+import 'package:share_delivery/src/ui/profile/friend/friend.dart';
 
 class FriendController extends GetxController with StateMixin<List<User>> {
   final ProfileRepository repository;
@@ -9,22 +10,40 @@ class FriendController extends GetxController with StateMixin<List<User>> {
   static FriendController get to => Get.find();
   FriendController({required this.repository});
 
-  final friends = [].obs;
+  final TextEditingController searchController = TextEditingController();
+
+  final friends = <User>[].obs;
 
   @override
   void onReady() async {
     super.onReady();
-    Logger().d("FriendController");
-
     try {
       change(null, status: RxStatus.loading());
 
       friends.value = await getFriendList();
 
-      // change(deliveryRoom.value, status: RxStatus.success());
+      change(friends, status: RxStatus.success());
     } catch (err) {
       change(null, status: RxStatus.error());
     }
+  }
+
+  void filterFriends(String searchTerm) {
+    List<User> results = [];
+
+    if (searchTerm.isEmpty) {
+      results = friends;
+    } else {
+      results = friends
+          .where(
+            (element) => element.nickname
+                .toString()
+                .toLowerCase()
+                .contains(searchTerm.toLowerCase()),
+          )
+          .toList();
+    }
+    change(results, status: RxStatus.success());
   }
 
   Future<List<User>> getFriendList() async {
