@@ -37,8 +37,8 @@ class AuthenticationApiClient {
   /// @description 회원가입 (인증번호 검증)
   /// @param phoneNumber: 사용자 휴대폰 번호, authNumber: 인증번호
   Future<User> signUp(String phoneNumber, String authNumber) async {
-    User result = User(
-        accountId: -1, status: '', phoneNumber: '', nickname: '', role: '');
+    User result =
+        User(accountId: -1, status: '', phoneNumber: '', nickname: '');
 
     try {
       // TODO : 폰 번호와 인증 번호로 회원가입 하기
@@ -106,37 +106,6 @@ class AuthenticationApiClient {
     }
 
     print("   tokens: $tokens");
-    return tokens;
-  }
-
-  Future<Map<String, String>> refreshToken(
-      Map<String, String> oldTokens) async {
-    Map<String, String> tokens = {};
-
-    try {
-      // TODO : 만료된 access token, refresh token 으로 갱신 요청
-      print("-- access 토큰 갱신 : 만료된 토큰과 refresh 토큰으로 access 토큰 갱신 요청");
-
-      Uri url = Uri.parse("$host/api/auth/refreshed-token");
-      String body = jsonEncode({
-        "expiredAccessToken": oldTokens["accessToken"],
-        "refreshToken": oldTokens["refreshToken"],
-      });
-      final Response response = await http.post(
-        url,
-        headers: HttpEnv.contentType,
-        body: body,
-      );
-
-      if (response.statusCode == 200) {
-        tokens = jsonDecode(response.body);
-      } else {
-        throw Exception(response.body);
-      }
-    } catch (e) {
-      print(e);
-    }
-
     return tokens;
   }
 }

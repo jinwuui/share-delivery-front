@@ -50,11 +50,11 @@ class AuthenticationController extends GetxController {
     if (result) {
       _authenticationStateStream.value = Authenticated(
         user: User(
-            accountId: -1,
-            phoneNumber: "phoneNumber",
-            nickname: "nickname",
-            status: "status",
-            role: "role"),
+          accountId: -1,
+          phoneNumber: "phoneNumber",
+          nickname: "nickname",
+          status: "status",
+        ),
       );
       // TODO : 로그인 성공/실패 로직 처리
     } else {
@@ -71,20 +71,14 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
-    _authenticationStateStream.value = Authenticated(
-        user: User(
-            accountId: 1, phoneNumber: "", nickname: "", status: "", role: ""));
-    return;
+    // _authenticationStateStream.value = Authenticated(
+    //     user: User(accountId: 1, phoneNumber: "", nickname: "", status: ""));
+    // return;
 
     if (user == null) {
       _authenticationStateStream.value = UnAuthenticated();
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
-  }
-
-  Future<void> refreshToken() async {
-    print('AuthenticationController.refreshToken');
-    await repository.refreshToken();
   }
 }

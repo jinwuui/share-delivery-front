@@ -9,11 +9,16 @@ class User with _$User {
     required int accountId,
     required String phoneNumber,
     required String nickname,
-    @Default("") String profileImage,
-    @Default("") String email,
     required String status,
-    required String role,
-    @Default("") String bankAccount,
+    @Default("") String profileImage,
+    String? email,
+    String? bank,
+    String? accounts,
+    String? userName,
+    DateTime? joinDate,
+    DateTime? modifiedDate,
+    DateTime? withdrawDate,
+    DateTime? recentDate,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

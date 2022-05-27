@@ -9,30 +9,37 @@ class DeliveryRoomRegisterRepository {
 
   DeliveryRoomRegisterRepository({required this.apiClient});
 
-  Future<int?> registerDeliveryRoom(Map<String, dynamic> deliveryRoom) async {
-    // NOTE: 사용자 입력에서 집결지 데이터 추출  // 서버에 전송해서 집결지 등록
-    print('1 - DeliveryRoomRegisterRepository.registerDeliveryRoom');
-    print("type test ${deliveryRoom["receivingLocation"].runtimeType}");
-    // deliveryRoom["receivingLocation"]["id"] = -1;
-    print("${deliveryRoom["receivingLocation"]}");
-
-    ReceivingLocation body =
-        ReceivingLocation.fromJson(deliveryRoom["receivingLocation"]);
-    print("body $body");
+  Future<int?> registerReceivingLocation(
+      Map<String, dynamic> receivingLocationMap) async {
+    ReceivingLocation body = ReceivingLocation.fromJson(receivingLocationMap);
+    print("   receivingLocation $body");
 
     ReceivingLocation? resReceivingLocation =
         await apiClient.registerReceivingLocation(body);
 
-    print('DeliveryRoomRegisterRepository.registerDeliveryRoom');
-    print(resReceivingLocation);
+    if (resReceivingLocation == null) {
+      return null;
+    } else {
+      return resReceivingLocation.id;
+    }
+  }
 
-    if (resReceivingLocation == null) throw Exception("ERROR: 집결지 ID 없음");
+  Future<int?> registerDeliveryRoom(Map<String, dynamic> deliveryRoom) async {
+    // NOTE: 사용자 입력에서 집결지 데이터 추출  // 서버에 전송해서 집결지 등록
+    print('1 - DeliveryRoomRegisterRepository.registerDeliveryRoom');
+
+    // 집결지 등록
+    int? receivingLocationId =
+        await registerReceivingLocation(deliveryRoom["receivingLocation"]);
+
+    // 집결지 등록 반환값이 없으면 예외 처리
+    if (receivingLocationId == null) throw Exception("ERROR: 집결지 ID 없음");
 
     print('2 - receiving location 등록 성공');
     // 기존의 집결지 데이터는 서버에 보냈으니까 삭제
     deliveryRoom.remove("receivingLocation");
     // 집결지 데이터 대신에 집결지 ID 첨부
-    deliveryRoom["receivingLocationId"] = resReceivingLocation.id;
+    deliveryRoom["receivingLocationId"] = receivingLocationId;
 
     final List<Menu> menuList = deliveryRoom["menuList"];
     deliveryRoom.remove("menuList");
@@ -49,7 +56,6 @@ class DeliveryRoomRegisterRepository {
       menuList: menuList,
     );
 
-    print(newRoom);
     DeliveryRoomRegisterResDTO result =
         await apiClient.registerDeliveryRoom(newRoom);
     print("결과 $result");

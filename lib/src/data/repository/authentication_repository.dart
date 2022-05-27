@@ -39,16 +39,4 @@ class AuthenticationRepository {
   User? getSavedUser() {
     return localClient.getSavedUser();
   }
-
-  Future<void> refreshToken() async {
-    // ApiClient 에서 API 요청 시에, 토큰이 만료되면 실행
-    // 1. 로컬에서 토큰 들고오기
-    Map<String, String> tokens = localClient.findTokens();
-
-    // 2. 토큰 받아오기
-    Map<String, String> newTokens = await apiClient.refreshToken(tokens);
-
-    // 3. 받아온 토큰을 로컬에 저장하기
-    localClient.saveTokens(newTokens);
-  }
 }
