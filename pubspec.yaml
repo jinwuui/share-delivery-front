@@ -53,6 +53,7 @@ dependencies:
   link_text: ^0.2.0
   shimmer: ^2.0.0
   hive: ^2.2.1
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   build_runner: ^2.1.10

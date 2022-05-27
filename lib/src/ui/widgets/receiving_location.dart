@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/receving_location_controller.dart';
+import 'package:share_delivery/src/controller/receiving_location/receiving_location_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class RecevingLocation extends GetView<ReceivingLocationController> {

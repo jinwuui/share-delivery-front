@@ -6,6 +6,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_persistent_keyboard_height/flutter_persistent_keyboard_height.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -13,6 +16,7 @@ import 'package:share_delivery/src/data/provider/authentication/authentication_a
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
@@ -47,6 +51,9 @@ Future<void> initialize() async {
   // 설정 파일 로딩
   await dotenv.load(fileName: ".env");
 
+  // Hive init
+  await Hive.initFlutter();
+
   // 인증 컨트롤러 Get 세팅
   Get.put(
     AuthenticationController(
@@ -56,6 +63,12 @@ Future<void> initialize() async {
       ),
     ),
   );
+
+  // 배달 관리 컨트롤러 세팅
+  Get.put(DeliveryManageController());
+
+  // 배달 관련 초기값 세팅
+  await Get.putAsync(() => SettingService().init());
 
   // SharedPreference 초기화
   await SharedPrefsUtil.init();

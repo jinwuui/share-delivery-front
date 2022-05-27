@@ -21,7 +21,6 @@ DeliveryOrderDetailDTO _$DeliveryOrderDetailDTOFromJson(
 
 /// @nodoc
 mixin _$DeliveryOrderDetailDTO {
-  String get orderForms => throw _privateConstructorUsedError;
   String get orders => throw _privateConstructorUsedError;
   int get totalOrderPrice => throw _privateConstructorUsedError;
   int get deliveryTip => throw _privateConstructorUsedError;
@@ -40,8 +39,7 @@ abstract class $DeliveryOrderDetailDTOCopyWith<$Res> {
           $Res Function(DeliveryOrderDetailDTO) then) =
       _$DeliveryOrderDetailDTOCopyWithImpl<$Res>;
   $Res call(
-      {String orderForms,
-      String orders,
+      {String orders,
       int totalOrderPrice,
       int deliveryTip,
       List<int> discounts,
@@ -59,7 +57,6 @@ class _$DeliveryOrderDetailDTOCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? orderForms = freezed,
     Object? orders = freezed,
     Object? totalOrderPrice = freezed,
     Object? deliveryTip = freezed,
@@ -67,10 +64,6 @@ class _$DeliveryOrderDetailDTOCopyWithImpl<$Res>
     Object? totalPaymentPrice = freezed,
   }) {
     return _then(_value.copyWith(
-      orderForms: orderForms == freezed
-          ? _value.orderForms
-          : orderForms // ignore: cast_nullable_to_non_nullable
-              as String,
       orders: orders == freezed
           ? _value.orders
           : orders // ignore: cast_nullable_to_non_nullable
@@ -103,8 +96,7 @@ abstract class _$$_DeliveryOrderDetailDTOCopyWith<$Res>
       __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String orderForms,
-      String orders,
+      {String orders,
       int totalOrderPrice,
       int deliveryTip,
       List<int> discounts,
@@ -125,7 +117,6 @@ class __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? orderForms = freezed,
     Object? orders = freezed,
     Object? totalOrderPrice = freezed,
     Object? deliveryTip = freezed,
@@ -133,10 +124,6 @@ class __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>
     Object? totalPaymentPrice = freezed,
   }) {
     return _then(_$_DeliveryOrderDetailDTO(
-      orderForms: orderForms == freezed
-          ? _value.orderForms
-          : orderForms // ignore: cast_nullable_to_non_nullable
-              as String,
       orders: orders == freezed
           ? _value.orders
           : orders // ignore: cast_nullable_to_non_nullable
@@ -165,8 +152,7 @@ class __$$_DeliveryOrderDetailDTOCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
   const _$_DeliveryOrderDetailDTO(
-      {required this.orderForms,
-      required this.orders,
+      {required this.orders,
       required this.totalOrderPrice,
       required this.deliveryTip,
       required final List<int> discounts,
@@ -176,8 +162,6 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
   factory _$_DeliveryOrderDetailDTO.fromJson(Map<String, dynamic> json) =>
       _$$_DeliveryOrderDetailDTOFromJson(json);
 
-  @override
-  final String orderForms;
   @override
   final String orders;
   @override
@@ -196,7 +180,7 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
 
   @override
   String toString() {
-    return 'DeliveryOrderDetailDTO(orderForms: $orderForms, orders: $orders, totalOrderPrice: $totalOrderPrice, deliveryTip: $deliveryTip, discounts: $discounts, totalPaymentPrice: $totalPaymentPrice)';
+    return 'DeliveryOrderDetailDTO(orders: $orders, totalOrderPrice: $totalOrderPrice, deliveryTip: $deliveryTip, discounts: $discounts, totalPaymentPrice: $totalPaymentPrice)';
   }
 
   @override
@@ -204,8 +188,6 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_DeliveryOrderDetailDTO &&
-            const DeepCollectionEquality()
-                .equals(other.orderForms, orderForms) &&
             const DeepCollectionEquality().equals(other.orders, orders) &&
             const DeepCollectionEquality()
                 .equals(other.totalOrderPrice, totalOrderPrice) &&
@@ -221,7 +203,6 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(orderForms),
       const DeepCollectionEquality().hash(orders),
       const DeepCollectionEquality().hash(totalOrderPrice),
       const DeepCollectionEquality().hash(deliveryTip),
@@ -242,8 +223,7 @@ class _$_DeliveryOrderDetailDTO implements _DeliveryOrderDetailDTO {
 
 abstract class _DeliveryOrderDetailDTO implements DeliveryOrderDetailDTO {
   const factory _DeliveryOrderDetailDTO(
-      {required final String orderForms,
-      required final String orders,
+      {required final String orders,
       required final int totalOrderPrice,
       required final int deliveryTip,
       required final List<int> discounts,
@@ -252,8 +232,6 @@ abstract class _DeliveryOrderDetailDTO implements DeliveryOrderDetailDTO {
   factory _DeliveryOrderDetailDTO.fromJson(Map<String, dynamic> json) =
       _$_DeliveryOrderDetailDTO.fromJson;
 
-  @override
-  String get orderForms => throw _privateConstructorUsedError;
   @override
   String get orders => throw _privateConstructorUsedError;
   @override

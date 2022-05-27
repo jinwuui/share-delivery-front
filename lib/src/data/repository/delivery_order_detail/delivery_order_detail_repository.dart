@@ -92,7 +92,6 @@ class DeliveryOrderDetailRepository {
 
   Future<void> registerDeliveryRoomOrderDetail() async {
     DeliveryOrderDetailDTO deliveryOrderDetailDTO = DeliveryOrderDetailDTO(
-        orderForms: "1",
         orders: "2",
         totalOrderPrice: 3333,
         deliveryTip: 4444,
