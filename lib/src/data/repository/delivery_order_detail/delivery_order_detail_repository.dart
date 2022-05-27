@@ -31,8 +31,8 @@ class DeliveryOrderDetailRepository {
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
-          latitude: 35.820848788632226,
-          longitude: 128.518205019348),
+          lat: 35.820848788632226,
+          lng: 128.518205019348),
       roomId: 456,
     );
     // return apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);

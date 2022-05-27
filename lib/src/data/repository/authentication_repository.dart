@@ -19,7 +19,7 @@ class AuthenticationRepository {
 
   Future<bool> signIn(String phoneNumber, String authNumber) async {
     try {
-      Map<String, String> tokens =
+      Map<String, dynamic> tokens =
           await apiClient.verifyAuthNumber(phoneNumber, authNumber);
 
       if (tokens["accessToken"] != null) {

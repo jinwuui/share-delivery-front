@@ -58,6 +58,7 @@ class AuthenticationApiClient {
       if (response.statusCode == 201) {
         Map<String, dynamic> userMap = jsonDecode(response.body);
         result = User.fromJson(userMap);
+        print('- signUp $result');
       } else {
         throw Exception(response.body);
       }
@@ -71,9 +72,9 @@ class AuthenticationApiClient {
 
   /// @description 로그인 (인증번호 검증)
   /// @param phoneNumber: 사용자 휴대폰 번호, authNumber: 인증번호
-  Future<Map<String, String>> verifyAuthNumber(
+  Future<Map<String, dynamic>> verifyAuthNumber(
       String phoneNumber, String authNumber) async {
-    Map<String, String> tokens = {};
+    Map<String, dynamic> tokens = {};
 
     try {
       // TODO : 폰 번호와 인증 번호로 토큰 받아오기

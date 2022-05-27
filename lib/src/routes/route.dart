@@ -1,8 +1,8 @@
 import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/bindings/delivery_recruit/delivery_room_detail_binding.dart';
 import 'package:share_delivery/src/bindings/community/post_detail_binding.dart';
 import 'package:share_delivery/src/bindings/community/post_register/post_register_binding.dart';
+import 'package:share_delivery/src/bindings/delivery_recruit/delivery_room_detail_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/delivery_room_register_binding.dart';
 import 'package:share_delivery/src/bindings/delivery_room_register/pick_receiving_location_binding.dart';
 import 'package:share_delivery/src/bindings/home/fast_matching/fast_matching_binding.dart';
@@ -11,13 +11,11 @@ import 'package:share_delivery/src/bindings/participate_room/participate_room_bi
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
 import 'package:share_delivery/src/root.dart';
-import 'package:share_delivery/src/ui/community/post_detail.dart';
+import 'package:share_delivery/src/ui/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/ui/community/post_register/post_register.dart';
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
+import 'package:share_delivery/src/ui/community/writing_comment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
-import 'package:share_delivery/src/ui/profile/app_setting.dart';
-import 'package:share_delivery/src/ui/profile/app_setting.dart';
-import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
@@ -27,6 +25,8 @@ import 'package:share_delivery/src/ui/home/home.dart';
 import 'package:share_delivery/src/ui/home/participate_room/participate_room.dart';
 import 'package:share_delivery/src/ui/login/login.dart';
 import 'package:share_delivery/src/ui/login/phone_number_authentication.dart';
+import 'package:share_delivery/src/ui/profile/app_setting.dart';
+import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/widgets/pick_user_location.dart';
 
 abstract class Routes {
@@ -64,10 +64,12 @@ abstract class Routes {
   // 프로필
   static const APP_SETTING = "/appSetting";
   static const ACCOUNT_MANAGE = "/accountManage";
+
   // 커뮤니티
   static const POST_REGISTER = "/postRegister";
   static const SETTING_POST_CATEGORY = "/settingPostCategory";
   static const POST_DETAIL = "/postDetail";
+  static const WRITING_COMMENT = "/writingComment";
 }
 
 class AppPages {
@@ -164,6 +166,10 @@ class AppPages {
       binding: PickReceivingLocationBinding(),
       transition: Transition.fadeIn,
       curve: Curves.decelerate,
+    ),
+    GetPage(
+      name: Routes.WRITING_COMMENT,
+      page: () => const WritingComment(),
     ),
   ];
 }

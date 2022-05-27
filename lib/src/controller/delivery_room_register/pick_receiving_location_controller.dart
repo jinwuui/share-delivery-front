@@ -194,11 +194,12 @@ class PickReceivingLocationController extends GetxController {
 
   void changeToLocationHistory(ReceivingLocation location) {
     locationData.value = LocationData.fromMap(
-        {"latitude": location.latitude, "longitude": location.longitude});
+        {"latitude": location.lat, "longitude": location.lng});
 
     locationDescription.text = location.description;
-    receivingLocationLat = location.latitude;
-    receivingLocationLng = location.longitude;
+    setIsDescriptionEmpty(locationDescription.text);
+    receivingLocationLat = location.lat;
+    receivingLocationLng = location.lng;
   }
 
   void changeToCurrentLocation() {

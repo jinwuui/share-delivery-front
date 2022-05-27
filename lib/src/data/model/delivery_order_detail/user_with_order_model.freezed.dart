@@ -81,11 +81,11 @@ class _$UserWithOrderModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$UserWithOrderModelCopyWith<$Res>
+abstract class _$$_UserWithOrderModelCopyWith<$Res>
     implements $UserWithOrderModelCopyWith<$Res> {
-  factory _$UserWithOrderModelCopyWith(
-          _UserWithOrderModel value, $Res Function(_UserWithOrderModel) then) =
-      __$UserWithOrderModelCopyWithImpl<$Res>;
+  factory _$$_UserWithOrderModelCopyWith(_$_UserWithOrderModel value,
+          $Res Function(_$_UserWithOrderModel) then) =
+      __$$_UserWithOrderModelCopyWithImpl<$Res>;
   @override
   $Res call(
       {String userId,
@@ -95,15 +95,15 @@ abstract class _$UserWithOrderModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$UserWithOrderModelCopyWithImpl<$Res>
+class __$$_UserWithOrderModelCopyWithImpl<$Res>
     extends _$UserWithOrderModelCopyWithImpl<$Res>
-    implements _$UserWithOrderModelCopyWith<$Res> {
-  __$UserWithOrderModelCopyWithImpl(
-      _UserWithOrderModel _value, $Res Function(_UserWithOrderModel) _then)
-      : super(_value, (v) => _then(v as _UserWithOrderModel));
+    implements _$$_UserWithOrderModelCopyWith<$Res> {
+  __$$_UserWithOrderModelCopyWithImpl(
+      _$_UserWithOrderModel _value, $Res Function(_$_UserWithOrderModel) _then)
+      : super(_value, (v) => _then(v as _$_UserWithOrderModel));
 
   @override
-  _UserWithOrderModel get _value => super._value as _UserWithOrderModel;
+  _$_UserWithOrderModel get _value => super._value as _$_UserWithOrderModel;
 
   @override
   $Res call({
@@ -112,7 +112,7 @@ class __$UserWithOrderModelCopyWithImpl<$Res>
     Object? menuList = freezed,
     Object? nickname = freezed,
   }) {
-    return _then(_UserWithOrderModel(
+    return _then(_$_UserWithOrderModel(
       userId: userId == freezed
           ? _value.userId
           : userId // ignore: cast_nullable_to_non_nullable
@@ -122,7 +122,7 @@ class __$UserWithOrderModelCopyWithImpl<$Res>
           : orderDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
       menuList: menuList == freezed
-          ? _value.menuList
+          ? _value._menuList
           : menuList // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
       nickname: nickname == freezed
@@ -169,10 +169,10 @@ class _$_UserWithOrderModel implements _UserWithOrderModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _UserWithOrderModel &&
+            other is _$_UserWithOrderModel &&
             const DeepCollectionEquality().equals(other.userId, userId) &&
             const DeepCollectionEquality().equals(other.orderDate, orderDate) &&
-            const DeepCollectionEquality().equals(other.menuList, menuList) &&
+            const DeepCollectionEquality().equals(other._menuList, _menuList) &&
             const DeepCollectionEquality().equals(other.nickname, nickname));
   }
 
@@ -182,13 +182,14 @@ class _$_UserWithOrderModel implements _UserWithOrderModel {
       runtimeType,
       const DeepCollectionEquality().hash(userId),
       const DeepCollectionEquality().hash(orderDate),
-      const DeepCollectionEquality().hash(menuList),
+      const DeepCollectionEquality().hash(_menuList),
       const DeepCollectionEquality().hash(nickname));
 
   @JsonKey(ignore: true)
   @override
-  _$UserWithOrderModelCopyWith<_UserWithOrderModel> get copyWith =>
-      __$UserWithOrderModelCopyWithImpl<_UserWithOrderModel>(this, _$identity);
+  _$$_UserWithOrderModelCopyWith<_$_UserWithOrderModel> get copyWith =>
+      __$$_UserWithOrderModelCopyWithImpl<_$_UserWithOrderModel>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -216,6 +217,6 @@ abstract class _UserWithOrderModel implements UserWithOrderModel {
   String get nickname => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UserWithOrderModelCopyWith<_UserWithOrderModel> get copyWith =>
+  _$$_UserWithOrderModelCopyWith<_$_UserWithOrderModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

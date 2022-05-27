@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_detail_controller.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/community/post_detail/post_update.dart';
 import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
@@ -17,7 +20,7 @@ class PostDetail extends GetView<PostDetailController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: appBar(),
+        appBar: appBar(context),
         body: GestureDetector(
           onTap: () {
             if (MediaQuery.of(context).viewInsets.bottom != 0) {
@@ -153,6 +156,8 @@ class PostDetail extends GetView<PostDetailController> {
   }
 
   Widget parentComment(int idx) {
+    Comment comment = controller.comments[idx];
+
     return Padding(
       padding: EdgeInsets.only(
         top: 20,
@@ -200,8 +205,12 @@ class PostDetail extends GetView<PostDetailController> {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: Text("답글쓰기"),
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        Get.toNamed(Routes.WRITING_COMMENT,
+                            arguments: comment.parentId);
+                      },
+                      child: Text("댓글쓰기"),
                       style: commentBtn,
                     ),
                   ],
@@ -234,6 +243,8 @@ class PostDetail extends GetView<PostDetailController> {
   }
 
   Widget childComment(int idx) {
+    Comment comment = controller.comments[idx];
+
     return Padding(
       padding: EdgeInsets.only(
         top: 20,
@@ -304,22 +315,52 @@ class PostDetail extends GetView<PostDetailController> {
               style: commentStyle,
             ),
           ),
-          // controller.isLastComment(),
+          controller.onWriteCommentBar(comment)
+              ? writeCommentBar(comment.parentId)
+              : const SizedBox.shrink(),
         ],
       ),
     );
   }
 
-  Widget writeCommentBar() {
+  Widget writeCommentBar(int parentId) {
     return GestureDetector(
       onTap: () {
-        print("답글 쓰기");
+        FocusManager.instance.primaryFocus?.unfocus();
+        Get.toNamed(Routes.WRITING_COMMENT, arguments: parentId);
       },
-      child: Container(
-        color: Colors.pink,
-        width: double.infinity,
-        height: 30,
-        child: Text("답글 쓰기"),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: normal),
+            child: CircleAvatar(
+              radius: childAvatar,
+              backgroundColor: Colors.grey,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: childAvatar * 2,
+              padding: const EdgeInsets.only(left: normal),
+              margin: const EdgeInsets.only(right: big),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                border: Border.all(
+                  color: Colors.grey.shade400,
+                  width: 1.1,
+                ),
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "댓글을 입력해주세요.",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: Colors.grey.shade500),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -342,7 +383,7 @@ class PostDetail extends GetView<PostDetailController> {
     );
   }
 
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget appBar(BuildContext ctx) {
     return AppBar(
       shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
       elevation: 0,
@@ -364,13 +405,57 @@ class PostDetail extends GetView<PostDetailController> {
           },
           icon: Icon(Icons.ios_share, color: Colors.black),
         ),
-        IconButton(
+        controller.uiType == PostDetailUI.writer || true
+            ? IconButton(
+                onPressed: () {
+                  print("click more_vert");
+                  showCupertinoModalPopup(
+                    context: ctx,
+                    builder: (ctx) => actionSheet(),
+                  );
+                },
+                icon: Icon(Icons.more_vert, color: Colors.black),
+              )
+            : SizedBox.shrink(),
+      ],
+    );
+  }
+
+  Widget androidActionSheet() {
+    return Container(
+      color: Colors.red,
+      height: Get.height * 0.4,
+    );
+  }
+
+  CupertinoActionSheet actionSheet() {
+    return CupertinoActionSheet(
+      actions: [
+        CupertinoActionSheetAction(
           onPressed: () {
-            print("click more_vert");
+            Get.bottomSheet(
+              const PostUpdate(),
+              isScrollControlled: true,
+              ignoreSafeArea: false,
+            );
           },
-          icon: Icon(Icons.more_vert, color: Colors.black),
+          child: Text("수정"),
+          // isDefaultAction: true,
+        ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            controller.deletePost();
+          },
+          child: Text("삭제"),
+          isDestructiveAction: true,
         ),
       ],
+      cancelButton: CupertinoActionSheetAction(
+        onPressed: () {
+          Get.back();
+        },
+        child: Text("닫기"),
+      ),
     );
   }
 

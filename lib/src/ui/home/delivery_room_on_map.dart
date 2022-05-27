@@ -134,8 +134,10 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
                 child: ElevatedButton(
                   style: orangeFlexBtn,
                   onPressed: () {
-                    print("참가");
-                    Get.toNamed(Routes.PARTICIPATE_ROOM, arguments: _info);
+                    controller.setCurSelectedIdx(index);
+                    Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+                    // print("참가");
+                    // Get.toNamed(Routes.PARTICIPATE_ROOM, arguments: _info);
                   },
                   child: Text("보기"),
                 ),
@@ -164,8 +166,8 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       createdDateTime: DateTime.now(),
       receivingLocation: ReceivingLocation(
         description: '',
-        longitude: -1,
-        latitude: -1,
+        lng: -1,
+        lat: -1,
       ),
     );
   }

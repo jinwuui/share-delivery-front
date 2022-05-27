@@ -28,8 +28,8 @@ class PickReceivingLocationRepository {
     // NOTE : 사용자의 위치 데이터를 로컬에 저장하는 함수
     Map<String, dynamic> jsonMap = {
       "description": description,
-      "latitude": lat,
-      "longitude": lng,
+      "lat": lat,
+      "lng": lng,
     };
     String jsonString = jsonEncode(jsonMap);
 

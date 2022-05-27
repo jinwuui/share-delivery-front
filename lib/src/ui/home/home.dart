@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/provider/RestClient.dart';
-import 'package:share_delivery/src/data/provider/home/home_api_client.dart';
+import 'package:share_delivery/src/data/provider/home/home_api_client/home_api_client.dart';
 import 'package:share_delivery/src/data/provider/home/home_local_client.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_list.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_on_map.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
 class Home extends GetView<HomeController> {
   const Home({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class Home extends GetView<HomeController> {
     Get.put(
       HomeController(
         repository: HomeRepository(
-          apiClient: HomeApiClient(),
+          apiClient: HomeApiClient(DioUtil.getDio()),
           localClient: HomeLocalClient(),
         ),
       ),
@@ -93,6 +94,7 @@ class Home extends GetView<HomeController> {
 
   Widget fab() {
     return FloatingActionButton(
+      heroTag: "deliveryRoomRegisterFAB",
       backgroundColor: Colors.orange,
       onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
       child: const Icon(Icons.add_rounded, size: 40),

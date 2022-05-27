@@ -116,11 +116,11 @@ class _$DeliveryHistoryModelCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$DeliveryHistoryModelCopyWith<$Res>
+abstract class _$$_DeliveryHistoryModelCopyWith<$Res>
     implements $DeliveryHistoryModelCopyWith<$Res> {
-  factory _$DeliveryHistoryModelCopyWith(_DeliveryHistoryModel value,
-          $Res Function(_DeliveryHistoryModel) then) =
-      __$DeliveryHistoryModelCopyWithImpl<$Res>;
+  factory _$$_DeliveryHistoryModelCopyWith(_$_DeliveryHistoryModel value,
+          $Res Function(_$_DeliveryHistoryModel) then) =
+      __$$_DeliveryHistoryModelCopyWithImpl<$Res>;
   @override
   $Res call(
       {String leaderName,
@@ -135,15 +135,15 @@ abstract class _$DeliveryHistoryModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$DeliveryHistoryModelCopyWithImpl<$Res>
+class __$$_DeliveryHistoryModelCopyWithImpl<$Res>
     extends _$DeliveryHistoryModelCopyWithImpl<$Res>
-    implements _$DeliveryHistoryModelCopyWith<$Res> {
-  __$DeliveryHistoryModelCopyWithImpl(
-      _DeliveryHistoryModel _value, $Res Function(_DeliveryHistoryModel) _then)
-      : super(_value, (v) => _then(v as _DeliveryHistoryModel));
+    implements _$$_DeliveryHistoryModelCopyWith<$Res> {
+  __$$_DeliveryHistoryModelCopyWithImpl(_$_DeliveryHistoryModel _value,
+      $Res Function(_$_DeliveryHistoryModel) _then)
+      : super(_value, (v) => _then(v as _$_DeliveryHistoryModel));
 
   @override
-  _DeliveryHistoryModel get _value => super._value as _DeliveryHistoryModel;
+  _$_DeliveryHistoryModel get _value => super._value as _$_DeliveryHistoryModel;
 
   @override
   $Res call({
@@ -157,7 +157,7 @@ class __$DeliveryHistoryModelCopyWithImpl<$Res>
     Object? receivingLocationDesc = freezed,
     Object? storeCategory = freezed,
   }) {
-    return _then(_DeliveryHistoryModel(
+    return _then(_$_DeliveryHistoryModel(
       leaderName: leaderName == freezed
           ? _value.leaderName
           : leaderName // ignore: cast_nullable_to_non_nullable
@@ -243,7 +243,7 @@ class _$_DeliveryHistoryModel implements _DeliveryHistoryModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _DeliveryHistoryModel &&
+            other is _$_DeliveryHistoryModel &&
             const DeepCollectionEquality()
                 .equals(other.leaderName, leaderName) &&
             const DeepCollectionEquality().equals(other.content, content) &&
@@ -277,8 +277,8 @@ class _$_DeliveryHistoryModel implements _DeliveryHistoryModel {
 
   @JsonKey(ignore: true)
   @override
-  _$DeliveryHistoryModelCopyWith<_DeliveryHistoryModel> get copyWith =>
-      __$DeliveryHistoryModelCopyWithImpl<_DeliveryHistoryModel>(
+  _$$_DeliveryHistoryModelCopyWith<_$_DeliveryHistoryModel> get copyWith =>
+      __$$_DeliveryHistoryModelCopyWithImpl<_$_DeliveryHistoryModel>(
           this, _$identity);
 
   @override
@@ -322,6 +322,6 @@ abstract class _DeliveryHistoryModel implements DeliveryHistoryModel {
   StoreCategory get storeCategory => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$DeliveryHistoryModelCopyWith<_DeliveryHistoryModel> get copyWith =>
+  _$$_DeliveryHistoryModelCopyWith<_$_DeliveryHistoryModel> get copyWith =>
       throw _privateConstructorUsedError;
 }

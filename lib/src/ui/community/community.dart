@@ -71,7 +71,11 @@ class Community extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          Get.toNamed(Routes.POST_DETAIL);
+          // TODO : POST_DETAIL 로 넘어갈 때, 게시글을 특정할 수 있는 정보(id...)가 필요함
+          Get.toNamed(
+            Routes.POST_DETAIL,
+            arguments: {"postId": 14},
+          );
         },
         child: Padding(
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
