@@ -10,38 +10,44 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       accountId: json['accountId'] as int,
       phoneNumber: json['phoneNumber'] as String,
       nickname: json['nickname'] as String,
-      status: json['status'] as String,
       profileImage: json['profileImage'] as String? ?? "",
+      status: json['status'] as String,
+      role: json['role'] as String,
       email: json['email'] as String?,
-      bank: json['bank'] as String?,
-      accounts: json['accounts'] as String?,
-      userName: json['userName'] as String?,
-      joinDate: json['joinDate'] == null
+      bankAccount: json['bankAccount'] == null
           ? null
-          : DateTime.parse(json['joinDate'] as String),
+          : BankAccount.fromJson(json['bankAccount'] as Map<String, dynamic>),
+      createdDate: json['createdDate'] == null
+          ? null
+          : DateTime.parse(json['createdDate'] as String),
       modifiedDate: json['modifiedDate'] == null
           ? null
           : DateTime.parse(json['modifiedDate'] as String),
-      withdrawDate: json['withdrawDate'] == null
-          ? null
-          : DateTime.parse(json['withdrawDate'] as String),
-      recentDate: json['recentDate'] == null
-          ? null
-          : DateTime.parse(json['recentDate'] as String),
     );
 
 Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'accountId': instance.accountId,
       'phoneNumber': instance.phoneNumber,
       'nickname': instance.nickname,
-      'status': instance.status,
       'profileImage': instance.profileImage,
+      'status': instance.status,
+      'role': instance.role,
       'email': instance.email,
-      'bank': instance.bank,
-      'accounts': instance.accounts,
-      'userName': instance.userName,
-      'joinDate': instance.joinDate?.toIso8601String(),
+      'bankAccount': instance.bankAccount,
+      'createdDate': instance.createdDate?.toIso8601String(),
       'modifiedDate': instance.modifiedDate?.toIso8601String(),
-      'withdrawDate': instance.withdrawDate?.toIso8601String(),
-      'recentDate': instance.recentDate?.toIso8601String(),
+    };
+
+_$_BankAccount _$$_BankAccountFromJson(Map<String, dynamic> json) =>
+    _$_BankAccount(
+      accountHolder: json['accountHolder'] as String,
+      bank: json['bank'] as String,
+      accountNumber: json['accountNumber'] as String,
+    );
+
+Map<String, dynamic> _$$_BankAccountToJson(_$_BankAccount instance) =>
+    <String, dynamic>{
+      'accountHolder': instance.accountHolder,
+      'bank': instance.bank,
+      'accountNumber': instance.accountNumber,
     };

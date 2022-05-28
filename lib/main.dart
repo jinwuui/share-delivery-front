@@ -39,6 +39,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // 앱 초기화
+  await initialize();
+
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
@@ -55,6 +58,9 @@ Future<void> main() async {
 }
 
 Future<void> initialize() async {
+  // SharedPreference 초기화
+  await SharedPrefsUtil.init();
+
   // 설정 파일 로딩
   await dotenv.load(fileName: ".env");
 
@@ -68,7 +74,7 @@ Future<void> initialize() async {
   Get.put(
     AuthenticationController(
       repository: AuthenticationRepository(
-        apiClient: AuthenticationApiClient(),
+        apiClient: AuthenticationApiClient(DioUtil.loginDio()),
         localClient: AuthenticationLocalClient(),
       ),
     ),

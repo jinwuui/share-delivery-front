@@ -108,4 +108,25 @@ class DioUtil {
   // static Dio getMultipartDio() {
   //   Dio dio = getDio();
   // }
+
+  static Dio loginDio() {
+    Dio dio = Dio();
+
+    dio.interceptors.clear();
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // 헤더 지정
+          options.headers["Content-Type"] = "application/json";
+
+          return handler.next(options);
+        },
+        // onError: (error, handler) async {
+        //   Logger().e(error.response);
+        // },
+      ),
+    );
+
+    return dio;
+  }
 }

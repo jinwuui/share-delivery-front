@@ -23,16 +23,13 @@ mixin _$User {
   int get accountId => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
   String get profileImage => throw _privateConstructorUsedError;
+  String get status => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
-  String? get bank => throw _privateConstructorUsedError;
-  String? get accounts => throw _privateConstructorUsedError;
-  String? get userName => throw _privateConstructorUsedError;
-  DateTime? get joinDate => throw _privateConstructorUsedError;
+  BankAccount? get bankAccount => throw _privateConstructorUsedError;
+  DateTime? get createdDate => throw _privateConstructorUsedError;
   DateTime? get modifiedDate => throw _privateConstructorUsedError;
-  DateTime? get withdrawDate => throw _privateConstructorUsedError;
-  DateTime? get recentDate => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,16 +44,15 @@ abstract class $UserCopyWith<$Res> {
       {int accountId,
       String phoneNumber,
       String nickname,
-      String status,
       String profileImage,
+      String status,
+      String role,
       String? email,
-      String? bank,
-      String? accounts,
-      String? userName,
-      DateTime? joinDate,
-      DateTime? modifiedDate,
-      DateTime? withdrawDate,
-      DateTime? recentDate});
+      BankAccount? bankAccount,
+      DateTime? createdDate,
+      DateTime? modifiedDate});
+
+  $BankAccountCopyWith<$Res>? get bankAccount;
 }
 
 /// @nodoc
@@ -72,16 +68,13 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? accountId = freezed,
     Object? phoneNumber = freezed,
     Object? nickname = freezed,
-    Object? status = freezed,
     Object? profileImage = freezed,
+    Object? status = freezed,
+    Object? role = freezed,
     Object? email = freezed,
-    Object? bank = freezed,
-    Object? accounts = freezed,
-    Object? userName = freezed,
-    Object? joinDate = freezed,
+    Object? bankAccount = freezed,
+    Object? createdDate = freezed,
     Object? modifiedDate = freezed,
-    Object? withdrawDate = freezed,
-    Object? recentDate = freezed,
   }) {
     return _then(_value.copyWith(
       accountId: accountId == freezed
@@ -96,47 +89,46 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      profileImage: profileImage == freezed
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as String,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImage: profileImage == freezed
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
+      role: role == freezed
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      bank: bank == freezed
-          ? _value.bank
-          : bank // ignore: cast_nullable_to_non_nullable
-              as String?,
-      accounts: accounts == freezed
-          ? _value.accounts
-          : accounts // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userName: userName == freezed
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      joinDate: joinDate == freezed
-          ? _value.joinDate
-          : joinDate // ignore: cast_nullable_to_non_nullable
+      bankAccount: bankAccount == freezed
+          ? _value.bankAccount
+          : bankAccount // ignore: cast_nullable_to_non_nullable
+              as BankAccount?,
+      createdDate: createdDate == freezed
+          ? _value.createdDate
+          : createdDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       modifiedDate: modifiedDate == freezed
           ? _value.modifiedDate
           : modifiedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      withdrawDate: withdrawDate == freezed
-          ? _value.withdrawDate
-          : withdrawDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      recentDate: recentDate == freezed
-          ? _value.recentDate
-          : recentDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
     ));
+  }
+
+  @override
+  $BankAccountCopyWith<$Res>? get bankAccount {
+    if (_value.bankAccount == null) {
+      return null;
+    }
+
+    return $BankAccountCopyWith<$Res>(_value.bankAccount!, (value) {
+      return _then(_value.copyWith(bankAccount: value));
+    });
   }
 }
 
@@ -149,16 +141,16 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       {int accountId,
       String phoneNumber,
       String nickname,
-      String status,
       String profileImage,
+      String status,
+      String role,
       String? email,
-      String? bank,
-      String? accounts,
-      String? userName,
-      DateTime? joinDate,
-      DateTime? modifiedDate,
-      DateTime? withdrawDate,
-      DateTime? recentDate});
+      BankAccount? bankAccount,
+      DateTime? createdDate,
+      DateTime? modifiedDate});
+
+  @override
+  $BankAccountCopyWith<$Res>? get bankAccount;
 }
 
 /// @nodoc
@@ -175,16 +167,13 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? accountId = freezed,
     Object? phoneNumber = freezed,
     Object? nickname = freezed,
-    Object? status = freezed,
     Object? profileImage = freezed,
+    Object? status = freezed,
+    Object? role = freezed,
     Object? email = freezed,
-    Object? bank = freezed,
-    Object? accounts = freezed,
-    Object? userName = freezed,
-    Object? joinDate = freezed,
+    Object? bankAccount = freezed,
+    Object? createdDate = freezed,
     Object? modifiedDate = freezed,
-    Object? withdrawDate = freezed,
-    Object? recentDate = freezed,
   }) {
     return _then(_$_User(
       accountId: accountId == freezed
@@ -199,45 +188,33 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      profileImage: profileImage == freezed
+          ? _value.profileImage
+          : profileImage // ignore: cast_nullable_to_non_nullable
+              as String,
       status: status == freezed
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      profileImage: profileImage == freezed
-          ? _value.profileImage
-          : profileImage // ignore: cast_nullable_to_non_nullable
+      role: role == freezed
+          ? _value.role
+          : role // ignore: cast_nullable_to_non_nullable
               as String,
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
-      bank: bank == freezed
-          ? _value.bank
-          : bank // ignore: cast_nullable_to_non_nullable
-              as String?,
-      accounts: accounts == freezed
-          ? _value.accounts
-          : accounts // ignore: cast_nullable_to_non_nullable
-              as String?,
-      userName: userName == freezed
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
-              as String?,
-      joinDate: joinDate == freezed
-          ? _value.joinDate
-          : joinDate // ignore: cast_nullable_to_non_nullable
+      bankAccount: bankAccount == freezed
+          ? _value.bankAccount
+          : bankAccount // ignore: cast_nullable_to_non_nullable
+              as BankAccount?,
+      createdDate: createdDate == freezed
+          ? _value.createdDate
+          : createdDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       modifiedDate: modifiedDate == freezed
           ? _value.modifiedDate
           : modifiedDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      withdrawDate: withdrawDate == freezed
-          ? _value.withdrawDate
-          : withdrawDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      recentDate: recentDate == freezed
-          ? _value.recentDate
-          : recentDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
     ));
   }
@@ -250,16 +227,13 @@ class _$_User implements _User {
       {required this.accountId,
       required this.phoneNumber,
       required this.nickname,
-      required this.status,
       this.profileImage = "",
+      required this.status,
+      required this.role,
       this.email,
-      this.bank,
-      this.accounts,
-      this.userName,
-      this.joinDate,
-      this.modifiedDate,
-      this.withdrawDate,
-      this.recentDate});
+      this.bankAccount,
+      this.createdDate,
+      this.modifiedDate});
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -270,30 +244,24 @@ class _$_User implements _User {
   @override
   final String nickname;
   @override
-  final String status;
-  @override
   @JsonKey()
   final String profileImage;
   @override
+  final String status;
+  @override
+  final String role;
+  @override
   final String? email;
   @override
-  final String? bank;
+  final BankAccount? bankAccount;
   @override
-  final String? accounts;
-  @override
-  final String? userName;
-  @override
-  final DateTime? joinDate;
+  final DateTime? createdDate;
   @override
   final DateTime? modifiedDate;
-  @override
-  final DateTime? withdrawDate;
-  @override
-  final DateTime? recentDate;
 
   @override
   String toString() {
-    return 'User(accountId: $accountId, phoneNumber: $phoneNumber, nickname: $nickname, status: $status, profileImage: $profileImage, email: $email, bank: $bank, accounts: $accounts, userName: $userName, joinDate: $joinDate, modifiedDate: $modifiedDate, withdrawDate: $withdrawDate, recentDate: $recentDate)';
+    return 'User(accountId: $accountId, phoneNumber: $phoneNumber, nickname: $nickname, profileImage: $profileImage, status: $status, role: $role, email: $email, bankAccount: $bankAccount, createdDate: $createdDate, modifiedDate: $modifiedDate)';
   }
 
   @override
@@ -305,20 +273,17 @@ class _$_User implements _User {
             const DeepCollectionEquality()
                 .equals(other.phoneNumber, phoneNumber) &&
             const DeepCollectionEquality().equals(other.nickname, nickname) &&
-            const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality()
                 .equals(other.profileImage, profileImage) &&
+            const DeepCollectionEquality().equals(other.status, status) &&
+            const DeepCollectionEquality().equals(other.role, role) &&
             const DeepCollectionEquality().equals(other.email, email) &&
-            const DeepCollectionEquality().equals(other.bank, bank) &&
-            const DeepCollectionEquality().equals(other.accounts, accounts) &&
-            const DeepCollectionEquality().equals(other.userName, userName) &&
-            const DeepCollectionEquality().equals(other.joinDate, joinDate) &&
             const DeepCollectionEquality()
-                .equals(other.modifiedDate, modifiedDate) &&
+                .equals(other.bankAccount, bankAccount) &&
             const DeepCollectionEquality()
-                .equals(other.withdrawDate, withdrawDate) &&
+                .equals(other.createdDate, createdDate) &&
             const DeepCollectionEquality()
-                .equals(other.recentDate, recentDate));
+                .equals(other.modifiedDate, modifiedDate));
   }
 
   @JsonKey(ignore: true)
@@ -328,16 +293,13 @@ class _$_User implements _User {
       const DeepCollectionEquality().hash(accountId),
       const DeepCollectionEquality().hash(phoneNumber),
       const DeepCollectionEquality().hash(nickname),
-      const DeepCollectionEquality().hash(status),
       const DeepCollectionEquality().hash(profileImage),
+      const DeepCollectionEquality().hash(status),
+      const DeepCollectionEquality().hash(role),
       const DeepCollectionEquality().hash(email),
-      const DeepCollectionEquality().hash(bank),
-      const DeepCollectionEquality().hash(accounts),
-      const DeepCollectionEquality().hash(userName),
-      const DeepCollectionEquality().hash(joinDate),
-      const DeepCollectionEquality().hash(modifiedDate),
-      const DeepCollectionEquality().hash(withdrawDate),
-      const DeepCollectionEquality().hash(recentDate));
+      const DeepCollectionEquality().hash(bankAccount),
+      const DeepCollectionEquality().hash(createdDate),
+      const DeepCollectionEquality().hash(modifiedDate));
 
   @JsonKey(ignore: true)
   @override
@@ -355,16 +317,13 @@ abstract class _User implements User {
       {required final int accountId,
       required final String phoneNumber,
       required final String nickname,
-      required final String status,
       final String profileImage,
+      required final String status,
+      required final String role,
       final String? email,
-      final String? bank,
-      final String? accounts,
-      final String? userName,
-      final DateTime? joinDate,
-      final DateTime? modifiedDate,
-      final DateTime? withdrawDate,
-      final DateTime? recentDate}) = _$_User;
+      final BankAccount? bankAccount,
+      final DateTime? createdDate,
+      final DateTime? modifiedDate}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -375,26 +334,193 @@ abstract class _User implements User {
   @override
   String get nickname => throw _privateConstructorUsedError;
   @override
+  String get profileImage => throw _privateConstructorUsedError;
+  @override
   String get status => throw _privateConstructorUsedError;
   @override
-  String get profileImage => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
   @override
   String? get email => throw _privateConstructorUsedError;
   @override
-  String? get bank => throw _privateConstructorUsedError;
+  BankAccount? get bankAccount => throw _privateConstructorUsedError;
   @override
-  String? get accounts => throw _privateConstructorUsedError;
-  @override
-  String? get userName => throw _privateConstructorUsedError;
-  @override
-  DateTime? get joinDate => throw _privateConstructorUsedError;
+  DateTime? get createdDate => throw _privateConstructorUsedError;
   @override
   DateTime? get modifiedDate => throw _privateConstructorUsedError;
   @override
-  DateTime? get withdrawDate => throw _privateConstructorUsedError;
-  @override
-  DateTime? get recentDate => throw _privateConstructorUsedError;
-  @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;
+}
+
+BankAccount _$BankAccountFromJson(Map<String, dynamic> json) {
+  return _BankAccount.fromJson(json);
+}
+
+/// @nodoc
+mixin _$BankAccount {
+  String get accountHolder => throw _privateConstructorUsedError;
+  String get bank => throw _privateConstructorUsedError;
+  String get accountNumber => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $BankAccountCopyWith<BankAccount> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BankAccountCopyWith<$Res> {
+  factory $BankAccountCopyWith(
+          BankAccount value, $Res Function(BankAccount) then) =
+      _$BankAccountCopyWithImpl<$Res>;
+  $Res call({String accountHolder, String bank, String accountNumber});
+}
+
+/// @nodoc
+class _$BankAccountCopyWithImpl<$Res> implements $BankAccountCopyWith<$Res> {
+  _$BankAccountCopyWithImpl(this._value, this._then);
+
+  final BankAccount _value;
+  // ignore: unused_field
+  final $Res Function(BankAccount) _then;
+
+  @override
+  $Res call({
+    Object? accountHolder = freezed,
+    Object? bank = freezed,
+    Object? accountNumber = freezed,
+  }) {
+    return _then(_value.copyWith(
+      accountHolder: accountHolder == freezed
+          ? _value.accountHolder
+          : accountHolder // ignore: cast_nullable_to_non_nullable
+              as String,
+      bank: bank == freezed
+          ? _value.bank
+          : bank // ignore: cast_nullable_to_non_nullable
+              as String,
+      accountNumber: accountNumber == freezed
+          ? _value.accountNumber
+          : accountNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_BankAccountCopyWith<$Res>
+    implements $BankAccountCopyWith<$Res> {
+  factory _$$_BankAccountCopyWith(
+          _$_BankAccount value, $Res Function(_$_BankAccount) then) =
+      __$$_BankAccountCopyWithImpl<$Res>;
+  @override
+  $Res call({String accountHolder, String bank, String accountNumber});
+}
+
+/// @nodoc
+class __$$_BankAccountCopyWithImpl<$Res> extends _$BankAccountCopyWithImpl<$Res>
+    implements _$$_BankAccountCopyWith<$Res> {
+  __$$_BankAccountCopyWithImpl(
+      _$_BankAccount _value, $Res Function(_$_BankAccount) _then)
+      : super(_value, (v) => _then(v as _$_BankAccount));
+
+  @override
+  _$_BankAccount get _value => super._value as _$_BankAccount;
+
+  @override
+  $Res call({
+    Object? accountHolder = freezed,
+    Object? bank = freezed,
+    Object? accountNumber = freezed,
+  }) {
+    return _then(_$_BankAccount(
+      accountHolder: accountHolder == freezed
+          ? _value.accountHolder
+          : accountHolder // ignore: cast_nullable_to_non_nullable
+              as String,
+      bank: bank == freezed
+          ? _value.bank
+          : bank // ignore: cast_nullable_to_non_nullable
+              as String,
+      accountNumber: accountNumber == freezed
+          ? _value.accountNumber
+          : accountNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_BankAccount implements _BankAccount {
+  const _$_BankAccount(
+      {required this.accountHolder,
+      required this.bank,
+      required this.accountNumber});
+
+  factory _$_BankAccount.fromJson(Map<String, dynamic> json) =>
+      _$$_BankAccountFromJson(json);
+
+  @override
+  final String accountHolder;
+  @override
+  final String bank;
+  @override
+  final String accountNumber;
+
+  @override
+  String toString() {
+    return 'BankAccount(accountHolder: $accountHolder, bank: $bank, accountNumber: $accountNumber)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_BankAccount &&
+            const DeepCollectionEquality()
+                .equals(other.accountHolder, accountHolder) &&
+            const DeepCollectionEquality().equals(other.bank, bank) &&
+            const DeepCollectionEquality()
+                .equals(other.accountNumber, accountNumber));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(accountHolder),
+      const DeepCollectionEquality().hash(bank),
+      const DeepCollectionEquality().hash(accountNumber));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_BankAccountCopyWith<_$_BankAccount> get copyWith =>
+      __$$_BankAccountCopyWithImpl<_$_BankAccount>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_BankAccountToJson(this);
+  }
+}
+
+abstract class _BankAccount implements BankAccount {
+  const factory _BankAccount(
+      {required final String accountHolder,
+      required final String bank,
+      required final String accountNumber}) = _$_BankAccount;
+
+  factory _BankAccount.fromJson(Map<String, dynamic> json) =
+      _$_BankAccount.fromJson;
+
+  @override
+  String get accountHolder => throw _privateConstructorUsedError;
+  @override
+  String get bank => throw _privateConstructorUsedError;
+  @override
+  String get accountNumber => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_BankAccountCopyWith<_$_BankAccount> get copyWith =>
+      throw _privateConstructorUsedError;
 }
