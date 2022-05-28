@@ -213,7 +213,7 @@ class PostRegister extends GetView<PostRegisterController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                postTopic(),
+                postCategory(context),
                 postContent(),
                 // Expanded(
                 //   child: AnimatedAlign(
@@ -233,7 +233,7 @@ class PostRegister extends GetView<PostRegisterController> {
     );
   }
 
-  Widget postTopic() {
+  Widget postCategory(BuildContext ctx) {
     return Container(
       height: 70,
       width: double.infinity,
@@ -241,11 +241,17 @@ class PostRegister extends GetView<PostRegisterController> {
       decoration: bottomBorderBox,
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () => Get.toNamed(Routes.SETTING_POST_CATEGORY),
+        onTap: () async {
+          if (MediaQuery.of(ctx).viewInsets.bottom > 50) {
+            FocusManager.instance.primaryFocus?.unfocus();
+            await 0.2.delay();
+          }
+          Get.toNamed(Routes.SETTING_POST_CATEGORY);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(controller.postTopic.value, style: postCategory),
+            Text(controller.category.value, style: defaultPostCategory),
             const Icon(Icons.keyboard_arrow_right),
           ],
         ),
@@ -257,11 +263,11 @@ class PostRegister extends GetView<PostRegisterController> {
     return Container(
       margin: EdgeInsets.all(15),
       child: TextField(
-        controller: controller.postContent.value,
+        controller: controller.content.value,
         minLines: 6,
         maxLines: 6,
         onChanged: (text) => controller.setIsContentEmpty(text),
-        style: postCategory,
+        style: defaultPostCategory,
         decoration: InputDecoration(
           hintText: "자유롭게 자신의 생활을 공유해주세요!",
           border: InputBorder.none,
@@ -278,10 +284,7 @@ class PostRegister extends GetView<PostRegisterController> {
       backgroundColor: Colors.white,
       leading: IconButton(
         onPressed: () => Get.back(),
-        icon: Icon(
-          Icons.close,
-          color: Colors.black,
-        ),
+        icon: const Icon(Icons.close, color: Colors.black),
       ),
       title: const Text("생활 공유", style: appBarTitle),
       actions: [
@@ -289,7 +292,8 @@ class PostRegister extends GetView<PostRegisterController> {
           onPressed: controller.isContentEmpty.value
               ? null
               : () {
-                  print("sdf");
+                  print("게시글 등록 로직 필요");
+                  controller.registerPost();
                 },
           child: Text("완료"),
           style: TextButton.styleFrom(
@@ -316,8 +320,11 @@ class PostRegister extends GetView<PostRegisterController> {
             children: [
               Row(
                 children: [
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 15),
                   GestureDetector(
+                    onTap: () {
+                      print("사진 등록하기");
+                    },
                     child: Row(
                       children: [
                         const Icon(Icons.image_outlined),
@@ -325,11 +332,14 @@ class PostRegister extends GetView<PostRegisterController> {
                       ],
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 15),
                   GestureDetector(
+                    onTap: () {
+                      print("장소 등록하기");
+                    },
                     child: Row(
                       children: [
-                        const Icon(Icons.add_location_alt_outlined),
+                        const Icon(Icons.location_on_outlined),
                         Text("0 / 1"),
                       ],
                     ),

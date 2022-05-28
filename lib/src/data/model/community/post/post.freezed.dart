@@ -21,8 +21,9 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Post {
   int get postId => throw _privateConstructorUsedError;
+  PostLocation get coordinate => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
-  String get topic => throw _privateConstructorUsedError;
+  String get postCategory => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,13 @@ mixin _$Post {
 abstract class $PostCopyWith<$Res> {
   factory $PostCopyWith(Post value, $Res Function(Post) then) =
       _$PostCopyWithImpl<$Res>;
-  $Res call({int postId, String content, String topic});
+  $Res call(
+      {int postId,
+      PostLocation coordinate,
+      String content,
+      String postCategory});
+
+  $PostLocationCopyWith<$Res> get coordinate;
 }
 
 /// @nodoc
@@ -47,23 +54,35 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
   @override
   $Res call({
     Object? postId = freezed,
+    Object? coordinate = freezed,
     Object? content = freezed,
-    Object? topic = freezed,
+    Object? postCategory = freezed,
   }) {
     return _then(_value.copyWith(
       postId: postId == freezed
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
               as int,
+      coordinate: coordinate == freezed
+          ? _value.coordinate
+          : coordinate // ignore: cast_nullable_to_non_nullable
+              as PostLocation,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      topic: topic == freezed
-          ? _value.topic
-          : topic // ignore: cast_nullable_to_non_nullable
+      postCategory: postCategory == freezed
+          ? _value.postCategory
+          : postCategory // ignore: cast_nullable_to_non_nullable
               as String,
     ));
+  }
+
+  @override
+  $PostLocationCopyWith<$Res> get coordinate {
+    return $PostLocationCopyWith<$Res>(_value.coordinate, (value) {
+      return _then(_value.copyWith(coordinate: value));
+    });
   }
 }
 
@@ -72,7 +91,14 @@ abstract class _$$_PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   factory _$$_PostCopyWith(_$_Post value, $Res Function(_$_Post) then) =
       __$$_PostCopyWithImpl<$Res>;
   @override
-  $Res call({int postId, String content, String topic});
+  $Res call(
+      {int postId,
+      PostLocation coordinate,
+      String content,
+      String postCategory});
+
+  @override
+  $PostLocationCopyWith<$Res> get coordinate;
 }
 
 /// @nodoc
@@ -87,21 +113,26 @@ class __$$_PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
   @override
   $Res call({
     Object? postId = freezed,
+    Object? coordinate = freezed,
     Object? content = freezed,
-    Object? topic = freezed,
+    Object? postCategory = freezed,
   }) {
     return _then(_$_Post(
       postId: postId == freezed
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
               as int,
+      coordinate: coordinate == freezed
+          ? _value.coordinate
+          : coordinate // ignore: cast_nullable_to_non_nullable
+              as PostLocation,
       content: content == freezed
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as String,
-      topic: topic == freezed
-          ? _value.topic
-          : topic // ignore: cast_nullable_to_non_nullable
+      postCategory: postCategory == freezed
+          ? _value.postCategory
+          : postCategory // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -110,7 +141,11 @@ class __$$_PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Post implements _Post {
-  const _$_Post({this.postId = -1, required this.content, required this.topic});
+  const _$_Post(
+      {this.postId = -1,
+      required this.coordinate,
+      required this.content,
+      required this.postCategory});
 
   factory _$_Post.fromJson(Map<String, dynamic> json) => _$$_PostFromJson(json);
 
@@ -118,13 +153,15 @@ class _$_Post implements _Post {
   @JsonKey()
   final int postId;
   @override
+  final PostLocation coordinate;
+  @override
   final String content;
   @override
-  final String topic;
+  final String postCategory;
 
   @override
   String toString() {
-    return 'Post(postId: $postId, content: $content, topic: $topic)';
+    return 'Post(postId: $postId, coordinate: $coordinate, content: $content, postCategory: $postCategory)';
   }
 
   @override
@@ -133,8 +170,11 @@ class _$_Post implements _Post {
         (other.runtimeType == runtimeType &&
             other is _$_Post &&
             const DeepCollectionEquality().equals(other.postId, postId) &&
+            const DeepCollectionEquality()
+                .equals(other.coordinate, coordinate) &&
             const DeepCollectionEquality().equals(other.content, content) &&
-            const DeepCollectionEquality().equals(other.topic, topic));
+            const DeepCollectionEquality()
+                .equals(other.postCategory, postCategory));
   }
 
   @JsonKey(ignore: true)
@@ -142,8 +182,9 @@ class _$_Post implements _Post {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(postId),
+      const DeepCollectionEquality().hash(coordinate),
       const DeepCollectionEquality().hash(content),
-      const DeepCollectionEquality().hash(topic));
+      const DeepCollectionEquality().hash(postCategory));
 
   @JsonKey(ignore: true)
   @override
@@ -159,18 +200,172 @@ class _$_Post implements _Post {
 abstract class _Post implements Post {
   const factory _Post(
       {final int postId,
+      required final PostLocation coordinate,
       required final String content,
-      required final String topic}) = _$_Post;
+      required final String postCategory}) = _$_Post;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$_Post.fromJson;
 
   @override
   int get postId => throw _privateConstructorUsedError;
   @override
+  PostLocation get coordinate => throw _privateConstructorUsedError;
+  @override
   String get content => throw _privateConstructorUsedError;
   @override
-  String get topic => throw _privateConstructorUsedError;
+  String get postCategory => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$$_PostCopyWith<_$_Post> get copyWith => throw _privateConstructorUsedError;
+}
+
+PostLocation _$PostLocationFromJson(Map<String, dynamic> json) {
+  return _PostLocation.fromJson(json);
+}
+
+/// @nodoc
+mixin _$PostLocation {
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PostLocationCopyWith<PostLocation> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $PostLocationCopyWith<$Res> {
+  factory $PostLocationCopyWith(
+          PostLocation value, $Res Function(PostLocation) then) =
+      _$PostLocationCopyWithImpl<$Res>;
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class _$PostLocationCopyWithImpl<$Res> implements $PostLocationCopyWith<$Res> {
+  _$PostLocationCopyWithImpl(this._value, this._then);
+
+  final PostLocation _value;
+  // ignore: unused_field
+  final $Res Function(PostLocation) _then;
+
+  @override
+  $Res call({
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_PostLocationCopyWith<$Res>
+    implements $PostLocationCopyWith<$Res> {
+  factory _$$_PostLocationCopyWith(
+          _$_PostLocation value, $Res Function(_$_PostLocation) then) =
+      __$$_PostLocationCopyWithImpl<$Res>;
+  @override
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class __$$_PostLocationCopyWithImpl<$Res>
+    extends _$PostLocationCopyWithImpl<$Res>
+    implements _$$_PostLocationCopyWith<$Res> {
+  __$$_PostLocationCopyWithImpl(
+      _$_PostLocation _value, $Res Function(_$_PostLocation) _then)
+      : super(_value, (v) => _then(v as _$_PostLocation));
+
+  @override
+  _$_PostLocation get _value => super._value as _$_PostLocation;
+
+  @override
+  $Res call({
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_$_PostLocation(
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_PostLocation implements _PostLocation {
+  const _$_PostLocation({required this.latitude, required this.longitude});
+
+  factory _$_PostLocation.fromJson(Map<String, dynamic> json) =>
+      _$$_PostLocationFromJson(json);
+
+  @override
+  final double latitude;
+  @override
+  final double longitude;
+
+  @override
+  String toString() {
+    return 'PostLocation(latitude: $latitude, longitude: $longitude)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_PostLocation &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_PostLocationCopyWith<_$_PostLocation> get copyWith =>
+      __$$_PostLocationCopyWithImpl<_$_PostLocation>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_PostLocationToJson(this);
+  }
+}
+
+abstract class _PostLocation implements PostLocation {
+  const factory _PostLocation(
+      {required final double latitude,
+      required final double longitude}) = _$_PostLocation;
+
+  factory _PostLocation.fromJson(Map<String, dynamic> json) =
+      _$_PostLocation.fromJson;
+
+  @override
+  double get latitude => throw _privateConstructorUsedError;
+  @override
+  double get longitude => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$$_PostLocationCopyWith<_$_PostLocation> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -71,7 +71,7 @@ const TextStyle appBarAction = TextStyle(
   color: Colors.black,
 );
 
-const TextStyle postCategory = TextStyle(
+const TextStyle defaultPostCategory = TextStyle(
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );
