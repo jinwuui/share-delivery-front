@@ -191,7 +191,8 @@ class Profile extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
-              buildMenuListTile("계좌 관리", () => Get.to(AccountManage())),
+              buildMenuListTile(
+                  "계좌 관리", () => Get.toNamed(Routes.ACCOUNT_MANAGE)),
               Divider(),
               buildMenuListTile("수령 위치 관리", () => print("hello1")),
               Divider(),

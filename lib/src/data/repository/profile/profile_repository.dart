@@ -3,6 +3,7 @@ import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delive
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/delivery_room_register/delivery_room_register_api_client.dart';
 import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
+import 'package:share_delivery/src/data/repository/profile/account_dto.dart';
 
 class ProfileRepository {
   final ProfileApiClient apiClient;
@@ -41,5 +42,9 @@ class ProfileRepository {
 
     return list;
     return apiClient.getFriendList();
+  }
+
+  Future<void> updateUserAccount(AccountDTO accountDTO) async {
+    return apiClient.updateAccount(accountDTO);
   }
 }

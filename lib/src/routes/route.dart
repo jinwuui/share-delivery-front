@@ -8,6 +8,7 @@ import 'package:share_delivery/src/bindings/delivery_room_register/pick_receivin
 import 'package:share_delivery/src/bindings/home/fast_matching/fast_matching_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
+import 'package:share_delivery/src/bindings/profile/account_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
@@ -17,6 +18,7 @@ import 'package:share_delivery/src/ui/community/post_register/post_register.dart
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/community/writing_comment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
 import 'package:share_delivery/src/ui/profile/account_manage/select_bank.dart';
 import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
 import 'package:share_delivery/src/ui/profile/friend/friend.dart';
@@ -174,6 +176,11 @@ class AppPages {
       binding: PickReceivingLocationBinding(),
       transition: Transition.fadeIn,
       curve: Curves.decelerate,
+    ),
+    GetPage(
+      name: Routes.ACCOUNT_MANAGE,
+      page: () => AccountManage(),
+      binding: AccountBinding(),
     ),
     GetPage(
       name: Routes.SELECT_BANK,

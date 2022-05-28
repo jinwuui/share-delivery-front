@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/profile/account_controller.dart';
+import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-class AccountManage extends StatelessWidget {
+class AccountManage extends GetView<AccountController> {
   AccountManage({Key? key}) : super(key: key);
 
   final accountManageFormKey = GlobalKey<FormState>();
@@ -39,7 +41,11 @@ class AccountManage extends StatelessWidget {
             ),
             onPressed: () {
               if (accountManageFormKey.currentState!.validate()) {
-                // validation 이 성공하면 true 가 리턴돼요!
+                // validation 이 성공하면 true
+                controller.updateUserAccount();
+
+                Get.back();
+
                 Get.snackbar(
                   '계좌 정보 저장 완료',
                   '계좌 정보가 변경되었습니다.',
@@ -50,7 +56,7 @@ class AccountManage extends StatelessWidget {
             child: Text(
               "완료",
               style: TextStyle(
-                // color: Colors.black,
+                color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
               ),
@@ -81,54 +87,98 @@ class AccountManage extends StatelessWidget {
 
                       return null;
                     },
-                    initialValue: "박진우", //TODO:
+                    initialValue: controller.accountHolder.value, //TODO:
                   ),
-                  ProfileTextFormField(
-                    label: "계좌번호",
-                    onSaved: (newValue) {},
-                    validator: (value) {
-                      if (value.length > 10 && value.length < 15) {
-                        return '이름은 두글자 이상 입력 해주셔야합니다.';
-                      }
-
-                      return null;
-                    },
-                    initialValue: '35212633521264', //TODO:
-                  ),
-                  // TODO: 은행 선택 빠른매칭 참고하기
+                  _buildAccountTextField(),
                 ],
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                Get.toNamed('/selectBank');
-              },
-              child: Text(
-                "은행 선택",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
-            TextButton(
-              onPressed: () async {
-                // TODO: 사용자 계좌 정보로 교체
-                final url = Uri.parse(
-                    "supertoss://send?amount=0&bank=NH농협&accountNo=3521264915483&origin=qr");
-                if (await canLaunchUrl(url)) {
-                  launchUrl(
-                    url,
-                    mode: LaunchMode.externalNonBrowserApplication,
-                  );
-                }
-                // supertoss://send?amount=0&bank=대구은행&accountNo=77802467094&origin=qr
-              },
-              child: Text(
-                "Test button",
-                style: TextStyle(fontSize: 20),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildAccountTextField() {
+    String label = "계좌번호";
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: profileTextStyle),
+            TextButton(
+              onPressed: () async {
+                var value = await Get.toNamed('/selectBank');
+
+                if (value != null) {
+                  Logger().d(value);
+                }
+              },
+              child: Text(
+                "은행 선택",
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        SizedBox(
+          height: 60,
+          child: TextFormField(
+            onSaved: (newValue) {},
+            validator: (value) {
+              if (value!.isEmpty) {
+                return '계좌번호는 필수사항입니다.';
+              }
+
+              if (controller.bank.value == "") {
+                return '은행정보는 필수사항입니다.';
+              }
+
+              return null;
+            },
+            initialValue: controller.accountNumber.value,
+            decoration: InputDecoration(
+              prefix: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10.0),
+                padding: EdgeInsets.all(8.0),
+                color: Colors.orangeAccent,
+                child: Obx(
+                  () => Text(
+                    controller.bank.value == "" ? "없음" : controller.bank.value,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(
+                  color: Colors.orangeAccent,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 20.0,
+        )
+      ],
     );
   }
 }
