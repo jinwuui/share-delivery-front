@@ -19,6 +19,7 @@ class ProfileRepository {
         status: "asdasd",
         profileImage:
             "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+        role: '',
       ),
       User(
         accountId: 2,
@@ -27,6 +28,7 @@ class ProfileRepository {
         status: "asdasd",
         profileImage:
             "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+        role: '',
       ),
       User(
         accountId: 3,
@@ -35,6 +37,7 @@ class ProfileRepository {
         status: "asdasd",
         profileImage:
             "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+        role: '',
       ),
     ];
 
