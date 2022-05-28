@@ -45,9 +45,6 @@ Future<void> main() async {
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // 앱 초기화
-  await initialize();
-
   // 테스트용 Timer TODO: 앱 완성도 높아지면 제거할 것 (= 타이머 걸지않아도 initialize 만으로 시간이 필요할 때)
   Timer(const Duration(seconds: 1), () async {
     runApp(const MyApp());
@@ -80,14 +77,8 @@ Future<void> initialize() async {
     ),
   );
 
-  // 배달 관리 컨트롤러 세팅
-  Get.put(DeliveryManageController());
-
   // 배달 관련 초기값 세팅
   await Get.putAsync(() => SettingService().init());
-
-  // SharedPreference 초기화
-  await SharedPrefsUtil.init();
 }
 
 class MyApp extends GetView<AuthenticationController> {
