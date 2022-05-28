@@ -45,6 +45,6 @@ class ProfileRepository {
   }
 
   Future<void> updateUserAccount(AccountDTO accountDTO) async {
-    return apiClient.updateAccount(accountDTO);
+    return apiClient.registerAccount(accountDTO);
   }
 }
