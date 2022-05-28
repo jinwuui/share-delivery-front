@@ -9,6 +9,10 @@
 .history
 .svn/
 
+#freezed
+*.g.dart
+*.freezed.dart
+
 # IntelliJ related
 *.iml
 *.ipr
