@@ -30,13 +30,14 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // 앱 초기화
+  await initialize();
+
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // 테스트용 Timer TODO: 앱 완성도 높아지면 제거할 것 (= 타이머 걸지않아도 initialize 만으로 시간이 필요할 때)
   Timer(const Duration(seconds: 1), () async {
-    // 앱 초기화
-    await initialize();
     runApp(const MyApp());
 
     // 스플래시 이미지 OFF // TODO: 앱 시작할 때 초기화(로딩, 로그인 확인 등등) 끝나고 사용
@@ -45,6 +46,9 @@ Future<void> main() async {
 }
 
 Future<void> initialize() async {
+  // SharedPreference 초기화
+  await SharedPrefsUtil.init();
+
   // 설정 파일 로딩
   await dotenv.load(fileName: ".env");
 
@@ -57,9 +61,6 @@ Future<void> initialize() async {
       ),
     ),
   );
-
-  // SharedPreference 초기화
-  await SharedPrefsUtil.init();
 }
 
 class MyApp extends GetView<AuthenticationController> {

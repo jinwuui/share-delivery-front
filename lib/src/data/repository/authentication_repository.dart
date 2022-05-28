@@ -60,6 +60,7 @@ class AuthenticationRepository {
 
     await apiClient.login(loginReqDTO).then((result) {
       // 로그인 성공
+      Logger().i(result);
       // 1. 사용자 계정 로컬에 저장
       localClient.saveUser(result.account);
 
@@ -67,9 +68,10 @@ class AuthenticationRepository {
       localClient.saveTokens(result.accessToken, result.refreshToken);
 
       account = result.account;
-    }).catchError((err) {
+    }).catchError((Object obj) {
       // 로그인 실패
-      Logger().e(err);
+      loggerErr(obj);
+      // Logger().e(err);
       account = null;
     });
 

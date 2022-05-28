@@ -33,11 +33,18 @@ class AuthenticationLocalClient {
 
   User? getSavedUser() {
     try {
-      String? userStr = SharedPrefsUtil.instance.getString('user');
+      String? userStr = SharedPrefsUtil.instance.getString("user");
+
+      if (userStr == null) {
+        print("자동 로그인 실패 - 유저 정보 없음");
+      } else {
+        print("자동 로그인 성공 - 유저 정보 있음");
+      }
 
       Map<String, dynamic> userMap = jsonDecode(userStr!);
       return User.fromJson(userMap);
     } catch (e) {
+      print(e);
       print("자동 로그인 실패 - 유저가 정보가 없음");
     }
     return null;
