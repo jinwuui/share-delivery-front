@@ -7,7 +7,6 @@ class PostDetailRepository {
   PostDetailRepository({required this.apiClient});
 
   Future<PostDetail> findDetailById(int postId) async {
-    print('PostDetailRepository.findDetailById');
     return await apiClient.findDetailById(postId);
   }
 

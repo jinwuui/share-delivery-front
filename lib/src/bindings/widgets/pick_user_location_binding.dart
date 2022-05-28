@@ -9,7 +9,7 @@ class PickUserLocationBinding extends Bindings {
     Get.lazyPut(
       () => PickUserLocationController(
         repository: PickUserLocationRepository(
-          localClient: PickUserLocationLocalClient(),
+          localClient: UserLocationLocalClient(),
         ),
       ),
     );

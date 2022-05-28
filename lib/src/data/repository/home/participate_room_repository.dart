@@ -10,11 +10,9 @@ class ParticipateRoomRepository {
   Future<String> participateDeliveryRoom(
       int roomId, List<Menu> menuList) async {
     print('ParticipateRoomRepository.participateDeliveryRoom');
-    await apiClient.requestParticipating(roomId, menuList).then(
-      (value) {
-        return "ACCEPTED";
-      },
-    ).catchError(
+    await apiClient.requestParticipating(roomId, menuList).then((value) {
+      return "ACCEPTED";
+    }).catchError(
       (Object obj) {
         switch (obj.runtimeType) {
           case DioError:

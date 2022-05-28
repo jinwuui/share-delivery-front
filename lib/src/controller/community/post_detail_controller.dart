@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/community/post_detail/post_detail_repository.dart';
 
 enum PostDetailUI {
@@ -14,10 +16,10 @@ class PostDetailController extends GetxController {
   PostDetailController({required this.repository});
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    await findPostDetail();
     initUiType();
-    findPostDetail();
   }
 
   List<Comment> comments = [
@@ -57,12 +59,26 @@ class PostDetailController extends GetxController {
 
   PostDetail? post;
 
+  // 작성자/읽는이 UI 다르게 만들기
   void initUiType() {
     print('PostDetailController.findPostDetail');
-    print(Get.arguments["userId"]);
-    // TODO : 사용자 ID 와 post 의 글쓴이 ID 비교해서 같으면 writer, 다르면 reader
+
+    try {
+      User user = Get.find<AuthenticationController>().state.props as User;
+
+      if (user.accountId == post!.writer.id) {
+        // 글쓴이 == 사용자  --->  작성자 UI
+        uiType = PostDetailUI.writer;
+      } else {
+        // 글쓴이 != 사용자  --->  읽는이 UI
+        uiType = PostDetailUI.reader;
+      }
+    } catch (e) {
+      print("게시글 상세조회 UI 타입 변경 에러  -  $e");
+    }
   }
 
+  // 게시글 상세정보 가져오기
   Future<void> findPostDetail() async {
     print('PostDetailController.findPostDetail - 게시글 상세조회');
     print("postId: ${Get.arguments["postId"]}");
