@@ -23,7 +23,7 @@ class DioUtil {
         },
         onError: (error, handler) async {
           // 인증 오류가 발생했을 경우: AccessToken 의 만료
-          if (error.response?.statusCode == 401) {
+          if (false && error.response?.statusCode == 401) {
             print("401 에러 발생!!!");
             // 기기에 저장된 AccessToken 과 RefreshToken 로드
             final accessToken =
@@ -105,4 +105,7 @@ class DioUtil {
     // interceptor 가 완성된 dio 반환
     return dio;
   }
+  // static Dio getMultipartDio() {
+  //   Dio dio = getDio();
+  // }
 }

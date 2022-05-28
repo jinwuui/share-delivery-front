@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,13 +13,17 @@ import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
+import 'package:share_delivery/src/controller/profile/account_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
+import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
+import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
@@ -55,6 +60,9 @@ Future<void> initialize() async {
 
   // Hive init
   await Hive.initFlutter();
+
+  // 배달 관리 controller
+  Get.put(DeliveryManageController());
 
   // 인증 컨트롤러 Get 세팅
   Get.put(

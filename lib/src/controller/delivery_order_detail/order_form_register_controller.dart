@@ -76,10 +76,6 @@ class OrderFormRegisterController extends GetxController {
   Future<void> deleteDiscountItem(String k) async {
     discountMap.remove(k);
   }
-
-  Future<void> addOrder(String menu, String money) async {
-    discountMap[menu] = money;
-  }
 }
 
 class ImagePickerException implements Exception {

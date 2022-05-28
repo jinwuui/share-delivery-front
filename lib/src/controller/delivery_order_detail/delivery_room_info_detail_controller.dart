@@ -3,8 +3,7 @@ import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 
-class DeliveryRoomInfoDetailController extends GetxController
-    with StateMixin<DeliveryRoom> {
+class DeliveryRoomInfoDetailController extends GetxController {
   final DeliveryOrderDetailRepository repository;
 
   static DeliveryRoomInfoDetailController get to => Get.find();
@@ -28,22 +27,17 @@ class DeliveryRoomInfoDetailController extends GetxController
       lng: 128.518205019348,
     ),
   ).obs;
+  final isLoad = false.obs;
 
   @override
-  void onReady() async {
-    super.onReady();
-    Logger().d("DeliveryRoomInfoDetailController");
-
+  void onInit() async {
+    super.onInit();
     String deliveryRoomId = Get.arguments['deliveryRoomId'];
-
     try {
-      change(null, status: RxStatus.loading());
-
       deliveryRoom.value = await getDeliveryRoomInfo(deliveryRoomId);
-
-      change(deliveryRoom.value, status: RxStatus.success());
-    } catch (err) {
-      change(null, status: RxStatus.error());
+      isLoad.value = true;
+    } catch (e) {
+      print(e);
     }
   }
 

@@ -463,10 +463,6 @@ class HomeController extends GetxController {
   }
 
   int distanceBetween(ReceivingLocation receivingLocation) {
-    print('HomeController.distanceBetween $locationData');
-
-    print("locationData $locationData");
-
     if (locationData.value.latitude == null ||
         locationData.value.latitude == null) return -1;
 
