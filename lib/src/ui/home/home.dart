@@ -97,10 +97,9 @@ class Home extends GetView<HomeController> {
     return FloatingActionButton(
       heroTag: "deliveryRoomRegisterFAB",
       backgroundColor: Colors.orange,
-      onPressed: ()  {
-        print(AuthenticationLocalClient().getSavedUser());
-        // Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
-        },
+      onPressed: () {
+        Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
+      },
       child: const Icon(Icons.add_rounded, size: 40),
     );
   }
