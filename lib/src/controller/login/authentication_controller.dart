@@ -26,42 +26,19 @@ class AuthenticationController extends GetxController {
     super.onClose();
   }
 
-  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
-    print('AuthenticationController.requestAuthSMS $phoneNumber');
+  Future<String?> requestAuthSMS(String phoneNumber) async {
     return repository.requestAuthSMS(phoneNumber);
   }
 
-  Future<void> signUp(String phoneNumber, String authNumber) async {
-    print('AuthenticationController.signUp : $phoneNumber, $authNumber');
+  Future<bool> signUp(String phoneNumber, String authNumber) async {
+    return await repository.signUp(phoneNumber, authNumber);
+  }
 
-    User? user = await repository.signUp(phoneNumber, authNumber);
+  Future<void> login(String phoneNumber, String verificationCode) async {
+    User? user = await repository.login(phoneNumber, verificationCode);
 
     if (user != null) {
       _authenticationStateStream.value = Authenticated(user: user);
-    } else {
-      _authenticationStateStream.value =
-          AuthenticationFailure(message: "회원 가입 실패");
-    }
-  }
-
-  Future<void> signIn(String phoneNumber, String authNumber) async {
-    print('AuthenticationController.signIn : $phoneNumber, $authNumber');
-
-    bool result = await repository.signIn(phoneNumber, authNumber);
-
-    // TODO : 삭제해야함
-    result = true;
-
-    if (result) {
-      _authenticationStateStream.value = Authenticated(
-        user: User(
-          accountId: -1,
-          phoneNumber: "phoneNumber",
-          nickname: "nickname",
-          status: "status",
-        ),
-      );
-      // TODO : 로그인 성공/실패 로직 처리
     } else {
       _authenticationStateStream.value = UnAuthenticated();
     }
@@ -77,7 +54,8 @@ class AuthenticationController extends GetxController {
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
     // _authenticationStateStream.value = Authenticated(
-    //     user: User(accountId: 1, phoneNumber: "", nickname: "", status: ""));
+    //     user: User(
+    //         accountId: 1, phoneNumber: "", nickname: "", status: "", role: ''));
     // return;
 
     if (user == null) {

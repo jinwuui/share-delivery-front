@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 final whiteBtn = OutlinedButton.styleFrom(
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20.0),
+  ),
   primary: Colors.black,
   textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
   elevation: 0,
