@@ -80,14 +80,18 @@ class LoginController extends GetxController {
 
     print(isNewUser ? "   === 새 유저" : "   === 기존 유저");
     // 회원가입
-    if (isNewUser && await signUp()) {
-      isNewUser = false;
-    } else {
-      GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
-      return;
+
+    if (isNewUser) {
+      bool signUpResult = await signUp();
+
+      if (signUpResult) {
+        isNewUser = false;
+      } else {
+        GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
+        return;
+      }
     }
 
-    // 로그인
     await login();
 
     // 로그인 결과

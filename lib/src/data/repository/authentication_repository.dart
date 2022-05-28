@@ -16,17 +16,22 @@ class AuthenticationRepository {
   });
 
   Future<String?> requestAuthSMS(String phoneNumber) async {
+    String? returnVal;
+
     await apiClient.requestAuthSMS(phoneNumber).then((result) {
       // 인증 SMS 요청 성공
       Logger().i(result);
-      return result["verificationType"];
+      returnVal = result["verificationType"];
     }).catchError((Object obj) {
       // 인증 SMS 요청 실패
       loggerErr(obj);
-      return null;
+      final res = (obj as DioError).response;
+      if (res == null) return;
+
+      returnVal = res.data["verificationType"];
     });
 
-    return null;
+    return returnVal;
   }
 
   Future<bool> signUp(String phoneNumber, String verificationCode) async {
