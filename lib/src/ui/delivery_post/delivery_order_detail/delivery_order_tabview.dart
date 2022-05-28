@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
@@ -16,6 +17,7 @@ class OrderTabView extends GetView<DeliveryOrderController> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().d("OrderTabView rerender");
     return Obx(() {
       if (controller.deliveryOrderStatus.value ==
           DeliveryOrderStatus.recuritmentWaiting) {

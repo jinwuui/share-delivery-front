@@ -1,6 +1,6 @@
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
-import 'package:share_delivery/src/data/provider/home/home_api_client.dart';
+import 'package:share_delivery/src/data/provider/home/home_api_client/home_api_client.dart';
 import 'package:share_delivery/src/data/provider/home/home_local_client.dart';
 
 class HomeRepository {
@@ -14,8 +14,10 @@ class HomeRepository {
   }
 
   Future<List<DeliveryRoom>> findDeliveryRooms(
-      double lat, double lng, int rad) {
+      double lat, double lng, int rad) async {
     print("-- home repo - 모집글 조회");
-    return apiClient.findDeliveryRooms(lat, lng, rad);
+    var result = await apiClient.findDeliveryRooms(lat, lng, rad);
+    print('HomeRepository.findDeliveryRooms $result');
+    return result;
   }
 }

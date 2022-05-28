@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 
 enum DeliveryOrderStatus {
   none,
@@ -59,19 +60,39 @@ class DeliveryOrderController extends FullLifeCycleController
   @override
   void onResumed() {
     print('@@@@@@@@@@@@@@Delivery Order Controller - onResumed called');
+    fetchDeliveryOrderDetail();
     // fetchDeliveryOrderDetail();
   }
 
   Future<void> fetchDeliveryOrderDetail() async {
+    Logger().d("fetchDeliveryOrderDetail");
+
     await Future.delayed(Duration(seconds: 1));
 
     // 더미 데이터
-    DeliveryRecruitController.to.userWithOrderList.add(
-      UserWithOrderModel(
-          userId: 'park',
-          orderDate: DateTime.now(),
-          menuList: {},
-          nickname: 'parkjinwoo'),
+    DeliveryRecruitController.to.orderMenuList.add(
+      OrderMenuModel(
+        entryOrderId: 1,
+        accountId: 2,
+        phoneNumber: "01000000001",
+        type: "hello",
+        status: "world",
+        menus: [
+          Menu(
+            orderMenuId: 3,
+            menuName: "황금올리브",
+            quantity: 1,
+            price: 15000,
+          ),
+          Menu(
+            orderMenuId: 3,
+            menuName: "치즈볼",
+            quantity: 1,
+            price: 5000,
+          ),
+        ],
+        createdDateTime: DateTime.now(),
+      ),
     );
   }
 }

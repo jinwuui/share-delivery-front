@@ -10,11 +10,25 @@ class User with _$User {
     required String phoneNumber,
     required String nickname,
     @Default("") String profileImage,
-    @Default("") String email,
     required String status,
     required String role,
-    @Default("") String bankAccount,
+    String? email,
+    BankAccount? bankAccount,
+    DateTime? createdDate,
+    DateTime? modifiedDate,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+}
+
+@Freezed()
+class BankAccount with _$BankAccount {
+  const factory BankAccount({
+    required String accountHolder,
+    required String bank,
+    required String accountNumber,
+  }) = _BankAccount;
+
+  factory BankAccount.fromJson(Map<String, dynamic> json) =>
+      _$BankAccountFromJson(json);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
-import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/community/community.dart';
 import 'package:share_delivery/src/ui/delivery_history/delivery_history.dart';
 import 'package:share_delivery/src/ui/home/home.dart';
@@ -19,6 +18,7 @@ class Root extends GetView<RootController> {
             index: controller.rootPageIndex.value,
             children: const [
               Home(),
+              // RetrofitScreen(),
               DeliveryHistory(),
               Community(),
               Profile(),
@@ -66,28 +66,8 @@ class Root extends GetView<RootController> {
               showUnselectedLabels: true,
             ),
           ),
-          floatingActionButton: controller.rootPageIndex.value == 0 ||
-                  controller.rootPageIndex.value == 2
-              ? fab(controller.rootPageIndex.value)
-              : const SizedBox.shrink(),
         ),
       ),
     );
-  }
-
-  Widget fab(int index) {
-    if (index == 0) {
-      return FloatingActionButton(
-        backgroundColor: Colors.orange,
-        onPressed: () => Get.toNamed(Routes.DELIVERY_ROOM_REGISTER),
-        child: const Icon(Icons.add_rounded, size: 40),
-      );
-    } else {
-      return FloatingActionButton(
-        backgroundColor: Colors.orange,
-        onPressed: () => Get.toNamed(Routes.POST_REGISTER),
-        child: const Icon(Icons.edit, size: 30),
-      );
-    }
   }
 }

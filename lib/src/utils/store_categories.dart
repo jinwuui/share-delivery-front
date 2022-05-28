@@ -1,7 +1,6 @@
 const List<Map> foodCategories = [
   {"한식": "KOREAN"},
   {"치킨": "CHICKEN"},
-  {"피자": "PIZZA"},
   {"분식": "BOONSIK"},
   {"중식": "CHINA"},
   {"찜/탕": "STEAM_AND_SOUP"},

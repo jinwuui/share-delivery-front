@@ -1,19 +1,29 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_persistent_keyboard_height/flutter_persistent_keyboard_height.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
+import 'package:share_delivery/src/controller/profile/account_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
+import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
+import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
@@ -29,13 +39,14 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // 앱 초기화
+  await initialize();
+
   // 스플래시 이미지 ON
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // 테스트용 Timer TODO: 앱 완성도 높아지면 제거할 것 (= 타이머 걸지않아도 initialize 만으로 시간이 필요할 때)
   Timer(const Duration(seconds: 1), () async {
-    // 앱 초기화
-    await initialize();
     runApp(const MyApp());
 
     // 스플래시 이미지 OFF // TODO: 앱 시작할 때 초기화(로딩, 로그인 확인 등등) 끝나고 사용
@@ -44,21 +55,30 @@ Future<void> main() async {
 }
 
 Future<void> initialize() async {
+  // SharedPreference 초기화
+  await SharedPrefsUtil.init();
+
   // 설정 파일 로딩
   await dotenv.load(fileName: ".env");
+
+  // Hive init
+  await Hive.initFlutter();
+
+  // 배달 관리 controller
+  Get.put(DeliveryManageController());
 
   // 인증 컨트롤러 Get 세팅
   Get.put(
     AuthenticationController(
       repository: AuthenticationRepository(
-        apiClient: AuthenticationApiClient(),
+        apiClient: AuthenticationApiClient(DioUtil.loginDio()),
         localClient: AuthenticationLocalClient(),
       ),
     ),
   );
 
-  // SharedPreference 초기화
-  await SharedPrefsUtil.init();
+  // 배달 관련 초기값 세팅
+  await Get.putAsync(() => SettingService().init());
 }
 
 class MyApp extends GetView<AuthenticationController> {
@@ -66,6 +86,7 @@ class MyApp extends GetView<AuthenticationController> {
 
   @override
   Widget build(BuildContext context) {
+    Logger().i(controller.state);
     if (controller.state is Authenticated) {
       print("is Auth");
     } else {

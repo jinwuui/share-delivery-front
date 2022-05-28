@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,12 @@ import 'package:share_delivery/src/data/model/user/user_location/user_location.d
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+enum HomeStatus {
+  loading,
+  finished,
+  nodata,
+}
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -31,8 +38,8 @@ class HomeController extends GetxController {
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
-          latitude: 35.820848788632226,
-          longitude: 128.518205019348),
+          lat: 35.820848788632226,
+          lng: 128.518205019348),
       roomId: 456,
     ),
     DeliveryRoom(
@@ -47,11 +54,142 @@ class HomeController extends GetxController {
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
-          latitude: 35.821730657601044,
-          longitude: 128.5190184847488),
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
+      roomId: 123,
+    ),
+    DeliveryRoom(
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      content: "굽네치킨 드실분?",
+      person: 2,
+      limitPerson: 4,
+      deliveryTip: 3000,
+      storeLink: "www.baemin.com/stores?id=1524",
+      platformType: "BAEMIN",
+      status: "NULL",
+      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+      receivingLocation: ReceivingLocation(
+          description: "CU 편의점 앞",
+          lat: 35.821730657601044,
+          lng: 128.5190184847488),
       roomId: 123,
     ),
   ].obs;
+
+  // UI 관련
+  ScrollController scroller = ScrollController();
 
   RxInt idxCurInfo = (-1).obs;
 
@@ -74,10 +212,26 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    scroller.addListener(() {
+      if (scroller.position.pixels >= scroller.position.maxScrollExtent * 0.7) {
+        onLoading();
+      }
+    });
+
     // 사용자 위치 불러오기
-    // await getUserLocation();
+    await getUserLocation();
     // TODO : 모집글 불러오기
     findDeliveryRooms();
+  }
+
+  Future<void> onRefresh() async {
+    print("onRefresh()");
+    await findDeliveryRooms();
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+  }
+
+  onLoading() {
+    print("loading");
   }
 
   // 사용자 위치 불러오기
@@ -141,11 +295,16 @@ class HomeController extends GetxController {
     double? lng = locationData.value.longitude;
     int radius = 5;
 
-    if (lat != null && lng != null) {
-      var result = await repository.findDeliveryRooms(lat, lng, radius);
-      if (result.isNotEmpty) {
-        deliveryRooms.value = result;
-      }
+    if (lat == null || lng == null) {
+      print('findDeliveryRooms ERROR: 현재 유저 위치 없음');
+      return;
+    }
+
+    List<DeliveryRoom> result =
+        await repository.findDeliveryRooms(lat, lng, radius);
+    print('HomeController.findDeliveryRooms $result');
+    if (result.isNotEmpty) {
+      deliveryRooms.value = result;
     }
   }
 
@@ -216,7 +375,7 @@ class HomeController extends GetxController {
     String positions = "";
     for (DeliveryRoom room in deliveryRooms) {
       positions +=
-          "new kakao.maps.LatLng(${room.receivingLocation.latitude}, ${room.receivingLocation.longitude}),";
+          "new kakao.maps.LatLng(${room.receivingLocation.lat}, ${room.receivingLocation.lng}),";
     }
 
     return '''
@@ -289,56 +448,6 @@ class HomeController extends GetxController {
     });
   }
 
-  // 카카오 지도 JS API 로 지도 띄우기
-  String getReceivingLocationHTML(double lat, double lng) {
-    return Uri.dataFromString('''
-      <html>
-      <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
-        <script type="text/javascript" src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
-      </head>
-      <body style="padding:0; margin:0;">
-        <div id="map" style="width:100%;height:100%;"></div>
-        <script>
-
-          var container = document.getElementById('map'); // map for div
-
-          var options = {
-            center: new kakao.maps.LatLng($lat, $lng), // center of map (current position)
-            level: 3 // level of map
-          };
-
-          // create map
-          var map = new kakao.maps.Map(container, options);
-          
-          // create marker
-          var markerPosition  = new kakao.maps.LatLng($lat, $lng);
-          var marker = new kakao.maps.Marker({
-              position: markerPosition
-          });
-          
-          marker.setMap(map);
-          
-          
-          kakao.maps.event.addListener(map, 'idle', function() {
-                        
-              var latlng = map.getCenter();
-              
-              var centerLatLng = {
-                lat: latlng.getLat(),
-                lng: latlng.getLng()
-              }
-              
-              onIdle.postMessage(JSON.stringify(centerLatLng));
-          });
-
-        </script>
-      </body>
-      </html>
-    ''', mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString();
-  }
-
   void hideInfo() {
     showInfo.value = false;
   }
@@ -354,18 +463,14 @@ class HomeController extends GetxController {
   }
 
   int distanceBetween(ReceivingLocation receivingLocation) {
-    print('HomeController.distanceBetween $locationData');
-
-    print("locationData $locationData");
-
     if (locationData.value.latitude == null ||
         locationData.value.latitude == null) return -1;
 
     return Geolocator.distanceBetween(
       locationData.value.latitude!,
       locationData.value.longitude!,
-      receivingLocation.latitude,
-      receivingLocation.longitude,
+      receivingLocation.lat,
+      receivingLocation.lng,
     ).round();
   }
 }

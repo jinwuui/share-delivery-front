@@ -19,21 +19,27 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ListView.separated(
-        itemCount: controller.deliveryRooms.length,
-        itemBuilder: (context, index) => GestureDetector(
-          onTap: () {
-            controller.setCurSelectedIdx(index);
-            Get.toNamed(Routes.DELIVERY_ROOM_INFO);
-          },
-          child: DeliveryRoomPost(index: index),
-        ),
-        separatorBuilder: (_, __) => const Divider(
-          endIndent: 20,
-          indent: 20,
-          color: Color.fromRGBO(224, 224, 224, 1),
-          height: 0.5,
-          thickness: 1,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          await controller.onRefresh();
+        },
+        child: ListView.separated(
+          controller: controller.scroller,
+          itemCount: controller.deliveryRooms.length,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              controller.setCurSelectedIdx(index);
+              Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+            },
+            child: DeliveryRoomPost(index: index),
+          ),
+          separatorBuilder: (_, __) => const Divider(
+            endIndent: 20,
+            indent: 20,
+            color: Color.fromRGBO(224, 224, 224, 1),
+            height: 0.5,
+            thickness: 1,
+          ),
         ),
       ),
     );

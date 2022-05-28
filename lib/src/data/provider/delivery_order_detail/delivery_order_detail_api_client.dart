@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:share_delivery/src/data/model/delivery_order_detail/user_with_order_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_dto.dart';
 
@@ -46,5 +46,5 @@ abstract class DeliveryOrderDetailApiClient {
 
   // 모집글 주문 정보 조회 TEST
   @GET('/api/delivery-rooms/orders/{deliveryRoomId}')
-  Future<List<UserWithOrderModel>> getOrderList(@Path() String deliveryRoomId);
+  Future<List<OrderMenuModel>> getOrderList(@Path() String deliveryRoomId);
 }

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
-import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/ui/login/state/login_state.dart';
@@ -31,7 +30,6 @@ class LoginController extends GetxController {
     if (isEnabledSendRequest.value) {
       isEnabledSendRequest.value = false;
 
-      GetSnackbar.on("요청 성공", "인증번호가 문자로 전송됐습니다.");
       requestAuthSMS2Controller();
       changeToAuthUI();
     } else {
@@ -46,18 +44,19 @@ class LoginController extends GetxController {
     onTextFieldSMS.value = true;
     phoneNumber = phoneNumber.replaceAll(" ", "");
 
-    Map<String, dynamic> result =
+    String? result =
         await _authenticationController.requestAuthSMS(phoneNumber);
 
-    if (result["verificationType"] == "ERROR") {
-      print("ERROR");
+    if (result == null) {
+      print('LoginController.requestAuthSMS2Controller - 인증 SMS 요청 실패');
       GetSnackbar.err("요청 에러", "다시 클릭해주세요.");
       return;
     }
 
-    isNewUser = result["verificationType"] == "LOGIN" ? false : true;
-    print("isNewUser $isNewUser");
+    GetSnackbar.on("요청 성공", "인증번호가 문자로 전송됐습니다.");
+    isNewUser = result == "LOGIN" ? false : true;
     onTextFieldSMS.value = true;
+    print("isNewUser $isNewUser");
   }
 
   void changeToAuthUI() {
@@ -79,11 +78,19 @@ class LoginController extends GetxController {
     await Future.delayed(Duration(milliseconds: 500));
     phoneNumber = phoneNumber.replaceAll(" ", "");
 
-    // NOTE : 완료되면 해제 필요
-    // if (isNewUser) {
-    //   print("is new user");
-    //   await signUp();
-    // }
+    print(isNewUser ? "   === 새 유저" : "   === 기존 유저");
+    // 회원가입
+
+    if (isNewUser) {
+      bool signUpResult = await signUp();
+
+      if (signUpResult) {
+        isNewUser = false;
+      } else {
+        GetSnackbar.err("회원가입 실패!", "다시 시도해주세요.");
+        return;
+      }
+    }
 
     await login();
 
@@ -100,14 +107,8 @@ class LoginController extends GetxController {
   }
 
   // 사용자가 작성한 이메일 패스워드로 회원 가입 시도
-  Future<void> signUp() async {
-    try {
-      User user =
-          await _authenticationController.signUp(phoneNumber, authNumber);
-      if (user.accountId != -1) isNewUser = false;
-    } catch (e) {
-      print(e);
-    }
+  Future<bool> signUp() async {
+    return await _authenticationController.signUp(phoneNumber, authNumber);
   }
 
   // 사용자가 작성한 전화번호 + 인증번호로 로그인 시도
@@ -116,7 +117,7 @@ class LoginController extends GetxController {
 
     // AuthenticationController 에서 로그인을 시도하고 login 성공/실패로 갈림
     try {
-      await _authenticationController.signIn(phoneNumber, authNumber);
+      await _authenticationController.login(phoneNumber, authNumber);
 
       if (_authenticationController.state.runtimeType == Authenticated) {
         _loginStateStream.value = LoginSuccess();

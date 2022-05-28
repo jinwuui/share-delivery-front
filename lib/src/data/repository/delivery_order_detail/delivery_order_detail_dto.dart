@@ -6,7 +6,6 @@ part 'delivery_order_detail_dto.g.dart';
 @Freezed()
 class DeliveryOrderDetailDTO with _$DeliveryOrderDetailDTO {
   const factory DeliveryOrderDetailDTO({
-    required String orderForms,
     required String orders,
     required int totalOrderPrice,
     required int deliveryTip,

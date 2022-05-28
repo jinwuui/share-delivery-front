@@ -14,19 +14,19 @@ class SettingPostCategory extends GetView<PostRegisterController> {
         appBar: appBar(),
         body: Column(
           children: [
-            topic(topic1),
-            topic(topic2),
-            topic(topic3),
-            topic(topic4),
-            topic(topic5),
-            topic(topic6),
+            category(topic1),
+            category(topic2),
+            category(topic3),
+            category(topic4),
+            category(topic5),
+            category(topic6),
           ],
         ),
       ),
     );
   }
 
-  Widget topic(String content) {
+  Widget category(String content) {
     return GestureDetector(
       onTap: () {
         controller.setPostTopic(content);
@@ -40,11 +40,11 @@ class SettingPostCategory extends GetView<PostRegisterController> {
           children: [
             Text(
               content,
-              style: content != controller.postTopic.value
-                  ? postCategory
+              style: content != controller.category.value
+                  ? defaultPostCategory
                   : pickedPostCategory,
             ),
-            content != controller.postTopic.value
+            content != controller.category.value
                 ? const SizedBox.shrink()
                 : const Padding(
                     padding: EdgeInsets.only(left: 5.0),

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:share_delivery/src/ui/profile/account_manage.dart';
-import 'package:share_delivery/src/ui/profile/app_setting.dart';
-import 'package:share_delivery/src/ui/profile/modify_profile.dart';
+import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
+import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
+import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
+import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/friend/friend.dart';
+import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
 class Profile extends StatelessWidget {
@@ -36,8 +41,7 @@ class Profile extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.settings, size: 30),
-            onPressed: () =>
-                Get.toNamed('/appSetting'), //TODO: animation 바꾸기 오른쪽에서 옆으로
+            onPressed: () => Get.toNamed('/appSetting'),
           )
         ],
       ),
@@ -187,11 +191,12 @@ class Profile extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: [
-              buildMenuListTile("계좌 관리", () => Get.to(AccountManage())),
+              buildMenuListTile(
+                  "계좌 관리", () => Get.toNamed(Routes.ACCOUNT_MANAGE)),
               Divider(),
               buildMenuListTile("수령 위치 관리", () => print("hello1")),
               Divider(),
-              buildMenuListTile("친구 관리", () => print("hello1")),
+              buildMenuListTile("친구 관리", () => Get.toNamed(Routes.FRIEND)),
               Divider(),
               buildMenuListTile("받은 평가", () => print("hello2")),
               Divider(),

@@ -50,13 +50,13 @@ const TextStyle postContentStyle = TextStyle(
 );
 
 const TextStyle detailContentStyle = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontSize: 20,
+  // fontWeight: FontWeight.w400,
+  fontSize: 17,
 );
 
 const TextStyle commentStyle = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontSize: 18,
+  // fontWeight: FontWeight.w500,
+  fontSize: 17,
 );
 
 const TextStyle appBarTitle = TextStyle(
@@ -71,7 +71,7 @@ const TextStyle appBarAction = TextStyle(
   color: Colors.black,
 );
 
-const TextStyle postCategory = TextStyle(
+const TextStyle defaultPostCategory = TextStyle(
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );

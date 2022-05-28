@@ -13,6 +13,8 @@ import 'package:share_delivery/src/utils/get_snackbar.dart';
 class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
   const DeliveryRoomRegister({Key? key}) : super(key: key);
 
+  static const double dividerHeight = 40.0;
+
   Future<void> getClipboard({
     iOSDetectionPattern? iOSDetectionPattern,
     AndroidClipMimeType? androidClipMimeType,
@@ -45,32 +47,32 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
         body: Stack(
           children: [
             fillDetails(),
-            MediaQuery.of(context).viewInsets.bottom != 0
-                ? AnimatedPositioned(
-                    bottom: MediaQuery.of(context).viewInsets.bottom,
-                    left: 0,
-                    right: 0,
-                    duration: const Duration(milliseconds: 100),
-                    child: Container(
-                      padding: const EdgeInsets.only(right: 10),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.black12, width: 1),
-                          ),
-                          color: Colors.white),
-                      height: 50,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                          icon: const Icon(Icons.keyboard_hide_outlined,
-                              size: 25),
-                          onPressed: () =>
-                              FocusManager.instance.primaryFocus?.unfocus(),
-                        ),
-                      ),
-                    ),
-                  )
-                : const SizedBox.shrink(),
+            // MediaQuery.of(context).viewInsets.bottom != 0
+            //     ? AnimatedPositioned(
+            //         bottom: MediaQuery.of(context).viewInsets.bottom,
+            //         left: 0,
+            //         right: 0,
+            //         duration: const Duration(milliseconds: 100),
+            //         child: Container(
+            //           padding: const EdgeInsets.only(right: 10),
+            //           decoration: const BoxDecoration(
+            //               border: Border(
+            //                 bottom: BorderSide(color: Colors.black12, width: 1),
+            //               ),
+            //               color: Colors.white),
+            //           height: 50,
+            //           child: Align(
+            //             alignment: Alignment.centerRight,
+            //             child: IconButton(
+            //               icon: const Icon(Icons.keyboard_hide_outlined,
+            //                   size: 25),
+            //               onPressed: () =>
+            //                   FocusManager.instance.primaryFocus?.unfocus(),
+            //             ),
+            //           ),
+            //         ),
+            //       )
+            //     : const SizedBox.shrink(),
           ],
         ),
       ),
@@ -110,89 +112,91 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
       () => Padding(
         padding: const EdgeInsets.all(15.0),
         child: GestureDetector(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextField(
-                controller: controller.content,
-                // controller: controller.deliveryRoomContent,
-                textInputAction: TextInputAction.next,
-                maxLength: 50,
-                decoration: InputDecoration(
-                  hintText: "글 제목",
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextField(
+                  controller: controller.content,
+                  // controller: controller.deliveryRoomContent,
+                  textInputAction: TextInputAction.next,
+                  maxLength: 50,
+                  decoration: InputDecoration(
+                    hintText: "글 제목",
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
                 ),
-              ),
-              const Divider(height: 0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text("참여 인원"),
-                  ToggleButtons(
-                    color: Colors.grey,
-                    fillColor: Colors.orange,
-                    selectedColor: Colors.white,
-                    children: [
-                      toggleBtnText("2"),
-                      toggleBtnText("3"),
-                      toggleBtnText("4"),
-                    ],
-                    isSelected: controller.numOfPeopleSelections,
-                    onPressed: (int index) {
-                      controller.selectNumOfPeopleSelections(index);
-                    },
-                  ),
-                ],
-              ),
-              const Divider(height: 0),
-              Column(
-                children: [
-                  const Text("예상 배달비"),
-                  NumberPicker(
-                    value: controller.deliveryTip.value,
-                    minValue: 0,
-                    maxValue: 10000,
-                    step: 500,
-                    axis: Axis.horizontal,
-                    decoration: deliveryTipBox,
-                    selectedTextStyle: deliveryTipStyle,
-                    onChanged: (value) => controller.setDeliveryTip(value),
-                  ),
-                ],
-              ),
-              const Divider(height: 0),
-              storeInfo(),
-              const Divider(height: 0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                      "집결지 : ${controller.receivingLocation == null ? "" : controller.receivingLocation!.description}"),
-                  OutlinedButton(
-                    onPressed: () =>
-                        Get.toNamed(Routes.PICK_RECEIVING_LOCATION),
-                    child: const Text("설정"),
-                  )
-                ],
-              ),
-              const Divider(height: 0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("음식 카테고리 : ${controller.getPickedStoreCategory()}"),
-                  OutlinedButton(
-                    onPressed: () {
-                      Get.bottomSheet(
-                        const PickStoreCategory(),
-                        isScrollControlled: true,
-                      );
-                    },
-                    child: const Text("설정"),
-                  )
-                ],
-              ),
-            ],
+                const Divider(height: dividerHeight),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text("참여 인원"),
+                    ToggleButtons(
+                      color: Colors.grey,
+                      fillColor: Colors.orange,
+                      selectedColor: Colors.white,
+                      children: [
+                        toggleBtnText("2"),
+                        toggleBtnText("3"),
+                        toggleBtnText("4"),
+                      ],
+                      isSelected: controller.numOfPeopleSelections,
+                      onPressed: (int index) {
+                        controller.selectNumOfPeopleSelections(index);
+                      },
+                    ),
+                  ],
+                ),
+                const Divider(height: dividerHeight),
+                Column(
+                  children: [
+                    const Text("예상 배달비"),
+                    NumberPicker(
+                      value: controller.deliveryTip.value,
+                      minValue: 0,
+                      maxValue: 10000,
+                      step: 500,
+                      axis: Axis.horizontal,
+                      decoration: deliveryTipBox,
+                      selectedTextStyle: deliveryTipStyle,
+                      onChanged: (value) => controller.setDeliveryTip(value),
+                    ),
+                  ],
+                ),
+                const Divider(height: dividerHeight),
+                storeInfo(),
+                const Divider(height: dividerHeight),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                        "집결지 : ${controller.receivingLocation == null ? "" : controller.receivingLocation!.description}"),
+                    OutlinedButton(
+                      onPressed: () =>
+                          Get.toNamed(Routes.PICK_RECEIVING_LOCATION),
+                      child: const Text("설정"),
+                    )
+                  ],
+                ),
+                const Divider(height: dividerHeight),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("음식 카테고리 : ${controller.getPickedStoreCategory()}"),
+                    OutlinedButton(
+                      onPressed: () {
+                        Get.bottomSheet(
+                          const PickStoreCategory(),
+                          isScrollControlled: true,
+                        );
+                      },
+                      child: const Text("설정"),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

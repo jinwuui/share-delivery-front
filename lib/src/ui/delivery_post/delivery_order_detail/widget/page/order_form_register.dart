@@ -56,8 +56,8 @@ class RegisterOrderForm extends StatelessWidget {
             ),
           );
 
-          await OrderFormRegisterController.to
-              .registerDeliveryRoomOrderDetail();
+          // await OrderFormRegisterController.to
+          //     .registerDeliveryRoomOrderDetail();
 
           DeliveryOrderController.to
               .changeStatus(DeliveryOrderStatus.orderCompleted);

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
@@ -14,8 +15,8 @@ class AuthenticationController extends GetxController {
 
   // 컨트롤러가 메모리에 할당된 후에 즉시 실행
   @override
-  void onInit() {
-    _getAuthenticatedUser();
+  void onInit() async {
+    await _getAuthenticatedUser();
     SmsAutoFill().listenForCode;
     super.onInit();
   }
@@ -26,37 +27,19 @@ class AuthenticationController extends GetxController {
     super.onClose();
   }
 
-  Future<Map<String, dynamic>> requestAuthSMS(String phoneNumber) {
-    print('AuthenticationController.requestAuthSMS $phoneNumber');
+  Future<String?> requestAuthSMS(String phoneNumber) async {
     return repository.requestAuthSMS(phoneNumber);
   }
 
-  Future<User> signUp(String phoneNumber, String authNumber) async {
-    print('AuthenticationController.signUp : $phoneNumber, $authNumber');
-
-    User user = await repository.signUp(phoneNumber, authNumber);
-    _authenticationStateStream.value = Authenticated(user: user);
-    return user;
+  Future<bool> signUp(String phoneNumber, String authNumber) async {
+    return await repository.signUp(phoneNumber, authNumber);
   }
 
-  Future<void> signIn(String phoneNumber, String authNumber) async {
-    print('AuthenticationController.signIn : $phoneNumber, $authNumber');
+  Future<void> login(String phoneNumber, String verificationCode) async {
+    User? user = await repository.login(phoneNumber, verificationCode);
 
-    bool result = await repository.signIn(phoneNumber, authNumber);
-
-    // TODO : 삭제해야함
-    result = true;
-
-    if (result) {
-      _authenticationStateStream.value = Authenticated(
-        user: User(
-            accountId: -1,
-            phoneNumber: "phoneNumber",
-            nickname: "nickname",
-            status: "status",
-            role: "role"),
-      );
-      // TODO : 로그인 성공/실패 로직 처리
+    if (user != null) {
+      _authenticationStateStream.value = Authenticated(user: user);
     } else {
       _authenticationStateStream.value = UnAuthenticated();
     }
@@ -67,24 +50,15 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = UnAuthenticated();
   }
 
-  void _getAuthenticatedUser() async {
+  Future<void> _getAuthenticatedUser() async {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
-    _authenticationStateStream.value = Authenticated(
-        user: User(
-            accountId: 1, phoneNumber: "", nickname: "", status: "", role: ""));
-    return;
 
     if (user == null) {
       _authenticationStateStream.value = UnAuthenticated();
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
-  }
-
-  Future<void> refreshToken() async {
-    print('AuthenticationController.refreshToken');
-    await repository.refreshToken();
   }
 }

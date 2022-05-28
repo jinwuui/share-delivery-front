@@ -26,7 +26,7 @@ class UserOrderList extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: DeliveryRecruitController.to.userWithOrderList
+        children: DeliveryRecruitController.to.orderMenuList
             .map((element) => OrderDetail(userWithOrderModel: element))
             .toList(),
       ),
