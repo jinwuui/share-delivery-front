@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReceivingLocationController extends GetxController {
@@ -12,22 +12,9 @@ class ReceivingLocationController extends GetxController {
 
   static ReceivingLocationController get to => Get.find();
 
-  RxList<Offset> roomList = <Offset>[
-    Offset(35.81891264358996, 128.51603017201349),
-    Offset(35.81892254358912, 128.51606027201323),
-    Offset(35.81894234358266, 128.51607037201353),
-    Offset(35.81835244358914, 128.516080472013467),
-    Offset(35.81865274358923, 128.516010572013345),
-    Offset(35.81875294358922, 128.5160306720134),
-    Offset(35.8188527335896, 128.51604527201338),
-    Offset(35.81895264358900, 128.51630087201323),
-    Offset(35.81815264358936, 128.5167001227201345),
-  ].obs;
-
   // 사용자 위치 관련
   final Location location = Location();
   Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
-  final RxBool _serviceEnabled = false.obs;
 
   // 웹뷰 관련
   Rx<Completer<WebViewController>> webViewController =
@@ -49,10 +36,11 @@ class ReceivingLocationController extends GetxController {
 
   // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
+    Logger().w("getHTML");
     return Uri.dataFromString('''
       <html>
       <head>
-        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes\'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
         <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?autoload=true&appkey=${dotenv.env['KAKAO_MAP_KEY']!}&libraries=services"></script>
       </head>
       <body style="padding:0; margin:0;">
@@ -99,6 +87,7 @@ class ReceivingLocationController extends GetxController {
 
   // WebView JS Listener
   Set<JavascriptChannel>? get getChannels {
+    Logger().w("getChannels");
     Set<JavascriptChannel>? channels = {};
 
     channels.add(JavascriptChannel(
@@ -115,7 +104,9 @@ class ReceivingLocationController extends GetxController {
   }
 
   void setWebViewController(WebViewController webViewController) {
-    this.webViewController.value.complete(webViewController);
+    if (isPrepared.value == false) {
+      this.webViewController.value.complete(webViewController);
+    }
   }
 
   void reloadWebView() {

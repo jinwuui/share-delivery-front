@@ -8,36 +8,34 @@ class RecevingLocation extends GetView<ReceivingLocationController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ReceivingLocationController());
-
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "수령 장소",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height / 4,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
+    return Obx(
+      () => Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "수령 장소",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
               ),
-              color: Colors.white70,
             ),
-            child: Container(
-              padding: const EdgeInsets.all(10.0),
-              child: Obx(
-                () => controller.isPrepared.value
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8.0),
+                ),
+                color: Colors.white70,
+              ),
+              child: Container(
+                padding: const EdgeInsets.all(10.0),
+                child: controller.isPrepared.value
                     ? Stack(
                         alignment: Alignment.topRight,
                         children: [
@@ -62,8 +60,8 @@ class RecevingLocation extends GetView<ReceivingLocationController> {
                       ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
