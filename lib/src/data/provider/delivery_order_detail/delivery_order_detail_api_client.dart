@@ -46,5 +46,5 @@ abstract class DeliveryOrderDetailApiClient {
 
   // 모집글 주문 정보 조회 TEST
   @GET('/api/delivery-rooms/orders/{deliveryRoomId}')
-  Future<List<OrderMenuModel>> getOrderList(@Path() String deliveryRoomId);
+  Future<List<OrderMenuModel>> getOrderList(@Path() int deliveryRoomId);
 }

@@ -55,7 +55,7 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
               onTap: () {
                 Get.toNamed(
                   Routes.DELIVERY_HISTORY_DETAIL,
-                  arguments: {'deliveryRoomId': "1"},
+                  arguments: {'deliveryRoomId': 1},
                 );
               },
               child: DeliveryHistoryPost(

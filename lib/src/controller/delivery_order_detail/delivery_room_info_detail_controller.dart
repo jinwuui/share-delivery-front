@@ -32,7 +32,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    String deliveryRoomId = Get.arguments['deliveryRoomId'];
+    int deliveryRoomId = Get.arguments['deliveryRoomId'];
     try {
       deliveryRoom.value = await getDeliveryRoomInfo(deliveryRoomId);
       isLoad.value = true;
@@ -41,7 +41,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
     }
   }
 
-  Future<DeliveryRoom> getDeliveryRoomInfo(String deliveryRoomId) async {
+  Future<DeliveryRoom> getDeliveryRoomInfo(int deliveryRoomId) async {
     return await repository.getDeliveryRoomInfoDetail(deliveryRoomId);
   }
 }

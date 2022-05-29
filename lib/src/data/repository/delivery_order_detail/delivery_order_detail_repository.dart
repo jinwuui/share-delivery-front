@@ -16,7 +16,7 @@ class DeliveryOrderDetailRepository {
     return apiClient.completeDeliveryRecruit(deliveryRoomId);
   }
 
-  Future<DeliveryRoom> getDeliveryRoomInfoDetail(String deliveryRoomId) async {
+  Future<DeliveryRoom> getDeliveryRoomInfoDetail(int deliveryRoomId) async {
     await Future.delayed(Duration(seconds: 2));
 
     return DeliveryRoom(
@@ -38,7 +38,7 @@ class DeliveryOrderDetailRepository {
     // return apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);
   }
 
-  Future<List<OrderMenuModel>> getOrderList(String deliveryRoomId) async {
+  Future<List<OrderMenuModel>> getOrderList(int deliveryRoomId) async {
     await Future.delayed(Duration(seconds: 2));
     List<OrderMenuModel> list = [
       OrderMenuModel(
@@ -87,7 +87,7 @@ class DeliveryOrderDetailRepository {
       ),
     ];
     return list;
-    // return apiClient.getOrderList(deliveryRoomId);
+    return apiClient.getOrderList(deliveryRoomId);
   }
 
   Future<void> registerDeliveryRoomOrderDetail() async {

@@ -30,7 +30,7 @@ class DeliveryRecruitController extends GetxController
 
     try {
       change(null, status: RxStatus.loading());
-      String deliveryRoomId = Get.arguments['deliveryRoomId'];
+      int deliveryRoomId = Get.arguments['deliveryRoomId'];
 
       orderMenuList.value = await repository.getOrderList(deliveryRoomId);
 
