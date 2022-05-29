@@ -20,7 +20,7 @@ class DeliveryOrderDetailRepository {
     await Future.delayed(Duration(seconds: 2));
 
     return DeliveryRoom(
-      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
       content: "BBQ 드실분?",
       person: 1,
       limitPerson: 3,
@@ -43,7 +43,7 @@ class DeliveryOrderDetailRepository {
     List<OrderMenuModel> list = [
       OrderMenuModel(
         entryOrderId: 1,
-        accountId: 2,
+        accountId: 100,
         phoneNumber: "01000000001",
         type: "hello",
         status: "world",

@@ -26,6 +26,7 @@ class DeliveryRoom with _$DeliveryRoom {
 @Freezed()
 class Leader with _$Leader {
   const factory Leader({
+    required int accountId,
     required String nickname,
     required double mannerScore,
   }) = _Leader;

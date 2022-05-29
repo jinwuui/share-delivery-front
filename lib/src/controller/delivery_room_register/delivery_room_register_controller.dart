@@ -74,7 +74,7 @@ class DeliveryRoomRegisterController extends GetxController {
         // dummy data
 
         DeliveryRoom room = DeliveryRoom(
-          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
           content: "굽네치킨 드실분?",
           person: 2,
           limitPerson: 4,

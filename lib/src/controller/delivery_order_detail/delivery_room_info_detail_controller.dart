@@ -12,7 +12,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
   // late final Rx<DeliveryRoom> deliveryRoom;
   Rx<DeliveryRoom> deliveryRoom = DeliveryRoom(
     roomId: 456,
-    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
     content: "BBQ 드실분?",
     person: 1,
     limitPerson: 3,
