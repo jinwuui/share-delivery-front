@@ -93,10 +93,10 @@ class AppPages {
       name: Routes.HOME,
       page: () => const Home(),
     ),
-    GetPage(
-      name: Routes.DELIVERY_ROOM_DETAIL,
-      page: () => const DeliveryRoomDetail(),
-    ),
+    // GetPage(
+    //   name: Routes.DELIVERY_ROOM_DETAIL,
+    //   page: () => const DeliveryRoomDetail(),
+    // ),
     GetPage(
       name: Routes.DELIVERY_ROOM_INFO,
       page: () => DeliveryRoomInfo(),

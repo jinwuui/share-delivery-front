@@ -36,8 +36,9 @@ class DeliveryOrderTabController extends GetxController
     print("Delivery Order Controller INit");
 
     super.onInit();
-    controller = TabController(vsync: this, length: tabChildParameters.length);
-    asyncLoadTabs();
+    controller = TabController(
+        vsync: this, length: tabChildParameters.length, initialIndex: 1);
+    update();
   }
 
   void asyncLoadTabs({int index = 0}) async {

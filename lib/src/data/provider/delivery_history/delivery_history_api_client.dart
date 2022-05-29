@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:share_delivery/src/data/model/delivery_history/delivery_history_model.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 
 part 'delivery_history_api_client.g.dart';
 
@@ -10,5 +10,5 @@ abstract class DeliveryHistoryApiClient {
       _DeliveryHistoryApiClient;
 
   @GET('/api/delivery-histories')
-  Future<List<DeliveryHistoryModel>> getDeliveryHistoryAll();
+  Future<List<DeliveryRoom>> getDeliveryHistoryAll();
 }

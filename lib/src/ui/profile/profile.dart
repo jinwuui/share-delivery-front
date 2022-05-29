@@ -72,7 +72,7 @@ class Profile extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () => Get.toNamed(
-                    '/exapndedImagePage',
+                    Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
                       "imagePath":
                           "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
