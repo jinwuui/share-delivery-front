@@ -74,4 +74,9 @@ class ProfileRepository {
         role: 'role');
     return await apiClient.readUser(accountId);
   }
+
+  Future<User> updateUserInfo(
+      AccountUpdateReqDTO accountUpdateReqDTO, File profileImage) async {
+    return await apiClient.updateUser(accountUpdateReqDTO, profileImage);
+  }
 }

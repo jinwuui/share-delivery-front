@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
-import 'package:share_delivery/src/data/repository/profile/account_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
 
 class OtherUserProfileController extends GetxController {

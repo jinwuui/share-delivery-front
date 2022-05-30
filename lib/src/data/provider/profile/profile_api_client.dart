@@ -27,4 +27,12 @@ abstract class ProfileApiClient {
   // 유저 정보 조회
   @GET('/api/users/{accountId}')
   Future<User> readUser(@Path() int accountId);
+
+  // 회원정보 수정
+  @PATCH('/api/accounts')
+  @MultiPart()
+  Future updateUser(
+    @Part(name: 'accountDetail') AccountUpdateReqDTO accountDetail,
+    @Part() File profileImage,
+  );
 }

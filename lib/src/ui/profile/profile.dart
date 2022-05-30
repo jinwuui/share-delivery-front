@@ -115,7 +115,7 @@ class Profile extends StatelessWidget {
                 elevation: 0.0,
                 minimumSize: Size.fromHeight(45.0),
               ),
-              onPressed: () => Get.to(ModifyProfile()),
+              onPressed: () => Get.toNamed(Routes.MODIFY_PROFILE),
               child: Text(
                 "프로필 수정",
                 style: TextStyle(
