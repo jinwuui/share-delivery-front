@@ -34,13 +34,14 @@ class HomeController extends GetxController {
       deliveryTip: 3000,
       storeLink: "www.baemin.com/stores?id=1524",
       platformType: "BAEMIN",
-      status: "NULL",
+      status: "OPEN",
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
           lat: 35.820848788632226,
           lng: 128.518205019348),
       roomId: 456,
+      storeCategory: 'CHICKEN',
     ),
   ].obs;
 

@@ -6,6 +6,8 @@ import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class AuthenticationController extends GetxController {
+  static AuthenticationController get to => Get.find();
+
   final AuthenticationRepository repository;
   final _authenticationStateStream = const AuthenticationState().obs;
 
@@ -60,5 +62,9 @@ class AuthenticationController extends GetxController {
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
+  }
+
+  User? getSavedUser() {
+    return repository.getSavedUser();
   }
 }

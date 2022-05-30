@@ -74,20 +74,21 @@ class DeliveryRoomRegisterController extends GetxController {
         // dummy data
 
         DeliveryRoom room = DeliveryRoom(
-          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
-          content: "굽네치킨 드실분?",
+          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
+          content: "register test",
           person: 2,
           limitPerson: 4,
           deliveryTip: 3000,
           storeLink: "www.baemin.com/stores?id=1524",
           platformType: "BAEMIN",
-          status: "NULL",
+          status: "OPEN",
           createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
           receivingLocation: ReceivingLocation(
               description: "CU 편의점 앞",
               lat: 35.821730657601044,
               lng: 128.5190184847488),
           roomId: 123,
+          storeCategory: 'CHICKEN',
         );
 
         // delivery history ui 갱신

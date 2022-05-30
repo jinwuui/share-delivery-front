@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/receiving_location/receiving_location_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_order_and_total_payment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/order_form_screen_shot.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_remit_of_user_section.dart';
 import 'package:share_delivery/src/ui/widgets/receiving_location.dart';
-import 'package:share_delivery/src/ui/home/delivery_room_on_map.dart';
 
 // TODO:
 // OrderFormRegister 컨트롤러 그대로 가져오기 ( 주문서, 주문 내역 )

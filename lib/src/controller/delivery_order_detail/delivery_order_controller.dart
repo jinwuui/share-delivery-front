@@ -60,7 +60,7 @@ class DeliveryOrderController extends FullLifeCycleController
   @override
   void onResumed() {
     print('@@@@@@@@@@@@@@Delivery Order Controller - onResumed called');
-    fetchDeliveryOrderDetail();
+    // fetchDeliveryOrderDetail();
     // fetchDeliveryOrderDetail();
   }
 

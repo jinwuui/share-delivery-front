@@ -28,6 +28,20 @@ class DeliveryHistoryController extends GetxController
     }
   }
 
+  // 모집글 히스토리 목록 조회
+  Future<void> fetchDeliveryHistoryPost() async {
+    try {
+      change(null, status: RxStatus.loading());
+      historyPostList.value = await deliveryHistoryRepository.getAll();
+
+      change(historyPostList, status: RxStatus.success());
+    } catch (err) {
+      change(null, status: RxStatus.error());
+    }
+  }
+
+  // 모집글 히스토리 추가
+  //    모집글 등록 시 사용
   Future<void> addPost(DeliveryRoom deliveryHistoryModel) async {
     historyPostList.add(deliveryHistoryModel);
   }

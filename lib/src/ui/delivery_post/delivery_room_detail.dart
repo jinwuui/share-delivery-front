@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
 
 import 'delivery_order_detail/delivery_order_tabview.dart';
@@ -23,12 +25,6 @@ class DeliveryRoomDetail extends StatelessWidget {
             fontSize: 15,
           ),
         ),
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.refresh, size: 35),
-        //     onPressed: () {},
-        //   )
-        // ],
         backgroundColor: Colors.transparent,
         elevation: 0.0,
       ),
@@ -56,16 +52,29 @@ class DeliveryRoomDetail extends StatelessWidget {
               child: Container(
                 color: Colors.grey.shade200,
                 child: TabBarView(
-                    controller: DeliveryOrderTabController.to.controller,
-                    children: [
-                      DeliveryRoomInfoDetail(),
-                      OrderTabView(),
-                      Container(
-                        child: Center(
-                          child: Text("채팅 방"),
-                        ),
-                      ),
-                    ]),
+                  controller: DeliveryOrderTabController.to.controller,
+                  children: [
+                    DeliveryRoomInfoDetail(),
+                    Obx(
+                      () => DeliveryRoomInfoDetailController.to.isLoad == true
+                          ? OrderTabView()
+                          : Center(
+                              child: Text("Loading ..."),
+                            ),
+                    ),
+                    Obx(
+                      () => DeliveryRoomInfoDetailController.to.isLoad == true
+                          ? Container(
+                              child: Center(
+                                child: Text("채팅 방"),
+                              ),
+                            )
+                          : Center(
+                              child: Text("Loading ..."),
+                            ),
+                    ),
+                  ],
+                ),
               ),
             )
           ],

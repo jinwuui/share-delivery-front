@@ -112,16 +112,15 @@ class NotificationController extends GetxController {
   }
 
   void _handleMessage(RemoteMessage message) {
-    print(message);
-    print(message.data);
-
     final eventType = message.data['type'];
+    Logger().w(eventType);
     if (eventType == "recuritmentCompleted") {
-      Logger().w(eventType);
       DeliveryOrderController.to
           .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
+      // Get.isRegistered()
       Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
-      DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
-    } else if (eventType == "deliveryRoomUpdated") {}
+      // DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
+    } else if (eventType == "deliveryRoomUpdated") {
+    } else if (eventType == "completed-order") {}
   }
 }

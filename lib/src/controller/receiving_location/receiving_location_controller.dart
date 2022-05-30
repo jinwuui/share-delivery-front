@@ -36,7 +36,6 @@ class ReceivingLocationController extends GetxController {
 
   // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
-    Logger().w("getHTML");
     return Uri.dataFromString('''
       <html>
       <head>
@@ -87,7 +86,6 @@ class ReceivingLocationController extends GetxController {
 
   // WebView JS Listener
   Set<JavascriptChannel>? get getChannels {
-    Logger().w("getChannels");
     Set<JavascriptChannel>? channels = {};
 
     channels.add(JavascriptChannel(

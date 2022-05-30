@@ -20,17 +20,18 @@ class DeliveryHistoryRepository {
         deliveryTip: 3000,
         storeLink: "www.baemin.com/stores?id=1524",
         platformType: "BAEMIN",
-        status: "NULL",
+        status: "OPEN",
         createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
         receivingLocation: ReceivingLocation(
             description: "CU 편의점 앞",
             lat: 35.821730657601044,
             lng: 128.5190184847488),
         roomId: 123,
+        storeCategory: 'CHICKEN',
       ),
     ];
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
     return list;
-    // return apiClient.getDeliveryHistoryAll();
+    return apiClient.getDeliveryHistoryAll();
   }
 }

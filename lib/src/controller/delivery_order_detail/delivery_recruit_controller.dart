@@ -19,7 +19,6 @@ class DeliveryRecruitController extends GetxController
   void onInit() {
     super.onInit();
     ever(orderMenuList, (_) {
-      print(orderMenuList);
       calculateTotalPaymentMoney();
     });
   }
@@ -44,13 +43,15 @@ class DeliveryRecruitController extends GetxController
     orderMenuList.add(userWithOrderModel);
   }
 
-  Future<void> deleteUserWithOrder(String userId) async {
+  Future<void> deleteUserWithOrder(int userId) async {
     try {
       // String roomId =
       //     DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
 
       //TODO: API
-      // await repository.rejectUserOrder(userId, roomId);
+      int roomId =
+          DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
+      await repository.rejectUserOrder(userId, roomId);
 
       orderMenuList.value =
           orderMenuList.where((e) => e.accountId != userId).toList();

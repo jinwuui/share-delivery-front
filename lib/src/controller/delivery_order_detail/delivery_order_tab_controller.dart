@@ -37,7 +37,7 @@ class DeliveryOrderTabController extends GetxController
 
     super.onInit();
     controller = TabController(
-        vsync: this, length: tabChildParameters.length, initialIndex: 1);
+        vsync: this, length: tabChildParameters.length, initialIndex: 0);
     update();
   }
 

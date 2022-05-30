@@ -170,6 +170,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
         lng: -1,
         lat: -1,
       ),
+      storeCategory: 'CHICKEN',
     );
   }
 
