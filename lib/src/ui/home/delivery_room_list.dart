@@ -5,7 +5,6 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
-import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
 class DeliveryRoomList extends StatefulWidget {

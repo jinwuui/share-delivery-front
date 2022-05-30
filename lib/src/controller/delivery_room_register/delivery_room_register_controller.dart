@@ -98,7 +98,6 @@ class DeliveryRoomRegisterController extends GetxController {
         // 배달 관리 컨트롤러에 등록
         DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
 
-
         // 홈화면 모집글 새로 고침
         await Get.find<HomeController>().onRefresh();
 
