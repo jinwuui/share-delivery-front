@@ -1,28 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_delivery/src/controller/community/community_controller.dart';
+import 'package:share_delivery/src/data/provider/community/community_repository.dart';
+import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
+import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
-class Community extends StatelessWidget {
+class Community extends GetView<CommunityController> {
   const Community({Key? key}) : super(key: key);
 
   static const double padding = 10;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(),
-      body: Container(
-        color: Colors.grey[200],
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return index == 0 ? categoryTab() : post();
-          },
+    Get.lazyPut(
+      () => CommunityController(
+        repository: CommunityRepository(
+          apiClient: CommunityApiClient(DioUtil.getDio()),
+          localClient: UserLocationLocalClient(),
         ),
       ),
-      floatingActionButton: fab(),
+    );
+
+    return Obx(
+      () => Scaffold(
+        appBar: appBar(),
+        body: Container(
+          color: Colors.grey[200],
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            controller: controller.refresher.value,
+            onRefresh: controller.onRefresh,
+            onLoading: controller.onLoading,
+            child: ListView.builder(
+              itemCount: controller.posts.length + 3,
+              itemBuilder: (context, index) {
+                return index == 0 ? categoryTab() : post();
+              },
+            ),
+          ),
+        ),
+        floatingActionButton: fab(),
+      ),
     );
   }
 
@@ -137,7 +161,10 @@ class Community extends StatelessWidget {
           action(
             "답변하기",
             Icons.mode_comment_outlined,
-            () => Get.toNamed(Routes.POST_DETAIL),
+            () => Get.toNamed(
+              Routes.POST_DETAIL,
+              arguments: {"postId": 14},
+            ),
           ),
         ],
       ),

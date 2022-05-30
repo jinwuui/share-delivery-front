@@ -90,7 +90,7 @@ abstract class DeliveryRoomRegisterApiClient {
 
   // 모집글 등록
   @POST("/api/delivery-rooms")
-  Future<DeliveryRoomRegisterResDTO> registerDeliveryRoom(
+  Future<DeliveryRoom> registerDeliveryRoom(
     @Body() DeliveryRoomRegisterDTO deliveryRoomRegisterDTO,
   );
 }

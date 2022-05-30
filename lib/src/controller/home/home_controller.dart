@@ -1,22 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:logger/logger.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
-enum HomeStatus {
-  loading,
-  finished,
-  nodata,
-}
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -25,7 +20,7 @@ class HomeController extends GetxController {
 
   HomeController({required this.repository});
 
-  final deliveryRooms = <DeliveryRoom>[
+  var deliveryRooms = <DeliveryRoom>[
     DeliveryRoom(
       leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
       content: "BBQ 드실분?",
@@ -46,8 +41,7 @@ class HomeController extends GetxController {
   ].obs;
 
   // UI 관련
-  ScrollController scroller = ScrollController();
-
+  RefreshController refresher = RefreshController(initialRefresh: true);
   RxInt idxCurInfo = (-1).obs;
 
   // 사용자 위치 관련
@@ -69,48 +63,26 @@ class HomeController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    scroller.addListener(() {
-      if (scroller.position.pixels >= scroller.position.maxScrollExtent * 0.7) {
-        onLoading();
-      }
-    });
 
     // 사용자 위치 불러오기
     await getUserLocation();
-    // TODO : 모집글 불러오기
-    findDeliveryRooms();
-  }
-
-  Future<void> onRefresh() async {
-    print("onRefresh()");
-    await findDeliveryRooms();
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-  }
-
-  onLoading() {
-    print("loading");
   }
 
   // 사용자 위치 불러오기
   Future<void> getUserLocation() async {
-    print('HomeController.getUserLocation 1');
     UserLocation? userLocation = repository.findRecentUserLocation();
 
     if (userLocation != null) {
-      print('HomeController.getUserLocation 2');
       locationData.value = LocationData.fromMap({
         "latitude": userLocation.latitude,
         "longitude": userLocation.longitude,
       });
     } else {
-      print('HomeController.getUserLocation 3 $_serviceEnabled.value');
       if (!(await verifyLocationPermission())) {
-        print('HomeController.getUserLocation 4 $_serviceEnabled.value');
         GetSnackbar.on("알림", "위치 정보를 허용해주세요.");
         return;
       }
 
-      print('HomeController.getUserLocation 5');
       LocationData curLocation = await location.getLocation();
       print('HomeController.getUserLocation $curLocation');
       locationData.value = curLocation;
@@ -146,23 +118,76 @@ class HomeController extends GetxController {
     return true;
   }
 
-  Future<void> findDeliveryRooms() async {
+  // 모집글 새로고침
+  Future<void> onRefresh() async {
+    if (!isPrepared.value) {
+      refresher.refreshFailed();
+      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+      return;
+    }
+
+    try {
+      // TODO : 테스트할 때 키기
+
+      // deliveryRooms.value = await findDeliveryRooms();
+
+      if (deliveryRooms.isEmpty) {
+        refresher.refreshFailed();
+        GetSnackbar.on("알림", "검색된 모집글이 없습니다!");
+        return;
+      }
+
+      refresher.resetNoData();
+      refresher.refreshCompleted();
+    } catch (e) {
+      print(e);
+      refresher.refreshFailed();
+    }
+  }
+
+  // 모집글 불러오기
+  Future<void> onLoading() async {
+    if (!isPrepared.value) {
+      refresher.loadFailed();
+      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+      return;
+    }
+
+    try {
+      var result = [];
+      // TODO : 임시로 해둠 = 삭제할 것
+      // TODO : 테스트할 때 키기
+      // List<Post> result = await repository.loadingPost(
+      //     userLocation!, posts.last.createdDateTime);
+
+      if (result.isEmpty) {
+        refresher.loadNoData();
+        GetSnackbar.on("알림", "검색된 모집글이 없습니다!");
+        return;
+      }
+
+      refresher.loadComplete();
+    } catch (e) {
+      print(e);
+      refresher.loadFailed();
+    }
+  }
+
+  Future<List<DeliveryRoom>> findDeliveryRooms() async {
     print("- home controller - 모집글 조회");
     double? lat = locationData.value.latitude;
     double? lng = locationData.value.longitude;
     int radius = 5;
 
     if (lat == null || lng == null) {
-      print('findDeliveryRooms ERROR: 현재 유저 위치 없음');
-      return;
+      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+      return [];
     }
 
     List<DeliveryRoom> result =
         await repository.findDeliveryRooms(lat, lng, radius);
-    print('HomeController.findDeliveryRooms $result');
-    if (result.isNotEmpty) {
-      deliveryRooms.value = result;
-    }
+    Logger().v(result);
+    return result;
   }
 
   // 카카오 지도 JS API 로 지도 띄우기

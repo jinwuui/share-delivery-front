@@ -9,7 +9,7 @@ class PostDetail with _$PostDetail {
     required int postId,
     required Writer writer,
     required String content,
-    required String topic,
+    required String category,
     required DateTime createdDateTime,
     required List<Comment> comments,
   }) = _PostDetail;
