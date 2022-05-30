@@ -19,4 +19,8 @@ abstract class ProfileApiClient {
   // 계좌 등록
   @POST('/api/users/accounts')
   Future<void> registerAccount(@Body() AccountDTO accountDTO);
+
+  // 유저 정보 조회
+  @GET('/api/users/{accountId}')
+  Future<User> readUser(@Path() int accountId);
 }

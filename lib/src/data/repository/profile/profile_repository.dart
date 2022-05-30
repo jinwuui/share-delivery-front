@@ -60,4 +60,15 @@ class ProfileRepository {
         accountHolder: "박진우");
     return await apiClient.readAccount();
   }
+
+  Future<User> fetchUserInfo(int accountId) async {
+    await 1.delay();
+    return User(
+        accountId: 1,
+        phoneNumber: '',
+        nickname: 'nickname',
+        status: 'status',
+        role: 'role');
+    return await apiClient.readUser(accountId);
+  }
 }
