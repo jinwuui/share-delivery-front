@@ -13,11 +13,11 @@ abstract class ProfileApiClient {
   Future<List<User>> getFriendList();
 
   // 계좌 조회
-  @GET('/api/users/accounts')
+  @GET('/api/accounts/back-account')
   Future<AccountDTO> readAccount();
 
   // 계좌 등록
-  @POST('/api/users/accounts')
+  @POST('/api/accounts/back-account')
   Future<void> registerAccount(@Body() AccountDTO accountDTO);
 
   // 유저 정보 조회
