@@ -1,5 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/ui/community/community.dart';
 import 'package:share_delivery/src/ui/delivery_history/delivery_history.dart';
@@ -18,8 +20,9 @@ class Root extends GetView<RootController> {
             index: controller.rootPageIndex.value,
             children: [
               Home(),
-              // RetrofitScreen(),
+              // controller.rootPageIndex.value == 1
               DeliveryHistory(),
+              // : SizedBox.shrink(),
               Community(),
               Profile(),
             ],
@@ -35,14 +38,15 @@ class Root extends GetView<RootController> {
               elevation: 0,
               currentIndex: controller.rootPageIndex.value,
               onTap: controller.changeRootPageIndex,
-              items: const [
+              items: [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home_outlined),
                   label: "홈",
                   activeIcon: Icon(Icons.home),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.delivery_dining_outlined),
+                  icon: countProgressShareDeliveryCountBadge(
+                      Icon(Icons.delivery_dining_outlined)),
                   label: "내 배달",
                   activeIcon: Icon(Icons.delivery_dining),
                 ),
@@ -67,6 +71,23 @@ class Root extends GetView<RootController> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget countProgressShareDeliveryCountBadge(Icon icon) {
+    return Obx(
+      () => Badge(
+        showBadge:
+            DeliveryManageController.to.deliveryRoomCountInProgress.value == 0
+                ? false
+                : true,
+        padding: const EdgeInsets.all(4.0),
+        badgeContent: Text(
+          DeliveryManageController.to.deliveryRoomCountInProgress.value
+              .toString(),
+        ),
+        child: Icon(Icons.delivery_dining_outlined),
       ),
     );
   }

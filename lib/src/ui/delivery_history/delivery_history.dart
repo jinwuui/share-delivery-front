@@ -2,21 +2,24 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_history/delivery_history_model.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/provider/delivery_history/delivery_history_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_repository.dart';
 
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 
 class DeliveryHistory extends GetView<DeliveryHistoryController> {
   const DeliveryHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //TODO: 바인딩 찾아보기
     Dio dio = Dio();
     final String? host = dotenv.env['SERVER_HOST'];
+
     Get.put<DeliveryHistoryController>(
       DeliveryHistoryController(
         deliveryHistoryRepository: DeliveryHistoryRepository(
@@ -49,40 +52,44 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
         elevation: 0.0,
       ),
       body: controller.obx(
-        (historyPostList) => Center(
-          child: ListView.separated(
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                Get.toNamed(
-                  Routes.DELIVERY_HISTORY_DETAIL,
-                  arguments: {'deliveryRoomId': "1"},
-                );
-              },
-              child: DeliveryHistoryPost(
-                deliveryHistoryModel: historyPostList![index],
+        (historyPostList) => Obx(() {
+          //TODO: historyPostList 정렬
+
+          return Center(
+            child: ListView.separated(
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  Get.toNamed(
+                    Routes.DELIVERY_HISTORY_DETAIL,
+                    arguments: {'deliveryRoomId': 1},
+                  );
+                },
+                child: DeliveryHistoryPost(
+                  deliveryRoomModel: historyPostList![index],
+                ),
               ),
+              separatorBuilder: (_, index) => Divider(
+                endIndent: 20,
+                indent: 20,
+                color: Colors.grey.shade300,
+                height: 0.5,
+                thickness: 1,
+              ),
+              itemCount: historyPostList!.length,
             ),
-            separatorBuilder: (_, index) => Divider(
-              endIndent: 20,
-              indent: 20,
-              color: Colors.grey.shade300,
-              height: 0.5,
-              thickness: 1,
-            ),
-            itemCount: historyPostList!.length,
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
 }
 
 class DeliveryHistoryPost extends StatelessWidget {
-  final DeliveryHistoryModel deliveryHistoryModel;
+  final DeliveryRoom deliveryRoomModel;
 
   const DeliveryHistoryPost({
     Key? key,
-    required this.deliveryHistoryModel,
+    required this.deliveryRoomModel,
   }) : super(key: key);
 
   @override
@@ -105,19 +112,23 @@ class DeliveryHistoryPost extends StatelessWidget {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(
-                        "https://cdn-icons-png.flaticon.com/512/123/123282.png"),
+                    image: NetworkImage(Hive.box('foodCategory')
+                        .get(deliveryRoomModel.storeCategory.toString())),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.grey.shade300,
+                  color: Colors.white,
                 ),
               ),
               Center(
                 child: _buildDeliveryRoomStatus(
-                  deliveryHistoryModel.status.toString(),
-                  Colors.red, // TODO: status 별로 color 구분
-                  // status == "인원 모집중" ? Colors.orangeAccent : Colors.black54,
-                ),
+                    getDeliveryRoomStateWithColor(
+                            deliveryRoomModel.status.toString())
+                        .name,
+                    getDeliveryRoomStateWithColor(
+                            deliveryRoomModel.status.toString())
+                        .color
+                    // status == "인원 모집중" ? Colors.orangeAccent : Colors.black54,
+                    ),
               ),
             ],
           ),
@@ -130,7 +141,7 @@ class DeliveryHistoryPost extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    deliveryHistoryModel.content,
+                    deliveryRoomModel.content,
                     style: TextStyle(
                       fontWeight: FontWeight.w800,
                       fontSize: 20,
@@ -138,7 +149,7 @@ class DeliveryHistoryPost extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text(deliveryHistoryModel.receivingLocationDesc),
+                      Text(deliveryRoomModel.receivingLocation.description),
                       SizedBox(
                         height: 10,
                         child:
@@ -162,7 +173,7 @@ class DeliveryHistoryPost extends StatelessWidget {
                           width: 4,
                         ),
                         Text(
-                            "${deliveryHistoryModel.peopleNumber} / ${deliveryHistoryModel.limitPerson}")
+                            "${deliveryRoomModel.person} / ${deliveryRoomModel.limitPerson}")
                       ],
                     ),
                   )

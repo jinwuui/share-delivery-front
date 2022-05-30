@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
 
 class FriendPage extends GetView<FriendController> {
   const FriendPage({Key? key}) : super(key: key);
@@ -127,7 +128,7 @@ class FriendItem extends StatelessWidget {
                       thickness: 5,
                       height: 20,
                       color: Colors.black54),
-                  bottomSheetItem(
+                  BottomSheetItem(
                     icon: Icon(Icons.block),
                     text: "차단하기",
                     callback: () {},
@@ -144,24 +145,6 @@ class FriendItem extends StatelessWidget {
             );
           },
           icon: Icon(Icons.more_vert),
-        ),
-      ),
-    );
-  }
-
-  Widget bottomSheetItem({
-    required Icon icon,
-    required String text,
-    required callback,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        onTap: () => callback(),
-        leading: icon,
-        title: Text(
-          text,
-          style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700),
         ),
       ),
     );

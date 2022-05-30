@@ -18,6 +18,7 @@ class DeliveryRoom with _$DeliveryRoom {
     required DateTime createdDateTime,
     required String storeCategory,
     required ReceivingLocation receivingLocation,
+    required String storeCategory,
   }) = _DeliveryRoom;
 
   factory DeliveryRoom.fromJson(Map<String, dynamic> json) =>

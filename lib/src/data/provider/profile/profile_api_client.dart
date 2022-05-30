@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
-import 'package:share_delivery/src/data/repository/profile/account_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_update_req_dto.dart';
 
 part 'profile_api_client.g.dart';
 
@@ -13,10 +17,14 @@ abstract class ProfileApiClient {
   Future<List<User>> getFriendList();
 
   // 계좌 조회
-  @GET('/api/users/accounts')
-  Future<void> readAccount();
+  @GET('/api/accounts/back-account')
+  Future<AccountBankDTO> readAccount();
 
   // 계좌 등록
-  @POST('/api/users/accounts')
-  Future<void> registerAccount(@Body() AccountDTO accountDTO);
+  @POST('/api/accounts/back-account')
+  Future<void> registerAccount(@Body() AccountBankDTO accountDTO);
+
+  // 유저 정보 조회
+  @GET('/api/users/{accountId}')
+  Future<User> readUser(@Path() int accountId);
 }

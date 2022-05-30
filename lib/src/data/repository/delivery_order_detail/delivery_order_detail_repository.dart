@@ -12,39 +12,39 @@ class DeliveryOrderDetailRepository {
 
   DeliveryOrderDetailRepository({required this.apiClient});
 
-  completeDeliveryRecruit(String deliveryRoomId) async {
-    return apiClient.completeDeliveryRecruit(deliveryRoomId);
+  completeDeliveryRecruit(int deliveryRoomId) async {
+    return await apiClient.completeDeliveryRecruit(deliveryRoomId);
   }
 
-  Future<DeliveryRoom> getDeliveryRoomInfoDetail(String deliveryRoomId) async {
+  Future<DeliveryRoom> getDeliveryRoomInfoDetail(int deliveryRoomId) async {
     await Future.delayed(Duration(seconds: 2));
 
     return DeliveryRoom(
-      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 1234),
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
       content: "BBQ 드실분?",
       person: 1,
       limitPerson: 3,
       deliveryTip: 3000,
       storeLink: "www.baemin.com/stores?id=1524",
       platformType: "BAEMIN",
-      status: "NULL",
+      status: "OPEN",
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
           lat: 35.820848788632226,
           lng: 128.518205019348),
       roomId: 456,
-      storeCategory: '',
+      storeCategory: 'CHICKEN',
     );
-    // return apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);
+    return await apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);
   }
 
-  Future<List<OrderMenuModel>> getOrderList(String deliveryRoomId) async {
+  Future<List<OrderMenuModel>> getOrderList(int deliveryRoomId) async {
     await Future.delayed(Duration(seconds: 2));
     List<OrderMenuModel> list = [
       OrderMenuModel(
         entryOrderId: 1,
-        accountId: 2,
+        accountId: 100,
         phoneNumber: "01000000001",
         type: "hello",
         status: "world",
@@ -88,9 +88,10 @@ class DeliveryOrderDetailRepository {
       ),
     ];
     return list;
-    // return apiClient.getOrderList(deliveryRoomId);
+    return apiClient.getOrderList(deliveryRoomId);
   }
 
+  // 주도자가 배달 주문 정보 등록
   Future<void> registerDeliveryRoomOrderDetail() async {
     DeliveryOrderDetailDTO deliveryOrderDetailDTO = DeliveryOrderDetailDTO(
         orders: "2",
@@ -109,6 +110,10 @@ class DeliveryOrderDetailRepository {
         DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
 
     return await apiClient.registerDeliveryRoomOrderDeatil(
-        deliveryRoomId.toString(), deliveryOrderDetailDTO, orderFormFileList);
+        deliveryRoomId, deliveryOrderDetailDTO, orderFormFileList);
+  }
+
+  Future<void> rejectUserOrder(int userId, int roomId) async {
+    return await apiClient.rejectUserOrder(userId, roomId);
   }
 }

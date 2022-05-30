@@ -18,7 +18,11 @@ class TossWithdrawButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blueAccent.shade200,
+        elevation: 0.0,
+      ),
       onPressed: () async {
         String deepLink =
             "$tossPrefixUrl?amount=$amount&bank=$bank&accountNo=$account&origin=qr";
@@ -32,7 +36,7 @@ class TossWithdrawButton extends StatelessWidget {
       },
       child: Text(
         "토스 송금하기",
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 16, color: Colors.white),
       ),
     );
   }

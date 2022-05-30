@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/ui/widgets/receiving_location.dart';
 
@@ -19,7 +21,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
   Widget build(BuildContext context) {
     DeliveryRoomInfoDetailController controller =
         DeliveryRoomInfoDetailController.to;
-
+    Logger().d(DeliveryManageController.to.deliveryRooms);
     return Obx(() => controller.isLoad.value == true
         ? Container(
             height: double.infinity,

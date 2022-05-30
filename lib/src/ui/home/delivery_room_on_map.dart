@@ -155,7 +155,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       leader: Leader(
         nickname: '',
         mannerScore: -1,
-        accountId: 1234,
+        accountId: -1,
       ),
       content: "content",
       person: -1,

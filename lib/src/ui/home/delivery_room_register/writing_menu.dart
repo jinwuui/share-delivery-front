@@ -57,7 +57,7 @@ class WritingMenu extends GetView<WritingMenuController> {
           onPressed: () async {
             // TODO: 모집글 등록 로직 필요
             print("완료 - 모집글 등록 로직 필요");
-            controller.registerDeliveryRoom();
+            await controller.registerDeliveryRoom();
           },
           child: const Text("완료", style: TextStyle(color: Colors.black)),
         ),

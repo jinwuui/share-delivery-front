@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/profile/account_controller.dart';
+import 'package:share_delivery/src/controller/profile/account_bank/account_bank_controller.dart';
 
 const List<String> bankCategories = [
   "카카오뱅크",
@@ -26,7 +26,7 @@ const List<String> bankCategories = [
   "케이뱅크",
 ];
 
-class SelectBank extends GetView<AccountController> {
+class SelectBank extends GetView<AccountBankController> {
   const SelectBank({Key? key}) : super(key: key);
 
   @override

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -69,6 +71,33 @@ class DeliveryRoomRegisterController extends GetxController {
 
       if (deliveryRoom != null) {
         print("   모집글 등록 성공");
+        // await Get.find<HomeController>().onRefresh();
+
+        // dummy data
+        DeliveryRoom room = DeliveryRoom(
+          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
+          content: "register test",
+          person: 2,
+          limitPerson: 4,
+          deliveryTip: 3000,
+          storeLink: "www.baemin.com/stores?id=1524",
+          platformType: "BAEMIN",
+          status: "OPEN",
+          createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+          receivingLocation: ReceivingLocation(
+              description: "CU 편의점 앞",
+              lat: 35.821730657601044,
+              lng: 128.5190184847488),
+          roomId: 123,
+          storeCategory: 'CHICKEN',
+        );
+
+        // delivery history ui 갱신
+        DeliveryHistoryController.to.addPost(room);
+
+        // 배달 관리 컨트롤러에 등록
+        DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
+
 
         // 홈화면 모집글 새로 고침
         await Get.find<HomeController>().onRefresh();
@@ -76,7 +105,9 @@ class DeliveryRoomRegisterController extends GetxController {
         // 내 배달 -> 모집글 상세정보 조회 페이지로 이동
         Get.until((route) => Get.currentRoute == Routes.INITIAL);
         Get.find<RootController>().changeRootPageIndex(1);
-        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL, arguments: deliveryRoom.roomId);
+        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL,
+            arguments: {"deliveryRoomId": 1});
+        Get.snackbar("모집글 생성 완료", "");
       } else {
         print("   모집글 등록 실패");
         throw Exception("등록 실패");
