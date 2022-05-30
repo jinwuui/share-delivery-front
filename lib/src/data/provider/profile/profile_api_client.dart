@@ -14,7 +14,7 @@ abstract class ProfileApiClient {
 
   // 계좌 조회
   @GET('/api/users/accounts')
-  Future<void> readAccount();
+  Future<AccountDTO> readAccount();
 
   // 계좌 등록
   @POST('/api/users/accounts')

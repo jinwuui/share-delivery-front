@@ -48,6 +48,16 @@ class ProfileRepository {
   }
 
   Future<void> updateUserAccount(AccountDTO accountDTO) async {
-    return apiClient.registerAccount(accountDTO);
+    return await apiClient.registerAccount(accountDTO);
+  }
+
+  Future<AccountDTO> fetchUserAccount() async {
+    await 1.delay();
+    return AccountDTO(
+        userId: 1,
+        bank: "농협",
+        accountNumber: "3521264915483",
+        accountHolder: "박진우");
+    return await apiClient.readAccount();
   }
 }

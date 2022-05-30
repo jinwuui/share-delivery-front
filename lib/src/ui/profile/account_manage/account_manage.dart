@@ -13,90 +13,96 @@ class AccountManage extends GetView<AccountController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        title: Text(
-          "계좌 정보 입력",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15,
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
           ),
-        ),
-        backgroundColor: Colors.transparent,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(1.0),
-        ),
-        elevation: 0.0,
-        actions: [
-          TextButton(
-            style: TextButton.styleFrom(
-              primary: Colors.black,
-              elevation: 0.0,
+          title: Text(
+            "계좌 정보 입력",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
             ),
-            onPressed: () {
-              if (accountManageFormKey.currentState!.validate()) {
-                // validation 이 성공하면 true
-                controller.updateUserAccount();
-
-                Get.back();
-
-                Get.snackbar(
-                  '계좌 정보 저장 완료',
-                  '계좌 정보가 변경되었습니다.',
-                  backgroundColor: Colors.white,
-                );
-              }
-            },
-            child: Text(
-              "완료",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
+          ),
+          backgroundColor: Colors.transparent,
+          bottom: PreferredSize(
+            child: Container(
+              color: Colors.grey.shade300,
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0),
+          ),
+          elevation: 0.0,
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+                elevation: 0.0,
               ),
-            ),
-          ),
-        ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Form(
-              key: accountManageFormKey,
-              child: Column(
-                children: [
-                  ProfileTextFormField(
-                    label: "이름",
-                    onSaved: (newValue) {},
-                    validator: (value) {
-                      if (value.length < 1) {
-                        return '이름은 필수사항입니다.';
-                      }
+              onPressed: () {
+                if (accountManageFormKey.currentState!.validate()) {
+                  // validation 이 성공하면 true
+                  controller.updateUserAccount();
 
-                      if (value.length < 2) {
-                        return '이름은 두글자 이상 입력 해주셔야합니다.';
-                      }
+                  Get.back();
 
-                      return null;
-                    },
-                    initialValue: controller.accountHolder.value, //TODO:
-                  ),
-                  _buildAccountTextField(),
-                ],
+                  Get.snackbar(
+                    '계좌 정보 저장 완료',
+                    '계좌 정보가 변경되었습니다.',
+                    backgroundColor: Colors.white,
+                  );
+                }
+              },
+              child: Text(
+                "완료",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ],
         ),
-      ),
-    );
+        body: Obx(
+          (() => controller.isLoad == true
+              ? Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Form(
+                        key: accountManageFormKey,
+                        child: Column(
+                          children: [
+                            ProfileTextFormField(
+                              label: "이름",
+                              onSaved: (newValue) {},
+                              validator: (value) {
+                                if (value.length < 1) {
+                                  return '이름은 필수사항입니다.';
+                                }
+
+                                if (value.length < 2) {
+                                  return '이름은 두글자 이상 입력 해주셔야합니다.';
+                                }
+
+                                return null;
+                              },
+                              initialValue:
+                                  controller.accountHolder.value, //TODO:
+                            ),
+                            _buildAccountTextField(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                )),
+        ));
   }
 
   Widget _buildAccountTextField() {

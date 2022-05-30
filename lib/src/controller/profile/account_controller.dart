@@ -9,15 +9,36 @@ class AccountController extends GetxController {
   static AccountController get to => Get.find();
   AccountController({required this.repository});
 
-  // 선택된 음식 카테고리
   final RxInt pickedBank = (-1).obs;
 
   final bank = "농협".obs;
   final accountNumber = "3521264".obs;
   final accountHolder = "박진우".obs;
 
+  final isLoad = false.obs;
+
+  @override
+  void onInit() {
+    fetchUserAccount();
+    super.onInit();
+  }
+
   void setPickedBank(int index) {
     pickedBank.value = index;
+  }
+
+  Future<void> fetchUserAccount() async {
+    try {
+      AccountDTO accountDTO = await repository.fetchUserAccount();
+
+      bank.value = accountDTO.bank;
+      accountNumber.value = accountDTO.accountNumber;
+      accountHolder.value = accountDTO.accountHolder;
+
+      isLoad.value = true;
+    } catch (e) {
+      Logger().w(e);
+    }
   }
 
   Future<void> updateUserAccount() async {
