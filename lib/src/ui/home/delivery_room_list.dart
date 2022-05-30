@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
 class DeliveryRoomList extends StatefulWidget {
@@ -109,11 +111,11 @@ class DeliveryRoomPost extends GetView<HomeController> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2016/01/22/02/13/meat-1155132__340.jpg'),
+                    image: NetworkImage(Hive.box('foodCategory')
+                        .get(_deliveryRoom.storeCategory.toString())),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
               ),
               Center(
@@ -121,13 +123,17 @@ class DeliveryRoomPost extends GetView<HomeController> {
                   width: 120,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: getDeliveryRoomStateWithColor(
+                            _deliveryRoom.status.toString())
+                        .color,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8.0),
                       bottomRight: Radius.circular(8.0),
                     ),
                   ),
-                  child: Text("인원 모집중"),
+                  child: Text(getDeliveryRoomStateWithColor(
+                          _deliveryRoom.status.toString())
+                      .name),
                 ),
               ),
             ],
