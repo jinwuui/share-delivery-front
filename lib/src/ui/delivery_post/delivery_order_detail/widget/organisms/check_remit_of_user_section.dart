@@ -56,7 +56,6 @@ class CheckRemitOfUserSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Expanded(
-            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -68,14 +67,30 @@ class CheckRemitOfUserSection extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("농협 은행", style: menuTextStyle),
-                      Text(
-                        "35212545454",
-                        style: menuTextStyle,
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          //TODO: 계좌정보 fetch
+
+                          children: [
+                            Text("농협 은행 박진우", style: menuTextStyle),
+                            SizedBox(height: 5),
+                            Text(
+                              "35212545454",
+                              style: menuTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                      TossWithdrawButton(
+                        bank: "농협",
+                        account: "3521264915483",
+                        amount: 10000,
                       ),
                     ],
                   ),
@@ -83,8 +98,6 @@ class CheckRemitOfUserSection extends StatelessWidget {
               ],
             ),
           ),
-          TossWithdrawButton(
-              bank: "농협", account: "3521264915483", amount: 10000),
         ],
       ),
     );

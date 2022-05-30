@@ -44,7 +44,7 @@ class UserOrder extends StatelessWidget {
                           Get.snackbar("주문 취소", "다른 사용자의 주문을 취소하였습니다.");
 
                           DeliveryRecruitController.to.deleteUserWithOrder(
-                              userWithOrderModel.accountId.toString());
+                              userWithOrderModel.accountId);
                         },
                         child: Text(
                           "취소",
