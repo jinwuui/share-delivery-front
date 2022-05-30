@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/data/repository/profile/account_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
 
-class AccountController extends GetxController {
+class AccountBankController extends GetxController {
   final ProfileRepository repository;
 
-  static AccountController get to => Get.find();
-  AccountController({required this.repository});
+  static AccountBankController get to => Get.find();
+  AccountBankController({required this.repository});
 
   final RxInt pickedBank = (-1).obs;
 
@@ -19,7 +19,7 @@ class AccountController extends GetxController {
 
   @override
   void onInit() {
-    fetchUserAccount();
+    fetchAccountBank();
     super.onInit();
   }
 
@@ -27,9 +27,9 @@ class AccountController extends GetxController {
     pickedBank.value = index;
   }
 
-  Future<void> fetchUserAccount() async {
+  Future<void> fetchAccountBank() async {
     try {
-      AccountDTO accountDTO = await repository.fetchUserAccount();
+      AccountBankDTO accountDTO = await repository.fetchAccountBank();
 
       bank.value = accountDTO.bank;
       accountNumber.value = accountDTO.accountNumber;
@@ -41,14 +41,14 @@ class AccountController extends GetxController {
     }
   }
 
-  Future<void> updateUserAccount() async {
-    AccountDTO newAccountDTO = AccountDTO(
+  Future<void> updateAccountBank() async {
+    AccountBankDTO newAccountDTO = AccountBankDTO(
         userId: 1,
         bank: bank.value,
         accountNumber: accountNumber.value,
         accountHolder: accountHolder.value);
     try {
-      await repository.updateUserAccount(newAccountDTO);
+      await repository.updateAccountBank(newAccountDTO);
     } catch (e) {
       Logger().w(e);
     }

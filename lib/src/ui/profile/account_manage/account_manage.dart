@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/controller/profile/account_controller.dart';
+import 'package:share_delivery/src/controller/profile/account_bank/account_bank_controller.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
 
-class AccountManage extends GetView<AccountController> {
+class AccountManage extends GetView<AccountBankController> {
   AccountManage({Key? key}) : super(key: key);
 
   final accountManageFormKey = GlobalKey<FormState>();
@@ -42,7 +42,7 @@ class AccountManage extends GetView<AccountController> {
               onPressed: () {
                 if (accountManageFormKey.currentState!.validate()) {
                   // validation 이 성공하면 true
-                  controller.updateUserAccount();
+                  controller.updateAccountBank();
 
                   Get.back();
 

@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/delivery_room_register/delivery_room_register_api_client.dart';
 import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
-import 'package:share_delivery/src/data/repository/profile/account_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/account_update_req_dto.dart';
 
 class ProfileRepository {
   final ProfileApiClient apiClient;
@@ -47,13 +50,13 @@ class ProfileRepository {
     return apiClient.getFriendList();
   }
 
-  Future<void> updateUserAccount(AccountDTO accountDTO) async {
+  Future<void> updateAccountBank(AccountBankDTO accountDTO) async {
     return await apiClient.registerAccount(accountDTO);
   }
 
-  Future<AccountDTO> fetchUserAccount() async {
+  Future<AccountBankDTO> fetchAccountBank() async {
     await 1.delay();
-    return AccountDTO(
+    return AccountBankDTO(
         userId: 1,
         bank: "농협",
         accountNumber: "3521264915483",

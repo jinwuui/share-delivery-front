@@ -13,7 +13,7 @@ import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
-import 'package:share_delivery/src/controller/profile/account_controller.dart';
+import 'package:share_delivery/src/controller/profile/account_bank/account_bank_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';

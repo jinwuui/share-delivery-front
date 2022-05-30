@@ -8,7 +8,7 @@ import 'package:share_delivery/src/bindings/delivery_room_register/pick_receivin
 import 'package:share_delivery/src/bindings/home/fast_matching/fast_matching_binding.dart';
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
-import 'package:share_delivery/src/bindings/profile/account_binding.dart';
+import 'package:share_delivery/src/bindings/profile/account_bank_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/profile/other_user_profile_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
@@ -183,7 +183,7 @@ class AppPages {
     GetPage(
       name: Routes.ACCOUNT_MANAGE,
       page: () => AccountManage(),
-      binding: AccountBinding(),
+      binding: AccountBankBinding(),
     ),
     GetPage(
       name: Routes.SELECT_BANK,
