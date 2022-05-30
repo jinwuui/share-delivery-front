@@ -45,13 +45,15 @@ class Profile extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        color: Colors.grey.shade200,
-        child: Column(
-          children: [
-            _buildProfile(),
-            _buildMenuList(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey.shade200,
+          child: Column(
+            children: [
+              _buildProfile(),
+              _buildMenuList(),
+            ],
+          ),
         ),
       ),
     );
@@ -201,6 +203,11 @@ class Profile extends StatelessWidget {
               buildMenuListTile("받은 평가", () => print("hello2")),
               Divider(),
               buildMenuListTile("생활 공유", () => print("hello3")),
+              Divider(),
+              buildMenuListTile(
+                  "다른 사용자 프로필 테스트",
+                  () => Get.toNamed(Routes.OTHER_USER_PROFILE,
+                      arguments: {"accountId": 100})),
             ],
           ),
         ],
