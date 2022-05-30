@@ -292,7 +292,7 @@ class PostRegister extends GetView<PostRegisterController> {
           onPressed: controller.isContentEmpty.value
               ? null
               : () {
-                  print("게시글 등록 로직 필요");
+                  print("게시글 등록 로직 테스트 필요");
                   controller.registerPost();
                 },
           child: Text("완료"),

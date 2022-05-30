@@ -15,9 +15,7 @@ class HomeRepository {
 
   Future<List<DeliveryRoom>> findDeliveryRooms(
       double lat, double lng, int rad) async {
-    print("-- home repo - 모집글 조회");
     var result = await apiClient.findDeliveryRooms(lat, lng, rad);
-    print('HomeRepository.findDeliveryRooms $result');
     return result;
   }
 }

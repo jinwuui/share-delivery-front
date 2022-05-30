@@ -20,7 +20,7 @@ class DeliveryOrderDetailRepository {
     await Future.delayed(Duration(seconds: 2));
 
     return DeliveryRoom(
-      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 1234),
       content: "BBQ 드실분?",
       person: 1,
       limitPerson: 3,
@@ -34,6 +34,7 @@ class DeliveryOrderDetailRepository {
           lat: 35.820848788632226,
           lng: 128.518205019348),
       roomId: 456,
+      storeCategory: '',
     );
     // return apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/routes/route.dart';
@@ -19,62 +20,108 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: RefreshIndicator(
-        onRefresh: () async {
-          await controller.onRefresh();
-        },
-        child: ListView.separated(
-          controller: controller.scroller,
-          itemCount: controller.deliveryRooms.length,
-          itemBuilder: (context, index) => GestureDetector(
-            onTap: () {
-              controller.setCurSelectedIdx(index);
-              Get.toNamed(Routes.DELIVERY_ROOM_INFO);
-            },
-            child: DeliveryRoomPost(index: index),
-          ),
-          separatorBuilder: (_, __) => const Divider(
-            endIndent: 20,
-            indent: 20,
-            color: Color.fromRGBO(224, 224, 224, 1),
-            height: 0.5,
-            thickness: 1,
-          ),
-        ),
+      child: SmartRefresher(
+        controller: controller.refresher,
+        enablePullDown: true,
+        enablePullUp: true,
+        onRefresh: controller.onRefresh,
+        onLoading: controller.onLoading,
+        child: controller.deliveryRooms.isNotEmpty
+            ? deliveryRoomList()
+            : noDeliveryRooms(),
       ),
     );
+  }
 
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          children: List.generate(
-            20,
-            (index) => GestureDetector(
-              onTap: () {
-                // Get.toNamed(Routes.DELIVERY_ROOM_INFO);
-              },
-              child: Column(
-                children: [
-                  Container(
-                    height: 120,
-                    margin: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.grey.shade200,
-                    ),
-                  ),
-                  Divider(
-                    endIndent: 20,
-                    indent: 20,
-                    color: Colors.grey.shade400,
-                    thickness: 1.5,
-                    height: 0,
-                  ),
-                ],
-              ),
-            ),
+  Widget deliveryRoomList() {
+    return ListView.separated(
+      itemCount: controller.deliveryRooms.length,
+      itemBuilder: (context, index) => GestureDetector(
+        onTap: () {
+          controller.setCurSelectedIdx(index);
+          Get.toNamed(Routes.DELIVERY_ROOM_INFO);
+        },
+        child: DeliveryRoomPost(index: index),
+      ),
+      separatorBuilder: (_, __) => const Divider(
+        endIndent: 20,
+        indent: 20,
+        color: Color.fromRGBO(224, 224, 224, 1),
+        height: 0.5,
+        thickness: 1,
+      ),
+    );
+  }
+
+  Widget noDeliveryRooms() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Image.asset(
+            "assets/images/icons/empty3.png",
+            width: 150,
+            color: Colors.black38,
           ),
         ),
+        Column(
+          children: [
+            Text(
+              "조회된 모집글이 없습니다",
+              style: TextStyle(
+                color: Colors.black38,
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.arrow_downward_rounded,
+                  color: Colors.black38,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "당겨서 새로고침",
+                  style: TextStyle(
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 50.0),
+      child: Column(
+        children: const [
+          Icon(Icons.sms, size: 80, color: Colors.black12),
+          SizedBox(height: 10),
+          Text(
+            "게시글이 없습니다.",
+            style: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w800,
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            "처음으로 의견을 공유해주세요!",
+            style: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            ),
+          ),
+        ],
       ),
     );
   }

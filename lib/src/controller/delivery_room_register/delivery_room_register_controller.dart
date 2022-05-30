@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -63,14 +64,19 @@ class DeliveryRoomRegisterController extends GetxController {
       Map<String, dynamic> deliveryRoomInfo = _getDeliveryRoomInfo();
       print(deliveryRoomInfo);
 
-      int? deliveryRoomId =
+      DeliveryRoom? deliveryRoom =
           await repository.registerDeliveryRoom(deliveryRoomInfo);
-      if (deliveryRoomId != null) {
+
+      if (deliveryRoom != null) {
         print("   모집글 등록 성공");
+
+        // 홈화면 모집글 새로 고침
         await Get.find<HomeController>().onRefresh();
+
+        // 내 배달 -> 모집글 상세정보 조회 페이지로 이동
         Get.until((route) => Get.currentRoute == Routes.INITIAL);
         Get.find<RootController>().changeRootPageIndex(1);
-        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL, arguments: deliveryRoomId);
+        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL, arguments: deliveryRoom.roomId);
       } else {
         print("   모집글 등록 실패");
         throw Exception("등록 실패");
@@ -113,37 +119,42 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   void parsingStoreLink(ClipboardData? data) {
-    if (data == null) {
-      GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
-      return;
+    try {
+      if (data == null) {
+        GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
+        return;
+      }
+      String? clip = data.text;
+
+      if (clip == null) {
+        GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
+        return;
+      }
+
+      late String appType;
+      if (clip.contains("배달의민족")) {
+        appType = "배달의민족";
+      } else {
+        appType = "요기요";
+      }
+
+      String storeName =
+          clip.substring(clip.indexOf("'") + 1, clip.lastIndexOf("'"));
+
+      late String storeLink;
+      if (appType == "배달의민족") {
+        storeLink = "https://dummyURL";
+      } else {
+        storeLink = clip.substring(clip.indexOf("http"));
+      }
+
+      this.storeLink.text = storeLink;
+      this.storeName.text = storeName;
+      deliveryAppTypeOfStoreLink.text = appType;
+    } catch (e) {
+      Logger().e("클립보드 파싱 에러");
+      GetSnackbar.err("오류", "배민, 요기요 링크를 붙여넣어주세요!");
     }
-    String? clip = data.text;
-
-    if (clip == null) {
-      GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
-      return;
-    }
-
-    late String appType;
-    if (clip.contains("배달의민족")) {
-      appType = "배달의민족";
-    } else {
-      appType = "요기요";
-    }
-
-    String storeName =
-        clip.substring(clip.indexOf("'") + 1, clip.lastIndexOf("'"));
-
-    late String storeLink;
-    if (appType == "배달의민족") {
-      storeLink = "https://dummyURL";
-    } else {
-      storeLink = clip.substring(clip.indexOf("http"));
-    }
-
-    this.storeLink.text = storeLink;
-    this.storeName.text = storeName;
-    deliveryAppTypeOfStoreLink.text = appType;
   }
 
   void setDeliveryTip(int deliveryTip) {

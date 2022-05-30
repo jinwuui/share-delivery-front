@@ -16,6 +16,7 @@ class DeliveryRoom with _$DeliveryRoom {
     required String platformType,
     required String status,
     required DateTime createdDateTime,
+    required String storeCategory,
     required ReceivingLocation receivingLocation,
   }) = _DeliveryRoom;
 
@@ -26,6 +27,7 @@ class DeliveryRoom with _$DeliveryRoom {
 @Freezed()
 class Leader with _$Leader {
   const factory Leader({
+    required int accountId,
     required String nickname,
     required double mannerScore,
   }) = _Leader;

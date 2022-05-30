@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 
@@ -12,7 +11,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
   // late final Rx<DeliveryRoom> deliveryRoom;
   Rx<DeliveryRoom> deliveryRoom = DeliveryRoom(
     roomId: 456,
-    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7),
+    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2134),
     content: "BBQ 드실분?",
     person: 1,
     limitPerson: 3,
@@ -26,6 +25,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
       lat: 35.820848788632226,
       lng: 128.518205019348,
     ),
+    storeCategory: '',
   ).obs;
   final isLoad = false.obs;
 
