@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
@@ -107,20 +108,19 @@ class NotificationController extends GetxController {
 
   Future<void> _getToken() async {
     fcmToken = (await _messaging.getToken())!;
-    print(fcmToken);
+    Logger().w(fcmToken);
   }
 
   void _handleMessage(RemoteMessage message) {
-    print(message);
-    print(message.data);
-
     final eventType = message.data['type'];
+    Logger().w(eventType);
     if (eventType == "recuritmentCompleted") {
       DeliveryOrderController.to
           .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
-      //TODO: tonamed 시 widget rebuild 되는지 테스트
+      // Get.isRegistered()
       Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
-      DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
-    } else if (eventType == "deliveryRoomUpdated") {}
+      // DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
+    } else if (eventType == "deliveryRoomUpdated") {
+    } else if (eventType == "completed-order") {}
   }
 }

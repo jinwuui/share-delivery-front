@@ -155,6 +155,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       leader: Leader(
         nickname: '',
         mannerScore: -1,
+        accountId: -1,
       ),
       content: "content",
       person: -1,
@@ -169,6 +170,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
         lng: -1,
         lat: -1,
       ),
+      storeCategory: '',
     );
   }
 

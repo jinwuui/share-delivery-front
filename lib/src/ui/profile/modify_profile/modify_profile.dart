@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/profile/account/account_controller.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
@@ -10,6 +14,7 @@ class ModifyProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AccountController controller = AccountController.to;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -38,9 +43,14 @@ class ModifyProfile extends StatelessWidget {
               primary: Colors.black,
               elevation: 0.0,
             ),
-            onPressed: () {
+            onPressed: () async {
               if (modifyProfileFormKey.currentState!.validate()) {
-                // validation 이 성공하면 true 가 리턴돼요!
+                try {
+                  await AccountController.to.updateAccountInfo();
+                } catch (e) {
+                  Logger().w(e);
+                }
+                // validation 이 성공하면 true 가 리턴
                 Get.snackbar(
                   '저장완료',
                   '프로필 정보가 변경되었습니다.',
@@ -69,33 +79,39 @@ class ModifyProfile extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20.0),
                     child: CircleAvatar(
-                      radius: 82,
-                      backgroundColor: Colors.grey.shade300,
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage: NetworkImage(
-                          "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
-                        ),
+                        radius: 82,
                         backgroundColor: Colors.grey.shade300,
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 28.0,
-                            child: InkWell(
-                              onTap: () {
-                                print("select profile image");
-                              },
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: 40.0,
-                                color: Color(0xFF404040),
+                        child: Obx(
+                          () => CircleAvatar(
+                            radius: 80,
+                            backgroundImage: controller
+                                        .profileImagePath.value ==
+                                    ""
+                                ? NetworkImage(
+                                    "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg")
+                                : FileImage(
+                                        File(controller.profileImagePath.value))
+                                    as ImageProvider,
+                            backgroundColor: Colors.grey.shade300,
+                            child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 28.0,
+                                child: InkWell(
+                                  onTap: () async {
+                                    await AccountController.to.pickImage();
+                                  },
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 40.0,
+                                    color: Color(0xFF404040),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                   ),
                 ],
               ),

@@ -1,7 +1,7 @@
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/model/home/delivery_room_register_dto/delivery_room_register_dto.dart';
-import 'package:share_delivery/src/data/model/home/delivery_room_register_dto/delivery_room_register_res_dto.dart';
 import 'package:share_delivery/src/data/provider/delivery_room_register/delivery_room_register_api_client.dart';
 
 class DeliveryRoomRegisterRepository {
@@ -24,7 +24,8 @@ class DeliveryRoomRegisterRepository {
     }
   }
 
-  Future<int?> registerDeliveryRoom(Map<String, dynamic> deliveryRoom) async {
+  Future<DeliveryRoom?> registerDeliveryRoom(
+      Map<String, dynamic> deliveryRoom) async {
     // NOTE: 사용자 입력에서 집결지 데이터 추출  // 서버에 전송해서 집결지 등록
     print('1 - DeliveryRoomRegisterRepository.registerDeliveryRoom');
 
@@ -56,10 +57,13 @@ class DeliveryRoomRegisterRepository {
       menuList: menuList,
     );
 
-    DeliveryRoomRegisterResDTO result =
-        await apiClient.registerDeliveryRoom(newRoom);
-    print("결과 $result");
+    await apiClient.registerDeliveryRoom(newRoom).then((value) {
+      Logger().i(value);
+      return value;
+    }).catchError((err) {
+      Logger().e(err);
+    });
 
-    return result.roomId;
+    return null;
   }
 }

@@ -45,13 +45,15 @@ class Profile extends StatelessWidget {
           )
         ],
       ),
-      body: Container(
-        color: Colors.grey.shade200,
-        child: Column(
-          children: [
-            _buildProfile(),
-            _buildMenuList(),
-          ],
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.grey.shade200,
+          child: Column(
+            children: [
+              _buildProfile(),
+              _buildMenuList(),
+            ],
+          ),
         ),
       ),
     );
@@ -72,7 +74,7 @@ class Profile extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () => Get.toNamed(
-                    '/exapndedImagePage',
+                    Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
                       "imagePath":
                           "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
@@ -113,7 +115,7 @@ class Profile extends StatelessWidget {
                 elevation: 0.0,
                 minimumSize: Size.fromHeight(45.0),
               ),
-              onPressed: () => Get.to(ModifyProfile()),
+              onPressed: () => Get.toNamed(Routes.MODIFY_PROFILE),
               child: Text(
                 "프로필 수정",
                 style: TextStyle(
@@ -201,6 +203,11 @@ class Profile extends StatelessWidget {
               buildMenuListTile("받은 평가", () => print("hello2")),
               Divider(),
               buildMenuListTile("생활 공유", () => print("hello3")),
+              Divider(),
+              buildMenuListTile(
+                  "다른 사용자 프로필 테스트",
+                  () => Get.toNamed(Routes.OTHER_USER_PROFILE,
+                      arguments: {"accountId": 100})),
             ],
           ),
         ],

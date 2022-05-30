@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class AuthenticationController extends GetxController {
+  static AuthenticationController get to => Get.find();
+
   final AuthenticationRepository repository;
   final _authenticationStateStream = const AuthenticationState().obs;
 
@@ -54,11 +55,23 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
+    _authenticationStateStream.value = Authenticated(
+        user: User(
+            status: '',
+            role: '',
+            accountId: 1234,
+            nickname: '',
+            phoneNumber: ''));
+    return;
 
     if (user == null) {
       _authenticationStateStream.value = UnAuthenticated();
     } else {
       _authenticationStateStream.value = Authenticated(user: user);
     }
+  }
+
+  User? getSavedUser() {
+    return repository.getSavedUser();
   }
 }

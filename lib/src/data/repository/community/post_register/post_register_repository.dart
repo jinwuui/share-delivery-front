@@ -1,11 +1,11 @@
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
-import 'package:share_delivery/src/data/provider/community/post/post_api_client.dart';
-import 'package:share_delivery/src/data/provider/widgets/pick_user_location_local_client.dart';
+import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
+import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
 
 class PostRegisterRepository {
-  PostApiClient apiClient;
+  CommunityApiClient apiClient;
   UserLocationLocalClient userLocationLocalClient;
 
   PostRegisterRepository({
@@ -32,7 +32,7 @@ class PostRegisterRepository {
     );
 
     // 글 작성 요청
-    await apiClient.register(post).then((it) {
+    await apiClient.registerPost(post).then((it) {
       Logger().i(it);
       return it;
     }).catchError((err) {

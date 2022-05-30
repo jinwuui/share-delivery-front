@@ -13,8 +13,6 @@ class DioUtil {
           // 기기에 저장된 AccessToken 로드
           final accessToken = SharedPrefsUtil.instance.getString("accessToken");
 
-          print('DioUtil.getDio');
-          print(accessToken);
           // 헤더 지정
           options.headers["Authorization"] = "Bearer $accessToken";
           options.headers["Content-Type"] = "application/json";
