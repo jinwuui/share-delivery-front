@@ -42,3 +42,19 @@ final commentBtn = TextButton.styleFrom(
     fontWeight: FontWeight.w800,
   ),
 );
+
+final unselectedPostCategoryBtn = ElevatedButton.styleFrom(
+  textStyle: const TextStyle(fontWeight: FontWeight.w600),
+  elevation: 0,
+  primary: Colors.white,
+  onPrimary: Colors.grey.shade700,
+  side: BorderSide(color: Colors.grey.shade300),
+);
+
+final selectedPostCategoryBtn = ElevatedButton.styleFrom(
+  textStyle: const TextStyle(fontWeight: FontWeight.w600),
+  elevation: 0,
+  primary: Colors.orangeAccent,
+  onPrimary: Colors.white,
+  side: BorderSide(color: Colors.orange),
+);

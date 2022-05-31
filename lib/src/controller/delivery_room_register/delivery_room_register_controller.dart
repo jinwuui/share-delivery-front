@@ -13,8 +13,8 @@ import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
   final DeliveryRoomRegisterRepository repository;

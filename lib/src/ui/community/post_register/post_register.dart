@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_register/post_register_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/community/post_register/post_image.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
@@ -214,6 +215,7 @@ class PostRegister extends GetView<PostRegisterController> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 postCategory(context),
+                postImages(),
                 postContent(),
                 // Expanded(
                 //   child: AnimatedAlign(
@@ -257,6 +259,29 @@ class PostRegister extends GetView<PostRegisterController> {
         ),
       ),
     );
+  }
+
+  Widget postImages() {
+    double imageSize = Get.width < 400 ? 70.0 : 90.0;
+    double imageMargin = Get.width < 400 ? 10.0 : 12.0;
+
+    return controller.images.isNotEmpty
+        ? SizedBox(
+            height: imageSize + imageMargin * 2,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.images.length,
+              itemBuilder: (_, i) {
+                return PostImage(
+                  imageURL: controller.images[i],
+                  deleteButton: true,
+                  size: imageSize,
+                  margin: imageMargin,
+                );
+              },
+            ),
+          )
+        : SizedBox.shrink();
   }
 
   Widget postContent() {
@@ -323,12 +348,12 @@ class PostRegister extends GetView<PostRegisterController> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      print("사진 등록하기");
+                      controller.pickImage();
                     },
                     child: Row(
                       children: [
                         const Icon(Icons.image_outlined),
-                        Text("0 / 10"),
+                        Text(" ${controller.images.length} / 10"),
                       ],
                     ),
                   ),
@@ -340,7 +365,7 @@ class PostRegister extends GetView<PostRegisterController> {
                     child: Row(
                       children: [
                         const Icon(Icons.location_on_outlined),
-                        Text("0 / 1"),
+                        Text(" 0 / 1"),
                       ],
                     ),
                   ),

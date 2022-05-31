@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/data/repository/home/fast_matching/fast_matching_repository.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
 
 enum FastMatchingStatus {
   initial,

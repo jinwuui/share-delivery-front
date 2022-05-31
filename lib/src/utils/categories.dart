@@ -10,3 +10,14 @@ const List<Map> foodCategories = [
   {"야식": "LATE_NIGHT"},
   {"도시락": "LUNCHBOX"},
 ];
+
+const List<String> postCategories = [
+  "전체",
+  "동네질문",
+  "동네맛집",
+  "동네소식",
+  "취미생활",
+  "분실/실종",
+  "품앗이",
+  "기타",
+];

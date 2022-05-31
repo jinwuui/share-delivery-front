@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/community/post_detail/post_detail_repository.dart';
@@ -18,7 +19,10 @@ class PostDetailController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await findPostDetail();
+    post = Get.arguments;
+    print('PostDetailController.onInit $post');
+    findPostDetail();
+    findComment();
     initUiType();
   }
 
@@ -57,16 +61,19 @@ class PostDetailController extends GetxController {
 
   PostDetailUI uiType = PostDetailUI.undecided;
 
-  PostDetail? post;
+  late final Post post;
+  PostDetail? postDetail;
 
   // 작성자/읽는이 UI 다르게 만들기
   void initUiType() {
     print('PostDetailController.findPostDetail');
 
     try {
-      User user = Get.find<AuthenticationController>().state.props as User;
+      User user = AuthenticationController.to.state.props.first as User;
 
-      if (user.accountId == post!.writer.id) {
+      print("게시글 상세조회 UI 타입 변경 - User : $user");
+
+      if (user.accountId == post.writer.accountId) {
         // 글쓴이 == 사용자  --->  작성자 UI
         uiType = PostDetailUI.writer;
       } else {
@@ -85,8 +92,10 @@ class PostDetailController extends GetxController {
 
     // TODO : postId 로 게시글 상세조회
     int postId = Get.arguments["postId"];
-    post = await repository.findDetailById(postId);
+    postDetail = await repository.findDetailById(postId);
   }
+
+  Future<void> findComment() async {}
 
   bool isParentComment(int idx) {
     return comments[idx].id == comments[idx].parentId;
@@ -127,15 +136,15 @@ class PostDetailController extends GetxController {
   // 게시글 삭제
   void deletePost() {
     print('PostDetailController.deletePost');
-    if (post == null) return;
+    if (postDetail == null) return;
 
-    repository.deletePost(post!.postId);
+    repository.deletePost(postDetail!.postId);
   }
 
   // 게시글 수정
   void updatePost() {
     print('PostDetailController.updatePost');
-    if (post == null) return;
+    if (postDetail == null) return;
 
     // repository.updatePost(postId);
   }

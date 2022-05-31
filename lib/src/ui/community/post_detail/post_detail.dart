@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_detail_controller.dart';
+import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/community/post_detail/post_update.dart';
 import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 class PostDetail extends GetView<PostDetailController> {
   const PostDetail({Key? key}) : super(key: key);
@@ -18,6 +20,8 @@ class PostDetail extends GetView<PostDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    Post post = controller.post;
+
     return SafeArea(
       child: Scaffold(
         appBar: appBar(context),
@@ -36,8 +40,8 @@ class PostDetail extends GetView<PostDetailController> {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      profile(),
-                      content(),
+                      profile(post),
+                      content(post),
                       controller.comments.isEmpty ? noComments() : comments(),
                       const SizedBox(width: 30, height: 68),
                     ],
@@ -52,11 +56,11 @@ class PostDetail extends GetView<PostDetailController> {
     );
   }
 
-  Widget profile() {
+  Widget profile(Post post) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        postTopic("동네질문"),
+        postTopic(post.category),
         Container(
           decoration: bottomBorderBox,
           margin: const EdgeInsets.only(left: big, right: big),
@@ -77,11 +81,14 @@ class PostDetail extends GetView<PostDetailController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("예감학살자", style: postTitleStyle),
+                    Text(post.writer.nickname, style: postTitleStyle),
                     const SizedBox(height: 5),
                     Row(
                       children: [
-                        Text("매너온도 36.5", style: postDetailStyle),
+                        Text(
+                          "매너온도 ${post.writer.mannerScore}",
+                          style: postDetailStyle,
+                        ),
                         const Padding(
                           padding: EdgeInsets.all(4.0),
                           child: Icon(
@@ -90,7 +97,10 @@ class PostDetail extends GetView<PostDetailController> {
                             color: Colors.grey,
                           ),
                         ),
-                        Text("7분 전", style: postDetailStyle),
+                        Text(
+                          TimeUtil.timeAgo(post.createdDateTime),
+                          style: postDetailStyle,
+                        ),
                       ],
                     ),
                   ],
@@ -103,12 +113,13 @@ class PostDetail extends GetView<PostDetailController> {
     );
   }
 
-  Widget content() {
+  Widget content(Post post) {
     return Container(
       padding: const EdgeInsets.all(big),
+      width: double.infinity,
       decoration: bottomBorderBox,
       child: Text(
-        "안녕하세요 저는 박찬호 입니다. 호투를 하며 제 전성기 시절을 떠올리게하는 LA 다저스 시절이 가장 먼저 생각나기도 하고, 경기가 끝나면 나긋하게 ",
+        post.content,
         style: detailContentStyle,
       ),
       // child: ,
@@ -207,8 +218,10 @@ class PostDetail extends GetView<PostDetailController> {
                     TextButton(
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        Get.toNamed(Routes.WRITING_COMMENT,
-                            arguments: comment.parentId);
+                        Get.toNamed(
+                          Routes.WRITING_COMMENT,
+                          arguments: comment.parentId,
+                        );
                       },
                       child: Text("댓글쓰기"),
                       style: commentBtn,
@@ -411,7 +424,9 @@ class PostDetail extends GetView<PostDetailController> {
                   print("click more_vert");
                   showCupertinoModalPopup(
                     context: ctx,
-                    builder: (ctx) => actionSheet(),
+                    builder: (ctx) => controller.uiType == PostDetailUI.writer
+                        ? writerActionSheet()
+                        : readerActionSheet(),
                   );
                 },
                 icon: Icon(Icons.more_vert, color: Colors.black),
@@ -428,7 +443,7 @@ class PostDetail extends GetView<PostDetailController> {
     );
   }
 
-  CupertinoActionSheet actionSheet() {
+  CupertinoActionSheet writerActionSheet() {
     return CupertinoActionSheet(
       actions: [
         CupertinoActionSheetAction(
@@ -447,6 +462,37 @@ class PostDetail extends GetView<PostDetailController> {
             controller.deletePost();
           },
           child: Text("삭제"),
+          isDestructiveAction: true,
+        ),
+      ],
+      cancelButton: CupertinoActionSheetAction(
+        onPressed: () {
+          Get.back();
+        },
+        child: Text("닫기"),
+      ),
+    );
+  }
+
+  CupertinoActionSheet readerActionSheet() {
+    return CupertinoActionSheet(
+      actions: [
+        // CupertinoActionSheetAction(
+        //   onPressed: () {
+        //     Get.bottomSheet(
+        //       const PostUpdate(),
+        //       isScrollControlled: true,
+        //       ignoreSafeArea: false,
+        //     );
+        //   },
+        //   child: Text("수정"),
+        //   // isDefaultAction: true,
+        // ),
+        CupertinoActionSheetAction(
+          onPressed: () {
+            controller.deletePost();
+          },
+          child: Text("신고"),
           isDestructiveAction: true,
         ),
       ],

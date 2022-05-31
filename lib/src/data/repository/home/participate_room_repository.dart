@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/provider/home/participate_room_api_client.dart';
 
@@ -9,8 +10,8 @@ class ParticipateRoomRepository {
 
   Future<String> participateDeliveryRoom(
       int roomId, List<Menu> menuList) async {
-    print('ParticipateRoomRepository.participateDeliveryRoom');
     await apiClient.requestParticipating(roomId, menuList).then((value) {
+      Logger().i("모집글 참여 성공");
       return "ACCEPTED";
     }).catchError(
       (Object obj) {
@@ -30,6 +31,7 @@ class ParticipateRoomRepository {
       },
     );
 
-    return "ACCEPTED";
+    Logger().w("모집글 참여 - 예상치 못한 흐름");
+    return "ELSE";
   }
 }

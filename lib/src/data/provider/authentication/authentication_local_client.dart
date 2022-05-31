@@ -31,6 +31,7 @@ class AuthenticationLocalClient {
     SharedPrefsUtil.instance.setString("user", userString);
   }
 
+
   User? getSavedUser() {
     try {
       String? userStr = SharedPrefsUtil.instance.getString("user");

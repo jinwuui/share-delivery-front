@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 
 class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   const PickStoreCategory({Key? key}) : super(key: key);

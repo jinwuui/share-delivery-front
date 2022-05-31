@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+
 import "package:dio/dio.dart";
 import "package:retrofit/retrofit.dart";
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
 
 part 'community_api_client.g.dart';
 
@@ -11,8 +15,10 @@ abstract class CommunityApiClient {
 
   // 게시글 등록
   @POST("/api/posts")
+  @MultiPart()
   Future<Post> registerPost(
-    @Body() Post post,
+    @Part(name: "post") PostRegisterRequestDTO postRegisterRequestDTO,
+    @Part(name: "postImages") List<File> postImages,
   );
 
   // 게시글 조회
@@ -24,8 +30,11 @@ abstract class CommunityApiClient {
   // 주제로 게시글 조회
   @GET("/api/posts")
   Future<List<Post>> findPostByCategory(
-    @Query("category") String category,
-  );
+      @Query("lat") double lat,
+      @Query("lng") double lng,
+      @Query("radius") int radius,
+      @Query("category") String category,
+      [@Query("lastCreatedDate") String? lastCreatedDate]);
 
   // 게시글 상세정보 조회
   @GET("/api/posts/{postId}")
