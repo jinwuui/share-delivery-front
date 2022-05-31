@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
@@ -63,7 +64,11 @@ class FriendPage extends GetView<FriendController> {
                 itemBuilder: (context, index) =>
                     FriendItem(userModel: friends[index]),
               ),
-              onLoading: Center(child: CircularProgressIndicator()),
+              onLoading: Center(
+                  child: SpinKitThreeBounce(
+                size: 25,
+                color: Colors.black,
+              )),
               onError: (error) {
                 return Center(
                   child: Text(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
@@ -59,7 +60,10 @@ class DeliveryRoomDetail extends StatelessWidget {
                       () => DeliveryRoomInfoDetailController.to.isLoad == true
                           ? OrderTabView()
                           : Center(
-                              child: Text("Loading ..."),
+                              child: SpinKitThreeBounce(
+                                size: 25,
+                                color: Colors.black,
+                              ),
                             ),
                     ),
                     Obx(
@@ -70,7 +74,10 @@ class DeliveryRoomDetail extends StatelessWidget {
                               ),
                             )
                           : Center(
-                              child: Text("Loading ..."),
+                              child: SpinKitThreeBounce(
+                                size: 25,
+                                color: Colors.black,
+                              ),
                             ),
                     ),
                   ],
