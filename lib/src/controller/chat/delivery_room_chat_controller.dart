@@ -16,7 +16,7 @@ class DeliveryRoomChatController extends GetxController {
 
   User user = AuthenticationController.to.state.props.first as User;
   late final Socket socket;
-
+  late final int deliveryRoomId;
   @override
   void onInit() async {
     await socketInit();
@@ -26,6 +26,8 @@ class DeliveryRoomChatController extends GetxController {
   @override
   void onClose() {
     // socket disconnect
+    deliveryRoomId = Get.arguments['deliveryRoomId'];
+
     socket.disconnect();
     super.onClose();
   }
@@ -57,8 +59,6 @@ class DeliveryRoomChatController extends GetxController {
       socket.on('connect', (data) {
         Logger().d('socket connected');
 
-        int deliveryRoomId = Get.arguments['deliveryRoomId'];
-
         // 소켓 연결 후 방 참여
         enterRoom(deliveryRoomId);
       });
@@ -82,6 +82,7 @@ class DeliveryRoomChatController extends GetxController {
         "message",
         ChatModel(
             accountId: user.accountId,
+            roomId: deliveryRoomId,
             message: message,
             nickname: user.nickname,
             sentAt: DateTime.now().toLocal().toString().substring(0, 16)));
