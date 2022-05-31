@@ -208,6 +208,8 @@ class Profile extends StatelessWidget {
                   "다른 사용자 프로필 테스트",
                   () => Get.toNamed(Routes.OTHER_USER_PROFILE,
                       arguments: {"accountId": 100})),
+              Divider(),
+              buildMenuListTile("신고하기 테스트", () => Get.toNamed(Routes.REPORT)),
             ],
           ),
         ],
