@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/ui/chat/delivery_room_chat.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
 
 import 'delivery_order_detail/delivery_order_tabview.dart';
@@ -64,11 +65,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                     ),
                     Obx(
                       () => DeliveryRoomInfoDetailController.to.isLoad == true
-                          ? Container(
-                              child: Center(
-                                child: Text("채팅 방"),
-                              ),
-                            )
+                          ? DeliveryRoomChat()
                           : Center(
                               child: Text("Loading ..."),
                             ),
