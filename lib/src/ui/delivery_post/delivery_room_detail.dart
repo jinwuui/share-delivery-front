@@ -64,7 +64,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                             ),
                     ),
                     Obx(
-                      () => DeliveryRoomInfoDetailController.to.isLoad == true
+                      () => false
                           ? DeliveryRoomChat()
                           : Center(
                               child: Text("Loading ..."),
