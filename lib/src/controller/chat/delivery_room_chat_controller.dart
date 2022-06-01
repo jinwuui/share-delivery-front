@@ -2,23 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/chat/chat.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
-import 'package:share_delivery/src/utils/shared_preferences_util.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
 class DeliveryRoomChatController extends GetxController {
   static DeliveryRoomChatController get to => Get.find();
   final TextEditingController messageController = TextEditingController();
   final ScrollController scrollController = ScrollController();
-  final List<ChatModel> messages = [];
+  final messages = [].obs;
 
   User user = AuthenticationController.to.state.props.first as User;
   late final Socket socket;
   late final int deliveryRoomId;
   @override
   void onInit() async {
+    // deliveryRoomId = Get.arguments['deliveryRoomId'];
+    deliveryRoomId = 1; //TODO: deliveryRoom ID 교체
     await socketInit();
     super.onInit();
   }
@@ -26,15 +28,11 @@ class DeliveryRoomChatController extends GetxController {
   @override
   void onClose() {
     // socket disconnect
-    deliveryRoomId = Get.arguments['deliveryRoomId'];
 
+    Logger().w("disconnect socket");
+    socket.emit('disconnect', deliveryRoomId);
     socket.disconnect();
     super.onClose();
-  }
-
-  Future<void> fetchMessageList() async {
-    DateTime currentTime = DateTime.now();
-    // return;
   }
 
   Future<void> socketInit() async {
@@ -57,7 +55,7 @@ class DeliveryRoomChatController extends GetxController {
       socket.connect();
 
       socket.on('connect', (data) {
-        Logger().d('socket connected');
+        Logger().i('socket connected', hostName);
 
         // 소켓 연결 후 방 참여
         enterRoom(deliveryRoomId);
@@ -77,18 +75,26 @@ class DeliveryRoomChatController extends GetxController {
     super.onInit();
   }
 
-  void sendMessage(String message) {
-    socket.emit(
-        "message",
-        ChatModel(
-            accountId: user.accountId,
-            roomId: deliveryRoomId,
-            message: message,
-            nickname: user.nickname,
-            sentAt: DateTime.now().toLocal().toString().substring(0, 16)));
+  void sendMessage(ChatModel chat) {
+    messages.add(chat);
+
+    socket.emitWithAck("message", {"text": chat.message}, ack: (data) {
+      if (data != null) {
+        print('chat Id $data');
+      } else {
+        print("Null");
+      }
+    });
   }
 
   void enterRoom(int deliveryRoomId) {
-    socket.emit('enter_room', deliveryRoomId);
+    socket.emitWithAck('enter_room', {"payload": deliveryRoomId},
+        ack: (Map<String, dynamic> data) {
+      if (!data['isSuccess']) Logger().w("data is null");
+
+      for (var chat in data['messageList']) {
+        messages.add(ChatModel.fromJson(chat));
+      }
+    });
   }
 }

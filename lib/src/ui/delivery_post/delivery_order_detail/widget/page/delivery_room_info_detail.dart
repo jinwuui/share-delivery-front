@@ -21,7 +21,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
   Widget build(BuildContext context) {
     DeliveryRoomInfoDetailController controller =
         DeliveryRoomInfoDetailController.to;
-    Logger().d(DeliveryManageController.to.deliveryRooms);
+
     return Obx(() => controller.isLoad.value == true
         ? Container(
             height: double.infinity,
