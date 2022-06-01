@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_persistent_keyboard_height/flutter_persistent_keyboard_height.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
@@ -17,6 +16,7 @@ import 'package:share_delivery/src/data/provider/authentication/authentication_a
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/alarm_service.dart';
 import 'package:share_delivery/src/services/setting_service.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/dio_util.dart';
@@ -75,6 +75,9 @@ Future<void> initialize() async {
 
   // 배달 관련 초기값 세팅
   await Get.putAsync(() => SettingService().init());
+
+  // 알림 세팅
+  await Get.putAsync(() => AlarmService().init());
 }
 
 class MyApp extends GetView<AuthenticationController> {
