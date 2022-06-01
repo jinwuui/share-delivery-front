@@ -11,7 +11,8 @@ import 'package:share_delivery/src/utils/get_snackbar.dart';
 class PostRegisterController extends GetxController {
   PostRegisterRepository repository;
 
-  PostRegisterController({required this.repository});
+  PostRegisterController(
+      {this.isRegisterPost = true, required this.repository});
 
   // 카테고리
   static const String initCategoryMsg = "글의 주제를 선택해주세요!";
@@ -25,6 +26,18 @@ class PostRegisterController extends GetxController {
 
   // UI 관련
   RxBool isContentEmpty = true.obs;
+  String appBarTitle = "생활 공유";
+  bool isRegisterPost;
+
+  @override
+  onInit() {
+    super.onInit();
+
+    // 게시글 수정 모드
+    if (!isRegisterPost) {
+      appBarTitle = "글 수정하기";
+    }
+  }
 
   void setPostTopic(String category) {
     this.category.value = category;

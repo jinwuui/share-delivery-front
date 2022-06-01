@@ -1,9 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/community/comment/comment.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/data/model/community/toggle_like_response_dto/toggle_like_response_dto.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/community/post_detail/post_detail_repository.dart';
+import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 enum PostDetailUI {
   undecided,
@@ -20,49 +25,55 @@ class PostDetailController extends GetxController {
   void onInit() async {
     super.onInit();
     post = Get.arguments;
-    print('PostDetailController.onInit $post');
     findPostDetail();
     findComment();
     initUiType();
   }
 
-  List<Comment> comments = [
-    Comment(
-      1,
-      "테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1",
-      1,
-      DateTime.now(),
-    ),
-    Comment(
-      2,
-      "테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1",
-      1,
-      DateTime.now(),
-    ),
-    Comment(
-      3,
-      "테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1",
-      1,
-      DateTime.now(),
-    ),
-    Comment(
-      4,
-      "테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1",
-      4,
-      DateTime.now(),
-    ),
-    Comment(
-      5,
-      "테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1",
-      4,
-      DateTime.now(),
-    ),
-  ];
-
+  // UI 관련
   PostDetailUI uiType = PostDetailUI.undecided;
+  int currentUserId = -1;
+  RxBool onSendComment = false.obs;
 
   late final Post post;
-  PostDetail? postDetail;
+  PostDetail? postDetail = PostDetail(
+    postId: 13,
+    sharePlace: null,
+    likes: 12,
+    isLiked: true,
+    viewCounts: 112,
+  );
+
+  var comments = <Comment>[
+    Comment(
+      id: 12,
+      parentId: 12,
+      content: "댓글1",
+      createdDateTime: DateTime.now(),
+      writer: Writer(
+        accountId: 13,
+        nickname: "닉네임",
+        mannerScore: 35.4,
+      ),
+      likes: 3,
+      isLiked: true,
+    ),
+    Comment(
+      id: 13,
+      parentId: 12,
+      content: "대댓글1",
+      createdDateTime: DateTime.now(),
+      writer: Writer(
+        accountId: 14,
+        nickname: "닉네임2",
+        mannerScore: 98.3,
+      ),
+      likes: 7,
+      isLiked: false,
+    ),
+  ].obs;
+
+  TextEditingController commentTextField = TextEditingController();
 
   // 작성자/읽는이 UI 다르게 만들기
   void initUiType() {
@@ -80,6 +91,9 @@ class PostDetailController extends GetxController {
         // 글쓴이 != 사용자  --->  읽는이 UI
         uiType = PostDetailUI.reader;
       }
+
+      // 댓글의 사용자 여부 확인을 위해서 현재 유저 id 저장
+      currentUserId = post.writer.accountId;
     } catch (e) {
       print("게시글 상세조회 UI 타입 변경 에러  -  $e");
     }
@@ -87,15 +101,104 @@ class PostDetailController extends GetxController {
 
   // 게시글 상세정보 가져오기
   Future<void> findPostDetail() async {
-    print('PostDetailController.findPostDetail - 게시글 상세조회');
-    print("postId: ${Get.arguments["postId"]}");
-
-    // TODO : postId 로 게시글 상세조회
-    int postId = Get.arguments["postId"];
-    postDetail = await repository.findDetailById(postId);
+    postDetail = await repository.findDetailById(post.postId);
+    Logger().v("게시글 상세정보 조회 ", postDetail);
   }
 
-  Future<void> findComment() async {}
+  // 게시글의 댓글 가져오기
+  Future<void> findComment() async {
+    comments.value = await repository.findCommentById(post.postId);
+    Logger().v("게시글 상세정보 댓글 조회 ", comments);
+  }
+
+  // 게시글 수정
+  void updatePost() {
+    print('PostDetailController.updatePost');
+    if (postDetail == null) return;
+
+    // repository.updatePost(postId);
+  }
+
+  // 게시글 삭제
+  void deletePost() {
+    print('PostDetailController.deletePost');
+
+    repository.deletePost(post.postId);
+  }
+
+  // 게시글 좋아요
+  Future<void> togglePostLike(int postId) async {
+    PostLikeResponseDTO postLikeResponseDTO =
+        await repository.togglePostLike(postId);
+
+    if (postDetail == null) {
+      await findPostDetail();
+    }
+
+    postDetail = postDetail!.copyWith(
+      likes: postLikeResponseDTO.likes,
+      isLiked: postLikeResponseDTO.isLiked,
+    );
+  }
+
+  // 게시글 신고
+  Future<void> reportPost() async {
+    print('PostDetailController.reportPost - 게시글 신고');
+    repository.reportPost(post.postId);
+  }
+
+  // 댓글 작성
+  Future<void> sendComment([int? parentId]) async {
+    if (commentTextField.text.trim().isEmpty) {
+      GetSnackbar.on("알림", "공백은 댓글로 입력할 수 없습니다.");
+      return;
+    }
+
+    print('PostDetailController.sendComment - 댓글 작성');
+
+    Comment comment;
+    if (parentId == null) {
+      comment = await repository.sendComment(commentTextField.text);
+    } else {
+      comment = await repository.sendComment(commentTextField.text, parentId);
+    }
+
+    comments.add(comment);
+  }
+
+  // 댓글 수정
+  Future<void> updateComment() async {
+    print('PostDetailController.updateComment');
+    // repository.updateComment(commentId, content);
+  }
+
+  // 댓글 삭제
+  Future<void> deleteComment(int commentId) async {
+    print('PostDetailController.deleteComment');
+    repository.deleteComment(commentId);
+  }
+
+  // 댓글 좋아요
+  Future<void> toggleCommentLike(Comment comment) async {
+    CommentLikeResponseDTO commentLikeResponseDTO =
+        await repository.toggleCommentLike(comment.id);
+
+    if (postDetail == null) {
+      await findPostDetail();
+    }
+
+    print('PostDetailController.toggleCommentLike');
+    comment = comment.copyWith(
+      likes: commentLikeResponseDTO.likes,
+      isLiked: commentLikeResponseDTO.isLiked,
+    );
+  }
+
+  // 댓글 신고
+  Future<void> reportComment(int commentId) async {
+    print('PostDetailController.reportComment - 댓글 신고');
+    repository.reportComment(commentId);
+  }
 
   bool isParentComment(int idx) {
     return comments[idx].id == comments[idx].parentId;
@@ -115,10 +218,14 @@ class PostDetailController extends GetxController {
     for (Comment comment in comments) {
       if (comment.parentId != parentId || comment.id == cur.id) continue;
 
-      if (comment.createdTime.isAfter(cur.createdTime)) return false;
+      if (comment.createdDateTime.isAfter(cur.createdDateTime)) return false;
     }
 
     return true;
+  }
+
+  void setOnSendComment(bool onSendComment) {
+    this.onSendComment.value = onSendComment;
   }
 
   List<Comment> getCommentGroup(int parentId) {
@@ -132,29 +239,4 @@ class PostDetailController extends GetxController {
 
     return list;
   }
-
-  // 게시글 삭제
-  void deletePost() {
-    print('PostDetailController.deletePost');
-    if (postDetail == null) return;
-
-    repository.deletePost(postDetail!.postId);
-  }
-
-  // 게시글 수정
-  void updatePost() {
-    print('PostDetailController.updatePost');
-    if (postDetail == null) return;
-
-    // repository.updatePost(postId);
-  }
-}
-
-class Comment {
-  int id;
-  String content;
-  int parentId;
-  DateTime createdTime;
-
-  Comment(this.id, this.content, this.parentId, this.createdTime);
 }

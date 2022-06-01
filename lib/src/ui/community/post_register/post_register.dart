@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_register/post_register_controller.dart';
+import 'package:share_delivery/src/data/model/community/post/post.dart';
+import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
+import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
+import 'package:share_delivery/src/data/repository/community/post_register/post_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/community/post_register/post_image.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
 // class PostRegister extends StatefulWidget {
 //   const PostRegister({Key? key}) : super(key: key);
@@ -198,14 +204,32 @@ import 'package:share_delivery/src/ui/theme/text_theme.dart';
 // }
 
 class PostRegister extends GetView<PostRegisterController> {
-  const PostRegister({Key? key}) : super(key: key);
+  final Post? post;
+  final PostDetail? postDetail;
+
+  const PostRegister({Key? key, this.post, this.postDetail}) : super(key: key);
 
   static const double bottomSheetHeight = 45;
 
   @override
   Widget build(BuildContext context) {
+    bool isRegistered = Get.isRegistered<PostRegisterController>();
+    if (post != null && postDetail != null) {
+      print('PostRegister.build - 게시글 수정');
+      Get.put(
+        PostRegisterController(
+          isRegisterPost: false,
+          repository: PostRegisterRepository(
+            apiClient: CommunityApiClient(DioUtil.getDio()),
+            userLocationLocalClient: UserLocationLocalClient(),
+          ),
+        ),
+      );
+    }
+
     return Obx(
       () => SafeArea(
+        // maintainBottomViewPadding: true,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: appBar(),
@@ -219,7 +243,7 @@ class PostRegister extends GetView<PostRegisterController> {
                 postContent(),
                 // Expanded(
                 //   child: AnimatedAlign(
-                //     alignment: alignment,
+                //     alignment: Alignment.bottomCenter,
                 //     curve: Curves.decelerate,
                 //     // curve: Curves.easeOutQuad,
                 //     duration: const Duration(milliseconds: 200),
@@ -286,7 +310,7 @@ class PostRegister extends GetView<PostRegisterController> {
 
   Widget postContent() {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       child: TextField(
         controller: controller.content.value,
         minLines: 6,
@@ -311,7 +335,7 @@ class PostRegister extends GetView<PostRegisterController> {
         onPressed: () => Get.back(),
         icon: const Icon(Icons.close, color: Colors.black),
       ),
-      title: const Text("생활 공유", style: appBarTitle),
+      title: Text(controller.appBarTitle, style: appBarTitle),
       actions: [
         TextButton(
           onPressed: controller.isContentEmpty.value

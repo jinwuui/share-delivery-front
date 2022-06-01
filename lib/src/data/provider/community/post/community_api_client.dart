@@ -3,9 +3,12 @@ import 'dart:io';
 
 import "package:dio/dio.dart";
 import "package:retrofit/retrofit.dart";
+import 'package:share_delivery/src/data/model/community/comment/comment.dart';
+import 'package:share_delivery/src/data/model/community/comment_register_request_dto/comment_register_request_dto.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
+import 'package:share_delivery/src/data/model/community/toggle_like_response_dto/toggle_like_response_dto.dart';
 
 part 'community_api_client.g.dart';
 
@@ -44,9 +47,11 @@ abstract class CommunityApiClient {
 
   // 게시글 수정
   @PATCH("/api/posts/{postId}")
+  @MultiPart()
   Future<Post> updatePost(
     @Path() int postId,
-    @Body() Post post,
+    @Part(name: "post") PostRegisterRequestDTO postRegisterRequestDTO,
+    @Part(name: "postImages") List<File> postImages,
   );
 
   // 게시글 삭제
@@ -55,28 +60,40 @@ abstract class CommunityApiClient {
     @Path() int postId,
   );
 
+  // 게시글 좋아요
+  @POST("/api/posts/{postId}/toggle-likes")
+  Future<PostLikeResponseDTO> togglePostLike(
+    @Path() int postId,
+  );
+
   // 댓글 등록
   @POST("/api/comments")
   Future<Comment> registerComment(
-    @Body() Comment comment,
+    @Body() CommentRegisterRequestDTO comment,
   );
 
   // 댓글 조회
   @GET("/api/comments/{postId}")
   Future<List<Comment>> findComment(
-    @Query("postId") int postId,
+    @Path() int postId,
   );
 
   // 댓글 수정
   @GET("/api/comments/{commentId}")
   Future<Comment> updateComment(
-    @Query("commentId") int commentId,
+    @Path() int commentId,
     @Body() String content,
   );
 
   // 댓글 삭제
   @DELETE("/api/comments/{commentId}")
   Future<void> deleteComment(
-    @Query("commentId") int commentId,
+    @Path() int commentId,
+  );
+
+  // 댓글 좋아요
+  @POST("/api/comments/{commentId}/toggle-likes")
+  Future<CommentLikeResponseDTO> toggleCommentLike(
+    @Path() int commentId,
   );
 }
