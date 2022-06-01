@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
-import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
-import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
-import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
-import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
-import 'package:share_delivery/src/ui/profile/friend/friend.dart';
-import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
 class Profile extends StatelessWidget {
@@ -40,8 +33,12 @@ class Profile extends StatelessWidget {
         elevation: 0.0,
         actions: [
           IconButton(
+            icon: Icon(Icons.message, size: 30),
+            onPressed: () => Get.toNamed(Routes.ALARM),
+          ),
+          IconButton(
             icon: Icon(Icons.settings, size: 30),
-            onPressed: () => Get.toNamed('/appSetting'),
+            onPressed: () => Get.toNamed(Routes.APP_SETTING),
           )
         ],
       ),
@@ -208,6 +205,7 @@ class Profile extends StatelessWidget {
                   "다른 사용자 프로필 테스트",
                   () => Get.toNamed(Routes.OTHER_USER_PROFILE,
                       arguments: {"accountId": 100})),
+              Divider(),
             ],
           ),
         ],

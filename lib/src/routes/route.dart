@@ -22,6 +22,7 @@ import 'package:share_delivery/src/ui/community/writing_comment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
 import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
 import 'package:share_delivery/src/ui/profile/account_manage/select_bank.dart';
+import 'package:share_delivery/src/ui/profile/alarm/alarm.dart';
 import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
 import 'package:share_delivery/src/ui/profile/friend/friend.dart';
 import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
@@ -86,6 +87,9 @@ abstract class Routes {
 
   // 친구 관리
   static const FRIEND = "/friend";
+
+  // 알림함
+  static const ALARM = "/alarm";
 }
 
 class AppPages {
@@ -209,6 +213,11 @@ class AppPages {
     GetPage(
       name: Routes.MODIFY_PROFILE,
       page: () => ModifyProfile(),
+      binding: AccountBinding(),
+    ),
+    GetPage(
+      name: Routes.ALARM,
+      page: () => Alarm(),
       binding: AccountBinding(),
     ),
   ];
