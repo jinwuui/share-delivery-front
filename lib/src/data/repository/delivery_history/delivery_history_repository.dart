@@ -24,8 +24,8 @@ class DeliveryHistoryRepository {
         createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
         receivingLocation: ReceivingLocation(
             description: "CU 편의점 앞",
-            lat: 35.821730657601044,
-            lng: 128.5190184847488),
+            latitude: 35.821730657601044,
+            longitude: 128.5190184847488),
         roomId: 123,
         storeCategory: 'CHICKEN',
       ),

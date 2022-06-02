@@ -16,17 +16,6 @@ class PostRegisterRequestDTO with _$PostRegisterRequestDTO {
       _$PostRegisterRequestDTOFromJson(json);
 }
 
-// @Freezed()
-// class Writer with _$Writer {
-//   const factory Writer({
-//     required int accountId,
-//     required String nickname,
-//     required double mannerScore,
-//   }) = _Writer;
-//
-//   factory Writer.fromJson(Map<String, dynamic> json) => _$WriterFromJson(json);
-// }
-
 @Freezed()
 class PostLocation with _$PostLocation {
   const factory PostLocation({

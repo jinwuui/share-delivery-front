@@ -41,8 +41,8 @@ class ReceivingLocation with _$ReceivingLocation {
     @Default(-1) int id,
     required String description,
     @Default("dummy address") String address,
-    required double lat,
-    required double lng,
+    required double latitude,
+    required double longitude,
     @Default(false) bool isFavorite,
   }) = _ReceivingLocation;
 

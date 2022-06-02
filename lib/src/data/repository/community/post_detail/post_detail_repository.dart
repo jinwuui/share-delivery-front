@@ -1,13 +1,7 @@
-import 'dart:io';
-
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/community/comment/comment.dart';
 import 'package:share_delivery/src/data/model/community/comment_register_request_dto/comment_register_request_dto.dart';
-import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
-import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
 import 'package:share_delivery/src/data/model/community/toggle_like_response_dto/toggle_like_response_dto.dart';
-import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
 
 class PostDetailRepository {
@@ -23,48 +17,6 @@ class PostDetailRepository {
   // 게시글 댓글 조회
   Future<List<Comment>> findCommentById(int postId) async {
     return await apiClient.findComment(postId);
-  }
-
-  // 게시글 수정
-  Future<Post?> updatePost(
-    int postId,
-    UserLocation userLocation,
-    String content,
-    String category,
-    List<String> images,
-  ) async {
-    // TODO: 위치 공유 넣기
-
-    // 글 작성 위치 == 사용자 위치
-    PostLocation coordinate = PostLocation(
-      latitude: userLocation.latitude,
-      longitude: userLocation.longitude,
-    );
-
-    // 작성할 글
-    PostRegisterRequestDTO post = PostRegisterRequestDTO(
-      coordinate: coordinate,
-      category: content,
-      content: category,
-    );
-
-    // 이미지
-    List<File> postImages = [];
-    for (int i = 0; i < images.length; i++) {
-      postImages.add(File(images[i]));
-      print(
-          'PostRegisterRepository.registerPost - image file - ${File(images[i])}');
-    }
-
-    // 글 수정 요청
-    await apiClient.updatePost(postId, post, postImages).then((value) {
-      Logger().i(value);
-      return value;
-    }).catchError((err) {
-      Logger().e(err);
-    });
-
-    return null;
   }
 
   // 게시글 삭제

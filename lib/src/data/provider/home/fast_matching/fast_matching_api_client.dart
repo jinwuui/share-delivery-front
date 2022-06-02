@@ -36,8 +36,8 @@
 
 import "package:dio/dio.dart";
 import "package:retrofit/retrofit.dart";
-import 'package:share_delivery/src/data/model/home/fast_matching/fast_matching_info/fast_matching_info.dart';
-import 'package:share_delivery/src/data/model/home/fast_matching/fast_matching_tag/fast_matching_tag.dart';
+import 'package:share_delivery/src/data/model/home/fast_matching/fast_matching_request_dto/fast_matching_request_dto.dart';
+import 'package:share_delivery/src/data/model/home/fast_matching/fast_matching_response_dto/fast_matching_response_dto.dart';
 
 part "fast_matching_api_client.g.dart";
 
@@ -47,6 +47,9 @@ abstract class FastMatchingApiClient {
       _FastMatchingApiClient;
 
   @POST("/api/fast-delivery-rooms/participate")
-  Future<FastMatchingInfo> requestFastMatching(
-      @Body() FastMatchingTag fastMatchingTag);
+  Future<FastMatchingResponseDTO> requestFastMatching(
+    @Query("latitude") double latitude,
+    @Query("longitude") double longitude,
+    @Body() FastMatchingRequestDTO fastMatchingTag,
+  );
 }

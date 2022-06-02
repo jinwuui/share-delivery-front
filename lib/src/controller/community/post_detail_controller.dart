@@ -111,14 +111,6 @@ class PostDetailController extends GetxController {
     Logger().v("게시글 상세정보 댓글 조회 ", comments);
   }
 
-  // 게시글 수정
-  void updatePost() {
-    print('PostDetailController.updatePost');
-    if (postDetail == null) return;
-
-    // repository.updatePost(postId);
-  }
-
   // 게시글 삭제
   void deletePost() {
     print('PostDetailController.deletePost');

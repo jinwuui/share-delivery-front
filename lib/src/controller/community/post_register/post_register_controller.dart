@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:images_picker/images_picker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/community/community_controller.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
+import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/repository/community/post_register/post_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class PostRegisterController extends GetxController {
@@ -72,12 +75,10 @@ class PostRegisterController extends GetxController {
       GetSnackbar.on("알림", "내용을 채워주세요.");
       return;
     }
-
     if (category.value.isEmpty || category.value == initCategoryMsg) {
       GetSnackbar.on("알림", "주제를 선택해주세요.");
       return;
     }
-
     UserLocation? userLocation = repository.getUserLocation();
     if (userLocation == null) {
       GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
@@ -96,11 +97,72 @@ class PostRegisterController extends GetxController {
     } else {
       CommunityController.to.addPost(post);
       Get.until((route) => Get.currentRoute == Routes.INITIAL);
-      Get.toNamed(Routes.POST_DETAIL, arguments: {"post": post});
+      Get.toNamed(Routes.POST_DETAIL, arguments: post);
+    }
+  }
+
+  // 게시글 수정
+  Future<void> updatePost(int postId) async {
+    Get.context!.loaderOverlay.show();
+    print('PostRegisterController.updatePost');
+
+    if (content.value.text.trim().isEmpty) {
+      GetSnackbar.on("알림", "내용을 채워주세요.");
+      return;
+    }
+    if (category.value.isEmpty || category.value == initCategoryMsg) {
+      GetSnackbar.on("알림", "주제를 선택해주세요.");
+      return;
+    }
+    UserLocation? userLocation = repository.getUserLocation();
+    if (userLocation == null) {
+      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+      return;
+    }
+
+    Post? post = await repository.updatePost(
+      postId,
+      userLocation,
+      content.value.text,
+      category.value,
+      images,
+    );
+
+    // TODO : 삭제 필요
+    post = Post(
+      category: postCategories[2],
+      content: '치킨 먹고 싶다',
+      writer: Writer(nickname: '워그레이몬', accountId: 123, mannerScore: 123.5),
+      createdDateTime: DateTime.now(),
+      postId: 13,
+    );
+
+    if (post == null) {
+      Get.context!.loaderOverlay.hide();
+      GetSnackbar.err("오류", "다시 시도해주세요!");
+    } else {
+      CommunityController.to.updatePost(post);
+
+      await 0.5.delay();
+      Get.context!.loaderOverlay.hide();
+      Get.until((route) => Get.currentRoute == Routes.INITIAL);
+
+      await 0.5.delay();
+      Get.toNamed(Routes.POST_DETAIL, arguments: post);
     }
   }
 
   void deleteImage(String targetImageURL) {
     images.remove(targetImageURL);
+  }
+
+  void loadPostAndPostDetail(Post post, PostDetail postDetail) {
+    content.value.text = post.content;
+    content.value.selection = TextSelection.fromPosition(
+        TextPosition(offset: content.value.text.length));
+    setIsContentEmpty(content.value.text);
+    category.value = post.category;
+    images.value = postDetail.images;
+    // sharePlace.value = postDetail.sharePlace
   }
 }

@@ -161,12 +161,12 @@ class PickReceivingLocationController extends GetxController {
 
   void completePickLocation() {
     String description = locationDescription.text;
-    double lat = receivingLocationLat;
-    double lng = receivingLocationLng;
+    double latitude = receivingLocationLat;
+    double longitude = receivingLocationLng;
 
-    repository.register(description, lat, lng);
+    repository.register(description, latitude, longitude);
     final controller = Get.find<DeliveryRoomRegisterController>();
-    controller.setReceivingLocation(description, lat, lng);
+    controller.setReceivingLocation(description, latitude, longitude);
   }
 
   void reloadWebView() {
@@ -194,12 +194,12 @@ class PickReceivingLocationController extends GetxController {
 
   void changeToLocationHistory(ReceivingLocation location) {
     locationData.value = LocationData.fromMap(
-        {"latitude": location.lat, "longitude": location.lng});
+        {"latitude": location.latitude, "longitude": location.longitude});
 
     locationDescription.text = location.description;
     setIsDescriptionEmpty(locationDescription.text);
-    receivingLocationLat = location.lat;
-    receivingLocationLng = location.lng;
+    receivingLocationLat = location.latitude;
+    receivingLocationLng = location.longitude;
   }
 
   void changeToCurrentLocation() {

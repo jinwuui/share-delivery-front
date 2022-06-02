@@ -14,8 +14,8 @@ class HomeRepository {
   }
 
   Future<List<DeliveryRoom>> findDeliveryRooms(
-      double lat, double lng, int rad) async {
-    var result = await apiClient.findDeliveryRooms(lat, lng, rad);
+      double latitude, double longitude, int radius) async {
+    var result = await apiClient.findDeliveryRooms(latitude, longitude, radius);
     return result;
   }
 }

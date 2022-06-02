@@ -33,8 +33,8 @@ class HomeController extends GetxController {
       createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
       receivingLocation: ReceivingLocation(
           description: "CU 편의점 앞",
-          lat: 35.820848788632226,
-          lng: 128.518205019348),
+          latitude: 35.820848788632226,
+          longitude: 128.518205019348),
       roomId: 456,
       storeCategory: 'CHICKEN',
     ),
@@ -175,17 +175,17 @@ class HomeController extends GetxController {
 
   Future<List<DeliveryRoom>> findDeliveryRooms() async {
     print("- home controller - 모집글 조회");
-    double? lat = locationData.value.latitude;
-    double? lng = locationData.value.longitude;
+    double? latitude = locationData.value.latitude;
+    double? longitude = locationData.value.longitude;
     int radius = 5;
 
-    if (lat == null || lng == null) {
+    if (latitude == null || longitude == null) {
       GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
       return [];
     }
 
     List<DeliveryRoom> result =
-        await repository.findDeliveryRooms(lat, lng, radius);
+        await repository.findDeliveryRooms(latitude, longitude, radius);
     Logger().v(result);
     return result;
   }
@@ -257,7 +257,7 @@ class HomeController extends GetxController {
     String positions = "";
     for (DeliveryRoom room in deliveryRooms) {
       positions +=
-          "new kakao.maps.LatLng(${room.receivingLocation.lat}, ${room.receivingLocation.lng}),";
+          "new kakao.maps.LatLng(${room.receivingLocation.latitude}, ${room.receivingLocation.longitude}),";
     }
 
     return '''
@@ -351,8 +351,8 @@ class HomeController extends GetxController {
     return Geolocator.distanceBetween(
       locationData.value.latitude!,
       locationData.value.longitude!,
-      receivingLocation.lat,
-      receivingLocation.lng,
+      receivingLocation.latitude,
+      receivingLocation.longitude,
     ).round();
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/community/post_register/post_register_controller.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
@@ -214,6 +216,7 @@ class PostRegister extends GetView<PostRegisterController> {
   @override
   Widget build(BuildContext context) {
     bool isRegistered = Get.isRegistered<PostRegisterController>();
+
     if (post != null && postDetail != null) {
       print('PostRegister.build - 게시글 수정');
       Get.put(
@@ -225,35 +228,47 @@ class PostRegister extends GetView<PostRegisterController> {
           ),
         ),
       );
+
+      controller.loadPostAndPostDetail(post!, postDetail!);
     }
 
     return Obx(
       () => SafeArea(
-        // maintainBottomViewPadding: true,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appBar(),
-          body: Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                postCategory(context),
-                postImages(),
-                postContent(),
-                // Expanded(
-                //   child: AnimatedAlign(
-                //     alignment: Alignment.bottomCenter,
-                //     curve: Curves.decelerate,
-                //     // curve: Curves.easeOutQuad,
-                //     duration: const Duration(milliseconds: 200),
-                //     child: bottomSheet(),
-                //   ),
-                // ),
-              ],
+        maintainBottomViewPadding: true,
+        child: LoaderOverlay(
+          overlayColor: Colors.black45,
+          useDefaultLoading: false,
+          overlayWidget: const Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.white,
             ),
           ),
-          bottomSheet: bottomSheetV2(context),
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: appBar(),
+            body: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  postCategory(context),
+                  postImages(),
+                  postContent(),
+                  // Expanded(
+                  //   child: AnimatedAlign(
+                  //     alignment: Alignment.bottomCenter,
+                  //     curve: Curves.decelerate,
+                  //     // curve: Curves.easeOutQuad,
+                  //     duration: const Duration(milliseconds: 200),
+                  //     child: bottomSheet(),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            bottomSheet: bottomSheetV2(context),
+          ),
         ),
       ),
     );
@@ -332,7 +347,14 @@ class PostRegister extends GetView<PostRegisterController> {
       elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(
-        onPressed: () => Get.back(),
+        onPressed: () async {
+          if (!controller.isRegisterPost) {
+            FocusManager.instance.primaryFocus?.unfocus();
+            await 0.4.delay();
+          }
+
+          Get.back();
+        },
         icon: const Icon(Icons.close, color: Colors.black),
       ),
       title: Text(controller.appBarTitle, style: appBarTitle),
@@ -340,9 +362,14 @@ class PostRegister extends GetView<PostRegisterController> {
         TextButton(
           onPressed: controller.isContentEmpty.value
               ? null
-              : () {
-                  print("게시글 등록 로직 테스트 필요");
-                  controller.registerPost();
+              : () async {
+                  if (controller.isRegisterPost) {
+                    print("게시글 등록 로직 테스트 필요");
+                    await controller.registerPost();
+                  } else {
+                    print("게시글 수정 로직 테스트 필요");
+                    await controller.updatePost(post!.postId);
+                  }
                 },
           child: Text("완료"),
           style: TextButton.styleFrom(
@@ -356,7 +383,9 @@ class PostRegister extends GetView<PostRegisterController> {
 
   Widget bottomSheetV2(BuildContext ctx) {
     return AnimatedPadding(
-      padding: MediaQuery.of(ctx).viewInsets,
+      padding: controller.isRegisterPost
+          ? MediaQuery.of(ctx).viewInsets
+          : EdgeInsets.zero,
       duration: const Duration(milliseconds: 0),
       curve: Curves.decelerate,
       child: Container(

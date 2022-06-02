@@ -26,15 +26,15 @@ abstract class CommunityApiClient {
 
   // 게시글 조회
   @GET("/api/posts")
-  Future<List<Post>> findPost(@Query("lat") double lat,
-      @Query("lng") double lng, @Query("radius") int radius,
+  Future<List<Post>> findPost(@Query("latitude") double latitude,
+      @Query("longitude") double longitude, @Query("radius") int radius,
       [@Query("lastCreatedDate") String? lastCreatedDate]);
 
   // 주제로 게시글 조회
   @GET("/api/posts")
   Future<List<Post>> findPostByCategory(
-      @Query("lat") double lat,
-      @Query("lng") double lng,
+      @Query("latitude") double latitude,
+      @Query("longitude") double longitude,
       @Query("radius") int radius,
       @Query("category") String category,
       [@Query("lastCreatedDate") String? lastCreatedDate]);

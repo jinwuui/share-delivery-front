@@ -140,4 +140,14 @@ class CommunityController extends GetxController {
   void addPost(Post post) {
     posts.insert(0, post);
   }
+
+  void updatePost(Post post) {
+    for (int i = 0; i < posts.length; i++) {
+      if (posts[i].postId == post.postId) {
+        posts[i] = post;
+
+        return;
+      }
+    }
+  }
 }
