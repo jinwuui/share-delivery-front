@@ -32,6 +32,7 @@ class CommunityController extends GetxController {
   void onRefresh() async {
     print('CommunityController.onRefresh - 1');
     if (!isExistUserLocation()) {
+      refresher.value.refreshFailed();
       return;
     }
 
@@ -76,6 +77,7 @@ class CommunityController extends GetxController {
   void onLoading() async {
     print('CommunityController.onLoading');
     if (!isExistUserLocation()) {
+      refresher.value.loadFailed();
       return;
     }
 

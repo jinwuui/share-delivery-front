@@ -185,7 +185,8 @@ class PostDetail extends GetView<PostDetailController> {
               itemCount: postImages.length,
               itemBuilder: (_, i) {
                 return PostImage(
-                  imageURL: postImages[i],
+                  index: i,
+                  imageURLs: postImages,
                   deleteButton: false,
                   size: imageSize,
                   margin: imageMargin,

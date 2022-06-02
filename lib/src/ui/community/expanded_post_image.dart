@@ -3,12 +3,35 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ExpandedPostImage extends StatelessWidget {
+class ExpandedPostImage extends StatefulWidget {
   const ExpandedPostImage({Key? key}) : super(key: key);
 
   @override
+  State<ExpandedPostImage> createState() => _ExpandedPostImageState();
+}
+
+class _ExpandedPostImageState extends State<ExpandedPostImage> {
+  late final PageController pageController;
+  List<String> imagesURL = [];
+
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: Get.arguments['initPage']);
+    imagesURL = Get.arguments['imagesPath'];
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String imageURL = Get.arguments['imagePath'];
+    return PageView.builder(
+      controller: pageController,
+      itemCount: imagesURL.length,
+      itemBuilder: (context, i) => expandedImage(i),
+    );
+  }
+
+  Widget expandedImage(int i) {
+    String imageURL = imagesURL[i];
 
     return Container(
       decoration: BoxDecoration(

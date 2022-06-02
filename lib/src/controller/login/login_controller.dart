@@ -59,6 +59,7 @@ class LoginController extends GetxController {
     print("isNewUser $isNewUser");
   }
 
+  // 인증 번호 작성 화면으로 변경
   void changeToAuthUI() {
     scrollController.value.animateTo(
       Get.height * 0.23,
@@ -74,6 +75,7 @@ class LoginController extends GetxController {
     });
   }
 
+  // 인증 받기
   Future<void> authenticate() async {
     await Future.delayed(Duration(milliseconds: 500));
     phoneNumber = phoneNumber.replaceAll(" ", "");

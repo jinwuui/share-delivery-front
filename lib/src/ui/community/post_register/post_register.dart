@@ -312,7 +312,8 @@ class PostRegister extends GetView<PostRegisterController> {
               itemCount: controller.images.length,
               itemBuilder: (_, i) {
                 return PostImage(
-                  imageURL: controller.images[i],
+                  index: i,
+                  imageURLs: controller.images,
                   deleteButton: true,
                   size: imageSize,
                   margin: imageMargin,

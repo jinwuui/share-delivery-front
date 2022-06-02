@@ -9,6 +9,7 @@ import 'package:share_delivery/src/bindings/home/fast_matching/fast_matching_bin
 import 'package:share_delivery/src/bindings/login/phone_number_authentication_binding.dart';
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
 import 'package:share_delivery/src/bindings/profile/account_bank_binding.dart';
+import 'package:share_delivery/src/bindings/profile/app_setting_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/profile/other_user_profile_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
@@ -142,6 +143,7 @@ class AppPages {
       page: () => const AppSetting(),
       transition: Transition.rightToLeft,
       curve: Curves.ease,
+      binding: AppSettingBinding(),
     ),
     GetPage(
       name: Routes.WRITING_MENU,

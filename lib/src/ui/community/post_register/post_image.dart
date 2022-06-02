@@ -6,14 +6,16 @@ import 'package:share_delivery/src/controller/community/post_register/post_regis
 import 'package:share_delivery/src/routes/route.dart';
 
 class PostImage extends StatelessWidget {
-  final String imageURL;
+  final int index;
+  final List<String> imageURLs;
   final bool deleteButton;
   final double size;
   final double margin;
 
   const PostImage({
     Key? key,
-    required this.imageURL,
+    required this.index,
+    required this.imageURLs,
     required this.deleteButton,
     required this.size,
     required this.margin,
@@ -21,11 +23,13 @@ class PostImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String imageURL = imageURLs[index];
+
     return GestureDetector(
       onTap: () {
         Get.toNamed(
           Routes.EXPANDED_POST_IMAGE,
-          arguments: {"imagePath": imageURL},
+          arguments: {"imagesPath": imageURLs, "initPage": index},
         );
       },
       child: Stack(
