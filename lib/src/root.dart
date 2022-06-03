@@ -19,10 +19,8 @@ class Root extends GetView<RootController> {
             index: controller.rootPageIndex.value,
             children: [
               Home(),
-              // controller.rootPageIndex.value == 1
               DeliveryHistory(),
-              // : SizedBox.shrink(),
-              Community(),
+              controller.isFirstOpenCommunity.value ? SizedBox.shrink() : Community(),
               Profile(),
             ],
           ),

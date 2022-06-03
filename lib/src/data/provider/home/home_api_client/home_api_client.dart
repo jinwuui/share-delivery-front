@@ -80,8 +80,8 @@ abstract class HomeApiClient {
 
   @GET("/api/delivery-rooms")
   Future<List<DeliveryRoom>> findDeliveryRooms(
-    @Query("lat") double lat,
-    @Query("lng") double lng,
+    @Query("latitude") double latitude,
+    @Query("longitude") double longitude,
     @Query("radius") int radius,
   );
 }

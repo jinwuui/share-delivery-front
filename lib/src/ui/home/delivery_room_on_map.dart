@@ -167,8 +167,8 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
       createdDateTime: DateTime.now(),
       receivingLocation: ReceivingLocation(
         description: '',
-        lng: -1,
-        lat: -1,
+        longitude: -1,
+        latitude: -1,
       ),
       storeCategory: '',
     );

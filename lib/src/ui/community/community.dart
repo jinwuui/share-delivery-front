@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/controller/community/community_controller.dart';
+import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/provider/community/community_repository.dart';
 import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
 import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/dio_util.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 class Community extends GetView<CommunityController> {
   const Community({Key? key}) : super(key: key);
@@ -30,7 +34,7 @@ class Community extends GetView<CommunityController> {
       () => Scaffold(
         appBar: appBar(),
         body: Container(
-          color: Colors.grey[200],
+          color: Colors.grey.shade200,
           child: SmartRefresher(
             enablePullDown: true,
             enablePullUp: true,
@@ -38,9 +42,9 @@ class Community extends GetView<CommunityController> {
             onRefresh: controller.onRefresh,
             onLoading: controller.onLoading,
             child: ListView.builder(
-              itemCount: controller.posts.length + 3,
+              itemCount: controller.posts.length + 1,
               itemBuilder: (context, index) {
-                return index == 0 ? categoryTab() : post();
+                return index == 0 ? categoryTab() : post(index - 1);
               },
             ),
           ),
@@ -55,42 +59,34 @@ class Community extends GetView<CommunityController> {
       color: Colors.transparent,
       padding: EdgeInsets.fromLTRB(7, 7, 7, 7),
       height: 50,
-      child: ListView(
+      child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        children: [
-          categoryOption(),
-          const SizedBox(width: padding),
-          category("동네질문"),
-          const SizedBox(width: padding),
-          category("동네맛집"),
-          const SizedBox(width: padding),
-          category("동네소식"),
-          const SizedBox(width: padding),
-          category("취미생활"),
-          const SizedBox(width: padding),
-          category("분실/실종"),
-          const SizedBox(width: padding),
-          category("품앗이"),
-        ],
+        itemCount: postCategories.length,
+        itemBuilder: (_, i) => category(postCategories[i]),
+        separatorBuilder: (_, __) {
+          return const SizedBox(width: padding);
+        },
       ),
     );
   }
 
-  Widget post() {
+  Widget post(int index) {
     return Container(
       decoration: bottomBorderBox,
       margin: const EdgeInsets.only(bottom: 7),
       height: 180,
       child: Column(
         children: [
-          postInfo(),
-          postAction(),
+          postInfo(index),
+          postAction(index),
         ],
       ),
     );
   }
 
-  Widget postInfo() {
+  Widget postInfo(int index) {
+    Post post = controller.posts[index];
+
     return Expanded(
       child: GestureDetector(
         behavior: HitTestBehavior.translucent,
@@ -98,7 +94,7 @@ class Community extends GetView<CommunityController> {
           // TODO : POST_DETAIL 로 넘어갈 때, 게시글을 특정할 수 있는 정보(id...)가 필요함
           Get.toNamed(
             Routes.POST_DETAIL,
-            arguments: {"postId": 14},
+            arguments: post,
           );
         },
         child: Padding(
@@ -106,24 +102,27 @@ class Community extends GetView<CommunityController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  eachPostCategory("동네질문"),
-                  Text(
-                    "안녕하세요 저는 박찬호 입니다. 호투를 하며 제 전성기 시절을 떠올리게하는 LA 다저스 시절이 가장 먼저 생각나기도 하고, 경기가 끝나면 나긋하게 ",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: postContentStyle,
-                  ),
-                ],
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    eachPostCategory(post.category),
+                    Text(
+                      post.content,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: postContentStyle,
+                    ),
+                  ],
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
-                      Text("네고왕", style: postDetailStyle),
+                      Text(post.writer.nickname, style: postDetailStyle),
                       const Padding(
                         padding: EdgeInsets.all(4.0),
                         child: Icon(
@@ -132,10 +131,16 @@ class Community extends GetView<CommunityController> {
                           color: Colors.grey,
                         ),
                       ),
-                      Text("매너 온도", style: postDetailStyle),
+                      Text(
+                        post.writer.mannerScore.toString(),
+                        style: postDetailStyle,
+                      ),
                     ],
                   ),
-                  Text("7분전", style: postDetailStyle),
+                  Text(
+                    TimeUtil.timeAgo(post.createdDateTime),
+                    style: postDetailStyle,
+                  ),
                 ],
               ),
             ],
@@ -145,7 +150,9 @@ class Community extends GetView<CommunityController> {
     );
   }
 
-  Widget postAction() {
+  Widget postAction(int index) {
+    Post post = controller.posts[index];
+
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -163,7 +170,7 @@ class Community extends GetView<CommunityController> {
             Icons.mode_comment_outlined,
             () => Get.toNamed(
               Routes.POST_DETAIL,
-              arguments: {"postId": 14},
+              arguments: post,
             ),
           ),
         ],
@@ -190,15 +197,16 @@ class Community extends GetView<CommunityController> {
   }
 
   Widget category(String content) {
-    return ElevatedButton(
-      onPressed: () {},
-      child: Text(content),
-      style: ElevatedButton.styleFrom(
-        textStyle: const TextStyle(fontWeight: FontWeight.w600),
-        elevation: 0,
-        primary: Colors.white,
-        onPrimary: Colors.grey.shade700,
-        side: BorderSide(color: Colors.grey.shade300),
+    return Obx(
+      () => ElevatedButton(
+        onPressed: () {
+          print('Community.category - 카테고리 검색 ($content)');
+          controller.setCategory(content);
+        },
+        child: Text(content),
+        style: controller.category.value != content
+            ? unselectedPostCategoryBtn
+            : selectedPostCategoryBtn,
       ),
     );
   }

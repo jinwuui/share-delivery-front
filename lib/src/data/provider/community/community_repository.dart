@@ -6,31 +6,51 @@ import 'package:share_delivery/src/data/provider/widgets/user_location_local_cli
 class CommunityRepository {
   CommunityApiClient apiClient;
   UserLocationLocalClient localClient;
+
   static const radius = 5;
 
   CommunityRepository({required this.apiClient, required this.localClient});
 
   Future<List<Post>> refreshPost(UserLocation userLocation) async {
-    // List<Post> result = [];
-    // result = await apiClient.findPost();
-    // return result;
-    // TODO : 노션에 API 쿼리스트링 참고해서 주입하기
-
     return await apiClient.findPost(
       userLocation.latitude,
       userLocation.longitude,
-      5,
+      radius,
     );
   }
 
   Future<List<Post>> loadingPost(
       UserLocation userLocation, DateTime lastCreatedDateTime) async {
-    // TODO : 노션에 API 쿼리스트링 참고해서 주입하기
-
     return await apiClient.findPost(
       userLocation.latitude,
       userLocation.longitude,
-      5,
+      radius,
+      lastCreatedDateTime.toIso8601String(),
+    );
+  }
+
+  Future<List<Post>> refreshPostByCategory(
+    UserLocation userLocation,
+    String category,
+  ) async {
+    return await apiClient.findPostByCategory(
+      userLocation.latitude,
+      userLocation.longitude,
+      radius,
+      category,
+    );
+  }
+
+  Future<List<Post>> loadingPostByCategory(
+    UserLocation userLocation,
+    String category,
+    DateTime lastCreatedDateTime,
+  ) async {
+    return await apiClient.findPostByCategory(
+      userLocation.latitude,
+      userLocation.longitude,
+      radius,
+      category,
       lastCreatedDateTime.toIso8601String(),
     );
   }

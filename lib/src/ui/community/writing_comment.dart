@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/community/post_detail_controller.dart';
+import 'package:share_delivery/src/data/model/community/comment/comment.dart';
 import 'package:share_delivery/src/ui/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/time_util.dart';
 
 class WritingComment extends GetView<PostDetailController> {
   const WritingComment({Key? key}) : super(key: key);
@@ -50,7 +54,6 @@ class WritingComment extends GetView<PostDetailController> {
   Widget comments() {
     int parentId = Get.arguments;
     List<Comment> group = controller.getCommentGroup(parentId);
-    print('WritingComment.comments $parentId $group');
 
     return ListView.builder(
       shrinkWrap: true,
@@ -89,13 +92,19 @@ class WritingComment extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text("닉네임", style: postTitleStyle),
+                      child: Text(
+                        comment.writer.nickname,
+                        style: postTitleStyle,
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
+                      padding: const EdgeInsets.only(bottom: 0.0),
                       child: Row(
                         children: [
-                          Text("매너온도 36.5", style: postDetailStyle),
+                          Text(
+                            "매너온도 ${comment.writer.mannerScore.toString()}",
+                            style: postDetailStyle,
+                          ),
                           const Padding(
                             padding: EdgeInsets.all(4.0),
                             child: Icon(
@@ -104,32 +113,42 @@ class WritingComment extends GetView<PostDetailController> {
                               color: Colors.grey,
                             ),
                           ),
-                          Text("7분 전", style: postDetailStyle),
+                          Text(
+                            TimeUtil.timeAgo(comment.createdDateTime),
+                            style: postDetailStyle,
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  print("icon button check");
-                },
-                padding: const EdgeInsets.fromLTRB(normal, 0, normal, normal),
-                constraints: BoxConstraints(),
-                icon: Icon(Icons.more_vert),
-              ),
+              commentMoreVert(comment),
             ],
           ),
-          Padding(
+          Container(
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(
               left: parentAvatar * 2 + normal,
               bottom: 6.0,
               right: normal,
+              top: 6.0,
             ),
             child: Text(
-              "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
+              comment.content,
               style: commentStyle,
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(left: parentAvatar * 2 + normal),
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                print("댓글 좋아요 기능");
+                controller.toggleCommentLike(comment);
+              },
+              child: Text("좋아요 ${comment.likes.toString()}"),
+              style: comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
             ),
           ),
         ],
@@ -140,7 +159,7 @@ class WritingComment extends GetView<PostDetailController> {
   Widget childComment(Comment comment) {
     return Padding(
       padding: EdgeInsets.only(
-        top: 20,
+        top: normal,
         left: big + parentAvatar * 2 + normal,
       ),
       child: Column(
@@ -164,13 +183,19 @@ class WritingComment extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text("닉네임", style: postTitleStyle),
+                      child: Text(
+                        comment.writer.nickname,
+                        style: postTitleStyle,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
                       child: Row(
                         children: [
-                          Text("매너온도 36.5", style: postDetailStyle),
+                          Text(
+                            "매너온도 ${comment.writer.mannerScore.toString()}",
+                            style: postDetailStyle,
+                          ),
                           const Padding(
                             padding: EdgeInsets.all(4.0),
                             child: Icon(
@@ -179,35 +204,196 @@ class WritingComment extends GetView<PostDetailController> {
                               color: Colors.grey,
                             ),
                           ),
-                          Text("7분 전", style: postDetailStyle),
+                          Text(
+                            TimeUtil.timeAgo(comment.createdDateTime),
+                            style: postDetailStyle,
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  print("icon button check");
-                },
-                padding: const EdgeInsets.fromLTRB(normal, 0, normal, normal),
-                constraints: BoxConstraints(),
-                icon: Icon(Icons.more_vert),
-              ),
+              commentMoreVert(comment),
             ],
           ),
-          Padding(
+          Container(
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(
               left: childAvatar * 2 + normal,
               bottom: 6.0,
               right: normal,
             ),
             child: Text(
-              "상인엔 있는데 진천에서는 본적 없는것 같아영asdfasdfasdfasasdfasd",
+              comment.content,
               style: commentStyle,
             ),
           ),
+          Container(
+            padding: const EdgeInsets.only(
+              left: childAvatar * 2 + normal,
+              right: normal,
+            ),
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                print("댓글 좋아요 기능");
+                controller.toggleCommentLike(comment);
+              },
+              child: Text("좋아요 ${comment.likes.toString()}"),
+              style: comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget commentMoreVert(Comment comment) {
+    return IconButton(
+      onPressed: () {
+        // TODO : 댓글 메뉴 열기 - 작성자의 댓글이면 [수정, 삭제, 닫기], 작성자가 아니라면 [신고, 닫기]
+        bool isWriter = controller.currentUserId == comment.writer.accountId;
+
+        Get.bottomSheet(
+          isWriter
+              ? writerCommentActionSheet(comment)
+              : readerCommentActionSheet(comment),
+          barrierColor: Colors.black26,
+        );
+      },
+      padding: const EdgeInsets.fromLTRB(normal, 0, normal, normal),
+      constraints: BoxConstraints(),
+      icon: Icon(Icons.more_vert),
+    );
+  }
+
+  Widget writerCommentActionSheet(Comment comment) {
+    double actionSize = 60;
+    double actionFontSize = 20;
+
+    return Container(
+      height: actionSize * 3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          bottomSheetAction(
+            func: () {
+              print('PostDetail.writerCommentActionSheet - 수정');
+              // TODO: 댓글 수정페이지
+            },
+            color: Colors.blue,
+            content: "수정",
+            fontSize: actionFontSize,
+            height: actionSize,
+          ),
+          const Divider(height: 0, thickness: 1),
+          bottomSheetAction(
+            func: () {
+              print('PostDetail.writerCommentActionSheet - 삭제');
+              _confirmationDialog(
+                content: "댓글을 삭제하시겠습니까?",
+                isPost: false,
+                commentId: comment.id,
+              );
+            },
+            color: Colors.red,
+            content: "삭제",
+            fontSize: actionFontSize,
+            height: actionSize,
+          ),
+          const Divider(height: 0, thickness: 1),
+          bottomSheetAction(
+            func: () {
+              print('PostDetail.writerCommentActionSheet - 닫기');
+              Get.back();
+            },
+            color: Colors.black,
+            content: "닫기",
+            fontSize: actionFontSize,
+            height: actionSize,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget readerCommentActionSheet(Comment comment) {
+    double actionSize = 60;
+    double actionFontSize = 20;
+
+    return Container(
+      height: actionSize * 2,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          bottomSheetAction(
+            func: () {
+              print('PostDetail.readerCommentActionSheet - 신고');
+              controller.reportComment(comment.id);
+            },
+            color: Colors.red,
+            content: "신고",
+            fontSize: actionFontSize,
+            height: actionSize,
+          ),
+          const Divider(height: 0, thickness: 1),
+          bottomSheetAction(
+            func: () {
+              print('PostDetail.readerCommentActionSheet - 닫기');
+              Get.back();
+            },
+            color: Colors.black,
+            content: "닫기",
+            fontSize: actionFontSize,
+            height: actionSize,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bottomSheetAction({
+    required double height,
+    required double fontSize,
+    required String content,
+    required Color color,
+    required func,
+  }) {
+    return GestureDetector(
+      onTap: func,
+      child: Container(
+        width: double.infinity,
+        height: height,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20),
+            topLeft: Radius.circular(20),
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          content,
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.w800,
+            color: color,
+          ),
+        ),
       ),
     );
   }
@@ -229,98 +415,136 @@ class WritingComment extends GetView<PostDetailController> {
   }
 
   Widget commentTextField() {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        decoration: topBorderBox,
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {},
-              padding: const EdgeInsets.fromLTRB(14, 0, 7, 0),
-              // padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
-              icon: Icon(
-                Icons.location_on_outlined,
-                size: 30,
-                color: Colors.grey[600],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              // padding: EdgeInsets.zero,
-              padding: const EdgeInsets.fromLTRB(7, 0, 14, 0),
-              constraints: BoxConstraints(),
-              icon: Icon(
-                Icons.image_outlined,
-                size: 30,
-                color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(
-              width: Get.width - 90,
-              child: Card(
-                elevation: 0,
-                color: Colors.grey[100],
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25.0),
+    const double iconSize = 27.0;
+
+    return Obx(
+      () => Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          decoration: topBorderBox,
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+                // padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                icon: Icon(
+                  Icons.location_on_outlined,
+                  size: iconSize,
+                  color: Colors.grey[600],
                 ),
-                child: TextFormField(
-                  autofocus: true,
-                  textAlignVertical: TextAlignVertical.center,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 5,
-                  minLines: 1,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "댓글을 입력해주세요.",
-                    hintStyle: TextStyle(color: Colors.grey[500]),
-                    prefix: const SizedBox(width: 20),
-                    suffix: const SizedBox(width: 20),
-                    // prefixIcon: Row(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [],
-                    // ),
-                    // suffixIcon: Row(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: [
-                    //     IconButton(
-                    //       onPressed: () {},
-                    //       icon: Icon(Icons.attach_file),
-                    //     ),
-                    //     IconButton(
-                    //       onPressed: () {},
-                    //       icon: Icon(Icons.camera_alt),
-                    //     ),
-                    //   ],
-                    // ),
-                    // contentPadding: EdgeInsets.only(left: 5),
+              ),
+              IconButton(
+                onPressed: () {},
+                // padding: EdgeInsets.zero,
+                padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+                constraints: BoxConstraints(),
+                icon: Icon(
+                  Icons.image_outlined,
+                  size: iconSize,
+                  color: Colors.grey[600],
+                ),
+              ),
+              SizedBox(
+                width: Get.width - 90,
+                child: Card(
+                  elevation: 0,
+                  color: Colors.grey[100],
+                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                  ),
+                  child: TextFormField(
+                    controller: controller.commentTextField,
+                    textAlignVertical: TextAlignVertical.center,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: 5,
+                    minLines: 1,
+                    onChanged: (text) =>
+                        controller.setOnSendComment(text.isNotEmpty),
+                    decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      border: InputBorder.none,
+                      hintText: "댓글을 입력해주세요.",
+                      hintStyle: TextStyle(
+                        color: Colors.grey[500],
+                        fontSize: Get.width < 400 ? 16 : 17,
+                      ),
+                      prefix: const SizedBox(width: 20),
+                      suffixIcon: controller.onSendComment.value
+                          ? IconButton(
+                              onPressed: () {
+                                print(
+                                    "댓글 작성 - ${controller.commentTextField.text}");
+                                // TODO: 대댓글 등록 로직 필요
+                                int parentId = Get.arguments;
+                                controller.sendComment(parentId);
+                              },
+                              color: Colors.orange,
+                              icon: Icon(Icons.send_rounded),
+                            )
+                          : SizedBox.shrink(),
+                      // contentPadding: EdgeInsets.only(left: 5),
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     bottom: 8.0,
-            //     right: 5.0,
-            //     left: 2,
-            //   ),
-            //   child: CircleAvatar(
-            //     radius: 25,
-            //     backgroundColor: Colors.orangeAccent,
-            //     child: IconButton(
-            //       icon: Icon(
-            //         Icons.mic,
-            //         color: Colors.white,
-            //       ),
-            //       onPressed: () {},
-            //     ),
-            //   ),
-            // ),
-          ],
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     bottom: 8.0,
+              //     right: 5.0,
+              //     left: 2,
+              //   ),
+              //   child: CircleAvatar(
+              //     radius: 25,
+              //     backgroundColor: Colors.orangeAccent,
+              //     child: IconButton(
+              //       icon: Icon(
+              //         Icons.mic,
+              //         color: Colors.white,
+              //       ),
+              //       onPressed: () {},
+              //     ),
+              //   ),
+              // ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  void _confirmationDialog(
+      {required String content, required bool isPost, int? commentId}) {
+    Get.dialog(
+      AlertDialog(
+        content: Text(content),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          ElevatedButton(
+            onPressed: () => Get.back(),
+            child: Text("  취소  "),
+            style: cancelBtn,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (isPost) {
+                controller.deletePost();
+              } else {
+                if (commentId == null) {
+                  Logger().e("댓글 삭제를 위해서는 댓글 ID를 파라미터에 넣어줘야함");
+                  return;
+                }
+
+                controller.deleteComment(commentId);
+              }
+            },
+            child: Text("  삭제  "),
+            style: deleteBtn,
+          ),
+        ],
       ),
     );
   }

@@ -24,12 +24,12 @@ class PickReceivingLocationRepository {
     return result;
   }
 
-  void register(String description, double lat, double lng) {
+  void register(String description, double latitude, double longitude) {
     // NOTE : 사용자의 위치 데이터를 로컬에 저장하는 함수
     Map<String, dynamic> jsonMap = {
       "description": description,
-      "lat": lat,
-      "lng": lng,
+      "latitude": latitude,
+      "longitude": longitude,
     };
     String jsonString = jsonEncode(jsonMap);
 

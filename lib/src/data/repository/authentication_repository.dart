@@ -85,7 +85,9 @@ class AuthenticationRepository {
   }
 
   // 로그아웃
-  signOut() {}
+  void logout() {
+    localClient.deleteUser();
+  }
 
   // 로컬에 저장된 유저 객체 가져오기
   User? getSavedUser() {

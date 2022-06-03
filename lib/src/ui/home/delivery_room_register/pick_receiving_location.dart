@@ -428,6 +428,31 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
   Widget addressDescription() {
     return SizedBox(
       height: Get.height * 0.10,
+      child: Center(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          child: TextField(
+            controller: controller.locationDescription,
+            onChanged: (text) => controller.setIsDescriptionEmpty(text),
+            maxLength: 13,
+            decoration: InputDecoration(
+              fillColor: Colors.white,
+              filled: true,
+              isDense: true,
+              contentPadding:
+                  Get.width < 400 ? EdgeInsets.all(10.0) : EdgeInsets.all(15.0),
+              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(),
+              hintText: "집결지 위치 (ex. CU앞, OO 건물)",
+              counterText: "",
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return SizedBox(
+      height: Get.height * 0.10,
       width: Get.width,
       child: Center(
         child: Container(
@@ -442,7 +467,7 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
               contentPadding: EdgeInsets.only(left: 15.0),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(),
-              hintText: "내 위치 (ex. 집, 회사)",
+              hintText: "집결지 위치 (ex. CU앞, OO 건물)",
               counterText: "",
             ),
           ),
@@ -467,21 +492,23 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
       ),
       title: const Text("집결지 설정", style: appBarTitle),
       actions: [
-        controller.isFirstPage()
-            ? SizedBox.shrink()
-            : TextButton(
-                onPressed: controller.isDescriptionEmpty.value
-                    ? null
-                    : () {
-                        controller.completePickLocation();
-                        Get.back();
-                      },
-                child: Text("완료"),
-                style: TextButton.styleFrom(
-                  primary: Colors.black,
-                  textStyle: appBarAction,
+        Obx(
+          () => controller.isFirstPage()
+              ? SizedBox.shrink()
+              : TextButton(
+                  onPressed: controller.isDescriptionEmpty.value
+                      ? null
+                      : () {
+                          controller.completePickLocation();
+                          Get.back();
+                        },
+                  child: Text("완료"),
+                  style: TextButton.styleFrom(
+                    primary: Colors.black,
+                    textStyle: appBarAction,
+                  ),
                 ),
-              ),
+        ),
       ],
     );
   }

@@ -12,10 +12,12 @@ import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
+  static DeliveryRoomRegisterController get to => Get.find();
+
   final DeliveryRoomRegisterRepository repository;
   final WritingMenuController writingMenuController;
 
@@ -32,7 +34,10 @@ class DeliveryRoomRegisterController extends GetxController {
   int limitPerson = -1;
   RxInt deliveryTip = 2000.obs;
   RxInt pickedStoreCategory = (-1).obs;
-  ReceivingLocation? receivingLocation;
+
+  RxString receivingLocationDescription = "".obs;
+  RxDouble receivingLocationLatitude = (-1.0).obs;
+  RxDouble receivingLocationLongitude = (-1.0).obs;
 
   // 모집글 등록을 위한 상세 정보
   final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
@@ -55,7 +60,9 @@ class DeliveryRoomRegisterController extends GetxController {
         storeName.text.trim().isNotEmpty &&
         deliveryAppTypeOfStoreLink.text.trim().isNotEmpty &&
         pickedStoreCategory.value != -1 &&
-        receivingLocation != null;
+        receivingLocationDescription.value.isNotEmpty &&
+        receivingLocationLatitude.value != -1.0 &&
+        receivingLocationLongitude.value != -1.0;
   }
 
   Future<void> registerDeliveryRoom() async {
@@ -102,9 +109,9 @@ class DeliveryRoomRegisterController extends GetxController {
 
     deliveryRoomInfo["content"] = content.text;
     deliveryRoomInfo["receivingLocation"] = {
-      "description": receivingLocation?.description,
-      "lat": receivingLocation?.lat,
-      "lng": receivingLocation?.lng,
+      "description": receivingLocationDescription.value,
+      "latitude": receivingLocationLatitude.value,
+      "longitude": receivingLocationLongitude.value,
     };
     deliveryRoomInfo["limitPerson"] = limitPerson;
     deliveryRoomInfo["storeCategory"] =
@@ -134,6 +141,10 @@ class DeliveryRoomRegisterController extends GetxController {
         GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
         return;
       }
+
+      Logger().v(data.text);
+      print(data.text);
+
       String? clip = data.text;
 
       print(data.text);
@@ -162,6 +173,8 @@ class DeliveryRoomRegisterController extends GetxController {
       this.storeLink.text = storeLink;
       this.storeName.text = storeName;
       deliveryAppTypeOfStoreLink.text = appType;
+      print(
+          "클립보드 파싱 ${this.storeLink.text} ${this.storeName.text} ${deliveryAppTypeOfStoreLink.text}");
     } catch (e) {
       Logger().e("클립보드 파싱 에러");
       GetSnackbar.err("오류", "배민, 요기요 링크를 붙여넣어주세요!");
@@ -172,11 +185,25 @@ class DeliveryRoomRegisterController extends GetxController {
     this.deliveryTip.value = deliveryTip;
   }
 
-  void setReceivingLocation(String description, double lat, double lng) {
-    receivingLocation =
-        ReceivingLocation(description: description, lat: lat, lng: lng);
-    print(
-        'DeliveryRoomRegisterController.setReceivingLocation $receivingLocation');
+  void setReceivingLocation(
+    String description,
+    double latitude,
+    double longitude,
+  ) {
+    print('DeliveryRoomRegisterController.setReceivingLocation');
+    print(description);
+    print(latitude);
+    print(longitude);
+    print('DeliveryRoomRegisterController.setReceivingLocation');
+    print(ReceivingLocation(
+      description: description,
+      latitude: latitude,
+      longitude: longitude,
+    ));
+
+    receivingLocationDescription.value = description;
+    receivingLocationLatitude.value = latitude;
+    receivingLocationLongitude.value = longitude;
   }
 
   void setPickedStoreCategory(int index) {

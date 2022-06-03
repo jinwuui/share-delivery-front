@@ -83,12 +83,6 @@ class ParticipateRoomController extends GetxController {
       Get.find<RootController>().changeRootPageIndex(1);
       Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL,
           arguments: deliveryRoom.roomId);
-
-      // NOTE : 2안 - 홈화면까지 pop -> DELIVERY_HISTORY_DETAIL 로 이동 (뒤로가기 버튼이 안 생김...)
-      // Get.offNamedUntil(
-      //   Routes.DELIVERY_HISTORY_DETAIL,
-      //   (route) => Get.currentRoute == Routes.INITIAL,
-      // );
     } else if (result == "EXCEPTION") {
       print("exception - participateDeliveryRoom");
     } else {

@@ -8,7 +8,7 @@ import 'package:share_delivery/src/controller/home/fast_matching/fast_matching_c
 import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 import 'package:share_delivery/src/ui/widgets/loader_overlay.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:shimmer/shimmer.dart';
 
 class FastMatching extends GetView<FastMatchingController> {

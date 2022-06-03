@@ -171,7 +171,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        "집결지 : ${controller.receivingLocation == null ? "" : controller.receivingLocation!.description}"),
+                        "집결지 : ${controller.receivingLocationDescription.value}"),
                     OutlinedButton(
                       onPressed: () =>
                           Get.toNamed(Routes.PICK_RECEIVING_LOCATION),
@@ -218,6 +218,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
         OutlinedButton(
           onPressed: () async {
             ClipboardData? data = await Clipboard.getData('text/plain');
+
             controller.parsingStoreLink(data);
           },
           child: const Text("붙여넣기"),

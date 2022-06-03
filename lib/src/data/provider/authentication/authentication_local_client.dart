@@ -31,6 +31,16 @@ class AuthenticationLocalClient {
     SharedPrefsUtil.instance.setString("user", userString);
   }
 
+  // 로그아웃을 위해 유저의 로컬 정보 삭제
+  void deleteUser() {
+    // SharedPrefsUtil.instance.remove("user");
+    // SharedPrefsUtil.instance.remove("accessToken");
+    // SharedPrefsUtil.instance.remove("refreshToken");
+    // SharedPrefsUtil.instance.remove("receivingLocations");
+    // SharedPrefsUtil.instance.remove("userLocation");
+    SharedPrefsUtil.instance.clear();
+  }
+
   User? getSavedUser() {
     try {
       String? userStr = SharedPrefsUtil.instance.getString("user");
