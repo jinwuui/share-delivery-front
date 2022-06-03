@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/ui/chat/delivery_room_chat.dart';
@@ -57,24 +58,15 @@ class DeliveryRoomDetail extends StatelessWidget {
                   controller: DeliveryOrderTabController.to.controller,
                   children: [
                     DeliveryRoomInfoDetail(),
+                    OrderTabView(),
                     Obx(
-                      () => DeliveryRoomInfoDetailController.to.isLoad == true
-                          ? OrderTabView()
-                          : Center(
-                              child: SpinKitThreeBounce(
-                                size: 25,
-                                color: Colors.black,
-                              ),
-                            ),
-                    ),
-                    Obx(
-                      () => false
+                      () => DeliveryOrderController.to.status ==
+                                  DeliveryOrderStatus.recuritmentCompleted ||
+                              DeliveryOrderController.to.status ==
+                                  DeliveryOrderStatus.orderCompleted
                           ? DeliveryRoomChat()
                           : Center(
-                              child: SpinKitThreeBounce(
-                                size: 25,
-                                color: Colors.black,
-                              ),
+                              child: Text("인원 모집이 끝난 후 채팅을 이용해주세요."),
                             ),
                     ),
                   ],

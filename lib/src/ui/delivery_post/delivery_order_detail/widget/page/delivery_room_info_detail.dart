@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/ui/widgets/receiving_location.dart';
 
@@ -20,6 +19,8 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
 
   @override
   Widget build(BuildContext context) {
+    Logger().d("DeliveryRoomInfoDetailState rerender");
+
     DeliveryRoomInfoDetailController controller =
         DeliveryRoomInfoDetailController.to;
 
@@ -43,7 +44,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                       ),
                       alignment: Alignment.topLeft,
                       child: Text(
-                        controller.deliveryRoom.value.content,
+                        controller.deliveryRoom.content,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
@@ -75,7 +76,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                                 ),
                               ),
                               Text(
-                                controller.deliveryRoom.value.leader.nickname,
+                                controller.deliveryRoom.leader.nickname,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
                                   fontSize: 20,
@@ -94,7 +95,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                                 ),
                               ),
                               Text(
-                                controller.deliveryRoom.value.leader.mannerScore
+                                controller.deliveryRoom.leader.mannerScore
                                     .toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
@@ -130,10 +131,10 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                                 ),
                               ),
                               Text(
-                                (controller.deliveryRoom.value.limitPerson - 1)
+                                (controller.deliveryRoom.limitPerson - 1)
                                         .toString() +
                                     " / " +
-                                    controller.deliveryRoom.value.limitPerson
+                                    controller.deliveryRoom.limitPerson
                                         .toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
@@ -163,8 +164,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                               ),
                               Icon(Icons.east),
                               Text(
-                                controller.deliveryRoom.value.platformType ==
-                                        "BAEMIN"
+                                controller.deliveryRoom.platformType == "BAEMIN"
                                     ? "배민"
                                     : "요기요",
                                 style: TextStyle(fontWeight: FontWeight.w800),
@@ -172,8 +172,7 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
                             ],
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: controller
-                                        .deliveryRoom.value.platformType ==
+                            primary: controller.deliveryRoom.platformType ==
                                     "BAEMIN"
                                 ? Color.fromRGBO(42, 193, 188, 1)
                                 : Color.fromRGBO(249, 0, 80, 1), // NOTE: 요기요 색깔

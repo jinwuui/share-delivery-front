@@ -13,7 +13,6 @@ class DeliveryRecruitController extends GetxController
 
   final orderMenuList = <OrderMenuModel>[].obs;
   final totalPaymentMoney = 0.obs;
-  final orderTip = 4000.obs; // TODO:API
 
   @override
   void onInit() {
@@ -26,7 +25,12 @@ class DeliveryRecruitController extends GetxController
   @override
   void onReady() async {
     super.onReady();
+    int deliveryRoomId = Get.arguments['deliveryRoomId'];
+    await getOrderList(deliveryRoomId: deliveryRoomId);
+  }
 
+  Future<void> getOrderList({deliveryRoomId}) async {
+    Logger().w("getOrderList");
     try {
       change(null, status: RxStatus.loading());
       int deliveryRoomId = Get.arguments['deliveryRoomId'];
@@ -45,12 +49,7 @@ class DeliveryRecruitController extends GetxController
 
   Future<void> deleteUserWithOrder(int userId) async {
     try {
-      // String roomId =
-      //     DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
-
-      //TODO: API
-      int roomId =
-          DeliveryRoomInfoDetailController.to.deliveryRoom.value.roomId;
+      int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
       await repository.rejectUserOrder(userId, roomId);
 
       orderMenuList.value =
@@ -62,7 +61,7 @@ class DeliveryRecruitController extends GetxController
 
   Future<void> calculateTotalPaymentMoney() async {
     int totalMenuPrice = 0;
-    totalPaymentMoney.value;
+
     for (var element in orderMenuList) {
       for (var e in element.menus) {
         totalMenuPrice += e.price;
@@ -72,6 +71,7 @@ class DeliveryRecruitController extends GetxController
   }
 
   Future<void> completeRecurit() async {
-    // repository.completeDeliveryRecruit();
+    int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
+    await repository.completeDeliveryRecruit(roomId);
   }
 }

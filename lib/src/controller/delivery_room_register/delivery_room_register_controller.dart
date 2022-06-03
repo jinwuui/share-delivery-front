@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -64,7 +63,7 @@ class DeliveryRoomRegisterController extends GetxController {
 
     try {
       Map<String, dynamic> deliveryRoomInfo = _getDeliveryRoomInfo();
-      print(deliveryRoomInfo);
+      Logger().w(deliveryRoomInfo);
 
       DeliveryRoom? deliveryRoom =
           await repository.registerDeliveryRoom(deliveryRoomInfo);
@@ -73,30 +72,11 @@ class DeliveryRoomRegisterController extends GetxController {
         print("   모집글 등록 성공");
         // await Get.find<HomeController>().onRefresh();
 
-        // dummy data
-        DeliveryRoom room = DeliveryRoom(
-          leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
-          content: "register test",
-          person: 2,
-          limitPerson: 4,
-          deliveryTip: 3000,
-          storeLink: "www.baemin.com/stores?id=1524",
-          platformType: "BAEMIN",
-          status: "OPEN",
-          createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
-          receivingLocation: ReceivingLocation(
-              description: "CU 편의점 앞",
-              lat: 35.821730657601044,
-              lng: 128.5190184847488),
-          roomId: 123,
-          storeCategory: 'CHICKEN',
-        );
-
         // delivery history ui 갱신
-        DeliveryHistoryController.to.addPost(room);
+        DeliveryHistoryController.to.addPost(deliveryRoom);
 
         // 배달 관리 컨트롤러에 등록
-        DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
+        // DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
 
         // 홈화면 모집글 새로 고침
         await Get.find<HomeController>().onRefresh();
@@ -156,6 +136,7 @@ class DeliveryRoomRegisterController extends GetxController {
       }
       String? clip = data.text;
 
+      print(data.text);
       if (clip == null) {
         GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
         return;
@@ -172,7 +153,7 @@ class DeliveryRoomRegisterController extends GetxController {
           clip.substring(clip.indexOf("'") + 1, clip.lastIndexOf("'"));
 
       late String storeLink;
-      if (appType == "배달의민족") {
+      if (appType == "배달의민족" && !clip.contains("http")) {
         storeLink = "https://dummyURL";
       } else {
         storeLink = clip.substring(clip.indexOf("http"));

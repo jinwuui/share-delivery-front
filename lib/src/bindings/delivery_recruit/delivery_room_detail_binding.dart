@@ -18,20 +18,21 @@ class DeliveryRoomDetailBinding extends Bindings {
     dio.options.contentType = "application/json";
     final String? host = dotenv.env['SERVER_HOST'];
 
-    Get.put(ReceivingLocationController());
-    Get.put(DeliveryOrderTabController());
-    Get.put(DeliveryRecruitController(
+    Get.put(DeliveryRoomInfoDetailController(
       repository: DeliveryOrderDetailRepository(
         apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host!),
       ),
     ));
-    Get.put(DeliveryOrderController());
-    Get.put(OrderFormRegisterController(
+    Get.put(ReceivingLocationController());
+    Get.put(DeliveryOrderTabController());
+    Get.put(DeliveryRecruitController(
       repository: DeliveryOrderDetailRepository(
         apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host),
       ),
     ));
-    Get.put(DeliveryRoomInfoDetailController(
+    Get.put(DeliveryOrderController());
+
+    Get.put(OrderFormRegisterController(
       repository: DeliveryOrderDetailRepository(
         apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host),
       ),

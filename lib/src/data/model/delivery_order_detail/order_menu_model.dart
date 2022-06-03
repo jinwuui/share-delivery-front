@@ -8,7 +8,7 @@ class OrderMenuModel with _$OrderMenuModel {
   const factory OrderMenuModel({
     required int entryOrderId,
     required int accountId,
-    required String phoneNumber,
+    required String nickName,
     required String type,
     required String status,
     required List<Menu> menus,

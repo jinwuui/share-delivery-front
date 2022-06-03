@@ -57,6 +57,8 @@ class DeliveryRoomRegisterRepository {
       menuList: menuList,
     );
 
+    print(newRoom);
+
     await apiClient.registerDeliveryRoom(newRoom).then((value) {
       Logger().i(value);
       return value;

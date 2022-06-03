@@ -37,7 +37,7 @@ class RegisterOrderFormScreenShotSection extends StatelessWidget {
                 child: Obx(() => Row(
                       children: [
                         ...Get.find<OrderFormRegisterController>()
-                            .orderFormList
+                            .orderForms
                             .map(
                               (image) => OrderFormImage(
                                 imageURL: image.path,

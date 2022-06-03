@@ -2,12 +2,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:retrofit/http.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/services/alarm_model.dart';
 import 'package:share_delivery/src/services/alarm_service.dart';
+import 'package:share_delivery/src/ui/home/home.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -29,7 +30,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
-  showNotificationView(message);
+  // showNotificationView(message);
 }
 
 Future<void> showNotificationView(RemoteMessage message) async {
@@ -60,10 +61,14 @@ class NotificationController extends GetxController {
 
   @override
   void onInit() {
-    print("notification init");
     _initNotification();
     _getToken();
     super.onInit();
+  }
+
+  Future<void> _getToken() async {
+    fcmToken = (await _messaging.getToken())!;
+    Logger().w(fcmToken);
   }
 
   Future<void> _initNotification() async {
@@ -100,48 +105,87 @@ class NotificationController extends GetxController {
 
     // foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Handling a foreground message ${message.messageId}');
+
       // local notification to show to users using the created channel.
       showNotificationView(message);
 
-      _handleMessage(message);
+      handleForegroundMessage(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
-  Future<void> _getToken() async {
-    fcmToken = (await _messaging.getToken())!;
-    Logger().w(fcmToken);
+  // click notification event
+  void _handleMessage(RemoteMessage message) {
+    final eventType = message.data['type'];
+    final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
+
+    Logger().w(eventType, message.data);
+
+    addFcmInAlarmList(message);
+
+    // click event
+    switch (eventType) {
+      case 'recuritmentCompleted':
+        Get.toNamed(
+          Routes.DELIVERY_HISTORY_DETAIL,
+          arguments: {'deliveryRoomId': roomId},
+        );
+        break;
+      case 'deliveryRoomUpdated':
+        break;
+      case 'completed':
+        break;
+      default:
+        break;
+    }
   }
 
-  void _handleMessage(RemoteMessage message) {
+  // Add fcm in alarm list
+  addFcmInAlarmList(RemoteMessage message) {
     final eventType = message.data['type'];
     final title = message.notification!.title;
     final body = message.notification!.body;
 
+    // Add Notification in Alarm list
     AlarmModel alarmModel = AlarmModel(
       type: eventType,
       title: title!,
       content: body!,
       createdAt: message.sentTime!,
     );
-    AlarmService.addAlarm(alarmModel);
 
-    Logger().w(eventType);
-    Logger().w(message.data);
+    AlarmService.addAlarm(alarmModel);
+  }
+
+  // fcm 상태에 따라 방 상태 변경
+  void handleForegroundMessage(RemoteMessage message) {
+    final eventType = message.data['type'];
+    final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
+
+    // delivery history page에 없는 경우에는 페이지 이동
+    if (!Get.isRegistered<DeliveryOrderController>()) {
+      Get.toNamed(
+        Routes.DELIVERY_HISTORY_DETAIL,
+        arguments: {'deliveryRoomId': roomId},
+      );
+      return;
+    }
+
+    // A B C 데이터 api 호출
     switch (eventType) {
       case 'recuritmentCompleted':
-        DeliveryOrderController.to
-            .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
-        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+        if (Get.isRegistered<DeliveryOrderController>()) {
+          DeliveryRecruitController.to.getOrderList(
+              deliveryRoomId:
+                  DeliveryRoomInfoDetailController.to.deliveryRoom.roomId);
+          break;
+        }
         break;
       case 'deliveryRoomUpdated':
-        // DeliveryOrderController.to.getOrderDetail(message.data['orderId']);
-        // DeliveryOrderTabController.to.setTabIndex(2);
         break;
       case 'completed':
-        // DeliveryOrderController.to.getOrderDetail(message.data['orderId']);
-        // DeliveryOrderTabController.to.setTabIndex(3);
         break;
       default:
         break;

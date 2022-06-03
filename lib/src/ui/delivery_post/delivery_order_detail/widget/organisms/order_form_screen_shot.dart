@@ -37,7 +37,7 @@ class OrderFormScreenShotSection extends StatelessWidget {
                 () => Row(
                   children: [
                     ...Get.find<OrderFormRegisterController>()
-                        .orderFormList
+                        .orderForms
                         .map(
                           (image) => OrderFormImage(
                             imageURL: image.path,

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:logger/logger.dart';
@@ -52,34 +53,39 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
         elevation: 0.0,
       ),
       body: controller.obx(
-        (historyPostList) => Obx(() {
-          //TODO: historyPostList 정렬
+          (historyPostList) => Obx(() {
+                //TODO: historyPostList 정렬
 
-          return Center(
-            child: ListView.separated(
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  Get.toNamed(
-                    Routes.DELIVERY_HISTORY_DETAIL,
-                    arguments: {'deliveryRoomId': 1},
-                  );
-                },
-                child: DeliveryHistoryPost(
-                  deliveryRoomModel: historyPostList![index],
-                ),
-              ),
-              separatorBuilder: (_, index) => Divider(
-                endIndent: 20,
-                indent: 20,
-                color: Colors.grey.shade300,
-                height: 0.5,
-                thickness: 1,
-              ),
-              itemCount: historyPostList!.length,
+                return Center(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        Get.toNamed(
+                          Routes.DELIVERY_HISTORY_DETAIL,
+                          arguments: {'deliveryRoomId': 1},
+                        );
+                      },
+                      child: DeliveryHistoryPost(
+                        deliveryRoomModel: historyPostList![index],
+                      ),
+                    ),
+                    separatorBuilder: (_, index) => Divider(
+                      endIndent: 20,
+                      indent: 20,
+                      color: Colors.grey.shade300,
+                      height: 0.5,
+                      thickness: 1,
+                    ),
+                    itemCount: historyPostList!.length,
+                  ),
+                );
+              }),
+          onLoading: Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.black,
             ),
-          );
-        }),
-      ),
+          )),
     );
   }
 }

@@ -8,33 +8,18 @@ class DeliveryRoomInfoDetailController extends GetxController {
   static DeliveryRoomInfoDetailController get to => Get.find();
   DeliveryRoomInfoDetailController({required this.repository});
 
-  // late final Rx<DeliveryRoom> deliveryRoom;
-  Rx<DeliveryRoom> deliveryRoom = DeliveryRoom(
-    roomId: 456,
-    leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
-    content: "BBQ 드실분?",
-    person: 1,
-    limitPerson: 3,
-    deliveryTip: 3000,
-    storeLink: "www.baemin.com/stores?id=1524",
-    platformType: "BAEMIN",
-    status: "OPEN",
-    createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
-    receivingLocation: ReceivingLocation(
-      description: "CU 편의점 앞",
-      lat: 35.820848788632226,
-      lng: 128.518205019348,
-    ),
-    storeCategory: 'CHICKEN',
-  ).obs;
+  final roomId = 0.obs;
+  late final DeliveryRoom deliveryRoom;
   final isLoad = false.obs;
 
   @override
   void onInit() async {
     super.onInit();
-    int deliveryRoomId = Get.arguments['deliveryRoomId'];
+
+    roomId.value = Get.arguments['deliveryRoomId'];
+
     try {
-      deliveryRoom.value = await getDeliveryRoomInfo(deliveryRoomId);
+      deliveryRoom = await getDeliveryRoomInfo(roomId.value);
       isLoad.value = true;
     } catch (e) {
       print(e);

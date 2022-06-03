@@ -13,7 +13,7 @@ class UserOrder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int leaderId =
-        DeliveryRoomInfoDetailController.to.deliveryRoom.value.leader.accountId;
+        DeliveryRoomInfoDetailController.to.deliveryRoom.leader.accountId;
 
     return Container(
       width: double.infinity,
