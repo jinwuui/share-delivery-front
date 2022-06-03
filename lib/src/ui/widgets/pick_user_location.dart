@@ -53,14 +53,16 @@ class PickUserLocation extends GetView<PickUserLocationController> {
       height: Get.height * 0.10,
       child: Center(
         child: Container(
-          margin: EdgeInsets.all(15),
+          margin: EdgeInsets.symmetric(horizontal: 15),
           child: TextField(
             controller: controller.locationDescription,
             maxLength: 13,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               fillColor: Colors.white,
               filled: true,
-              contentPadding: EdgeInsets.only(left: 15.0),
+              isDense: true,
+              contentPadding:
+                  Get.width < 400 ? EdgeInsets.all(10.0) : EdgeInsets.all(15.0),
               border: OutlineInputBorder(),
               focusedBorder: OutlineInputBorder(),
               hintText: "내 위치 (ex. 집, 회사)",

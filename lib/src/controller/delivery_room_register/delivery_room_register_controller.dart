@@ -17,6 +17,8 @@ import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 class DeliveryRoomRegisterController extends GetxController {
+  static DeliveryRoomRegisterController get to => Get.find();
+
   final DeliveryRoomRegisterRepository repository;
   final WritingMenuController writingMenuController;
 
@@ -33,7 +35,10 @@ class DeliveryRoomRegisterController extends GetxController {
   int limitPerson = -1;
   RxInt deliveryTip = 2000.obs;
   RxInt pickedStoreCategory = (-1).obs;
-  ReceivingLocation? receivingLocation;
+
+  RxString receivingLocationDescription = "".obs;
+  RxDouble receivingLocationLatitude = (-1.0).obs;
+  RxDouble receivingLocationLongitude = (-1.0).obs;
 
   // 모집글 등록을 위한 상세 정보
   final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
@@ -56,7 +61,9 @@ class DeliveryRoomRegisterController extends GetxController {
         storeName.text.trim().isNotEmpty &&
         deliveryAppTypeOfStoreLink.text.trim().isNotEmpty &&
         pickedStoreCategory.value != -1 &&
-        receivingLocation != null;
+        receivingLocationDescription.value.isNotEmpty &&
+        receivingLocationLatitude.value != -1.0 &&
+        receivingLocationLongitude.value != -1.0;
   }
 
   Future<void> registerDeliveryRoom() async {
@@ -122,9 +129,9 @@ class DeliveryRoomRegisterController extends GetxController {
 
     deliveryRoomInfo["content"] = content.text;
     deliveryRoomInfo["receivingLocation"] = {
-      "description": receivingLocation?.description,
-      "latitude": receivingLocation?.latitude,
-      "longitude": receivingLocation?.longitude,
+      "description": receivingLocationDescription.value,
+      "latitude": receivingLocationLatitude.value,
+      "longitude": receivingLocationLongitude.value,
     };
     deliveryRoomInfo["limitPerson"] = limitPerson;
     deliveryRoomInfo["storeCategory"] =
@@ -192,11 +199,24 @@ class DeliveryRoomRegisterController extends GetxController {
   }
 
   void setReceivingLocation(
-      String description, double latitude, double longitude) {
-    receivingLocation = ReceivingLocation(
-        description: description, latitude: latitude, longitude: longitude);
-    print(
-        'DeliveryRoomRegisterController.setReceivingLocation $receivingLocation');
+    String description,
+    double latitude,
+    double longitude,
+  ) {
+    print('DeliveryRoomRegisterController.setReceivingLocation');
+    print(description);
+    print(latitude);
+    print(longitude);
+    print('DeliveryRoomRegisterController.setReceivingLocation');
+    print(ReceivingLocation(
+      description: description,
+      latitude: latitude,
+      longitude: longitude,
+    ));
+
+    receivingLocationDescription.value = description;
+    receivingLocationLatitude.value = latitude;
+    receivingLocationLongitude.value = longitude;
   }
 
   void setPickedStoreCategory(int index) {

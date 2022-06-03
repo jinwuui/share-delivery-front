@@ -165,8 +165,11 @@ class PickReceivingLocationController extends GetxController {
     double longitude = receivingLocationLng;
 
     repository.register(description, latitude, longitude);
-    final controller = Get.find<DeliveryRoomRegisterController>();
-    controller.setReceivingLocation(description, latitude, longitude);
+    DeliveryRoomRegisterController.to.setReceivingLocation(
+      description,
+      latitude,
+      longitude,
+    );
   }
 
   void reloadWebView() {
