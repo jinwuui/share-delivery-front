@@ -57,14 +57,14 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
-    _authenticationStateStream.value = Authenticated(
-        user: User(
-            status: '',
-            role: '',
-            accountId: 1234,
-            nickname: '',
-            phoneNumber: ''));
-    return;
+    // _authenticationStateStream.value = Authenticated(
+    //     user: User(
+    //         status: '',
+    //         role: '',
+    //         accountId: 1234,
+    //         nickname: '',
+    //         phoneNumber: ''));
+    // return;
 
     if (user == null) {
       _authenticationStateStream.value = UnAuthenticated();

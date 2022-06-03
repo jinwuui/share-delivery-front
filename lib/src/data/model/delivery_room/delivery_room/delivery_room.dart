@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'delivery_room.freezed.dart';
 part 'delivery_room.g.dart';
@@ -16,7 +17,7 @@ class DeliveryRoom with _$DeliveryRoom {
     required String platformType,
     required String status,
     required DateTime createdDateTime,
-    required String storeCategory,
+    @Default("DummyStoreCategory") String storeCategory,
     required ReceivingLocation receivingLocation,
   }) = _DeliveryRoom;
 

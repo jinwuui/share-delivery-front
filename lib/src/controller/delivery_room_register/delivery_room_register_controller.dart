@@ -11,6 +11,7 @@ import 'package:share_delivery/src/controller/delivery_room_register/writing_men
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/categories.dart';
@@ -71,7 +72,7 @@ class DeliveryRoomRegisterController extends GetxController {
 
     try {
       Map<String, dynamic> deliveryRoomInfo = _getDeliveryRoomInfo();
-      print(deliveryRoomInfo);
+      Logger().v(deliveryRoomInfo);
 
       DeliveryRoom? deliveryRoom =
           await repository.registerDeliveryRoom(deliveryRoomInfo);
@@ -233,5 +234,34 @@ class DeliveryRoomRegisterController extends GetxController {
     return pickedStoreCategory.value != -1
         ? foodCategories[pickedStoreCategory.value].keys.first
         : "";
+  }
+
+  dummyDeliveryRoomRegisterTest() async {
+    print('DeliveryRoomRegisterController.dummyDeliveryRoomRegisterTest');
+    Map<String, dynamic> deliveryRoomInfo = {};
+
+    deliveryRoomInfo["content"] = "asdf";
+    deliveryRoomInfo["receivingLocation"] = {
+      "description": "asdf",
+      "latitude": 38.23,
+      "longitude": 128.1234,
+    };
+    deliveryRoomInfo["limitPerson"] = 4;
+    deliveryRoomInfo["storeCategory"] = "JAPAN";
+    deliveryRoomInfo["shareStore"] = {
+      "link": "https://dummy.com",
+      "name": "가게이름",
+      "type": "BAEMIN",
+    };
+
+    deliveryRoomInfo["deliveryTip"] = 3000;
+    deliveryRoomInfo["menuList"] = <Menu>[
+      Menu(name: "메뉴1", price: 3000, quantity: 1)
+    ];
+
+    Logger().v(deliveryRoomInfo);
+
+    DeliveryRoom? deliveryRoom =
+        await repository.registerDeliveryRoom(deliveryRoomInfo);
   }
 }
