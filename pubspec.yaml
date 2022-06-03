@@ -56,6 +56,7 @@ dependencies:
   hive: ^2.2.1
   hive_flutter: ^1.1.0
   badges: ^2.0.2
+  socket_io_client: ^1.0.2
   keyboard_attachable: ^2.1.0
 
 dev_dependencies:
@@ -66,6 +67,7 @@ dev_dependencies:
   json_serializable: ^6.2.0
   retrofit_generator: ^4.0.1
   flutter_lints: ^1.0.0
+  hive_generator: ^1.1.0
 
 flutter:
   uses-material-design: true

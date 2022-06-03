@@ -10,6 +10,7 @@ import 'package:share_delivery/src/bindings/login/phone_number_authentication_bi
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
 import 'package:share_delivery/src/bindings/profile/account_bank_binding.dart';
 import 'package:share_delivery/src/bindings/profile/app_setting_binding.dart';
+import 'package:share_delivery/src/bindings/profile/account_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/profile/other_user_profile_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
@@ -21,6 +22,14 @@ import 'package:share_delivery/src/ui/community/post_register/post_register.dart
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/community/writing_comment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/select_bank.dart';
+import 'package:share_delivery/src/ui/profile/alarm/alarm.dart';
+import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/friend/friend.dart';
+import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
+import 'package:share_delivery/src/ui/profile/other_user_profile/other_user_profile.dart';
+import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
@@ -75,6 +84,7 @@ abstract class Routes {
   static const ACCOUNT_MANAGE = "/accountManage";
   static const SELECT_BANK = "/selectBank";
   static const OTHER_USER_PROFILE = "/otherUserProfile";
+  static const MODIFY_PROFILE = "/modifyProfile";
 
   // 커뮤니티
   static const POST_REGISTER = "/postRegister";
@@ -85,6 +95,9 @@ abstract class Routes {
 
   // 친구 관리
   static const FRIEND = "/friend";
+
+  // 알림함
+  static const ALARM = "/alarm";
 }
 
 class AppPages {
@@ -205,6 +218,16 @@ class AppPages {
       name: Routes.OTHER_USER_PROFILE,
       page: () => const OtherUserProfile(),
       binding: OtherUserProfileBinding(),
+    ),
+    GetPage(
+      name: Routes.MODIFY_PROFILE,
+      page: () => ModifyProfile(),
+      binding: AccountBinding(),
+    ),
+    GetPage(
+      name: Routes.ALARM,
+      page: () => Alarm(),
+      binding: AccountBinding(),
     ),
     GetPage(
       name: Routes.EXPANDED_POST_IMAGE,

@@ -34,6 +34,10 @@ class Profile extends StatelessWidget {
         elevation: 0.0,
         actions: [
           IconButton(
+            icon: Icon(Icons.message, size: 30),
+            onPressed: () => Get.toNamed(Routes.ALARM),
+          ),
+          IconButton(
             icon: Icon(Icons.settings, size: 30),
             onPressed: () => Get.toNamed(Routes.APP_SETTING),
           )
@@ -109,7 +113,7 @@ class Profile extends StatelessWidget {
                 elevation: 0.0,
                 minimumSize: Size.fromHeight(45.0),
               ),
-              onPressed: () => Get.to(ModifyProfile()),
+              onPressed: () => Get.toNamed(Routes.MODIFY_PROFILE),
               child: Text(
                 "프로필 수정",
                 style: TextStyle(
@@ -202,6 +206,7 @@ class Profile extends StatelessWidget {
                   "다른 사용자 프로필 테스트",
                   () => Get.toNamed(Routes.OTHER_USER_PROFILE,
                       arguments: {"accountId": 100})),
+              Divider(),
             ],
           ),
         ],

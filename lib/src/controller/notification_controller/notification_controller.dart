@@ -2,9 +2,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:retrofit/http.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/alarm_model.dart';
+import 'package:share_delivery/src/services/alarm_service.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -113,14 +116,35 @@ class NotificationController extends GetxController {
 
   void _handleMessage(RemoteMessage message) {
     final eventType = message.data['type'];
+    final title = message.notification!.title;
+    final body = message.notification!.body;
+
+    AlarmModel alarmModel = AlarmModel(
+      type: eventType,
+      title: title!,
+      content: body!,
+      createdAt: message.sentTime!,
+    );
+    AlarmService.addAlarm(alarmModel);
+
     Logger().w(eventType);
-    if (eventType == "recuritmentCompleted") {
-      DeliveryOrderController.to
-          .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
-      // Get.isRegistered()
-      Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
-      // DeliveryOrderTabController.to.asyncLoadTabs(index: 1);
-    } else if (eventType == "deliveryRoomUpdated") {
-    } else if (eventType == "completed-order") {}
+    Logger().w(message.data);
+    switch (eventType) {
+      case 'recuritmentCompleted':
+        DeliveryOrderController.to
+            .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
+        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL);
+        break;
+      case 'deliveryRoomUpdated':
+        // DeliveryOrderController.to.getOrderDetail(message.data['orderId']);
+        // DeliveryOrderTabController.to.setTabIndex(2);
+        break;
+      case 'completed':
+        // DeliveryOrderController.to.getOrderDetail(message.data['orderId']);
+        // DeliveryOrderTabController.to.setTabIndex(3);
+        break;
+      default:
+        break;
+    }
   }
 }

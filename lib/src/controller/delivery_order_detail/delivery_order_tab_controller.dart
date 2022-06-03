@@ -42,12 +42,13 @@ class DeliveryOrderTabController extends GetxController
   }
 
   void asyncLoadTabs({int index = 0}) async {
-    controller.dispose(); // release animation resources
-    controller = TabController(
-        vsync: this,
-        length: tabChildParameters.length,
-        initialIndex: index // to show a particular tab on create
-        );
+    controller.index = index;
+    // controller.dispose(); // release animation resources
+    // controller = TabController(
+    //     vsync: this,
+    //     length: tabChildParameters.length,
+    //     initialIndex: index // to show a particular tab on create
+    //     );
     update();
   }
 

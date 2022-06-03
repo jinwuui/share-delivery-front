@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/profile/account_bank/account_bank_controller.dart';
@@ -100,7 +101,10 @@ class AccountManage extends GetView<AccountBankController> {
                   ),
                 )
               : Center(
-                  child: CircularProgressIndicator(),
+                  child: SpinKitThreeBounce(
+                    size: 25,
+                    color: Colors.black,
+                  ),
                 )),
         ));
   }
