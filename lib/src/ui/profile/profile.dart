@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:share_delivery/src/routes/route.dart';
-import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
 class Profile extends StatelessWidget {

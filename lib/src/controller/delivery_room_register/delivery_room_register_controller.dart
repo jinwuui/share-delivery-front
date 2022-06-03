@@ -161,6 +161,10 @@ class DeliveryRoomRegisterController extends GetxController {
         GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
         return;
       }
+
+      Logger().v(data.text);
+      print(data.text);
+
       String? clip = data.text;
 
       if (clip == null) {
@@ -179,7 +183,7 @@ class DeliveryRoomRegisterController extends GetxController {
           clip.substring(clip.indexOf("'") + 1, clip.lastIndexOf("'"));
 
       late String storeLink;
-      if (appType == "배달의민족") {
+      if (appType == "배달의민족" && !clip.contains("http")) {
         storeLink = "https://dummyURL";
       } else {
         storeLink = clip.substring(clip.indexOf("http"));
@@ -188,6 +192,8 @@ class DeliveryRoomRegisterController extends GetxController {
       this.storeLink.text = storeLink;
       this.storeName.text = storeName;
       deliveryAppTypeOfStoreLink.text = appType;
+      print(
+          "클립보드 파싱 ${this.storeLink.text} ${this.storeName.text} ${deliveryAppTypeOfStoreLink.text}");
     } catch (e) {
       Logger().e("클립보드 파싱 에러");
       GetSnackbar.err("오류", "배민, 요기요 링크를 붙여넣어주세요!");

@@ -218,6 +218,7 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
         OutlinedButton(
           onPressed: () async {
             ClipboardData? data = await Clipboard.getData('text/plain');
+
             controller.parsingStoreLink(data);
           },
           child: const Text("붙여넣기"),
