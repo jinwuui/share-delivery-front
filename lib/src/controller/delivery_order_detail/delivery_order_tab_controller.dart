@@ -33,8 +33,6 @@ class DeliveryOrderTabController extends GetxController
 
   @override
   void onInit() {
-    print("Delivery Order Controller INit");
-
     super.onInit();
     controller = TabController(
         vsync: this, length: tabChildParameters.length, initialIndex: 0);
@@ -43,12 +41,6 @@ class DeliveryOrderTabController extends GetxController
 
   void asyncLoadTabs({int index = 0}) async {
     controller.index = index;
-    // controller.dispose(); // release animation resources
-    // controller = TabController(
-    //     vsync: this,
-    //     length: tabChildParameters.length,
-    //     initialIndex: index // to show a particular tab on create
-    //     );
     update();
   }
 
