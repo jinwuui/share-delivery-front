@@ -7,6 +7,7 @@ import 'package:share_delivery/src/data/model/profile/profile.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/account_update_req_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
 
 part 'profile_api_client.g.dart';
 
@@ -19,15 +20,15 @@ abstract class ProfileApiClient {
   Future<List<User>> getFriendList();
 
   // 계좌 조회
-  @GET('/api/accounts/back-account')
+  @GET('/api/accounts/bank-account')
   Future<AccountBankDTO> readAccount();
 
   // 계좌 등록
-  @POST('/api/accounts/back-account')
+  @POST('/api/accounts/bank-account')
   Future<void> registerAccount(@Body() AccountBankDTO accountDTO);
 
   // 내 계좌 정보 삭제
-  @DELETE('/api/accounts/back-account')
+  @DELETE('/api/accounts/bank-account')
   Future deleteAccountBank();
 
   // 유저 정보 조회
