@@ -28,7 +28,7 @@ abstract class ProfileApiClient {
 
   // 내 계좌 정보 삭제
   @DELETE('/api/accounts/back-account')
-  Future deleteAccount();
+  Future deleteAccountBank();
 
   // 유저 정보 조회
   @GET('/api/accounts/{accountId}')

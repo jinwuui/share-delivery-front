@@ -11,9 +11,9 @@ class AccountBankController extends GetxController {
 
   final RxInt pickedBank = (-1).obs;
 
-  final bank = "농협".obs;
-  final accountNumber = "3521264".obs;
-  final accountHolder = "박진우".obs;
+  final bank = "".obs;
+  final accountNumber = "".obs;
+  final accountHolder = "".obs;
 
   final isLoad = false.obs;
 
@@ -50,6 +50,16 @@ class AccountBankController extends GetxController {
       await repository.updateAccountBank(newAccountDTO);
     } catch (e) {
       Logger().w(e);
+    }
+  }
+
+  Future<bool> deleteAccountBank() async {
+    try {
+      await repository.deleteAccountBank();
+      return true;
+    } catch (e) {
+      Logger().w(e);
+      return false;
     }
   }
 }

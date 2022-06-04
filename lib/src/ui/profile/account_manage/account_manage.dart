@@ -40,9 +40,39 @@ class AccountManage extends GetView<AccountBankController> {
                 primary: Colors.black,
                 elevation: 0.0,
               ),
+              onPressed: () async {
+                bool res = await controller.deleteAccountBank();
+
+                if (res) {
+                  Get.snackbar(
+                    "성공",
+                    "계좌 정보가 삭제되었습니다.",
+                    duration: Duration(seconds: 1),
+                  );
+                } else {
+                  Get.snackbar(
+                    "실패",
+                    "계좌 정보 삭제에 실패하였습니다.",
+                    duration: Duration(seconds: 1),
+                  );
+                }
+              },
+              child: Text(
+                "계좌 삭제",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.black,
+                elevation: 0.0,
+              ),
               onPressed: () {
                 if (accountManageFormKey.currentState!.validate()) {
-                  // validation 이 성공하면 true
                   controller.updateAccountBank();
 
                   Get.back();
@@ -66,7 +96,7 @@ class AccountManage extends GetView<AccountBankController> {
           ],
         ),
         body: Obx(
-          (() => controller.isLoad == true
+          (() => controller.isLoad.value == true
               ? Container(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -79,6 +109,7 @@ class AccountManage extends GetView<AccountBankController> {
                             ProfileTextFormField(
                               label: "이름",
                               onSaved: (newValue) {},
+                              onChanged: (newValue) {},
                               validator: (value) {
                                 if (value.length < 1) {
                                   return '이름은 필수사항입니다.';

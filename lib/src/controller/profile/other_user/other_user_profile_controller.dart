@@ -28,11 +28,11 @@ class OtherUserProfileController extends GetxController {
 
   Future<void> fetchUserInfo(int accountId) async {
     try {
-      User userModel = await repository.fetchUserInfo(accountId);
+      // User userModel = await repository.fetchUserInfo(accountId);
 
       isLoad.value = true;
-      user.value = userModel;
-      Logger().w(userModel);
+      // user.value = userModel;
+      // Logger().w(userModel);
     } catch (e) {
       Logger().w(e);
     }

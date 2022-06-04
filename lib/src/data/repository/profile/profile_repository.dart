@@ -34,8 +34,8 @@ class ProfileRepository {
         accountDetail: accountUpdateReqDTO, profileImage: profileImage);
   }
 
-  Future deleteAccount() async {
-    return await apiClient.deleteAccount();
+  Future deleteAccountBank() async {
+    return await apiClient.deleteAccountBank();
   }
 
   Future<bool> checkNickName(String nickName) async {
