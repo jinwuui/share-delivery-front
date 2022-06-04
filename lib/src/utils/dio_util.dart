@@ -92,9 +92,9 @@ class DioUtil {
             return handler.resolve(clonedRequest);
           } else {
             print("ERROR: $error");
-            print('DioUtil.getDio: 401 제외한 에러');
-            print(error.response?.statusCode);
-            print(error.response?.data);
+            print('DioUtil.getDio: 에러');
+            print("statusCode: ${error.response?.statusCode}");
+            print("data: ${error.response?.data}");
           }
         },
       ),

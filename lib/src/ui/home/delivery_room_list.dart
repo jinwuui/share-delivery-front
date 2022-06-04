@@ -21,16 +21,18 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SmartRefresher(
-        controller: controller.refresher,
-        enablePullDown: true,
-        enablePullUp: true,
-        onRefresh: controller.onRefresh,
-        onLoading: controller.onLoading,
-        child: controller.deliveryRooms.isNotEmpty
-            ? deliveryRoomList()
-            : noDeliveryRooms(),
+    return Obx(
+      () => Center(
+        child: SmartRefresher(
+          controller: controller.refresher,
+          enablePullDown: true,
+          enablePullUp: true,
+          onRefresh: controller.onRefresh,
+          onLoading: controller.onLoading,
+          child: controller.deliveryRooms.isNotEmpty
+              ? deliveryRoomList()
+              : noDeliveryRooms(),
+        ),
       ),
     );
   }
@@ -140,6 +142,11 @@ class DeliveryRoomPost extends GetView<HomeController> {
   Widget build(BuildContext context) {
     DeliveryRoom _deliveryRoom = controller.deliveryRooms[index];
 
+    int distanceNum =
+        controller.distanceBetween(_deliveryRoom.receivingLocation);
+    String distanceStr =
+        distanceNum == -1 ? "위치설정 필요" : distanceNum.toString() + " m";
+
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -215,10 +222,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  Text(controller
-                          .distanceBetween(_deliveryRoom.receivingLocation)
-                          .toString() +
-                      " m"),
+                  Text(distanceStr),
                   SizedBox(
                     height: 20,
                   ),

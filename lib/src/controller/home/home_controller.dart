@@ -60,14 +60,6 @@ class HomeController extends GetxController {
   // 모집글 상세 정보 관련
   int curSelectedIdx = -1;
 
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
-    // 사용자 위치 불러오기
-    await getUserLocation();
-  }
-
   // 사용자 위치 불러오기
   Future<void> getUserLocation() async {
     UserLocation? userLocation = repository.findRecentUserLocation();
@@ -121,21 +113,30 @@ class HomeController extends GetxController {
   // 모집글 새로고침
   Future<void> onRefresh() async {
     if (!isPrepared.value) {
-      refresher.refreshFailed();
-      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
-      return;
+      await getUserLocation();
+      if (!isPrepared.value) {
+        refresher.refreshFailed();
+        GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+        return;
+      }
     }
 
     try {
-      // TODO : 테스트할 때 키기
+      double? latitude = locationData.value.latitude;
+      double? longitude = locationData.value.longitude;
+      int radius = 5;
 
-      // deliveryRooms.value = await findDeliveryRooms();
+      List<DeliveryRoom> result =
+          await repository.findDeliveryRooms(latitude!, longitude!, radius);
+      Logger().i(result);
 
-      if (deliveryRooms.isEmpty) {
+      if (result.isEmpty) {
         refresher.refreshFailed();
         GetSnackbar.on("알림", "검색된 모집글이 없습니다!");
         return;
       }
+
+      deliveryRooms.value = result;
 
       refresher.resetNoData();
       refresher.refreshCompleted();
@@ -147,6 +148,8 @@ class HomeController extends GetxController {
 
   // 모집글 불러오기
   Future<void> onLoading() async {
+    await getUserLocation();
+
     if (!isPrepared.value) {
       refresher.loadFailed();
       GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
@@ -173,22 +176,10 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<List<DeliveryRoom>> findDeliveryRooms() async {
-    print("- home controller - 모집글 조회");
-    double? latitude = locationData.value.latitude;
-    double? longitude = locationData.value.longitude;
-    int radius = 5;
-
-    if (latitude == null || longitude == null) {
-      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
-      return [];
-    }
-
-    List<DeliveryRoom> result =
-        await repository.findDeliveryRooms(latitude, longitude, radius);
-    Logger().v(result);
-    return result;
-  }
+  // Future<List<DeliveryRoom>> findDeliveryRooms() async {
+  //
+  //   return result;
+  // }
 
   // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {

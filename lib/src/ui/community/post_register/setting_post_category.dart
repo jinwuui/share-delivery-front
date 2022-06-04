@@ -16,8 +16,8 @@ class SettingPostCategory extends GetView<PostRegisterController> {
         body: Container(
           color: Colors.grey.shade200,
           child: ListView.builder(
-            itemCount: postCategories.length,
-            itemBuilder: (_, i) => category(postCategories[i]),
+            itemCount: postCategories.length - 1,
+            itemBuilder: (_, i) => category(postCategories[i + 1]),
           ),
         ),
       ),

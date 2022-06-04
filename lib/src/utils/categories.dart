@@ -1,5 +1,5 @@
 const List<Map> foodCategories = [
-  {"한식": "KOREAN"},
+  {"한식": "KOREA"},
   {"치킨": "CHICKEN"},
   {"분식": "BOONSIK"},
   {"중식": "CHINA"},

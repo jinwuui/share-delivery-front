@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:logger/logger.dart';
 
 part 'delivery_room.freezed.dart';
 part 'delivery_room.g.dart';
@@ -10,7 +9,7 @@ class DeliveryRoom with _$DeliveryRoom {
     @Default(-1) int roomId,
     required Leader leader,
     required String content,
-    required int person,
+    required int? person,
     required int limitPerson,
     required int deliveryTip,
     required String storeLink,
