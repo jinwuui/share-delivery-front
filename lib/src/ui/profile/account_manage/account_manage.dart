@@ -43,6 +43,8 @@ class AccountManage extends GetView<AccountBankController> {
               onPressed: () async {
                 bool res = await controller.deleteAccountBank();
 
+                Get.back();
+
                 if (res) {
                   Get.snackbar(
                     "성공",
@@ -71,9 +73,9 @@ class AccountManage extends GetView<AccountBankController> {
                 primary: Colors.black,
                 elevation: 0.0,
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (accountManageFormKey.currentState!.validate()) {
-                  controller.updateAccountBank();
+                  await controller.updateAccountBank();
 
                   Get.back();
 
@@ -108,8 +110,12 @@ class AccountManage extends GetView<AccountBankController> {
                           children: [
                             ProfileTextFormField(
                               label: "이름",
-                              onSaved: (newValue) {},
-                              onChanged: (newValue) {},
+                              onSaved: (newValue) {
+                                controller.accountHolder.value = newValue;
+                              },
+                              onChanged: (newValue) {
+                                controller.accountHolder.value = newValue;
+                              },
                               validator: (value) {
                                 if (value.length < 1) {
                                   return '이름은 필수사항입니다.';
@@ -173,7 +179,12 @@ class AccountManage extends GetView<AccountBankController> {
         SizedBox(
           height: 60,
           child: TextFormField(
-            onSaved: (newValue) {},
+            onSaved: (newValue) {
+              controller.accountNumber.value = newValue!;
+            },
+            onChanged: (newValue) {
+              controller.accountNumber.value = newValue;
+            },
             validator: (value) {
               if (value!.isEmpty) {
                 return '계좌번호는 필수사항입니다.';
