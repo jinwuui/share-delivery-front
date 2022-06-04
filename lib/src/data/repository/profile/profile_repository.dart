@@ -51,4 +51,12 @@ class ProfileRepository {
   Future<String> deleteFriend(int accountId) async {
     return await apiClient.deleteFriend(accountId);
   }
+
+  Future<int> addFriend(int accountId) async {
+    return await apiClient.addFriend(accountId);
+  }
+
+  Future acceptFriend(int accountId, int friendType) async {
+    return await apiClient.acceptFriend(accountId, friendType);
+  }
 }

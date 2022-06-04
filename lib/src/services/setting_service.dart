@@ -28,6 +28,12 @@ class DeliveryRoomState {
   });
 }
 
+enum FriendAcceptState {
+  ACCEPT,
+  REJECT,
+  CANCEL,
+}
+
 final deliveryRoomStateWithColor = {
   "OPEN": DeliveryRoomState(color: Colors.orange, name: "인원 모집 중"),
   "WAITING_PAYMENT": DeliveryRoomState(color: Colors.red, name: "배달 주문 중"),

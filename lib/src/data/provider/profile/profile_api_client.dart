@@ -25,6 +25,14 @@ abstract class ProfileApiClient {
   @DELETE('/api/friends/{accountId}')
   Future<String> deleteFriend(@Path() int accountId);
 
+  // 친구 신청
+  @POST('/api/friends/')
+  Future<int> addFriend(@Body() int accountId);
+
+  // 친구 신청 처리
+  @PATCH('/api/friends/{accountId}')
+  Future acceptFriend(@Path() int accountId, @Body() int friendType);
+
   // 계좌 조회
   @GET('/api/accounts/bank-account')
   Future<AccountBankDTO> readAccount();

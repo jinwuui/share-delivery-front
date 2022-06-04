@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 
 class FriendController extends GetxController
     with StateMixin<List<FriendResDTO>> {
@@ -77,5 +78,34 @@ class FriendController extends GetxController
     } catch (err) {
       change(null, status: RxStatus.error());
     }
+  }
+
+  Future<void> addFriend(int accountId) async {
+    try {
+      change(null, status: RxStatus.loading());
+
+      int res = await repository.addFriend(accountId);
+      if (res == accountId) {
+        Get.snackbar("친구 신청", "친구를 신청하였습니다.",
+            snackPosition: SnackPosition.BOTTOM,
+            isDismissible: true,
+            duration: Duration(seconds: 1));
+      } else {
+        Get.snackbar("친구 추가 실패", "친구 추가에 실패하였습니다.",
+            snackPosition: SnackPosition.BOTTOM,
+            isDismissible: true,
+            duration: Duration(seconds: 1));
+      }
+
+      change(friends, status: RxStatus.success());
+    } catch (err) {
+      change(null, status: RxStatus.error());
+    }
+  }
+
+  Future<void> acceptFriend(int accountId, FriendAcceptState friendType) async {
+    int res = await repository.acceptFriend(accountId, friendType.index);
+
+    change(friends, status: RxStatus.success());
   }
 }
