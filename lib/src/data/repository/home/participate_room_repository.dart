@@ -10,11 +10,14 @@ class ParticipateRoomRepository {
 
   Future<String> participateDeliveryRoom(
       int roomId, List<Menu> menuList) async {
+    Logger().v(menuList);
+
     await apiClient.requestParticipating(roomId, menuList).then((value) {
       Logger().i("모집글 참여 성공");
       return "ACCEPTED";
     }).catchError(
       (Object obj) {
+        Logger().e(obj);
         switch (obj.runtimeType) {
           case DioError:
             final res = (obj as DioError).response;

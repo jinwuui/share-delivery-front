@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
+import 'package:share_delivery/src/ui/widgets/loader_overlay.dart';
 
 class WritingMenu extends GetView<WritingMenuController> {
   const WritingMenu({Key? key}) : super(key: key);
@@ -9,8 +11,8 @@ class WritingMenu extends GetView<WritingMenuController> {
   Widget build(BuildContext context) {
     return Obx(
       () => SafeArea(
-        child: Scaffold(
-          appBar: appBar(),
+        child: MyLoaderOverlay(
+          appBar: appBar(context),
           body: SingleChildScrollView(
             child: Column(
               children: [
@@ -39,7 +41,7 @@ class WritingMenu extends GetView<WritingMenuController> {
     );
   }
 
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget appBar(BuildContext context) {
     return AppBar(
       shape: const Border(bottom: BorderSide(color: Colors.black12, width: 1)),
       elevation: 0,
@@ -56,8 +58,10 @@ class WritingMenu extends GetView<WritingMenuController> {
         TextButton(
           onPressed: () async {
             // TODO: 모집글 등록 로직 필요
+            context.loaderOverlay.show();
             print("완료 - 모집글 등록 로직 필요");
             await controller.registerDeliveryRoom();
+            context.loaderOverlay.hide();
           },
           child: const Text("완료", style: TextStyle(color: Colors.black)),
         ),

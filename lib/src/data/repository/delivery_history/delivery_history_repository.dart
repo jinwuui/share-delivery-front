@@ -28,6 +28,7 @@ class DeliveryHistoryRepository {
             longitude: 128.5190184847488),
         roomId: 123,
         storeCategory: 'CHICKEN',
+        storeName: '갓튀긴후라이드 뉴욕점',
       ),
     ];
     await Future.delayed(Duration(seconds: 1));

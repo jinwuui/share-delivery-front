@@ -9,6 +9,7 @@ Widget MyLoaderOverlay({
 }) {
   return LoaderOverlay(
     child: Scaffold(
+      backgroundColor: Colors.white,
       appBar: appBar,
       body: body,
       bottomSheet: bottomSheet,

@@ -53,6 +53,12 @@ const TextStyle postDetailStyle = TextStyle(
   // color: Colors.grey.shade500,
 );
 
+const TextStyle postStoreName = TextStyle(
+  fontWeight: FontWeight.w700,
+  color: Colors.grey,
+  // color: Colors.grey.shade500,
+);
+
 const TextStyle postContentStyle = TextStyle(
   fontWeight: FontWeight.w700,
   // color: Colors.grey,
