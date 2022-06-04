@@ -57,15 +57,15 @@ class DeliveryRoomRegisterRepository {
       menuList: menuList,
     );
 
-    print(newRoom);
+    Logger().wtf(newRoom);
 
-    await apiClient.registerDeliveryRoom(newRoom).then((value) {
-      Logger().i(value);
+    DeliveryRoom? result =
+        await apiClient.registerDeliveryRoom(newRoom).then((value) {
       return value;
     }).catchError((err) {
-      Logger().e(err);
+      return null;
     });
 
-    return null;
+    return result;
   }
 }

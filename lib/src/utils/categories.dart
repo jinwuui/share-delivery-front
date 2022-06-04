@@ -1,15 +1,24 @@
-const List<Map> foodCategories = [
-  {"한식": "KOREAN"},
-  {"치킨": "CHICKEN"},
-  {"분식": "BOONSIK"},
-  {"중식": "CHINA"},
-  {"찜/탕": "STEAM_AND_SOUP"},
-  {"피자": "PIZZA"},
-  {"일식": "JAPAN"},
-  {"패스트푸드": "FASTFOOD"},
-  {"야식": "LATE_NIGHT"},
-  {"도시락": "LUNCHBOX"},
+import 'dart:core';
+
+final List<FoodCategory> foodCategories = [
+  FoodCategory(kor: "한식", eng: "KOREA"),
+  FoodCategory(kor: "치킨", eng: "CHICKEN"),
+  FoodCategory(kor: "분식", eng: "BOONSIK"),
+  FoodCategory(kor: "중식", eng: "CHINA"),
+  FoodCategory(kor: "찜/탕", eng: "STEAM_AND_SOUP"),
+  FoodCategory(kor: "피자", eng: "PIZZA"),
+  FoodCategory(kor: "일식", eng: "JAPAN"),
+  FoodCategory(kor: "패스트푸드", eng: "FASTFOOD"),
+  FoodCategory(kor: "야식", eng: "LATE_NIGHT"),
+  FoodCategory(kor: "도시락", eng: "LUNCHBOX"),
 ];
+
+class FoodCategory {
+  final String kor;
+  final String eng;
+
+  FoodCategory({required this.kor, required this.eng});
+}
 
 const List<String> postCategories = [
   "전체",

@@ -6,6 +6,11 @@ class DioUtil {
     Dio dio = Dio();
 
     dio.interceptors.clear();
+    dio.interceptors.add(LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        requestHeader: false));
 
     dio.interceptors.add(
       InterceptorsWrapper(
@@ -95,6 +100,7 @@ class DioUtil {
             print('DioUtil.getDio: 401 제외한 에러');
             print(error.response?.statusCode);
             print(error.response?.data);
+            return handler.next(error);
           }
         },
       ),

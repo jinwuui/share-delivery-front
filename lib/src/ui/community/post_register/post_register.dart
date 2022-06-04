@@ -331,7 +331,7 @@ class PostRegister extends GetView<PostRegisterController> {
         controller: controller.content.value,
         minLines: 6,
         maxLines: 6,
-        onChanged: (text) => controller.setIsContentEmpty(text),
+        onChanged: (text) => controller.validateRegisterPost(text),
         style: defaultPostCategory,
         decoration: InputDecoration(
           hintText: "자유롭게 자신의 생활을 공유해주세요!",
@@ -361,9 +361,8 @@ class PostRegister extends GetView<PostRegisterController> {
       title: Text(controller.appBarTitle, style: appBarTitle),
       actions: [
         TextButton(
-          onPressed: controller.isContentEmpty.value
-              ? null
-              : () async {
+          onPressed: controller.isAbleRegisterPost.value
+              ? () async {
                   if (controller.isRegisterPost) {
                     print("게시글 등록 로직 테스트 필요");
                     await controller.registerPost();
@@ -371,7 +370,8 @@ class PostRegister extends GetView<PostRegisterController> {
                     print("게시글 수정 로직 테스트 필요");
                     await controller.updatePost(post!.postId);
                   }
-                },
+                }
+              : null,
           child: Text("완료"),
           style: TextButton.styleFrom(
             primary: Colors.black,

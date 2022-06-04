@@ -28,7 +28,7 @@ class PostRegisterController extends GetxController {
   var images = <String>[].obs;
 
   // UI 관련
-  RxBool isContentEmpty = true.obs;
+  RxBool isAbleRegisterPost = false.obs;
   String appBarTitle = "생활 공유";
   bool isRegisterPost;
 
@@ -44,10 +44,12 @@ class PostRegisterController extends GetxController {
 
   void setPostTopic(String category) {
     this.category.value = category;
+    validateRegisterPost(content.value.text);
   }
 
-  void setIsContentEmpty(String text) {
-    isContentEmpty.value = text.trim().isEmpty;
+  void validateRegisterPost(String text) {
+    isAbleRegisterPost.value =
+        text.trim().isNotEmpty && category.value != initCategoryMsg;
   }
 
   // 사진 선택
@@ -160,7 +162,7 @@ class PostRegisterController extends GetxController {
     content.value.text = post.content;
     content.value.selection = TextSelection.fromPosition(
         TextPosition(offset: content.value.text.length));
-    setIsContentEmpty(content.value.text);
+    validateRegisterPost(content.value.text);
     category.value = post.category;
     images.value = postDetail.images;
     // sharePlace.value = postDetail.sharePlace

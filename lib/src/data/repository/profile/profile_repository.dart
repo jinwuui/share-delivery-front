@@ -1,80 +1,62 @@
 import 'dart:io';
 
-import 'package:get/get.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/data/model/profile/profile.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
 import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/account_update_req_dto.dart';
+import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
 
 class ProfileRepository {
   final ProfileApiClient apiClient;
 
   ProfileRepository({required this.apiClient});
 
-  Future<List<User>> getFriendList() async {
-    List<User> list = [
-      User(
-        accountId: 1,
-        phoneNumber: "0104111111",
-        nickname: "parkjinwoo",
-        status: "asdasd",
-        profileImage:
-            "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
-        role: '',
-      ),
-      User(
-        accountId: 2,
-        phoneNumber: "0104111111",
-        nickname: "woowoowoo",
-        status: "asdasd",
-        profileImage:
-            "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
-        role: '',
-      ),
-      User(
-        accountId: 3,
-        phoneNumber: "0104111111",
-        nickname: "jinjinjin",
-        status: "asdasd",
-        profileImage:
-            "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
-        role: '',
-      ),
-    ];
-
-    await 2.delay();
-
-    return list;
-    return apiClient.getFriendList();
+  Future<List<FriendResDTO>> getFriendList(String friendType) async {
+    return await apiClient.getFriendList(friendType);
   }
 
   Future<void> updateAccountBank(AccountBankDTO accountDTO) async {
     return await apiClient.registerAccount(accountDTO);
   }
 
-  Future<AccountBankDTO> fetchAccountBank() async {
-    await 1.delay();
-    return AccountBankDTO(
-        userId: 1,
-        bank: "농협",
-        accountNumber: "3521264915483",
-        accountHolder: "박진우");
-    return await apiClient.readAccount();
+  Future<AccountBankDTO?> fetchAccountBank() async {
+    try {
+      AccountBankDTO res = await apiClient.readAccount();
+      return res;
+    } catch (e) {
+      return null;
+    }
   }
 
-  Future<User> fetchUserInfo(int accountId) async {
-    await 1.delay();
-    return User(
-        accountId: 1,
-        phoneNumber: '',
-        nickname: 'nickname',
-        status: 'status',
-        role: 'role');
+  Future<ProfileModel> fetchUserInfo(int accountId) async {
     return await apiClient.readUser(accountId);
   }
 
   Future<User> updateUserInfo(
-      AccountUpdateReqDTO accountUpdateReqDTO, File profileImage) async {
-    return await apiClient.updateUser(accountUpdateReqDTO, profileImage);
+      AccountUpdateReqDTO accountUpdateReqDTO, File? profileImage) async {
+    return await apiClient.updateUser(
+        accountDetail: accountUpdateReqDTO, profileImage: profileImage);
+  }
+
+  Future deleteAccountBank() async {
+    return await apiClient.deleteAccountBank();
+  }
+
+  Future<bool> checkNickName(String nickName) async {
+    return await apiClient.checkNickName(nickName);
+  }
+
+  Future<String> deleteFriend(int accountId) async {
+    return await apiClient.deleteFriend(accountId);
+  }
+
+  Future<int> addFriend(int accountId) async {
+    return await apiClient.addFriend(accountId);
+  }
+
+  Future acceptFriend(int accountId, int friendType) async {
+    return await apiClient.acceptFriend(accountId, friendType);
   }
 }

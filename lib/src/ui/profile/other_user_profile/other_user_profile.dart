@@ -5,6 +5,7 @@ import 'package:share_delivery/src/controller/profile/other_user/other_user_prof
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 
 class OtherUserProfile extends GetView<OtherUserProfileController> {
   const OtherUserProfile({Key? key}) : super(key: key);
@@ -98,15 +99,20 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                   onTap: () => Get.toNamed(
                     Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
-                      "imagePath":
-                          "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+                      "imagePath": controller.user.value.profileImageUrl == ''
+                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
+                          : imagePathWithHost(
+                              controller.user.value.profileImageUrl),
                       "title": "프로필 사진"
                     },
                   ),
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(
-                      "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+                      controller.user.value.profileImageUrl == ''
+                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
+                          : imagePathWithHost(
+                              controller.user.value.profileImageUrl),
                     ),
                     backgroundColor: Colors.grey.shade300,
                   ),
@@ -115,7 +121,7 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      "닉네임닉네임", // TODO: 닉네임
+                      controller.user.value.nickname, // TODO: 닉네임
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 18,
@@ -191,9 +197,9 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                   padding: EdgeInsets.symmetric(vertical: 20.0),
                   child: LinearPercentIndicator(
                     lineHeight: 18.0,
-                    percent: 0.5, // TODO: 온도
+                    percent: controller.user.value.mannerScore / 100,
                     center: Text(
-                      "50°C",
+                      "${controller.user.value.mannerScore}°C",
                       style: TextStyle(fontSize: 12.0),
                     ),
                     trailing: Padding(
@@ -201,7 +207,7 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                       child: Icon(
                         Icons.mood,
                         size: 25,
-                      ), // TODO: 온도에 따라 바꾸기
+                      ),
                     ),
                     backgroundColor: Colors.grey.shade300,
                     progressColor: Colors.orangeAccent,
@@ -214,47 +220,4 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
       ),
     );
   }
-
-  // Widget buildMenuListTile(String title, VoidCallback onTapCB) {
-  //   return ListTile(
-  //     onTap: onTapCB,
-  //     tileColor: Colors.orangeAccent,
-  //     selectedTileColor: Colors.brown,
-  //     title: Text(
-  //       title,
-  //       style: profileTextStyle,
-  //     ),
-  //     trailing: Icon(
-  //       Icons.arrow_forward_ios,
-  //       size: 20,
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildMenuList() {
-  //   return Container(
-  //     margin: EdgeInsets.only(top: 20.0),
-  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-  //     color: Colors.white,
-  //     child: Column(
-  //       children: [
-  //         ListView(
-  //           physics: NeverScrollableScrollPhysics(),
-  //           shrinkWrap: true,
-  //           children: [
-  //             buildMenuListTile(
-  //                 "계좌 관리", () => Get.toNamed(Routes.ACCOUNT_MANAGE)),
-  //             Divider(),
-  //             buildMenuListTile("수령 위치 관리", () => print("hello1")),
-  //             Divider(),
-  //             buildMenuListTile("친구 관리", () => Get.toNamed(Routes.FRIEND)),
-  //             Divider(),
-  //             buildMenuListTile("받은 평가", () => print("hello2")),
-  //             Divider(),
-  //             buildMenuListTile("생활 공유", () => print("hello3")),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
 }

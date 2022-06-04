@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logger/logger.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -9,13 +10,14 @@ class User with _$User {
     required int accountId,
     required String phoneNumber,
     required String nickname,
-    @Default("") String profileImage,
+    @Default("") String profileImageUrl,
     required String status,
     required String role,
     String? email,
     BankAccount? bankAccount,
     DateTime? createdDate,
     DateTime? modifiedDate,
+    @Default(36.5) double mannerScore,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -24,9 +26,9 @@ class User with _$User {
 @Freezed()
 class BankAccount with _$BankAccount {
   const factory BankAccount({
-    required String accountHolder,
-    required String bank,
-    required String accountNumber,
+    @Default("") String accountHolder,
+    @Default("") String bank,
+    @Default("") String accountNumber,
   }) = _BankAccount;
 
   factory BankAccount.fromJson(Map<String, dynamic> json) =>

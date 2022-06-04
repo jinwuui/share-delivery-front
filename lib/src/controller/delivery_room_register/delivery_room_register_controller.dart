@@ -10,6 +10,7 @@ import 'package:share_delivery/src/controller/delivery_room_register/writing_men
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
+import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/categories.dart';
@@ -31,7 +32,8 @@ class DeliveryRoomRegisterController extends GetxController {
   final TextEditingController deliveryAppTypeOfStoreLink =
       TextEditingController();
 
-  int limitPerson = -1;
+  static const int defaultLimitPerson = 2;
+  int limitPerson = defaultLimitPerson;
   RxInt deliveryTip = 2000.obs;
   RxInt pickedStoreCategory = (-1).obs;
 
@@ -43,7 +45,7 @@ class DeliveryRoomRegisterController extends GetxController {
   final RxList<bool> numOfPeopleSelections = <bool>[true, false, false].obs;
 
   void selectNumOfPeopleSelections(int index) {
-    limitPerson = index + 2;
+    limitPerson = index + defaultLimitPerson;
 
     for (int i = 0; i < numOfPeopleSelections.length; i++) {
       if (i == index) {
@@ -70,14 +72,16 @@ class DeliveryRoomRegisterController extends GetxController {
 
     try {
       Map<String, dynamic> deliveryRoomInfo = _getDeliveryRoomInfo();
-      Logger().w(deliveryRoomInfo);
+      Logger().v(deliveryRoomInfo);
 
       DeliveryRoom? deliveryRoom =
           await repository.registerDeliveryRoom(deliveryRoomInfo);
 
+      Logger().i(deliveryRoom);
+
       if (deliveryRoom != null) {
         print("   모집글 등록 성공");
-        // await Get.find<HomeController>().onRefresh();
+        await Get.find<HomeController>().onRefresh();
 
         // delivery history ui 갱신
         DeliveryHistoryController.to.addPost(deliveryRoom);
@@ -86,13 +90,15 @@ class DeliveryRoomRegisterController extends GetxController {
         // DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
 
         // 홈화면 모집글 새로 고침
-        await Get.find<HomeController>().onRefresh();
+        // await Get.find<HomeController>().onRefresh();
 
         // 내 배달 -> 모집글 상세정보 조회 페이지로 이동
         Get.until((route) => Get.currentRoute == Routes.INITIAL);
         Get.find<RootController>().changeRootPageIndex(1);
-        Get.toNamed(Routes.DELIVERY_HISTORY_DETAIL,
-            arguments: {"deliveryRoomId": 1});
+        Get.toNamed(
+          Routes.DELIVERY_HISTORY_DETAIL,
+          arguments: {"deliveryRoomId": 1},
+        );
         Get.snackbar("모집글 생성 완료", "");
       } else {
         print("   모집글 등록 실패");
@@ -115,7 +121,7 @@ class DeliveryRoomRegisterController extends GetxController {
     };
     deliveryRoomInfo["limitPerson"] = limitPerson;
     deliveryRoomInfo["storeCategory"] =
-        foodCategories[pickedStoreCategory.value].values.first;
+        foodCategories[pickedStoreCategory.value].eng;
     deliveryRoomInfo["shareStore"] = {
       "link": storeLink.text,
       "name": storeName.text,
@@ -212,7 +218,36 @@ class DeliveryRoomRegisterController extends GetxController {
 
   String getPickedStoreCategory() {
     return pickedStoreCategory.value != -1
-        ? foodCategories[pickedStoreCategory.value].keys.first
+        ? foodCategories[pickedStoreCategory.value].kor
         : "";
+  }
+
+  dummyDeliveryRoomRegisterTest() async {
+    print('DeliveryRoomRegisterController.dummyDeliveryRoomRegisterTest');
+    Map<String, dynamic> deliveryRoomInfo = {};
+
+    deliveryRoomInfo["content"] = "asdf";
+    deliveryRoomInfo["receivingLocation"] = {
+      "description": "asdf",
+      "latitude": 38.23,
+      "longitude": 128.1234,
+    };
+    deliveryRoomInfo["limitPerson"] = 4;
+    deliveryRoomInfo["storeCategory"] = "JAPAN";
+    deliveryRoomInfo["shareStore"] = {
+      "link": "https://dummy.com",
+      "name": "가게이름",
+      "type": "BAEMIN",
+    };
+
+    deliveryRoomInfo["deliveryTip"] = 3000;
+    deliveryRoomInfo["menuList"] = <Menu>[
+      Menu(name: "메뉴1", price: 3000, quantity: 1)
+    ];
+
+    Logger().v(deliveryRoomInfo);
+
+    DeliveryRoom? deliveryRoom =
+        await repository.registerDeliveryRoom(deliveryRoomInfo);
   }
 }
