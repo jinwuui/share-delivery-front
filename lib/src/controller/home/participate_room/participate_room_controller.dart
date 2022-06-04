@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
@@ -6,6 +7,12 @@ import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/home/participate_room_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
+
+enum ParticipateRoomState {
+  accepted,
+  rejected,
+  error,
+}
 
 class ParticipateRoomController extends GetxController {
   final ParticipateRoomRepository repository;
@@ -60,9 +67,6 @@ class ParticipateRoomController extends GetxController {
   }
 
   Future<void> participateDeliveryRoom(DeliveryRoom deliveryRoom) async {
-    await Future.delayed(Duration(milliseconds: 500));
-    print('ParticipateRoomController.participateDeliveryRoom');
-
     if (!validateMenuList()) {
       GetSnackbar.on("입력 에러", "메뉴 정보에 공백이 존재합니다!");
       return;
@@ -72,10 +76,11 @@ class ParticipateRoomController extends GetxController {
       return;
     }
 
-    List<Menu> list = convertMenuInfoToMenu();
-    String result =
+    List<Menu> list = convertMenuInfoToMenuObj();
+    ParticipateRoomState result =
         await repository.participateDeliveryRoom(deliveryRoom.roomId, list);
-    if (result == "ACCEPTED") {
+
+    if (result == ParticipateRoomState.accepted) {
       // NOTE : 모집글 참여 신청 완료 시, 페이지 이동
 
       // NOTE : 1안 - 홈화면까지 pop -> DELIVERY_HISTORY_DETAIL 로 이동
@@ -83,18 +88,16 @@ class ParticipateRoomController extends GetxController {
       Get.find<RootController>().changeRootPageIndex(1);
       Get.toNamed(
         Routes.DELIVERY_HISTORY_DETAIL,
-        arguments: deliveryRoom.roomId,
+        arguments: {"deliveryRoomId": deliveryRoom.roomId},
       );
-    } else if (result == "EXCEPTION") {
-      print("exception - participateDeliveryRoom");
+    } else if (result == ParticipateRoomState.rejected) {
+      Logger().w("모집글 참여신청 거절됨 - ParticipateRoomState.rejected");
     } else {
-      GetSnackbar.on("실패", result);
+      GetSnackbar.on("실패", ParticipateRoomState.error.toString());
     }
   }
 
-  List<Menu> convertMenuInfoToMenu() {
-    print('ParticipateRoomController.convertMenuInfoToMenu');
-
+  List<Menu> convertMenuInfoToMenuObj() {
     List<Menu> result = [];
     for (int i = 0; i < menuList.length; i++) {
       List<Menu> options = [];
@@ -125,8 +128,6 @@ class ParticipateRoomController extends GetxController {
   }
 
   bool validateMenuList() {
-    print('ParticipateRoomController.validateMenuList');
-
     for (MenuInfo menu in menuList) {
       if (menu.name.text.isEmpty || menu.price.text.isEmpty) return false;
 

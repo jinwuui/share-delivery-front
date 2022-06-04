@@ -45,7 +45,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
           controller.setCurSelectedIdx(index);
           Get.toNamed(Routes.DELIVERY_ROOM_INFO);
         },
-        child: DeliveryRoomPost(index: index),
+        child: DeliveryRoomPost(deliveryRoom: controller.deliveryRooms[index]),
       ),
       separatorBuilder: (_, __) => const Divider(
         endIndent: 20,
@@ -135,22 +135,27 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
 }
 
 class DeliveryRoomPost extends GetView<HomeController> {
-  final int index;
-  const DeliveryRoomPost({Key? key, required this.index}) : super(key: key);
+  final DeliveryRoom deliveryRoom;
+  final double padding = 10;
+  final double baseLen = 120.0;
+
+  const DeliveryRoomPost({
+    Key? key,
+    required this.deliveryRoom,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DeliveryRoom _deliveryRoom = controller.deliveryRooms[index];
-
     int distanceNum =
-        controller.distanceBetween(_deliveryRoom.receivingLocation);
+        controller.distanceBetween(deliveryRoom.receivingLocation);
     String distanceStr =
         distanceNum == -1 ? "위치설정 필요" : distanceNum.toString() + " m";
 
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      margin: EdgeInsets.symmetric(horizontal: padding, vertical: padding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
+        // color: Colors.blue,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -160,13 +165,13 @@ class DeliveryRoomPost extends GetView<HomeController> {
             alignment: Alignment.bottomCenter,
             children: [
               Container(
-                width: 120.0,
-                height: 120.0,
+                width: baseLen,
+                height: baseLen,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
                     image: NetworkImage(Hive.box('foodCategory')
-                        .get(_deliveryRoom.storeCategory.toString())),
+                        .get(deliveryRoom.storeCategory.toString())),
                   ),
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                   color: Colors.white,
@@ -174,11 +179,11 @@ class DeliveryRoomPost extends GetView<HomeController> {
               ),
               Center(
                 child: Container(
-                  width: 120,
+                  width: baseLen,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: getDeliveryRoomStateWithColor(
-                            _deliveryRoom.status.toString())
+                            deliveryRoom.status.toString())
                         .color,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(8.0),
@@ -186,7 +191,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
                     ),
                   ),
                   child: Text(getDeliveryRoomStateWithColor(
-                          _deliveryRoom.status.toString())
+                          deliveryRoom.status.toString())
                       .name),
                 ),
               ),
@@ -194,49 +199,77 @@ class DeliveryRoomPost extends GetView<HomeController> {
           ),
           Expanded(
             child: Container(
+              height: baseLen,
+              // color: Colors.red,
               padding: EdgeInsets.all(10),
-              // color: Colors.yellow,
               child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    _deliveryRoom.content,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Row(
+                  Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(_deliveryRoom.receivingLocation.description),
-                      SizedBox(
-                        height: 10,
-                        child:
-                            VerticalDivider(thickness: 1, color: Colors.grey),
+                      Text(
+                        deliveryRoom.content,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: 20,
+                        ),
                       ),
                       Text(
-                        TimeUtil.timeAgo(
-                          _deliveryRoom.createdDateTime.toLocal(),
+                        deliveryRoom.storeName,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.grey.shade700,
+                          fontSize: 17,
                         ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            deliveryRoom.receivingLocation.description,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              size: 6.5,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            distanceStr,
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  Text(distanceStr),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Icon(Icons.people),
-                        SizedBox(width: 4),
-                        Text(
-                            "${_deliveryRoom.person} / ${_deliveryRoom.limitPerson}")
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        TimeUtil.timeAgo(
+                          deliveryRoom.createdDateTime.toLocal(),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(Icons.people),
+                          SizedBox(width: 4),
+                          Text(
+                              "${deliveryRoom.person} / ${deliveryRoom.limitPerson}")
+                        ],
+                      ),
+                    ],
                   )
                 ],
               ),

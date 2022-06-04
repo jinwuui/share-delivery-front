@@ -9,6 +9,8 @@ final TextStyle menuTextStyle = TextStyle(
   fontSize: 16,
 );
 
+// 모집글 목록 조회
+
 // 모집글 상세 정보
 const TextStyle titleTextStyle = TextStyle(
   fontWeight: FontWeight.w700,

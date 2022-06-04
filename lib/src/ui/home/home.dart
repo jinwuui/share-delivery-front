@@ -5,6 +5,7 @@ import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/data/provider/RestClient.dart';
 import 'package:share_delivery/src/data/provider/home/home_api_client/home_api_client.dart';
 import 'package:share_delivery/src/data/provider/home/home_local_client.dart';
+import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
 import 'package:share_delivery/src/data/repository/home/home_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_list.dart';
@@ -21,6 +22,7 @@ class Home extends GetView<HomeController> {
         repository: HomeRepository(
           apiClient: HomeApiClient(DioUtil.getDio()),
           localClient: HomeLocalClient(),
+          userLocationLocalClient: UserLocationLocalClient(),
         ),
       ),
     );
