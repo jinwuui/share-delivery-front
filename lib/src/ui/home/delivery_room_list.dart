@@ -200,8 +200,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
           Expanded(
             child: Container(
               height: baseLen,
-              // color: Colors.red,
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.only(left: padding, right: padding),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
