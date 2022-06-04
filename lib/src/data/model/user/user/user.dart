@@ -26,9 +26,9 @@ class User with _$User {
 @Freezed()
 class BankAccount with _$BankAccount {
   const factory BankAccount({
-    required String accountHolder,
-    required String bank,
-    required String accountNumber,
+    @Default("") String accountHolder,
+    @Default("") String bank,
+    @Default("") String accountNumber,
   }) = _BankAccount;
 
   factory BankAccount.fromJson(Map<String, dynamic> json) =>
