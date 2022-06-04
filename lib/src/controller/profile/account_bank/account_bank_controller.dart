@@ -43,7 +43,6 @@ class AccountBankController extends GetxController {
 
   Future<void> updateAccountBank() async {
     AccountBankDTO newAccountDTO = AccountBankDTO(
-        userId: 1,
         bank: bank.value,
         accountNumber: accountNumber.value,
         accountHolder: accountHolder.value);
