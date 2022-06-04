@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
@@ -11,15 +12,15 @@ class AccountBankController extends GetxController {
 
   final RxInt pickedBank = (-1).obs;
 
-  final bank = "농협".obs;
-  final accountNumber = "3521264".obs;
-  final accountHolder = "박진우".obs;
+  final bank = "".obs;
+  final accountNumber = "".obs;
+  final accountHolder = "".obs;
 
   final isLoad = false.obs;
 
   @override
-  void onInit() {
-    fetchAccountBank();
+  void onInit() async {
+    await fetchAccountBank();
     super.onInit();
   }
 
@@ -29,11 +30,23 @@ class AccountBankController extends GetxController {
 
   Future<void> fetchAccountBank() async {
     try {
-      AccountBankDTO accountDTO = await repository.fetchAccountBank();
+      AccountBankDTO? accountDTO = await repository.fetchAccountBank();
 
-      bank.value = accountDTO.bank;
-      accountNumber.value = accountDTO.accountNumber;
-      accountHolder.value = accountDTO.accountHolder;
+      if (accountDTO != null) {
+        bank.value = accountDTO.bank;
+        accountNumber.value = accountDTO.accountNumber;
+        accountHolder.value = accountDTO.accountHolder;
+      } else {
+        Get.snackbar(
+          "알림",
+          "계좌 정보를 등록해주세요.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          margin: EdgeInsets.all(10),
+          snackStyle: SnackStyle.FLOATING,
+          duration: Duration(seconds: 1),
+        );
+      }
 
       isLoad.value = true;
     } catch (e) {
@@ -43,14 +56,25 @@ class AccountBankController extends GetxController {
 
   Future<void> updateAccountBank() async {
     AccountBankDTO newAccountDTO = AccountBankDTO(
-        userId: 1,
         bank: bank.value,
         accountNumber: accountNumber.value,
         accountHolder: accountHolder.value);
+
+    Logger().d(newAccountDTO);
     try {
       await repository.updateAccountBank(newAccountDTO);
     } catch (e) {
       Logger().w(e);
+    }
+  }
+
+  Future<bool> deleteAccountBank() async {
+    try {
+      await repository.deleteAccountBank();
+      return true;
+    } catch (e) {
+      Logger().w(e);
+      return false;
     }
   }
 }

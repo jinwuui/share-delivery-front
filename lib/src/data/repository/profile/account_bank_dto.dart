@@ -6,7 +6,6 @@ part 'account_bank_dto.g.dart';
 @Freezed()
 class AccountBankDTO with _$AccountBankDTO {
   const factory AccountBankDTO({
-    required int userId,
     required String bank,
     required String accountNumber,
     required String accountHolder,

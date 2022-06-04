@@ -1,22 +1,23 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/controller/profile/account/account_controller.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/controller/profile/account/modify_account_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
-import 'package:share_delivery/src/ui/theme/profile_theme.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 
-class ModifyProfile extends StatelessWidget {
+class ModifyProfile extends GetView<ModifyAccountController> {
   ModifyProfile({Key? key}) : super(key: key);
 
   final modifyProfileFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    AccountController controller = AccountController.to;
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
@@ -44,24 +45,40 @@ class ModifyProfile extends StatelessWidget {
               elevation: 0.0,
             ),
             onPressed: () async {
-              if (modifyProfileFormKey.currentState!.validate()) {
+              if (controller.checkNickname.value) {
+                Get.snackbar(
+                  "알림",
+                  "닉네임 중복 확인을 해주세요",
+                  icon: Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  ),
+                  backgroundColor: Colors.white,
+                  colorText: Colors.black,
+                );
+                return;
+              }
+
+              if (modifyProfileFormKey.currentState!.validate() &&
+                  controller.checkNickname.value == false) {
                 try {
-                  await AccountController.to.updateAccountInfo();
+                  await ModifyAccountController.to.updateAccountInfo();
+
+                  Get.back();
+
+                  Get.snackbar(
+                    '저장완료',
+                    '프로필 정보가 변경되었습니다.',
+                    backgroundColor: Colors.white,
+                  );
                 } catch (e) {
                   Logger().w(e);
                 }
-                // validation 이 성공하면 true 가 리턴
-                Get.snackbar(
-                  '저장완료',
-                  '프로필 정보가 변경되었습니다.',
-                  backgroundColor: Colors.white,
-                );
               }
             },
             child: Text(
               "완료",
               style: TextStyle(
-                // color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
               ),
@@ -87,8 +104,10 @@ class ModifyProfile extends StatelessWidget {
                             backgroundImage: controller
                                         .profileImagePath.value ==
                                     ""
-                                ? NetworkImage(
-                                    "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg")
+                                ? NetworkImage(imagePathWithHost(
+                                    (AuthenticationController
+                                            .to.state.props.first as User)
+                                        .profileImageUrl))
                                 : FileImage(
                                         File(controller.profileImagePath.value))
                                     as ImageProvider,
@@ -100,7 +119,8 @@ class ModifyProfile extends StatelessWidget {
                                 radius: 28.0,
                                 child: InkWell(
                                   onTap: () async {
-                                    await AccountController.to.pickImage();
+                                    await ModifyAccountController.to
+                                        .pickImage();
                                   },
                                   child: Icon(
                                     Icons.camera_alt,
@@ -126,24 +146,71 @@ class ModifyProfile extends StatelessWidget {
                         children: [
                           ProfileTextFormField(
                             label: "닉네임",
-                            onSaved: (newValue) {},
+                            onSaved: (newValue) {
+                              controller.nickname.value = newValue;
+                            },
+                            onChanged: (newValue) {
+                              controller.nickname.value = newValue;
+                            },
                             validator: (value) {
                               if (value.length < 1) {
                                 return '닉네임은 필수사항입니다.';
                               }
-                              if (value.length > 10) {
-                                return '닉네임은 10자 이하로 입력해주세요.';
+                              if (value.length > 15) {
+                                return '닉네임은 15자 이하로 입력해주세요.';
                               }
                               return null;
                             },
-                            initialValue: '닉네임 닉네임',
+                            initialValue: controller.nickname.value,
+                            button: TextButton(
+                              onPressed: () async {
+                                await controller.checkNickName();
+
+                                if (controller.checkNickname.value) {
+                                  Get.snackbar(
+                                    "알림",
+                                    "중복된 닉네임입니다.",
+                                    icon: Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                    ),
+                                    backgroundColor: Colors.white,
+                                    colorText: Colors.black,
+                                  );
+                                } else {
+                                  Get.snackbar(
+                                    "알림",
+                                    "사용 가능한 닉네임입니다.",
+                                    icon: Icon(
+                                      Icons.check,
+                                      color: Colors.green,
+                                    ),
+                                    backgroundColor: Colors.white,
+                                    colorText: Colors.black,
+                                  );
+                                }
+                              },
+                              child: Text(
+                                "중복 확인",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.orange,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                           ProfileTextFormField(
                             label: "이메일",
-                            onSaved: (newValue) {},
+                            onSaved: (newValue) {
+                              controller.email.value = newValue;
+                            },
+                            onChanged: (newValue) {
+                              controller.email.value = newValue;
+                            },
                             validator: (value) {
                               if (value.length < 1) {
-                                return '이메일은 필수사항입니다.';
+                                return null;
                               }
 
                               if (!RegExp(
@@ -154,7 +221,7 @@ class ModifyProfile extends StatelessWidget {
 
                               return null;
                             },
-                            initialValue: "vxc7099@gmail.com",
+                            initialValue: controller.email.value ?? ' ',
                           ),
                         ],
                       ),

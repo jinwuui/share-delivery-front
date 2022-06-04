@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
 import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
@@ -11,6 +12,12 @@ class AuthenticationController extends GetxController {
   final _authenticationStateStream = const AuthenticationState().obs;
 
   AuthenticationState get state => _authenticationStateStream.value;
+  set state(AuthenticationState state) =>
+      _authenticationStateStream.value = state;
+
+  void setAuthentictionState(AuthenticationState authenticationState) {
+    _authenticationStateStream.value = authenticationState;
+  }
 
   AuthenticationController({required this.repository});
 

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
-import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/controller/profile/profile_controller.dart';
+import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 
 class FriendPage extends GetView<FriendController> {
   const FriendPage({Key? key}) : super(key: key);
@@ -62,7 +65,7 @@ class FriendPage extends GetView<FriendController> {
               (friends) => ListView.builder(
                 itemCount: friends!.length,
                 itemBuilder: (context, index) =>
-                    FriendItem(userModel: friends[index]),
+                    FriendItem(friendModel: friends[index]),
               ),
               onLoading: Center(
                   child: SpinKitThreeBounce(
@@ -91,14 +94,18 @@ class FriendPage extends GetView<FriendController> {
 }
 
 class FriendItem extends StatelessWidget {
-  final User userModel;
+  final FriendResDTO friendModel;
 
-  const FriendItem({Key? key, required this.userModel}) : super(key: key);
+  const FriendItem({Key? key, required this.friendModel}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
+        onTap: () {
+          Get.toNamed(Routes.OTHER_USER_PROFILE,
+              arguments: {"accountId": friendModel.accountId});
+        },
         leading: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -109,15 +116,15 @@ class FriendItem extends StatelessWidget {
           ),
           child: CircleAvatar(
             radius: 30.0,
-            backgroundImage: NetworkImage(
-                'https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg'),
+            backgroundImage:
+                NetworkImage(imagePathWithHost(friendModel.profileImageUrl)),
             backgroundColor: Colors.white,
           ),
         ),
         title: Padding(
           padding: EdgeInsets.only(bottom: 5.0),
           child: Text(
-            userModel.nickname,
+            friendModel.nickname,
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ),
@@ -135,8 +142,11 @@ class FriendItem extends StatelessWidget {
                       color: Colors.black54),
                   BottomSheetItem(
                     icon: Icon(Icons.block),
-                    text: "차단하기",
-                    callback: () {},
+                    text: "삭제하기",
+                    callback: () async {
+                      await FriendController.to
+                          .deleteFriend(friendModel.accountId);
+                    },
                   ),
                 ],
               ),

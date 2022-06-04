@@ -111,7 +111,7 @@ class NotificationController extends GetxController {
 
   Future<void> _getToken() async {
     fcmToken = (await _messaging.getToken())!;
-    Logger().w(fcmToken);
+    Logger().i("FCM TOKEN", fcmToken);
   }
 
   void _handleMessage(RemoteMessage message) {

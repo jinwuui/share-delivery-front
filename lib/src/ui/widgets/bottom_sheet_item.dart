@@ -16,7 +16,7 @@ class BottomSheetItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
-        onTap: () => callback,
+        onTap: callback,
         leading: icon,
         title: Text(
           text,
