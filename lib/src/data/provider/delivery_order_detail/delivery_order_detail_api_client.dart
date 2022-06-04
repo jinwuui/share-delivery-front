@@ -47,4 +47,12 @@ abstract class DeliveryOrderDetailApiClient {
   // 모집글 주문 정보 조회 TEST
   @GET('/api/delivery-rooms/orders/{deliveryRoomId}')
   Future<List<OrderMenuModel>> getOrderList(@Path() int deliveryRoomId);
+
+  // 모집글 삭제
+  @DELETE('/api/delivery-rooms/{deliveryRoomId}')
+  Future<int> deleteDeliveryRoom(@Path() int deliveryRoomId);
+
+  // 참여 모집글 퇴장
+  @GET('/api/delivery-rooms/{deliveryRoomsId}/exit-room')
+  Future<void> exitDeliveryRoom(@Path() int deliveryRoomsId);
 }

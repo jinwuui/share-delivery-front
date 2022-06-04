@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
+import 'package:share_delivery/src/routes/route.dart';
 
 class DeliveryRecruitController extends GetxController
     with StateMixin<List<OrderMenuModel>> {
@@ -74,5 +76,52 @@ class DeliveryRecruitController extends GetxController
   Future<void> completeRecurit() async {
     int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
     await repository.completeDeliveryRecruit(roomId);
+  }
+
+  Future<void> deleteDeliveryRoom(int deliveryRoomId) async {
+    try {
+      await Get.dialog(AlertDialog(
+        title: Text("모집글 삭제"),
+        content: Text("모집글을 삭제하시겠습니까?"),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+            child: Text("취소"),
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Colors.red),
+            child: Text(
+              "확인",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () async {
+              try {
+                int res = await repository.deleteDeliveryRoom(deliveryRoomId);
+
+                if (res != deliveryRoomId) {
+                  throw Exception();
+                }
+
+                Get.offAllNamed('/');
+                Get.snackbar("삭제 완료", "모집글이 삭제되었습니다.");
+              } catch (e) {
+                Get.back();
+                Get.back();
+                Get.snackbar("오류", "모집글을 삭제할 수 있는 상태가 아닙니다.");
+              }
+            },
+          ),
+        ],
+      ));
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> exitDeliveryRoom(int deliveryRoomsId) async {
+    await repository.exitDeliveryRoom(deliveryRoomsId);
   }
 }

@@ -36,4 +36,12 @@ class DeliveryOrderDetailRepository {
   Future<void> rejectUserOrder(int userId, int roomId) async {
     return await apiClient.rejectUserOrder(userId, roomId);
   }
+
+  Future<int> deleteDeliveryRoom(int deliveryRoomId) async {
+    return await apiClient.deleteDeliveryRoom(deliveryRoomId);
+  }
+
+  Future<void> exitDeliveryRoom(int deliveryRoomsId) async {
+    return await apiClient.exitDeliveryRoom(deliveryRoomsId);
+  }
 }
