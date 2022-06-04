@@ -16,7 +16,8 @@ class ModifyAccountController extends GetxController {
   ModifyAccountController({required this.repository});
 
   final profileImagePath = "".obs;
-  final checkNickname = true.obs; // check 필요, false 시 수정ㄴ 가능
+  final checkNickname = true.obs; // check 필요, false 시 수정 가능
+  final changeNickname = false.obs;
   final nickname =
       (AuthenticationController.to.state.props.first as User).nickname.obs;
   final email =
@@ -41,12 +42,8 @@ class ModifyAccountController extends GetxController {
   }
 
   Future<void> updateAccountInfo() async {
-    Logger().w(
-      "updateAccountInfo",
-      email.value! + nickname.value,
-    );
-    AccountUpdateReqDTO dto = AccountUpdateReqDTO(
-        email: email.value!.trim(), nickname: nickname.value.trim());
+    AccountUpdateReqDTO dto =
+        AccountUpdateReqDTO(email: email.value, nickname: nickname.value);
     Logger().w(dto);
     File? profileImage;
 
@@ -58,7 +55,7 @@ class ModifyAccountController extends GetxController {
       AuthenticationController.to.state = Authenticated(
         user: (AuthenticationController.to.state.props.first as User).copyWith(
           nickname: res.nickname,
-          profileImage: res.profileImage,
+          profileImageUrl: res.profileImageUrl,
           email: res.email,
         ),
       );

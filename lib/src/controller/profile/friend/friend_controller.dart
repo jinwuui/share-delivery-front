@@ -44,11 +44,34 @@ class FriendController extends GetxController
       change(null, status: RxStatus.loading());
 
       String fiendType = "ACCEPTED";
-      Logger().i("hello");
 
       List<FriendResDTO> list = await repository.getFriendList(fiendType);
-      Logger().i(list);
       friends.value = list;
+
+      change(friends, status: RxStatus.success());
+    } catch (err) {
+      change(null, status: RxStatus.error());
+    }
+  }
+
+  Future<void> deleteFriend(int accountId) async {
+    try {
+      change(null, status: RxStatus.loading());
+
+      String res = await repository.deleteFriend(accountId);
+      if (int.parse(res) == accountId) {
+        friends.value =
+            friends.where((el) => el.accountId != accountId).toList();
+        Get.snackbar("삭제 성공", "친구가 삭제되었습니다.",
+            snackPosition: SnackPosition.BOTTOM,
+            isDismissible: true,
+            duration: Duration(seconds: 1));
+      } else {
+        Get.snackbar("삭제 실패", "친구 삭제에 실패하였습니다.",
+            snackPosition: SnackPosition.BOTTOM,
+            isDismissible: true,
+            duration: Duration(seconds: 1));
+      }
 
       change(friends, status: RxStatus.success());
     } catch (err) {

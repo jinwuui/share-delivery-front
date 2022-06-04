@@ -21,6 +21,10 @@ abstract class ProfileApiClient {
     @Query("type") String friendType,
   );
 
+  // 친구 삭제
+  @DELETE('/api/friends/{accountId}')
+  Future<String> deleteFriend(@Path() int accountId);
+
   // 계좌 조회
   @GET('/api/accounts/bank-account')
   Future<AccountBankDTO> readAccount();

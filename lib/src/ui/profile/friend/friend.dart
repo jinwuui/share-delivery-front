@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
+import 'package:share_delivery/src/controller/profile/profile_controller.dart';
 import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
 import 'package:share_delivery/src/utils/image_path.dart';
 
@@ -100,6 +102,10 @@ class FriendItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListTile(
+        onTap: () {
+          Get.toNamed(Routes.OTHER_USER_PROFILE,
+              arguments: {"accountId": friendModel.accountId});
+        },
         leading: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
@@ -136,8 +142,11 @@ class FriendItem extends StatelessWidget {
                       color: Colors.black54),
                   BottomSheetItem(
                     icon: Icon(Icons.block),
-                    text: "차단하기",
-                    callback: () {},
+                    text: "삭제하기",
+                    callback: () async {
+                      await FriendController.to
+                          .deleteFriend(friendModel.accountId);
+                    },
                   ),
                 ],
               ),

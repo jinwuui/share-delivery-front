@@ -10,6 +10,7 @@ import 'package:share_delivery/src/controller/profile/profile_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 
 class Profile extends GetView<ProfileController> {
   Profile({Key? key}) : super(key: key);
@@ -89,18 +90,18 @@ class Profile extends GetView<ProfileController> {
                   onTap: () => Get.toNamed(
                     Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
-                      "imagePath": user.profileImage == ''
+                      "imagePath": user.profileImageUrl == ''
                           ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
-                          : "${dotenv.get('SERVER_HOST')}${user.profileImage}",
+                          : imagePathWithHost(user.profileImageUrl),
                       "title": "프로필 사진"
                     },
                   ),
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(
-                      user.profileImage == ''
+                      user.profileImageUrl == ''
                           ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
-                          : "${dotenv.get('SERVER_HOST')}${user.profileImage}",
+                          : imagePathWithHost(user.profileImageUrl),
                     ),
                     backgroundColor: Colors.grey.shade300,
                   ),

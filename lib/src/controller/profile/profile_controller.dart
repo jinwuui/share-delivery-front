@@ -38,7 +38,7 @@ class ProfileController extends GetxController {
         user: (AuthenticationController.to.state.props.first as User).copyWith(
           accountId: profileModel.accountId,
           nickname: profileModel.nickname,
-          profileImage: profileModel.profileImageUrl,
+          profileImageUrl: profileModel.profileImageUrl,
           mannerScore: profileModel.mannerScore,
         ),
       );

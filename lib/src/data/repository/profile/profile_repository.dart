@@ -14,9 +14,7 @@ class ProfileRepository {
   ProfileRepository({required this.apiClient});
 
   Future<List<FriendResDTO>> getFriendList(String friendType) async {
-    var a = await apiClient.getFriendList(friendType);
-    Logger().w(a);
-    return a;
+    return await apiClient.getFriendList(friendType);
   }
 
   Future<void> updateAccountBank(AccountBankDTO accountDTO) async {
@@ -48,5 +46,9 @@ class ProfileRepository {
 
   Future<bool> checkNickName(String nickName) async {
     return await apiClient.checkNickName(nickName);
+  }
+
+  Future<String> deleteFriend(int accountId) async {
+    return await apiClient.deleteFriend(accountId);
   }
 }

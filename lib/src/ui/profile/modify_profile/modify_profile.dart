@@ -8,6 +8,7 @@ import 'package:share_delivery/src/controller/login/authentication_controller.da
 import 'package:share_delivery/src/controller/profile/account/modify_account_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 
 class ModifyProfile extends GetView<ModifyAccountController> {
   ModifyProfile({Key? key}) : super(key: key);
@@ -63,6 +64,8 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                 try {
                   await ModifyAccountController.to.updateAccountInfo();
 
+                  Get.back();
+
                   Get.snackbar(
                     '저장완료',
                     '프로필 정보가 변경되었습니다.',
@@ -101,8 +104,10 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                             backgroundImage: controller
                                         .profileImagePath.value ==
                                     ""
-                                ? NetworkImage(
-                                    "${dotenv.get('SERVER_HOST')}${(AuthenticationController.to.state.props.first as User).profileImage}")
+                                ? NetworkImage(imagePathWithHost(
+                                    (AuthenticationController
+                                            .to.state.props.first as User)
+                                        .profileImageUrl))
                                 : FileImage(
                                         File(controller.profileImagePath.value))
                                     as ImageProvider,
@@ -151,8 +156,8 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                               if (value.length < 1) {
                                 return '닉네임은 필수사항입니다.';
                               }
-                              if (value.length > 10) {
-                                return '닉네임은 10자 이하로 입력해주세요.';
+                              if (value.length > 15) {
+                                return '닉네임은 15자 이하로 입력해주세요.';
                               }
                               return null;
                             },
@@ -205,7 +210,7 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                             },
                             validator: (value) {
                               if (value.length < 1) {
-                                return '이메일은 필수사항입니다.';
+                                return null;
                               }
 
                               if (!RegExp(
