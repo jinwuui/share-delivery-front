@@ -95,12 +95,11 @@ class DeliveryRoomRegister extends GetView<DeliveryRoomRegisterController> {
       actions: [
         IconButton(
           onPressed: () {
-            controller.dummyDeliveryRoomRegisterTest();
-            // if (controller.validateDeliveryRoom()) {
-            //   Get.toNamed(Routes.WRITING_MENU);
-            // } else {
-            //   GetSnackbar.on("입력 에러", "등록 정보를 모두 채워주세요!");
-            // }
+            if (controller.validateDeliveryRoom()) {
+              Get.toNamed(Routes.WRITING_MENU);
+            } else {
+              GetSnackbar.on("입력 에러", "등록 정보를 모두 채워주세요!");
+            }
           },
           icon: const Icon(Icons.arrow_forward_ios, color: Colors.black),
         ),

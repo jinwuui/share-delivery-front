@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 Map<String, String> foodCategoryDummy = {
-  "KOREAN": "https://cdn-icons-png.flaticon.com/128/4498/4498489.png",
+  "KOREA": "https://cdn-icons-png.flaticon.com/128/4498/4498489.png",
   "CHICKEN": "https://cdn-icons-png.flaticon.com/512/123/123282.png",
   "BOONSIK": "https://cdn-icons-png.flaticon.com/128/4727/4727470.png",
   "CHINA": "https://cdn-icons-png.flaticon.com/128/2674/2674063.png",

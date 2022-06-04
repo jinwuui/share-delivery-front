@@ -25,7 +25,7 @@ class PickReceivingLocationRepository {
   }
 
   void register(String description, double latitude, double longitude) {
-    // NOTE : 사용자의 위치 데이터를 로컬에 저장하는 함수
+    // NOTE : 집결지 정보 데이터를 로컬에 저장하는 함수
     Map<String, dynamic> jsonMap = {
       "description": description,
       "latitude": latitude,
@@ -37,7 +37,23 @@ class PickReceivingLocationRepository {
         SharedPrefsUtil.instance.getStringList("receivingLocations");
     locationList ??= [];
 
-    locationList.insert(0, jsonString);
+    bool isApplied = false;
+    for (int i = 0; i < locationList.length; i++) {
+      final existingLocation = jsonDecode(locationList[i]);
+
+      if (existingLocation["description"] == jsonMap["description"]) {
+        print('PickReceivingLocationRepository.register - 기존에 있던 집결지 정보를 수정');
+        locationList[i] = jsonString;
+        isApplied = true;
+        return;
+      }
+    }
+
+    if (!isApplied) {
+      print('PickReceivingLocationRepository.register - ');
+      locationList.insert(0, jsonString);
+    }
+
     SharedPrefsUtil.instance.setStringList("receivingLocations", locationList);
   }
 }
