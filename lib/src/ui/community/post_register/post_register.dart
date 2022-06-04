@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/community/post_register/post_register_controller.dart';
+import 'package:share_delivery/src/data/model/community/post/post.dart';
+import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
+import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
+import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
+import 'package:share_delivery/src/data/repository/community/post_register/post_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/ui/community/post_register/post_image.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
 // class PostRegister extends StatefulWidget {
 //   const PostRegister({Key? key}) : super(key: key);
@@ -197,37 +206,69 @@ import 'package:share_delivery/src/ui/theme/text_theme.dart';
 // }
 
 class PostRegister extends GetView<PostRegisterController> {
-  const PostRegister({Key? key}) : super(key: key);
+  final Post? post;
+  final PostDetail? postDetail;
+
+  const PostRegister({Key? key, this.post, this.postDetail}) : super(key: key);
 
   static const double bottomSheetHeight = 45;
 
   @override
   Widget build(BuildContext context) {
+    bool isRegistered = Get.isRegistered<PostRegisterController>();
+
+    if (post != null && postDetail != null) {
+      print('PostRegister.build - 게시글 수정');
+      Get.put(
+        PostRegisterController(
+          isRegisterPost: false,
+          repository: PostRegisterRepository(
+            apiClient: CommunityApiClient(DioUtil.getDio()),
+            userLocationLocalClient: UserLocationLocalClient(),
+          ),
+        ),
+      );
+
+      controller.loadPostAndPostDetail(post!, postDetail!);
+    }
+
     return Obx(
       () => SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: appBar(),
-          body: Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                postCategory(context),
-                postContent(),
-                // Expanded(
-                //   child: AnimatedAlign(
-                //     alignment: alignment,
-                //     curve: Curves.decelerate,
-                //     // curve: Curves.easeOutQuad,
-                //     duration: const Duration(milliseconds: 200),
-                //     child: bottomSheet(),
-                //   ),
-                // ),
-              ],
+        maintainBottomViewPadding: true,
+        child: LoaderOverlay(
+          overlayColor: Colors.black45,
+          useDefaultLoading: false,
+          overlayWidget: const Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.white,
             ),
           ),
-          bottomSheet: bottomSheetV2(context),
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: appBar(),
+            body: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  postCategory(context),
+                  postImages(),
+                  postContent(),
+                  // Expanded(
+                  //   child: AnimatedAlign(
+                  //     alignment: Alignment.bottomCenter,
+                  //     curve: Curves.decelerate,
+                  //     // curve: Curves.easeOutQuad,
+                  //     duration: const Duration(milliseconds: 200),
+                  //     child: bottomSheet(),
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            bottomSheet: bottomSheetV2(context),
+          ),
         ),
       ),
     );
@@ -259,14 +300,38 @@ class PostRegister extends GetView<PostRegisterController> {
     );
   }
 
+  Widget postImages() {
+    double imageSize = Get.width < 400 ? 70.0 : 90.0;
+    double imageMargin = Get.width < 400 ? 10.0 : 12.0;
+
+    return controller.images.isNotEmpty
+        ? SizedBox(
+            height: imageSize + imageMargin * 2,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.images.length,
+              itemBuilder: (_, i) {
+                return PostImage(
+                  index: i,
+                  imageURLs: controller.images,
+                  deleteButton: true,
+                  size: imageSize,
+                  margin: imageMargin,
+                );
+              },
+            ),
+          )
+        : SizedBox.shrink();
+  }
+
   Widget postContent() {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       child: TextField(
         controller: controller.content.value,
         minLines: 6,
         maxLines: 6,
-        onChanged: (text) => controller.setIsContentEmpty(text),
+        onChanged: (text) => controller.validateRegisterPost(text),
         style: defaultPostCategory,
         decoration: InputDecoration(
           hintText: "자유롭게 자신의 생활을 공유해주세요!",
@@ -283,18 +348,30 @@ class PostRegister extends GetView<PostRegisterController> {
       elevation: 0,
       backgroundColor: Colors.white,
       leading: IconButton(
-        onPressed: () => Get.back(),
+        onPressed: () async {
+          if (!controller.isRegisterPost) {
+            FocusManager.instance.primaryFocus?.unfocus();
+            await 0.4.delay();
+          }
+
+          Get.back();
+        },
         icon: const Icon(Icons.close, color: Colors.black),
       ),
-      title: const Text("생활 공유", style: appBarTitle),
+      title: Text(controller.appBarTitle, style: appBarTitle),
       actions: [
         TextButton(
-          onPressed: controller.isContentEmpty.value
-              ? null
-              : () {
-                  print("게시글 등록 로직 테스트 필요");
-                  controller.registerPost();
-                },
+          onPressed: controller.isAbleRegisterPost.value
+              ? () async {
+                  if (controller.isRegisterPost) {
+                    print("게시글 등록 로직 테스트 필요");
+                    await controller.registerPost();
+                  } else {
+                    print("게시글 수정 로직 테스트 필요");
+                    await controller.updatePost(post!.postId);
+                  }
+                }
+              : null,
           child: Text("완료"),
           style: TextButton.styleFrom(
             primary: Colors.black,
@@ -307,7 +384,9 @@ class PostRegister extends GetView<PostRegisterController> {
 
   Widget bottomSheetV2(BuildContext ctx) {
     return AnimatedPadding(
-      padding: MediaQuery.of(ctx).viewInsets,
+      padding: controller.isRegisterPost
+          ? MediaQuery.of(ctx).viewInsets
+          : EdgeInsets.zero,
       duration: const Duration(milliseconds: 0),
       curve: Curves.decelerate,
       child: Container(
@@ -323,12 +402,12 @@ class PostRegister extends GetView<PostRegisterController> {
                   const SizedBox(width: 15),
                   GestureDetector(
                     onTap: () {
-                      print("사진 등록하기");
+                      controller.pickImage();
                     },
                     child: Row(
                       children: [
                         const Icon(Icons.image_outlined),
-                        Text("0 / 10"),
+                        Text(" ${controller.images.length} / 10"),
                       ],
                     ),
                   ),
@@ -340,7 +419,7 @@ class PostRegister extends GetView<PostRegisterController> {
                     child: Row(
                       children: [
                         const Icon(Icons.location_on_outlined),
-                        Text("0 / 1"),
+                        Text(" 0 / 1"),
                       ],
                     ),
                   ),

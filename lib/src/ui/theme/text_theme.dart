@@ -15,9 +15,19 @@ const TextStyle titleTextStyle = TextStyle(
   fontSize: 25,
 );
 
+const TextStyle smallTitleTextStyle = TextStyle(
+  fontWeight: FontWeight.w700,
+  fontSize: 18,
+);
+
 const TextStyle infoTextStyle = TextStyle(
   fontWeight: FontWeight.w600,
   fontSize: 20,
+);
+
+const TextStyle smallInfoTextStyle = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
 );
 
 // 모집글 등록

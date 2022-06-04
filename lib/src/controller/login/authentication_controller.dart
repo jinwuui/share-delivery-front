@@ -43,6 +43,7 @@ class AuthenticationController extends GetxController {
     return await repository.signUp(phoneNumber, authNumber);
   }
 
+  // 로그인
   Future<void> login(String phoneNumber, String verificationCode) async {
     User? user = await repository.login(phoneNumber, verificationCode);
 
@@ -53,8 +54,9 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  void signOut() async {
-    await repository.signOut();
+  // 로그아웃
+  void logout() async {
+    repository.logout();
     _authenticationStateStream.value = UnAuthenticated();
   }
 
@@ -62,10 +64,13 @@ class AuthenticationController extends GetxController {
     _authenticationStateStream.value = AuthenticationLoading();
 
     final User? user = repository.getSavedUser(); // 자동 로그인 -> 홈 화면으로
-    // Logger().w(user);
     // _authenticationStateStream.value = Authenticated(
     //     user: User(
-    //         status: '', role: '', accountId: 1, nickname: '', phoneNumber: ''));
+    //         status: '',
+    //         role: '',
+    //         accountId: 1234,
+    //         nickname: '',
+    //         phoneNumber: ''));
     // return;
 
     if (user == null) {

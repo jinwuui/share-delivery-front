@@ -27,7 +27,7 @@ class PostUpdate extends GetView<PostDetailController> {
           color: Colors.black,
         ),
       ),
-      title: const Text("생활 공유", style: appBarTitle),
+      title: const Text("글 수정하기", style: appBarTitle),
       actions: [
         TextButton(
           onPressed: true /*controller.isContentEmpty.value*/

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/community/post_register/post_register_controller.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 
 class SettingPostCategory extends GetView<PostRegisterController> {
   const SettingPostCategory({Key? key}) : super(key: key);
@@ -12,15 +13,12 @@ class SettingPostCategory extends GetView<PostRegisterController> {
     return SafeArea(
       child: Scaffold(
         appBar: appBar(),
-        body: Column(
-          children: [
-            category(topic1),
-            category(topic2),
-            category(topic3),
-            category(topic4),
-            category(topic5),
-            category(topic6),
-          ],
+        body: Container(
+          color: Colors.grey.shade200,
+          child: ListView.builder(
+            itemCount: postCategories.length - 1,
+            itemBuilder: (_, i) => category(postCategories[i + 1]),
+          ),
         ),
       ),
     );
@@ -72,11 +70,4 @@ class SettingPostCategory extends GetView<PostRegisterController> {
       title: const Text("주제 선택", style: appBarTitle),
     );
   }
-
-  static const String topic1 = "동네질문";
-  static const String topic2 = "동네맛집";
-  static const String topic3 = "동네소식";
-  static const String topic4 = "취미생활";
-  static const String topic5 = "분실/실종";
-  static const String topic6 = "품앗이";
 }

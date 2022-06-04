@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/delivery_room_register_controller.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 
 class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   const PickStoreCategory({Key? key}) : super(key: key);
@@ -71,11 +71,11 @@ class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   }
 
   Widget category(int index) {
-    String _storeCategory = foodCategories[index].keys.first;
+    String _storeCategory = foodCategories[index].kor;
 
     return GestureDetector(
       onTap: () {
-        print(foodCategories[index][_storeCategory]);
+        print(foodCategories[index].kor);
         controller.setPickedStoreCategory(index);
         Get.back();
       },

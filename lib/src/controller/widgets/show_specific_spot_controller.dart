@@ -17,7 +17,8 @@ class ShowSpecificSpotController extends GetxController {
 
   // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
-    print('ShowSpecificSpotController.getHTML ${spot.lat}, ${spot.lng}');
+    print(
+        'ShowSpecificSpotController.getHTML ${spot.latitude}, ${spot.longitude}');
     return Uri.dataFromString('''
       <html>
       <head>
@@ -31,7 +32,7 @@ class ShowSpecificSpotController extends GetxController {
           var container = document.getElementById('map'); // map for div
 
           var options = {
-            center: new kakao.maps.LatLng(${spot.lat}, ${spot.lng}), // center of map (current position)
+            center: new kakao.maps.LatLng(${spot.latitude}, ${spot.longitude}), // center of map (current position)
             level: 3 // level of map
           };
           
@@ -41,7 +42,7 @@ class ShowSpecificSpotController extends GetxController {
           
           
           // set marker position
-          var markerPosition  = new kakao.maps.LatLng(${spot.lat}, ${spot.lng}); 
+          var markerPosition  = new kakao.maps.LatLng(${spot.latitude}, ${spot.longitude}); 
           
           // create marker
           var marker = new kakao.maps.Marker({
@@ -52,7 +53,7 @@ class ShowSpecificSpotController extends GetxController {
           marker.setMap(map);
           
           var iwContent = '<div style="padding:5px; font-family:arial;">${spot.description}</div>';
-          var iwPosition = new kakao.maps.LatLng(${spot.lat}, ${spot.lng});
+          var iwPosition = new kakao.maps.LatLng(${spot.latitude}, ${spot.longitude});
 
           // 인포윈도우를 생성합니다
           var infowindow = new kakao.maps.InfoWindow({

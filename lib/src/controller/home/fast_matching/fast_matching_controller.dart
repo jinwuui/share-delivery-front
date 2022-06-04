@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:share_delivery/src/data/repository/home/fast_matching/fast_matching_repository.dart';
+import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
-import 'package:share_delivery/src/utils/store_categories.dart';
 
 enum FastMatchingStatus {
   initial,
@@ -38,7 +38,7 @@ class FastMatchingController extends GetxController {
     await Future.delayed(Duration(milliseconds: 500));
 
     // 1. 서버에 빠른 매칭 참여 요청
-    String tag = foodCategories[pickedFoodCategory.value].values.first;
+    String tag = foodCategories[pickedFoodCategory.value].eng;
     print('FastMatchingController.participateFastMatching $tag');
     // bool isAccepted = await repository.requestFastMatching(tag);
     bool isAccepted = true;
@@ -60,14 +60,14 @@ class FastMatchingController extends GetxController {
 
   String getPickedFoodCategory() {
     return pickedFoodCategory.value != -1
-        ? foodCategories[pickedFoodCategory.value].keys.first
+        ? foodCategories[pickedFoodCategory.value].kor
         : "";
   }
 
   String getFoodCategory(String category) {
     for (int i = 0; i < foodCategories.length; i++) {
-      if (foodCategories[i].values.first == category) {
-        return foodCategories[i].keys.first;
+      if (foodCategories[i].eng == category) {
+        return foodCategories[i].kor;
       }
     }
 

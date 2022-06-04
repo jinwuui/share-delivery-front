@@ -55,11 +55,11 @@ class WritingMenuController extends GetxController {
   Future<void> registerDeliveryRoom() async {
     if (!validateMenuList()) {
       GetSnackbar.on("입력 에러", "메뉴 정보에 공백이 존재합니다!");
-      return;
+      // return;
     }
     if (menuList.isEmpty) {
       GetSnackbar.on("요청", "메뉴를 1개 이상 등록해주세요!");
-      return;
+      // return;
     }
 
     await Get.find<DeliveryRoomRegisterController>().registerDeliveryRoom();

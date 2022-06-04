@@ -21,23 +21,23 @@ class HomeController extends GetxController {
   HomeController({required this.repository});
 
   var deliveryRooms = <DeliveryRoom>[
-    DeliveryRoom(
-      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
-      content: "BBQ 드실분?",
-      person: 1,
-      limitPerson: 3,
-      deliveryTip: 3000,
-      storeLink: "www.baemin.com/stores?id=1524",
-      platformType: "BAEMIN",
-      status: "OPEN",
-      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
-      receivingLocation: ReceivingLocation(
-          description: "CU 편의점 앞",
-          lat: 35.820848788632226,
-          lng: 128.518205019348),
-      roomId: 456,
-      storeCategory: 'CHICKEN',
-    ),
+    // DeliveryRoom(
+    //   leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
+    //   content: "BBQ 드실분?",
+    //   person: 1,
+    //   limitPerson: 3,
+    //   deliveryTip: 3000,
+    //   storeLink: "www.baemin.com/stores?id=1524",
+    //   platformType: "BAEMIN",
+    //   status: "OPEN",
+    //   createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+    //   receivingLocation: ReceivingLocation(
+    //       description: "CU 편의점 앞",
+    //       latitude: 35.820848788632226,
+    //       longitude: 128.518205019348),
+    //   roomId: 456,
+    //   storeCategory: 'CHICKEN',
+    // ),
   ].obs;
 
   // UI 관련
@@ -59,14 +59,6 @@ class HomeController extends GetxController {
 
   // 모집글 상세 정보 관련
   int curSelectedIdx = -1;
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-
-    // 사용자 위치 불러오기
-    await getUserLocation();
-  }
 
   // 사용자 위치 불러오기
   Future<void> getUserLocation() async {
@@ -121,21 +113,30 @@ class HomeController extends GetxController {
   // 모집글 새로고침
   Future<void> onRefresh() async {
     if (!isPrepared.value) {
-      refresher.refreshFailed();
-      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
-      return;
+      await getUserLocation();
+      if (!isPrepared.value) {
+        refresher.refreshFailed();
+        GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
+        return;
+      }
     }
 
     try {
-      // TODO : 테스트할 때 키기
+      double? latitude = locationData.value.latitude;
+      double? longitude = locationData.value.longitude;
+      int radius = 5;
 
-      // deliveryRooms.value = await findDeliveryRooms();
+      List<DeliveryRoom> result =
+          await repository.findDeliveryRooms(latitude!, longitude!, radius);
+      Logger().i(result);
 
-      if (deliveryRooms.isEmpty) {
+      if (result.isEmpty) {
         refresher.refreshFailed();
         GetSnackbar.on("알림", "검색된 모집글이 없습니다!");
         return;
       }
+
+      deliveryRooms.value = result;
 
       refresher.resetNoData();
       refresher.refreshCompleted();
@@ -147,6 +148,8 @@ class HomeController extends GetxController {
 
   // 모집글 불러오기
   Future<void> onLoading() async {
+    await getUserLocation();
+
     if (!isPrepared.value) {
       refresher.loadFailed();
       GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
@@ -173,22 +176,10 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<List<DeliveryRoom>> findDeliveryRooms() async {
-    print("- home controller - 모집글 조회");
-    double? lat = locationData.value.latitude;
-    double? lng = locationData.value.longitude;
-    int radius = 5;
-
-    if (lat == null || lng == null) {
-      GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");
-      return [];
-    }
-
-    List<DeliveryRoom> result =
-        await repository.findDeliveryRooms(lat, lng, radius);
-    Logger().v(result);
-    return result;
-  }
+  // Future<List<DeliveryRoom>> findDeliveryRooms() async {
+  //
+  //   return result;
+  // }
 
   // 카카오 지도 JS API 로 지도 띄우기
   String getHTML() {
@@ -257,7 +248,7 @@ class HomeController extends GetxController {
     String positions = "";
     for (DeliveryRoom room in deliveryRooms) {
       positions +=
-          "new kakao.maps.LatLng(${room.receivingLocation.lat}, ${room.receivingLocation.lng}),";
+          "new kakao.maps.LatLng(${room.receivingLocation.latitude}, ${room.receivingLocation.longitude}),";
     }
 
     return '''
@@ -351,8 +342,8 @@ class HomeController extends GetxController {
     return Geolocator.distanceBetween(
       locationData.value.latitude!,
       locationData.value.longitude!,
-      receivingLocation.lat,
-      receivingLocation.lng,
+      receivingLocation.latitude,
+      receivingLocation.longitude,
     ).round();
   }
 }
