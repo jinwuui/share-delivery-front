@@ -2,15 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/profile/profile.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/provider/profile/profile_api_client.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
+import 'package:share_delivery/src/ui/login/state/authentication_state.dart';
 import 'package:share_delivery/src/utils/dio_util.dart';
 
 class ProfileController extends GetxController {
   static ProfileController get to => Get.find();
   late final ProfileRepository repository;
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
 
   ProfileController() {
     Dio dio = DioUtil.getDio();
@@ -20,34 +25,36 @@ class ProfileController extends GetxController {
         ProfileRepository(apiClient: ProfileApiClient(dio, baseUrl: host!));
   }
 
-  final isLoad = false.obs;
-  final user = User(
-          accountId: 0,
-          phoneNumber: '',
-          nickname: 'nickname',
-          status: 'status',
-          role: 'role')
-      .obs;
-
   @override
   void onInit() {
-    final int accountId =
-        (AuthenticationController.to.state.props.first as User).accountId;
-
-    fetchUserInfo(accountId);
-
     super.onInit();
   }
 
   Future<void> fetchUserInfo(int accountId) async {
     try {
-      User userModel = await repository.fetchUserInfo(accountId);
+      ProfileModel profileModel = await repository.fetchUserInfo(accountId);
 
-      isLoad.value = true;
-      user.value = userModel;
-      Logger().w(userModel);
+      AuthenticationController.to.state = Authenticated(
+        user: (AuthenticationController.to.state.props.first as User).copyWith(
+          accountId: profileModel.accountId,
+          nickname: profileModel.nickname,
+          profileImage: profileModel.profileImageUrl,
+          mannerScore: profileModel.mannerScore,
+        ),
+      );
+
+      Logger().w(profileModel);
     } catch (e) {
       Logger().w(e);
     }
+  }
+
+  void onRefresh() async {
+    final int accountId =
+        (AuthenticationController.to.state.props.first as User).accountId;
+
+    await fetchUserInfo(accountId);
+
+    refreshController.refreshCompleted();
   }
 }

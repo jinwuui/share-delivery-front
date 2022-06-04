@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/controller/profile/profile_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/theme/profile_theme.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+class Profile extends GetView<ProfileController> {
+  Profile({Key? key}) : super(key: key);
+
+  User user = AuthenticationController.to.state.props.first as User;
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileController());
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -42,14 +53,19 @@ class Profile extends StatelessWidget {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.grey.shade200,
-          child: Column(
-            children: [
-              _buildProfile(),
-              _buildMenuList(),
-            ],
+      body: SmartRefresher(
+        controller: controller.refreshController,
+        onRefresh: controller.onRefresh,
+        enablePullDown: true,
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.grey.shade200,
+            child: Column(
+              children: [
+                _buildProfile(),
+                _buildMenuList(),
+              ],
+            ),
           ),
         ),
       ),
@@ -73,15 +89,18 @@ class Profile extends StatelessWidget {
                   onTap: () => Get.toNamed(
                     Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
-                      "imagePath":
-                          "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+                      "imagePath": user.profileImage == ''
+                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
+                          : "${dotenv.get('SERVER_HOST')}${user.profileImage}",
                       "title": "프로필 사진"
                     },
                   ),
                   child: CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(
-                      "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg",
+                      user.profileImage == ''
+                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
+                          : "${dotenv.get('SERVER_HOST')}${user.profileImage}",
                     ),
                     backgroundColor: Colors.grey.shade300,
                   ),
@@ -90,7 +109,7 @@ class Profile extends StatelessWidget {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      "닉네임닉네임", // TODO: 닉네임
+                      user.nickname, // TODO: 닉네임
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 18,
@@ -139,9 +158,9 @@ class Profile extends StatelessWidget {
                   padding: EdgeInsets.symmetric(vertical: 20.0),
                   child: LinearPercentIndicator(
                     lineHeight: 18.0,
-                    percent: 0.5, // TODO: 온도
+                    percent: user.mannerScore / 100, // TODO: 온도
                     center: Text(
-                      "50°C",
+                      "${user.mannerScore}°C",
                       style: TextStyle(fontSize: 12.0),
                     ),
                     trailing: Padding(
