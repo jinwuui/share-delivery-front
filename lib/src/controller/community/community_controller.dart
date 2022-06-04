@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
@@ -130,6 +131,7 @@ class CommunityController extends GetxController {
 
   bool isExistUserLocation() {
     userLocation ??= repository.getCurrentUserLocation();
+    Logger().i(userLocation);
 
     if (userLocation == null) {
       GetSnackbar.on("알림", "위치 설정을 먼저 해주세요!");

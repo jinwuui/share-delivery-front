@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:share_delivery/src/controller/home/participate_room/participate_room_controller.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 import 'package:share_delivery/src/ui/widgets/loader_overlay.dart';
@@ -64,11 +65,9 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
       actions: [
         TextButton(
           onPressed: () async {
-            // TODO: 모집글 참여 신청 로직 필요
-            print('ParticipateRoom.appBar');
-            // context.loaderOverlay.show();
+            context.loaderOverlay.show();
             await controller.participateDeliveryRoom(Get.arguments);
-            // context.loaderOverlay.hide();
+            context.loaderOverlay.hide();
           },
           child: const Text("신청", style: TextStyle(color: Colors.black)),
         ),

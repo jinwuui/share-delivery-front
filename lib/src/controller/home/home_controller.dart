@@ -70,15 +70,22 @@ class HomeController extends GetxController {
         "longitude": userLocation.longitude,
       });
     } else {
-      if (!(await verifyLocationPermission())) {
+      bool isPermitted = await verifyLocationPermission();
+      if (!isPermitted) {
         GetSnackbar.on("알림", "위치 정보를 허용해주세요.");
         return;
       }
-
-      LocationData curLocation = await location.getLocation();
-      print('HomeController.getUserLocation $curLocation');
-      locationData.value = curLocation;
     }
+
+    LocationData curLocation = await location.getLocation();
+    print('HomeController.getUserLocation $curLocation');
+
+    locationData.value = curLocation;
+    repository.saveUserLocation(
+      "현재 위치",
+      locationData.value.latitude!,
+      locationData.value.longitude!,
+    );
 
     isPrepared.value = true;
   }
