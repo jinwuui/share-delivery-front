@@ -19,8 +19,6 @@ class _DeliveryRoomInfoDetailState extends State<DeliveryRoomInfoDetail>
 
   @override
   Widget build(BuildContext context) {
-    Logger().d("DeliveryRoomInfoDetailState rerender");
-
     DeliveryRoomInfoDetailController controller =
         DeliveryRoomInfoDetailController.to;
 

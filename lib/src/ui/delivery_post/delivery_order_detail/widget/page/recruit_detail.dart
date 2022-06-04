@@ -14,7 +14,6 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
 
   @override
   Widget build(BuildContext context) {
-    Logger().d("DeliveryRecruitDetail rerender");
     int leaderId =
         DeliveryRoomInfoDetailController.to.deliveryRoom.leader.accountId;
     User user = AuthenticationController.to.state.props.first as User;

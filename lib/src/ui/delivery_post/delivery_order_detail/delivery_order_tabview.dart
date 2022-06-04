@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/order_form_register.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/payment_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/recruit_detail.dart';
@@ -19,8 +15,6 @@ class OrderTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = DeliveryOrderController.to;
-    Logger().d("OrderTabView rerender", controller.deliveryOrderStatus.value);
-    Logger().w(DeliveryRoomInfoDetailController.to.roomId, "roomId");
 
     return Obx(() {
       if (controller.deliveryOrderStatus.value ==

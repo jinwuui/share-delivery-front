@@ -30,12 +30,13 @@ class DeliveryRecruitController extends GetxController
   }
 
   Future<void> getOrderList({deliveryRoomId}) async {
-    Logger().w("getOrderList");
     try {
       change(null, status: RxStatus.loading());
       int deliveryRoomId = Get.arguments['deliveryRoomId'];
 
       orderMenuList.value = await repository.getOrderList(deliveryRoomId);
+
+      Logger().d("getOrderList success");
 
       change(orderMenuList, status: RxStatus.success());
     } catch (err) {

@@ -10,17 +10,18 @@ import 'package:share_delivery/src/controller/delivery_order_detail/order_form_r
 import 'package:share_delivery/src/controller/receiving_location/receiving_location_controller.dart';
 import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
 class DeliveryRoomDetailBinding extends Bindings {
   @override
   void dependencies() {
-    Dio dio = Dio();
+    Dio dio = DioUtil.getDio();
     dio.options.contentType = "application/json";
-    final String? host = dotenv.env['SERVER_HOST'];
+    final String host = dotenv.get('SERVER_HOST');
 
     Get.put(DeliveryRoomInfoDetailController(
       repository: DeliveryOrderDetailRepository(
-        apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host!),
+        apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host),
       ),
     ));
     Get.put(ReceivingLocationController());
