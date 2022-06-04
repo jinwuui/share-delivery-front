@@ -10,7 +10,7 @@ class User with _$User {
     required int accountId,
     required String phoneNumber,
     required String nickname,
-    @Default("") String profileImage,
+    @Default("") String profileImageUrl,
     required String status,
     required String role,
     String? email,
