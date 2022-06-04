@@ -60,7 +60,7 @@ class FastMatching extends GetView<FastMatchingController> {
   }
 
   Widget category(int index) {
-    String _storeCategory = foodCategories[index].keys.first;
+    String _storeCategory = foodCategories[index].kor;
 
     return Obx(
       () => GestureDetector(

@@ -9,14 +9,14 @@ class DeliveryRoom with _$DeliveryRoom {
     @Default(-1) int roomId,
     required Leader leader,
     required String content,
-    required int? person,
+    required int person,
     required int limitPerson,
     required int deliveryTip,
     required String storeLink,
     required String platformType,
     required String status,
     required DateTime createdDateTime,
-    @Default("DummyStoreCategory") String storeCategory,
+    required String storeCategory,
     required ReceivingLocation receivingLocation,
   }) = _DeliveryRoom;
 

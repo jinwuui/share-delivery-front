@@ -21,23 +21,23 @@ class HomeController extends GetxController {
   HomeController({required this.repository});
 
   var deliveryRooms = <DeliveryRoom>[
-    DeliveryRoom(
-      leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
-      content: "BBQ 드실분?",
-      person: 1,
-      limitPerson: 3,
-      deliveryTip: 3000,
-      storeLink: "www.baemin.com/stores?id=1524",
-      platformType: "BAEMIN",
-      status: "OPEN",
-      createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
-      receivingLocation: ReceivingLocation(
-          description: "CU 편의점 앞",
-          latitude: 35.820848788632226,
-          longitude: 128.518205019348),
-      roomId: 456,
-      storeCategory: 'CHICKEN',
-    ),
+    // DeliveryRoom(
+    //   leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 2),
+    //   content: "BBQ 드실분?",
+    //   person: 1,
+    //   limitPerson: 3,
+    //   deliveryTip: 3000,
+    //   storeLink: "www.baemin.com/stores?id=1524",
+    //   platformType: "BAEMIN",
+    //   status: "OPEN",
+    //   createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
+    //   receivingLocation: ReceivingLocation(
+    //       description: "CU 편의점 앞",
+    //       latitude: 35.820848788632226,
+    //       longitude: 128.518205019348),
+    //   roomId: 456,
+    //   storeCategory: 'CHICKEN',
+    // ),
   ].obs;
 
   // UI 관련

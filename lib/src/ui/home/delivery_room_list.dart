@@ -26,7 +26,7 @@ class _DeliveryRoomListState extends State<DeliveryRoomList>
         child: SmartRefresher(
           controller: controller.refresher,
           enablePullDown: true,
-          enablePullUp: true,
+          // enablePullUp: true,
           onRefresh: controller.onRefresh,
           onLoading: controller.onLoading,
           child: controller.deliveryRooms.isNotEmpty

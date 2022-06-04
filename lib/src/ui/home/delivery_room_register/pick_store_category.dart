@@ -71,11 +71,11 @@ class PickStoreCategory extends GetView<DeliveryRoomRegisterController> {
   }
 
   Widget category(int index) {
-    String _storeCategory = foodCategories[index].keys.first;
+    String _storeCategory = foodCategories[index].kor;
 
     return GestureDetector(
       onTap: () {
-        print(foodCategories[index][_storeCategory]);
+        print(foodCategories[index].kor);
         controller.setPickedStoreCategory(index);
         Get.back();
       },

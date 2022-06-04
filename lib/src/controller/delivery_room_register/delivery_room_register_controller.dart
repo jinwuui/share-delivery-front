@@ -123,7 +123,7 @@ class DeliveryRoomRegisterController extends GetxController {
     };
     deliveryRoomInfo["limitPerson"] = limitPerson;
     deliveryRoomInfo["storeCategory"] =
-        foodCategories[pickedStoreCategory.value].values.first;
+        foodCategories[pickedStoreCategory.value].eng;
     deliveryRoomInfo["shareStore"] = {
       "link": storeLink.text,
       "name": storeName.text,
@@ -219,7 +219,7 @@ class DeliveryRoomRegisterController extends GetxController {
 
   String getPickedStoreCategory() {
     return pickedStoreCategory.value != -1
-        ? foodCategories[pickedStoreCategory.value].keys.first
+        ? foodCategories[pickedStoreCategory.value].kor
         : "";
   }
 
