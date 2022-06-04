@@ -49,18 +49,15 @@ class PaymentOfOrder extends StatelessWidget {
 
   _buildDiscountWidget() {
     return Obx(() {
-      List<ElementWithMoney> discountList = [];
-
-      Get.find<OrderFormRegisterController>().discountMap.forEach((key, value) {
-        discountList.add(
-          ElementWithMoney(
-            elementName: key.toString(),
-            money: "-" + value.toString(),
-            axisAlignment: MainAxisAlignment.end,
-            textStyle: paymentTextStyle,
-          ),
-        );
-      });
+      List<ElementWithMoney> discountList =
+          OrderFormRegisterController.to.discountModels
+              .map(((element) => ElementWithMoney(
+                    elementName: element.paymentDiscountName.toString(),
+                    money: element.amount.toString(),
+                    axisAlignment: MainAxisAlignment.end,
+                    textStyle: paymentTextStyle,
+                  )))
+              .toList();
 
       return Column(
         children: discountList,
@@ -76,12 +73,11 @@ class PaymentOfOrder extends StatelessWidget {
             DeliveryRecruitController.to.totalPaymentMoney.value + orderTip;
 
         if (Get.isRegistered<OrderFormRegisterController>() &&
-            OrderFormRegisterController.to.discountMap.isNotEmpty) {
+            OrderFormRegisterController.to.discountModels.isNotEmpty) {
           print("discount");
-          totalPaymentMoney -= int.parse(OrderFormRegisterController
-              .to.discountMap.values
-              .toList()
-              .reduce((value, element) => value + element));
+          int discountSum = OrderFormRegisterController.to.discountModels.fold(
+              0, (previousValue, element) => previousValue + element.amount);
+          totalPaymentMoney -= discountSum;
         }
 
         return ElementWithMoney(

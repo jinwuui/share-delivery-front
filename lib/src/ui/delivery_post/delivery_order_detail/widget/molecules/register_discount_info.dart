@@ -80,8 +80,8 @@ class _RegisterDiscountInfoState extends State<RegisterDiscountInfo> {
                         // validation 이 성공하면 폼 저장하기
                         formKey.currentState!.save();
 
-                        Get.find<OrderFormRegisterController>()
-                            .addDiscountItem(menu, amount);
+                        OrderFormRegisterController.to
+                            .addDiscount(menu, amount);
 
                         Get.back();
 

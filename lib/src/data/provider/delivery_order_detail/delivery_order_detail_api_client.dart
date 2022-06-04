@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_dto.dart';
+import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
 
 part 'delivery_order_detail_api_client.g.dart';
 
@@ -24,7 +24,7 @@ abstract class DeliveryOrderDetailApiClient {
   @MultiPart()
   Future registerDeliveryRoomOrderDeatil(
     @Path('deliveryRoomId') int deliveryRoomId,
-    @Part(name: 'orderDetail') DeliveryOrderDetailDTO deliveryOrderDetailDto,
+    @Part(name: 'orderDetail') DeliveryOrderDetailReqDTO deliveryOrderDetailDto,
     @Part() List<File> orderFormList,
   );
 
@@ -47,4 +47,12 @@ abstract class DeliveryOrderDetailApiClient {
   // 모집글 주문 정보 조회 TEST
   @GET('/api/delivery-rooms/orders/{deliveryRoomId}')
   Future<List<OrderMenuModel>> getOrderList(@Path() int deliveryRoomId);
+
+  // 모집글 삭제
+  @DELETE('/api/delivery-rooms/{deliveryRoomId}')
+  Future<int> deleteDeliveryRoom(@Path() int deliveryRoomId);
+
+  // 참여 모집글 퇴장
+  @GET('/api/delivery-rooms/{deliveryRoomsId}/exit-room')
+  Future<void> exitDeliveryRoom(@Path() int deliveryRoomsId);
 }

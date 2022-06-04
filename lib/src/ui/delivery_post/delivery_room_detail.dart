@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/ui/chat/delivery_room_chat.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
+import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
 
 import 'delivery_order_detail/delivery_order_tabview.dart';
 
@@ -28,6 +32,62 @@ class DeliveryRoomDetail extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert, size: 30),
+            onPressed: () {
+              Get.bottomSheet(
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Divider(
+                        indent: 170,
+                        endIndent: 170,
+                        thickness: 5,
+                        height: 20,
+                        color: Colors.black54),
+                    Obx(() {
+                      if ((AuthenticationController.to.state.props.first
+                                  as User)
+                              .accountId ==
+                          DeliveryRoomInfoDetailController
+                              .to.deliveryRoom.leader.accountId) {
+                        return BottomSheetItem(
+                          icon: Icon(Icons.delete),
+                          text: "모집글 삭제 하기",
+                          callback: () async {
+                            await DeliveryRecruitController.to
+                                .deleteDeliveryRoom(
+                                    DeliveryRoomInfoDetailController
+                                        .to.deliveryRoom.roomId);
+                          },
+                        );
+                      } else {
+                        return BottomSheetItem(
+                          icon: Icon(Icons.exit_to_app),
+                          text: "퇴장 하기",
+                          callback: () async {
+                            // TODO: test
+                            await DeliveryRecruitController.to.exitDeliveryRoom(
+                                DeliveryRoomInfoDetailController
+                                    .to.deliveryRoom.roomId);
+                          },
+                        );
+                      }
+                    })
+                  ],
+                ),
+                backgroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      topRight: Radius.circular(10.0)),
+                ),
+              );
+            },
+          )
+        ],
         elevation: 0.0,
       ),
       body: DefaultTabController(
@@ -57,24 +117,15 @@ class DeliveryRoomDetail extends StatelessWidget {
                   controller: DeliveryOrderTabController.to.controller,
                   children: [
                     DeliveryRoomInfoDetail(),
+                    OrderTabView(),
                     Obx(
-                      () => DeliveryRoomInfoDetailController.to.isLoad == true
-                          ? OrderTabView()
-                          : Center(
-                              child: SpinKitThreeBounce(
-                                size: 25,
-                                color: Colors.black,
-                              ),
-                            ),
-                    ),
-                    Obx(
-                      () => false
+                      () => DeliveryOrderController.to.status ==
+                                  DeliveryOrderStatus.recuritmentCompleted ||
+                              DeliveryOrderController.to.status ==
+                                  DeliveryOrderStatus.orderCompleted
                           ? DeliveryRoomChat()
                           : Center(
-                              child: SpinKitThreeBounce(
-                                size: 25,
-                                color: Colors.black,
-                              ),
+                              child: Text("인원 모집이 끝난 후 채팅을 이용해주세요."),
                             ),
                     ),
                   ],

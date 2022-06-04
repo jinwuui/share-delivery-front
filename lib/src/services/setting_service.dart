@@ -40,6 +40,7 @@ final deliveryRoomStateWithColor = {
   "WAITING_DELIVERY": DeliveryRoomState(color: Colors.yellow, name: "배달 대기 중"),
   "WAITING_REMITTANCE": DeliveryRoomState(color: Colors.green, name: "송금 대기 중"),
   "COMPLETED": DeliveryRoomState(color: Colors.grey, name: "공유 배달 완료"),
+  "DELETED": DeliveryRoomState(color: Colors.grey, name: "종료"),
 };
 
 DeliveryRoomState getDeliveryRoomStateWithColor(String key) {

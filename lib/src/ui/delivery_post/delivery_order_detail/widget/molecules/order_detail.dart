@@ -15,7 +15,7 @@ class OrderDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int leaderId =
-        DeliveryRoomInfoDetailController.to.deliveryRoom.value.leader.accountId;
+        DeliveryRoomInfoDetailController.to.deliveryRoom.leader.accountId;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class OrderDetail extends StatelessWidget {
                     )
                   : SizedBox.shrink(),
               UserWithDate(
-                user: userWithOrderModel.phoneNumber + " 님",
+                user: userWithOrderModel.nickName + " 님",
                 date: TimeUtil.timeAgo(
                     userWithOrderModel.createdDateTime.toLocal()),
               )

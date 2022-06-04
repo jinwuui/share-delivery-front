@@ -14,31 +14,34 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
       () => SafeArea(
         child: MyLoaderOverlay(
           appBar: appBar(context),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("주문할 메뉴를 입력하세요!", style: infoTextStyle),
-                ),
-                ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  itemCount: controller.menuList.length,
-                  itemBuilder: (_, idx) => menuInfo(idx),
-                  separatorBuilder: (_, __) => Divider(height: 0),
-                ),
-                Center(
-                  child: TextButton.icon(
-                    onPressed: () {
-                      print("add menu");
-                      controller.addMenu();
-                    },
-                    icon: Icon(Icons.add_circle),
-                    label: Text("메뉴 추가"),
+          body: GestureDetector(
+            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("주문할 메뉴를 입력하세요!", style: infoTextStyle),
                   ),
-                ),
-              ],
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    itemCount: controller.menuList.length,
+                    itemBuilder: (_, idx) => menuInfo(idx),
+                    separatorBuilder: (_, __) => Divider(height: 0),
+                  ),
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        print("add menu");
+                        controller.addMenu();
+                      },
+                      icon: Icon(Icons.add_circle),
+                      label: Text("메뉴 추가"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -62,8 +65,6 @@ class ParticipateRoom extends GetView<ParticipateRoomController> {
       actions: [
         TextButton(
           onPressed: () async {
-            // TODO: 모집글 참여 신청 로직 필요
-            print('ParticipateRoom.appBar');
             context.loaderOverlay.show();
             await controller.participateDeliveryRoom(Get.arguments);
             context.loaderOverlay.hide();

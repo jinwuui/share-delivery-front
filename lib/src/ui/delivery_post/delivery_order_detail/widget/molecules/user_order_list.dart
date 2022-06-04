@@ -14,7 +14,7 @@ class UserOrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     List<ElementWithMoney> orderList = [];
 
-    OrderFormRegisterController.to.orderList.forEach((element) {
+    OrderFormRegisterController.to.orders.forEach((element) {
       element.forEach((key, value) => orderList.add(ElementWithMoney(
           elementName: key,
           money: value.toString(),

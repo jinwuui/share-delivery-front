@@ -87,6 +87,7 @@ class DeliveryRoomChat extends GetView<DeliveryRoomChatController> {
                       height: 43,
                       width: 42,
                       child: FloatingActionButton(
+                        heroTag: 'chat',
                         backgroundColor: Colors.orange,
                         onPressed: () async {
                           if (controller.messageController.text

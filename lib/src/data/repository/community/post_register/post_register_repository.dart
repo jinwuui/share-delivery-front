@@ -46,14 +46,15 @@ class PostRegisterRepository {
     }
 
     // 글 작성 요청
-    await apiClient.registerPost(post, postImages).then((value) {
+    Post? result = await apiClient.registerPost(post, postImages).then((value) {
       Logger().i(value);
       return value;
     }).catchError((err) {
       Logger().e(err);
+      return null;
     });
 
-    return null;
+    return result;
   }
 
   // 게시글 수정

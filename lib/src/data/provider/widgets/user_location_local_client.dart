@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/utils/shared_preferences_util.dart';
 
@@ -20,6 +21,8 @@ class UserLocationLocalClient {
     // 사용자의 위치 데이터를 로컬에서 가져오는 함수
     List<String>? locationList =
         SharedPrefsUtil.instance.getStringList("userLocation");
+
+    Logger().i(locationList);
 
     if (locationList == null) {
       // 저장된 사용자 위치 데이터 없음

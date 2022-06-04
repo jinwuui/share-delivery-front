@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_manage_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -88,8 +87,7 @@ class DeliveryRoomRegisterController extends GetxController {
         DeliveryHistoryController.to.addPost(deliveryRoom);
 
         // 배달 관리 컨트롤러에 등록
-        DeliveryManageController.to
-            .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
+        // DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
 
         // 홈화면 모집글 새로 고침
         // await Get.find<HomeController>().onRefresh();
@@ -155,6 +153,7 @@ class DeliveryRoomRegisterController extends GetxController {
 
       String? clip = data.text;
 
+      print(data.text);
       if (clip == null) {
         GetSnackbar.on("알림", "클립보드에 저장된 내용이 없습니다.");
         return;

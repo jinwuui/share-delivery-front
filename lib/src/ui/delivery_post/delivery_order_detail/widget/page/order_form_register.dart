@@ -41,7 +41,7 @@ class RegisterOrderForm extends StatelessWidget {
           primary: Colors.orange,
         ),
         onPressed: () async {
-          if (Get.find<OrderFormRegisterController>().orderFormList.isEmpty) {
+          if (Get.find<OrderFormRegisterController>().orderForms.isEmpty) {
             Get.snackbar("주문 영수증 등록", "최소 1장의 주문 영수증을 등록해주세요!",
                 backgroundColor: Colors.white);
             return;

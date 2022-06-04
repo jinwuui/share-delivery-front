@@ -82,26 +82,35 @@ class DeliveryRoomInfo extends GetView<HomeController> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: Row(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      foodCategories
-                          .firstWhere((element) =>
-                              element.eng == deliveryRoom.storeCategory)
-                          .kor,
-                      style: postDetailStyle,
+                      deliveryRoom.storeName,
+                      style: postStoreName,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Icon(
-                        Icons.fiber_manual_record,
-                        size: 3,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Text(
-                      TimeUtil.timeAgo(deliveryRoom.createdDateTime),
-                      style: postDetailStyle,
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          foodCategories
+                              .firstWhere((element) =>
+                                  element.eng == deliveryRoom.storeCategory)
+                              .kor,
+                          style: postDetailStyle,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(4.0),
+                          child: Icon(
+                            Icons.fiber_manual_record,
+                            size: 3,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          TimeUtil.timeAgo(deliveryRoom.createdDateTime),
+                          style: postDetailStyle,
+                        ),
+                      ],
                     ),
                   ],
                 ),

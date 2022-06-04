@@ -47,7 +47,7 @@ class RecevingLocation extends GetView<ReceivingLocationController> {
                             javascriptChannels: controller.getChannels,
                           ),
                           FloatingActionButton.small(
-                            heroTag: "refresh",
+                            heroTag: null,
                             onPressed: () => controller.reloadWebView(),
                             child: const Icon(Icons.refresh),
                             backgroundColor: Colors.white,

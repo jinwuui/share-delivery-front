@@ -1,13 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
-import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
-import 'package:share_delivery/src/data/provider/delivery_history/delivery_history_api_client.dart';
-import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_repository.dart';
+import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_res_dto.dart';
 
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/services/setting_service.dart';
@@ -17,16 +13,7 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
 
   @override
   Widget build(BuildContext context) {
-    Dio dio = Dio();
-    final String? host = dotenv.env['SERVER_HOST'];
-
-    Get.put<DeliveryHistoryController>(
-      DeliveryHistoryController(
-        deliveryHistoryRepository: DeliveryHistoryRepository(
-          apiClient: DeliveryHistoryApiClient(dio, baseUrl: host!),
-        ),
-      ),
-    );
+    Get.put(DeliveryHistoryController());
 
     return Scaffold(
       appBar: AppBar(
@@ -52,40 +39,36 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
         elevation: 0.0,
       ),
       body: controller.obx(
-        (historyPostList) => Obx(() {
-          //TODO: historyPostList 정렬
-
-          return Center(
-            child: ListView.separated(
-              itemBuilder: (context, index) => GestureDetector(
-                onTap: () {
-                  Get.toNamed(
-                    Routes.DELIVERY_HISTORY_DETAIL,
-                    arguments: {'deliveryRoomId': 1},
-                  );
-                },
-                child: DeliveryHistoryPost(
-                  deliveryRoomModel: historyPostList![index],
-                ),
-              ),
-              separatorBuilder: (_, index) => Divider(
-                endIndent: 20,
-                indent: 20,
-                color: Colors.grey.shade300,
-                height: 0.5,
-                thickness: 1,
-              ),
-              itemCount: historyPostList!.length,
+          (historyPostList) => Obx(() {
+                //TODO: historyPostList 정렬
+                return Center(
+                  child: ListView.separated(
+                    itemBuilder: (context, index) => DeliveryHistoryPost(
+                      deliveryRoomModel: historyPostList![index],
+                    ),
+                    separatorBuilder: (_, index) => Divider(
+                      endIndent: 20,
+                      indent: 20,
+                      color: Colors.grey.shade300,
+                      height: 0.5,
+                      thickness: 1,
+                    ),
+                    itemCount: historyPostList!.length,
+                  ),
+                );
+              }),
+          onLoading: Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.black,
             ),
-          );
-        }),
-      ),
+          )),
     );
   }
 }
 
 class DeliveryHistoryPost extends StatelessWidget {
-  final DeliveryRoom deliveryRoomModel;
+  final DeliveryHistoryResDTO deliveryRoomModel;
 
   const DeliveryHistoryPost({
     Key? key,
@@ -94,94 +77,100 @@ class DeliveryHistoryPost extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                width: 120.0,
-                height: 120.0,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(Hive.box('foodCategory')
-                        .get(deliveryRoomModel.storeCategory.toString())),
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(
+          Routes.DELIVERY_HISTORY_DETAIL,
+          arguments: {'deliveryRoomId': deliveryRoomModel.roomId},
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  width: 120.0,
+                  height: 120.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(Hive.box('foodCategory')
+                          .get(deliveryRoomModel.storeCategory.toString())),
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    color: Colors.white,
                   ),
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white,
                 ),
-              ),
-              Center(
-                child: _buildDeliveryRoomStatus(
-                    getDeliveryRoomStateWithColor(
-                            deliveryRoomModel.status.toString())
-                        .name,
-                    getDeliveryRoomStateWithColor(
-                            deliveryRoomModel.status.toString())
-                        .color
-                    // status == "인원 모집중" ? Colors.orangeAccent : Colors.black54,
-                    ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.all(10),
-              // color: Colors.yellow,
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    deliveryRoomModel.content,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(deliveryRoomModel.receivingLocation.description),
-                      SizedBox(
-                        height: 10,
-                        child:
-                            VerticalDivider(thickness: 1, color: Colors.grey),
+                Center(
+                  child: _buildDeliveryRoomStatus(
+                      getDeliveryRoomStateWithColor(
+                              deliveryRoomModel.status.toString())
+                          .name,
+                      getDeliveryRoomStateWithColor(
+                              deliveryRoomModel.status.toString())
+                          .color),
+                ),
+              ],
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.all(10),
+                // color: Colors.yellow,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      deliveryRoomModel.content,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
                       ),
-                      Text("5분전"), //TODO: date 받아오기
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                    ),
+                    Row(
                       children: [
-                        Icon(
-                          Icons.people,
-                        ),
+                        Text(deliveryRoomModel.receivingLocationDesc),
                         SizedBox(
-                          width: 4,
+                          height: 10,
+                          child:
+                              VerticalDivider(thickness: 1, color: Colors.grey),
                         ),
-                        Text(
-                            "${deliveryRoomModel.person} / ${deliveryRoomModel.limitPerson}")
+                        Text("5분전"), //TODO: date 받아오기
                       ],
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.people,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                              "${deliveryRoomModel.peopleNumber} / ${deliveryRoomModel.limitPerson}")
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
