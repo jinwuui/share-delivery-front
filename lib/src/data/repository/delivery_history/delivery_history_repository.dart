@@ -1,5 +1,6 @@
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/provider/delivery_history/delivery_history_api_client.dart';
+import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_res_dto.dart';
 
 class DeliveryHistoryRepository {
   final DeliveryHistoryApiClient apiClient;
@@ -10,29 +11,7 @@ class DeliveryHistoryRepository {
   //   return apiClient.registerDeliveryRoom(deliveryRoom);
   // }
 
-  Future<List<DeliveryRoom>> getAll() async {
-    List<DeliveryRoom> list = [
-      DeliveryRoom(
-        leader: Leader(nickname: "종달새 1호", mannerScore: 36.7, accountId: 100),
-        content: "굽네치킨 드실분?",
-        person: 2,
-        limitPerson: 4,
-        deliveryTip: 3000,
-        storeLink: "www.baemin.com/stores?id=1524",
-        platformType: "BAEMIN",
-        status: "OPEN",
-        createdDateTime: DateTime.now().subtract(Duration(minutes: 7)),
-        receivingLocation: ReceivingLocation(
-            description: "CU 편의점 앞",
-            latitude: 35.821730657601044,
-            longitude: 128.5190184847488),
-        roomId: 123,
-        storeCategory: 'CHICKEN',
-        storeName: '갓튀긴후라이드 뉴욕점',
-      ),
-    ];
-    await Future.delayed(Duration(seconds: 1));
-    return list;
-    return apiClient.getDeliveryHistoryAll();
+  Future<List<DeliveryHistoryResDTO>> getDeliveryHistoryAll() async {
+    return await apiClient.getDeliveryHistoryAll();
   }
 }
