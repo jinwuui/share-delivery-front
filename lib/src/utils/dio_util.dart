@@ -6,6 +6,11 @@ class DioUtil {
     Dio dio = Dio();
 
     dio.interceptors.clear();
+    dio.interceptors.add(LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        requestHeader: false));
 
     dio.interceptors.add(
       InterceptorsWrapper(
