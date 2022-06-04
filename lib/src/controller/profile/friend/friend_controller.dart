@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:logger/logger.dart';
+import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
 import 'package:share_delivery/src/data/repository/profile/profile_repository.dart';
-import 'package:share_delivery/src/ui/profile/friend/friend.dart';
 
-class FriendController extends GetxController with StateMixin<List<User>> {
+class FriendController extends GetxController
+    with StateMixin<List<FriendResDTO>> {
   final ProfileRepository repository;
 
   static FriendController get to => Get.find();
@@ -12,24 +13,16 @@ class FriendController extends GetxController with StateMixin<List<User>> {
 
   final TextEditingController searchController = TextEditingController();
 
-  final friends = <User>[].obs;
+  final friends = <FriendResDTO>[].obs;
 
   @override
   void onReady() async {
     super.onReady();
-    try {
-      change(null, status: RxStatus.loading());
-
-      friends.value = await getFriendList();
-
-      change(friends, status: RxStatus.success());
-    } catch (err) {
-      change(null, status: RxStatus.error());
-    }
+    await getFriendList();
   }
 
   void filterFriends(String searchTerm) {
-    List<User> results = [];
+    List<FriendResDTO> results = [];
 
     if (searchTerm.isEmpty) {
       results = friends;
@@ -46,7 +39,20 @@ class FriendController extends GetxController with StateMixin<List<User>> {
     change(results, status: RxStatus.success());
   }
 
-  Future<List<User>> getFriendList() async {
-    return await repository.getFriendList();
+  Future<void> getFriendList() async {
+    try {
+      change(null, status: RxStatus.loading());
+
+      String fiendType = "ACCEPTED";
+      Logger().i("hello");
+
+      List<FriendResDTO> list = await repository.getFriendList(fiendType);
+      Logger().i(list);
+      friends.value = list;
+
+      change(friends, status: RxStatus.success());
+    } catch (err) {
+      change(null, status: RxStatus.error());
+    }
   }
 }

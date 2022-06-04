@@ -16,8 +16,10 @@ abstract class ProfileApiClient {
   factory ProfileApiClient(Dio dio, {String baseUrl}) = _ProfileApiClient;
 
   // 친구 조회
-  @GET('/api/friends')
-  Future<List<User>> getFriendList();
+  @GET('/api/friends/')
+  Future<List<FriendResDTO>> getFriendList(
+    @Query("type") String friendType,
+  );
 
   // 계좌 조회
   @GET('/api/accounts/bank-account')
@@ -27,7 +29,7 @@ abstract class ProfileApiClient {
   @POST('/api/accounts/bank-account')
   Future<void> registerAccount(@Body() AccountBankDTO accountDTO);
 
-  // 내 계좌 정보 삭제
+  // 계좌 정보 삭제
   @DELETE('/api/accounts/bank-account')
   Future deleteAccountBank();
 
