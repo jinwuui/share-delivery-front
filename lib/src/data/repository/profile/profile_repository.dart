@@ -25,7 +25,6 @@ class ProfileRepository {
   }
 
   Future<ProfileModel> fetchUserInfo(int accountId) async {
-    Logger().w(accountId);
     return await apiClient.readUser(accountId);
   }
 

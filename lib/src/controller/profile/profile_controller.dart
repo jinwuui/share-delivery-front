@@ -42,8 +42,6 @@ class ProfileController extends GetxController {
           mannerScore: profileModel.mannerScore,
         ),
       );
-
-      Logger().w(profileModel);
     } catch (e) {
       Logger().w(e);
     }
