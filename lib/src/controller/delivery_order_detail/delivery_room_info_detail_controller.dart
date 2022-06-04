@@ -26,6 +26,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
       longitude: 128.518205019348,
     ),
     storeCategory: 'CHICKEN',
+    storeName: '갓튀긴후라이드 뉴욕점',
   ).obs;
   final isLoad = false.obs;
 

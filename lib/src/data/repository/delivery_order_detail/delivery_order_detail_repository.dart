@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
-import 'package:share_delivery/src/data/model/chat/chat.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
@@ -36,6 +35,7 @@ class DeliveryOrderDetailRepository {
           longitude: 128.518205019348),
       roomId: 456,
       storeCategory: 'CHICKEN',
+      storeName: '갓튀긴후라이드 뉴욕점',
     );
     return await apiClient.getDeliveryRoomInfoDetail(deliveryRoomId);
   }

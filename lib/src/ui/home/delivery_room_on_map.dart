@@ -171,6 +171,7 @@ class _DeliveryRoomOnMapState extends State<DeliveryRoomOnMap>
         latitude: -1,
       ),
       storeCategory: '',
+      storeName: '갓튀긴후라이드 뉴욕점',
     );
   }
 

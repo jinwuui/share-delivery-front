@@ -14,6 +14,7 @@ class DeliveryRoom with _$DeliveryRoom {
     required int deliveryTip,
     required String storeLink,
     required String platformType,
+    required String storeName,
     required String status,
     required DateTime createdDateTime,
     required String storeCategory,
