@@ -95,6 +95,7 @@ class DioUtil {
             print('DioUtil.getDio: 401 제외한 에러');
             print(error.response?.statusCode);
             print(error.response?.data);
+            return handler.next(error);
           }
         },
       ),
