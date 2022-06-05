@@ -80,13 +80,19 @@ class DeliveryRoomInfo extends GetView<HomeController> {
                 style: Get.height >= 700 ? titleTextStyle : smallTitleTextStyle,
               ),
               Align(
-                alignment: Alignment.bottomRight,
+                alignment: Alignment.bottomCenter,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      deliveryRoom.storeName,
-                      style: postStoreName,
+                    SizedBox(
+                      width: Get.width * 0.4,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Text(
+                          deliveryRoom.storeName,
+                          style: postStoreName,
+                        ),
+                      ),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,

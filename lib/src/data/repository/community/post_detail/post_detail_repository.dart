@@ -11,7 +11,9 @@ class PostDetailRepository {
 
   // 게시글 상세정보 조회
   Future<PostDetail> findDetailById(int postId) async {
-    return await apiClient.findPostDetailById(postId);
+    PostDetail postDetail = await apiClient.findPostDetailById(postId);
+    print('PostDetailRepository.findDetailById - $postDetail');
+    return postDetail;
   }
 
   // 게시글 댓글 조회

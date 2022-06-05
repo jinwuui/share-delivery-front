@@ -33,9 +33,11 @@ class PostRegisterRepository {
     // 작성할 글
     PostRegisterRequestDTO post = PostRegisterRequestDTO(
       coordinate: coordinate,
-      category: content,
-      content: category,
+      content: content,
+      category: category,
     );
+
+    Logger().i(post);
 
     // 이미지
     List<File> postImages = [];

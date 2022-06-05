@@ -46,6 +46,7 @@ class PostDetail extends GetView<PostDetailController> {
                     children: [
                       profile(post),
                       content(post),
+                      postImages(),
                       controller.comments.isEmpty ? noComments() : comments(),
                       const SizedBox(width: 30, height: 68),
                     ],
@@ -82,7 +83,9 @@ class PostDetail extends GetView<PostDetailController> {
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
                   primary: Colors.transparent,
-                  onPrimary: controller.postDetail != null &&
+                  onPrimary: controller.loadingStatus.value ==
+                              LoadingStatus.complete &&
+                          controller.postDetail != null &&
                           controller.postDetail!.isLiked
                       ? Colors.orange
                       : Colors.grey.shade700,
@@ -90,9 +93,10 @@ class PostDetail extends GetView<PostDetailController> {
                   textStyle: const TextStyle(fontWeight: FontWeight.w800),
                 ),
                 label: Text(
-                  controller.postDetail == null
-                      ? "0"
-                      : controller.postDetail!.likes.toString(),
+                  controller.loadingStatus.value == LoadingStatus.complete &&
+                          controller.postDetail != null
+                      ? controller.postDetail!.likes.toString()
+                      : "-",
                 ),
               ),
             ),
@@ -154,7 +158,7 @@ class PostDetail extends GetView<PostDetailController> {
     return Container(
       padding: const EdgeInsets.all(big),
       width: double.infinity,
-      decoration: bottomBorderBox,
+      // decoration: bottomBorderBox,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -162,7 +166,6 @@ class PostDetail extends GetView<PostDetailController> {
             post.content,
             style: detailContentStyle,
           ),
-          postImages(),
         ],
       ),
       // child: ,
@@ -173,28 +176,29 @@ class PostDetail extends GetView<PostDetailController> {
     double imageSize = Get.width < 400 ? 70.0 : 90.0;
     double imageMargin = Get.width < 400 ? 10.0 : 12.0;
 
-    if (controller.postDetail == null) return SizedBox.shrink();
-
-    List<String> postImages = controller.postDetail!.images;
-
-    return postImages.isNotEmpty
-        ? SizedBox(
-            height: imageSize + imageMargin * 2,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: postImages.length,
-              itemBuilder: (_, i) {
-                return PostImage(
-                  index: i,
-                  imageURLs: postImages,
-                  deleteButton: false,
-                  size: imageSize,
-                  margin: imageMargin,
-                );
-              },
-            ),
-          )
-        : SizedBox.shrink();
+    return Obx(
+      () => controller.loadingStatus.value == LoadingStatus.complete &&
+              controller.postDetail!.images.isNotEmpty
+          ? Container(
+              decoration: bottomBorderBox,
+              height: imageSize + imageMargin * 2,
+              padding: EdgeInsets.symmetric(horizontal: normal),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: controller.postDetail!.images.length,
+                itemBuilder: (_, i) {
+                  return PostImage(
+                    index: i,
+                    imageURLs: controller.postDetail!.images,
+                    deleteButton: false,
+                    size: imageSize,
+                    margin: imageMargin,
+                  );
+                },
+              ),
+            )
+          : SizedBox.shrink(),
+    );
   }
 
   Widget noComments() {

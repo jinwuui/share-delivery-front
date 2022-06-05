@@ -11,7 +11,7 @@ class PostDetail with _$PostDetail {
     required SharePlace? sharePlace,
     required int likes,
     required bool isLiked,
-    required int viewCounts,
+    required int viewCount,
     @Default([]) List<String> images,
   }) = _PostDetail;
 

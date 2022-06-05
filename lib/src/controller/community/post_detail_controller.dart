@@ -16,6 +16,13 @@ enum PostDetailUI {
   reader,
 }
 
+enum LoadingStatus {
+  none,
+  loading,
+  complete,
+  error,
+}
+
 class PostDetailController extends GetxController {
   PostDetailRepository repository;
 
@@ -25,24 +32,29 @@ class PostDetailController extends GetxController {
   void onInit() async {
     super.onInit();
     post = Get.arguments;
-    findPostDetail();
-    findComment();
+    loadingStatus.value = LoadingStatus.loading;
+    await findPostDetail();
+    await findComment();
     initUiType();
+    loadingStatus.value = LoadingStatus.complete;
   }
 
   // UI 관련
   PostDetailUI uiType = PostDetailUI.undecided;
+  Rx<LoadingStatus> loadingStatus = LoadingStatus.none.obs;
   int currentUserId = -1;
   RxBool onSendComment = false.obs;
 
   late final Post post;
-  PostDetail? postDetail = PostDetail(
-    postId: 13,
-    sharePlace: null,
-    likes: 12,
-    isLiked: true,
-    viewCounts: 112,
-  );
+  // late final Rx<PostDetail> postDetail;
+  PostDetail? postDetail;
+  // = PostDetasil(
+  //   postId: 13,
+  //   sharePlace: null,
+  //   likes: 12,
+  //   isLiked: true,
+  //   viewCounts: 112,
+  // );
 
   var comments = <Comment>[
     Comment(
@@ -102,13 +114,17 @@ class PostDetailController extends GetxController {
   // 게시글 상세정보 가져오기
   Future<void> findPostDetail() async {
     postDetail = await repository.findDetailById(post.postId);
-    Logger().v("게시글 상세정보 조회 ", postDetail);
+
+    Logger().v(postDetail);
+
+    // postDetail.value =
+    // Logger().v("게시글 상세정보 조회 ", postDetail);
   }
 
   // 게시글의 댓글 가져오기
   Future<void> findComment() async {
-    comments.value = await repository.findCommentById(post.postId);
-    Logger().v("게시글 상세정보 댓글 조회 ", comments);
+    // comments.value = await repository.findCommentById(post.postId);
+    // Logger().v("게시글 상세정보 댓글 조회 ", comments);
   }
 
   // 게시글 삭제

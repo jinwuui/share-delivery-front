@@ -210,6 +210,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
                     children: [
                       Text(
                         deliveryRoom.content,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
                           fontSize: 20,
@@ -217,6 +218,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
                       ),
                       Text(
                         deliveryRoom.storeName,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontWeight: FontWeight.w800,
                           color: Colors.grey.shade700,
@@ -258,6 +260,7 @@ class DeliveryRoomPost extends GetView<HomeController> {
                         TimeUtil.timeAgo(
                           deliveryRoom.createdDateTime.toLocal(),
                         ),
+                        style: TextStyle(fontWeight: FontWeight.w700),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -265,7 +268,9 @@ class DeliveryRoomPost extends GetView<HomeController> {
                           Icon(Icons.people),
                           SizedBox(width: 4),
                           Text(
-                              "${deliveryRoom.person} / ${deliveryRoom.limitPerson}")
+                            "${deliveryRoom.person} / ${deliveryRoom.limitPerson}",
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          )
                         ],
                       ),
                     ],

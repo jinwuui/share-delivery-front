@@ -11,6 +11,7 @@ final List<FoodCategory> foodCategories = [
   FoodCategory(kor: "패스트푸드", eng: "FASTFOOD"),
   FoodCategory(kor: "야식", eng: "LATE_NIGHT"),
   FoodCategory(kor: "도시락", eng: "LUNCHBOX"),
+  FoodCategory(kor: "디저트", eng: "DESERT"),
 ];
 
 class FoodCategory {
