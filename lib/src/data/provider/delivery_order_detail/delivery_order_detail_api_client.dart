@@ -15,8 +15,8 @@ abstract class DeliveryOrderDetailApiClient {
       _DeliveryOrderDetailApiClient;
 
   // 모집글 인원 모집 완료(A) TEST
-  @GET('/api/delivery-rooms/{deliveryRoomId}/close_recruit')
-  Future<dynamic> completeDeliveryRecruit(
+  @GET('/api/delivery-rooms/{deliveryRoomId}/close-recruit')
+  Future<int> completeDeliveryRecruit(
       @Path('deliveryRoomId') int deliveryRoomId);
 
   // 주도자 배달 주문 정보 등록(B) TEST

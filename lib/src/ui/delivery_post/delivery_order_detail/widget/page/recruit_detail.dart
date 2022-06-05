@@ -76,16 +76,8 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
         style: ElevatedButton.styleFrom(
           primary: Colors.orange,
         ),
-        onPressed: () {
-          Get.snackbar(
-            "주문 진행 확인",
-            "주문 상세 정보 입력 페이지로 이동",
-            backgroundColor: Colors.white,
-            duration: Duration(
-              seconds: 1,
-            ),
-          );
-          DeliveryRecruitController.to.completeRecurit();
+        onPressed: () async {
+          await DeliveryRecruitController.to.completeRecurit();
           DeliveryOrderController.to
               .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
         },

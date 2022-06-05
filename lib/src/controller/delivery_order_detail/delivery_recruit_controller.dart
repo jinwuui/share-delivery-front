@@ -15,6 +15,7 @@ class DeliveryRecruitController extends GetxController
 
   final orderMenuList = <OrderMenuModel>[].obs;
   final totalPaymentMoney = 0.obs;
+  late final int deliveryRoomId;
 
   @override
   void onInit() {
@@ -27,7 +28,7 @@ class DeliveryRecruitController extends GetxController
   @override
   void onReady() async {
     super.onReady();
-    int deliveryRoomId = Get.arguments['deliveryRoomId'];
+    deliveryRoomId = Get.arguments['deliveryRoomId'];
     await getOrderList(deliveryRoomId: deliveryRoomId);
   }
 
@@ -74,8 +75,30 @@ class DeliveryRecruitController extends GetxController
   }
 
   Future<void> completeRecurit() async {
-    int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
-    await repository.completeDeliveryRecruit(roomId);
+    try {
+      int res = await repository.completeDeliveryRecruit(deliveryRoomId);
+      if (res != deliveryRoomId) {
+        throw Exception();
+      }
+      Get.snackbar(
+        "주문 진행 확인",
+        "주문 상세 정보 입력 페이지로 이동",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+    } catch (e) {
+      Get.snackbar(
+        "주문 진행 확인",
+        "주문 상세 정보 입력 페이지로 이동 실패",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+      Logger().w(e);
+    }
   }
 
   Future<void> deleteDeliveryRoom(int deliveryRoomId) async {

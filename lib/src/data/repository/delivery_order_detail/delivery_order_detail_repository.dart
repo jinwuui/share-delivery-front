@@ -12,7 +12,7 @@ class DeliveryOrderDetailRepository {
 
   DeliveryOrderDetailRepository({required this.apiClient});
 
-  completeDeliveryRecruit(int deliveryRoomId) async {
+  Future<int> completeDeliveryRecruit(int deliveryRoomId) async {
     return await apiClient.completeDeliveryRecruit(deliveryRoomId);
   }
 
