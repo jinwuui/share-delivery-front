@@ -5,6 +5,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReceivingLocationController extends GetxController {
@@ -13,7 +15,6 @@ class ReceivingLocationController extends GetxController {
   static ReceivingLocationController get to => Get.find();
 
   // 사용자 위치 관련
-  final Location location = Location();
   Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
 
   // 웹뷰 관련
@@ -21,16 +22,14 @@ class ReceivingLocationController extends GetxController {
       Completer<WebViewController>().obs;
   RxBool isPrepared = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-    // TODO: 모집글 수령위치로 변경
-    getUserLocation();
-  }
+  Future<void> refreshLocation() async {
+    final ReceivingLocation recevingLocation =
+        DeliveryRoomInfoDetailController.to.deliveryRoom.receivingLocation;
 
-  // 사용자 위치 불러오기
-  void getUserLocation() async {
-    locationData.value = await location.getLocation();
+    locationData.value = LocationData.fromMap({
+      "longitude": recevingLocation.longitude,
+      "latitude": recevingLocation.latitude
+    });
     isPrepared.value = true;
   }
 
