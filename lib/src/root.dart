@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/ui/community/community.dart';
 import 'package:share_delivery/src/ui/delivery_history/delivery_history.dart';
 import 'package:share_delivery/src/ui/home/home.dart';
@@ -20,7 +21,9 @@ class Root extends GetView<RootController> {
             children: [
               Home(),
               DeliveryHistory(),
-              controller.isFirstOpenCommunity.value ? SizedBox.shrink() : Community(),
+              controller.isFirstOpenCommunity.value
+                  ? SizedBox.shrink()
+                  : Community(),
               Profile(),
             ],
           ),
@@ -42,9 +45,11 @@ class Root extends GetView<RootController> {
                   activeIcon: Icon(Icons.home),
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.delivery_dining_outlined),
+                  icon: countProgressShareDeliveryCountBadge(
+                      Icon(Icons.delivery_dining_outlined)),
                   label: "내 배달",
-                  activeIcon: Icon(Icons.delivery_dining),
+                  activeIcon: countProgressShareDeliveryCountBadge(
+                      Icon(Icons.delivery_dining)),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.feed_outlined),
@@ -71,20 +76,16 @@ class Root extends GetView<RootController> {
     );
   }
 
-  // Widget countProgressShareDeliveryCountBadge(Icon icon) {
-  //   return Obx(
-  //     () => Badge(
-  //       showBadge:
-  //           DeliveryManageController.to.deliveryRoomCountInProgress.value == 0
-  //               ? false
-  //               : true,
-  //       padding: const EdgeInsets.all(4.0),
-  //       badgeContent: Text(
-  //         DeliveryManageController.to.deliveryRoomCountInProgress.value
-  //             .toString(),
-  //       ),
-  //       child: Icon(Icons.delivery_dining_outlined),
-  //     ),
-  //   );
-  // }
+  Widget countProgressShareDeliveryCountBadge(Icon icon) {
+    return Obx(
+      () => Badge(
+        showBadge: DeliveryManageController.to.roomId.value == 0 ? false : true,
+        padding: const EdgeInsets.all(4.0),
+        badgeContent: Text(
+          "1",
+        ),
+        child: Icon(Icons.delivery_dining_outlined),
+      ),
+    );
+  }
 }

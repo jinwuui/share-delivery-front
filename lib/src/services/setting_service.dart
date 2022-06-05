@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:logger/logger.dart';
 
 Map<String, String> foodCategoryDummy = {
   "KOREA": "https://cdn-icons-png.flaticon.com/128/4498/4498489.png",
@@ -13,6 +14,7 @@ Map<String, String> foodCategoryDummy = {
   "FASTFOOD": "https://cdn-icons-png.flaticon.com/128/3075/3075977.png",
   "LATE_NIGHT": "https://cdn-icons-png.flaticon.com/128/740/740878.png",
   "LUNCHBOX": "https://cdn-icons-png.flaticon.com/128/3361/3361928.png",
+  "DESERT": "https://cdn-icons-png.flaticon.com/128/3361/3361928.png",
 };
 
 // String getFoodCategory(String key) {

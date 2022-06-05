@@ -64,7 +64,7 @@ Future<void> initialize() async {
   await Hive.initFlutter();
 
   // 배달 관리 controller
-  Get.put(DeliveryManageController());
+  await Get.putAsync(() => DeliveryManageController().init());
 
   // 인증 컨트롤러 Get 세팅
   Get.put(

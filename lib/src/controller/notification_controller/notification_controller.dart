@@ -113,11 +113,12 @@ class NotificationController extends GetxController {
       handleForegroundMessage(message);
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOnClick);
   }
 
   // click notification event
-  void _handleMessage(RemoteMessage message) {
+  void _handleMessageOnClick(RemoteMessage message) {
+    Logger().w("click notification");
     final eventType = message.data['type'];
     final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
 
@@ -190,5 +191,25 @@ class NotificationController extends GetxController {
       default:
         break;
     }
+  }
+
+  Future<void> showOngoingNotification(String title, String body) async {
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(channel.id, channel.name,
+            channelDescription: 'your channel description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ongoing: true,
+            autoCancel: false);
+
+    NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+        0, title, body, platformChannelSpecifics);
+  }
+
+  Future<void> cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 }

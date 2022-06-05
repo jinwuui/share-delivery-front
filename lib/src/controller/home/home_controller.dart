@@ -135,7 +135,6 @@ class HomeController extends GetxController {
 
       List<DeliveryRoom> result =
           await repository.findDeliveryRooms(latitude!, longitude!, radius);
-      Logger().i(result);
 
       if (result.isEmpty) {
         refresher.refreshFailed();
