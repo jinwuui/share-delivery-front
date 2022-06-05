@@ -30,10 +30,13 @@ class DeliveryHistoryController extends GetxController {
   set postList(posts) => historyPostList.value = posts;
 
   Future<void> onRefresh() async {
-    Logger().w("onRefresh");
-    historyPostList.value =
-        await deliveryHistoryRepository.getDeliveryHistoryAll();
+    try {
+      historyPostList.value =
+          await deliveryHistoryRepository.getDeliveryHistoryAll();
 
-    refreshController.refreshCompleted();
+      refreshController.refreshCompleted();
+    } catch (e) {
+      Logger().e(e);
+    }
   }
 }
