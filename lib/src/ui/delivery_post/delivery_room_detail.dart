@@ -35,62 +35,61 @@ class DeliveryRoomDetail extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, size: 30),
-            onPressed: () {
-              Get.bottomSheet(
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(
-                        indent: 170,
-                        endIndent: 170,
-                        thickness: 5,
-                        height: 20,
-                        color: Colors.black54),
-                    Obx(() {
-                      if ((AuthenticationController.to.state.props.first
-                                  as User)
-                              .accountId ==
-                          DeliveryRoomInfoDetailController
-                              .to.deliveryRoom.leader.accountId) {
-                        return BottomSheetItem(
-                          icon: Icon(Icons.delete),
-                          text: "모집글 삭제 하기",
-                          callback: () async {
-                            await DeliveryRecruitController.to
-                                .deleteDeliveryRoom(
-                                    DeliveryRoomInfoDetailController
-                                        .to.deliveryRoom.roomId);
-                          },
-                        );
-                      } else {
-                        return BottomSheetItem(
-                          icon: Icon(Icons.exit_to_app),
-                          text: "퇴장 하기",
-                          callback: () async {
-                            // TODO: test
-                            await DeliveryRecruitController.to.exitDeliveryRoom(
-                                DeliveryRoomInfoDetailController
-                                    .to.deliveryRoom.roomId);
-                            await DeliveryManageController.to
-                                .deleteDeliveryRoom();
-                          },
-                        );
-                      }
-                    })
-                  ],
-                ),
-                backgroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0)),
-                ),
-              );
-            },
-          )
+          Obx(() => DeliveryOrderController.to.status == DeliveryRoomState.OPEN
+              ? IconButton(
+                  icon: Icon(Icons.more_vert, size: 30),
+                  onPressed: () {
+                    Get.bottomSheet(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Divider(
+                              indent: 170,
+                              endIndent: 170,
+                              thickness: 5,
+                              height: 20,
+                              color: Colors.black54),
+                          (AuthenticationController.to.state.props.first
+                                          as User)
+                                      .accountId ==
+                                  DeliveryRoomInfoDetailController
+                                      .to.deliveryRoom.leader.accountId
+                              ? BottomSheetItem(
+                                  icon: Icon(Icons.delete),
+                                  text: "모집글 삭제 하기",
+                                  callback: () async {
+                                    await DeliveryRecruitController.to
+                                        .deleteDeliveryRoom(
+                                            DeliveryRoomInfoDetailController
+                                                .to.deliveryRoom.roomId);
+                                  },
+                                )
+                              : BottomSheetItem(
+                                  icon: Icon(Icons.exit_to_app),
+                                  text: "퇴장 하기",
+                                  callback: () async {
+                                    // TODO: test
+                                    await DeliveryRecruitController.to
+                                        .exitDeliveryRoom(
+                                            DeliveryRoomInfoDetailController
+                                                .to.deliveryRoom.roomId);
+                                    await DeliveryManageController.to
+                                        .deleteDeliveryRoom();
+                                  },
+                                )
+                        ],
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0)),
+                      ),
+                    );
+                  },
+                )
+              : Container()),
         ],
         elevation: 0.0,
       ),
