@@ -21,10 +21,10 @@ Map<String, String> foodCategoryDummy = {
 //   return foodCategoryDummy[key]!;
 // }
 
-class DeliveryRoomState {
+class DeliveryRoomStateInfo {
   final MaterialColor color;
   final String name;
-  DeliveryRoomState({
+  DeliveryRoomStateInfo({
     required this.color,
     required this.name,
   });
@@ -37,15 +37,17 @@ enum FriendAcceptState {
 }
 
 final deliveryRoomStateWithColor = {
-  "OPEN": DeliveryRoomState(color: Colors.orange, name: "인원 모집 중"),
-  "WAITING_PAYMENT": DeliveryRoomState(color: Colors.red, name: "배달 주문 중"),
-  "WAITING_DELIVERY": DeliveryRoomState(color: Colors.yellow, name: "배달 대기 중"),
-  "WAITING_REMITTANCE": DeliveryRoomState(color: Colors.green, name: "송금 대기 중"),
-  "COMPLETED": DeliveryRoomState(color: Colors.grey, name: "공유 배달 완료"),
-  "DELETED": DeliveryRoomState(color: Colors.grey, name: "종료"),
+  "OPEN": DeliveryRoomStateInfo(color: Colors.orange, name: "인원 모집 중"),
+  "WAITING_PAYMENT": DeliveryRoomStateInfo(color: Colors.red, name: "배달 주문 중"),
+  "WAITING_DELIVERY":
+      DeliveryRoomStateInfo(color: Colors.yellow, name: "배달 대기 중"),
+  "WAITING_REMITTANCE":
+      DeliveryRoomStateInfo(color: Colors.green, name: "송금 대기 중"),
+  "COMPLETED": DeliveryRoomStateInfo(color: Colors.grey, name: "공유 배달 완료"),
+  "DELETED": DeliveryRoomStateInfo(color: Colors.grey, name: "종료"),
 };
 
-DeliveryRoomState getDeliveryRoomStateWithColor(String key) {
+DeliveryRoomStateInfo getDeliveryRoomStateWithColor(String key) {
   return deliveryRoomStateWithColor[key]!;
 }
 

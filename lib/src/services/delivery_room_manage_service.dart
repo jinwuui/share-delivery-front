@@ -4,6 +4,15 @@ import 'package:share_delivery/src/controller/notification_controller/notificati
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:logger/logger.dart';
 
+enum DeliveryRoomState {
+  OPEN, //인원 모집 중
+  WAITING_PAYMENT, //주도자가 계산서 올리기를 기다리는 중
+  WAITING_DELIVERY, // 배달을 기다리는 중
+  WAITING_REMITTANCE, // 송금을 기다리는 중
+  COMPLETED, // 모두 완료
+  DELETED, // 삭제된 주문
+}
+
 class DeliveryManageController extends GetxService {
   static DeliveryManageController get to => Get.find();
 

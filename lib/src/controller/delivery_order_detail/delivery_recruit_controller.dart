@@ -52,15 +52,42 @@ class DeliveryRecruitController extends GetxController
   }
 
   Future<void> deleteUserWithOrder(int userId) async {
-    try {
-      int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
-      await repository.rejectUserOrder(userId, roomId);
+    await Get.dialog(AlertDialog(
+      title: Text("주문 거절"),
+      content: Text("해당 사용자의 주문을 거절하시겠습니까?"),
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.red),
+          child: Text("취소"),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.red),
+          child: Text(
+            "확인",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () async {
+            try {
+              int roomId =
+                  DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
+              await repository.rejectUserOrder(userId, roomId);
 
-      orderMenuList.value =
-          orderMenuList.where((e) => e.accountId != userId).toList();
-    } catch (e) {
-      print(e);
-    }
+              orderMenuList.value =
+                  orderMenuList.where((e) => e.accountId != userId).toList();
+              Get.back();
+              Get.snackbar("주문 취소", "다른 사용자의 주문을 취소하였습니다.");
+            } catch (e) {
+              Get.back();
+              Get.snackbar("주문 취소 실패", "다른 사용자의 주문을 취소하는데 실패하였습니다.");
+              Logger().w(e);
+            }
+          },
+        ),
+      ],
+    ));
   }
 
   Future<void> calculateTotalPaymentMoney() async {

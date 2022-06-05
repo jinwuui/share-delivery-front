@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/order_form_image.dart';
 
-class OrderFormScreenShotSection extends StatelessWidget {
+class OrderFormScreenShotSection
+    extends GetView<DeliveryPaymentDetailController> {
   const OrderFormScreenShotSection({Key? key}) : super(key: key);
 
   @override
@@ -33,21 +34,16 @@ class OrderFormScreenShotSection extends StatelessWidget {
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Obx(
-                () => Row(
-                  children: [
-                    ...Get.find<OrderFormRegisterController>()
-                        .orderForms
-                        .map(
-                          (image) => OrderFormImage(
-                            imageURL: image.path,
-                            deleteButton: false,
-                          ),
-                        )
-                        .toList()
-                  ],
-                ),
-              ),
+              child: Row(children: []
+                  //  controller.deliveryPaymentDetail.orderFormUrlList
+                  //     .map(
+                  //       (url) => OrderFormImage(
+                  //         imageURL: url,
+                  //         deleteButton: false,
+                  //       ),
+                  //     )
+                  //     .toList(),
+                  ),
             ),
           )
         ],

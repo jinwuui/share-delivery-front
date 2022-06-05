@@ -6,6 +6,7 @@ import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_m
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
+import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_payment_detail_res_dto.dart';
 
 class DeliveryOrderDetailRepository {
   final DeliveryOrderDetailApiClient apiClient;
@@ -25,7 +26,7 @@ class DeliveryOrderDetailRepository {
   }
 
   // 주도자 배달 주문 정보 등록(B)
-  Future<void> registerDeliveryRoomOrderDetail(
+  Future<String> registerDeliveryRoomOrderDetail(
       {required DeliveryOrderDetailReqDTO deliveryOrderDetailDTO,
       required List<File> orderFormFileList,
       required int deliveryRoomId}) async {
@@ -43,5 +44,11 @@ class DeliveryOrderDetailRepository {
 
   Future<void> exitDeliveryRoom(int deliveryRoomsId) async {
     return await apiClient.exitDeliveryRoom(deliveryRoomsId);
+  }
+
+  // 주도자 C
+  Future<DeliveryPaymentDetailResDTO> getDeliveryPaymentDetail(
+      int deliveryRoomId) async {
+    return await apiClient.getDeliveryPaymentDetail(deliveryRoomId);
   }
 }

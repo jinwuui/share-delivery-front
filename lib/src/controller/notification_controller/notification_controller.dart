@@ -31,6 +31,12 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
   // showNotificationView(message);
+
+  final data = message.data;
+  final title = message.notification!.title;
+  final body = message.notification!.body;
+
+  Logger().w("title :  $title\n body : $body\n data : $data");
 }
 
 Future<void> showNotificationView(RemoteMessage message) async {
@@ -60,9 +66,9 @@ class NotificationController extends GetxController {
   late final String fcmToken;
 
   @override
-  void onInit() {
-    _initNotification();
-    _getToken();
+  void onInit() async {
+    await _initNotification();
+    await _getToken();
     super.onInit();
   }
 
@@ -110,19 +116,22 @@ class NotificationController extends GetxController {
       // local notification to show to users using the created channel.
       showNotificationView(message);
 
-      handleForegroundMessage(message);
+      // handleForegroundMessage(message);
+
+      final data = message.data;
+      final title = message.notification!.title;
+      final body = message.notification!.body;
+
+      Logger().w("title :  $title\n body : $body\n data : $data");
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOnClick);
+    // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOnClick);
   }
 
   // click notification event
   void _handleMessageOnClick(RemoteMessage message) {
-    Logger().w("click notification");
     final eventType = message.data['type'];
     final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
-
-    Logger().w(eventType, message.data);
 
     addFcmInAlarmList(message);
 

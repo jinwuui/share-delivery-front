@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
@@ -32,6 +33,7 @@ class OrderFormRegisterController extends GetxController {
   Future<void> registerDeliveryRoomOrderDetail() async {
     DeliveryOrderDetailReqDTO deliveryOrderDetailReqDTO =
         DeliveryOrderDetailReqDTO(
+      deliveryFee: DeliveryRoomInfoDetailController.to.deliveryRoom.deliveryTip,
       discounts: discountModels,
     );
 
@@ -44,10 +46,33 @@ class OrderFormRegisterController extends GetxController {
     int deliveryRoomId =
         DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
 
-    await repository.registerDeliveryRoomOrderDetail(
-        deliveryOrderDetailDTO: deliveryOrderDetailReqDTO,
-        deliveryRoomId: deliveryRoomId,
-        orderFormFileList: orderFormFileList);
+    try {
+      String res = await repository.registerDeliveryRoomOrderDetail(
+          deliveryOrderDetailDTO: deliveryOrderDetailReqDTO,
+          deliveryRoomId: deliveryRoomId,
+          orderFormFileList: orderFormFileList);
+
+      Logger().w("res", res);
+
+      Get.snackbar(
+        "주문 상세 정보 등록 완료",
+        "배달 대기 화면으로 이동",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+    } catch (e) {
+      Get.snackbar(
+        "주문 상세 정보 등록 실패",
+        "재시도 해주세요",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+      print(e);
+    }
   }
 
   Future<void> pickImage() async {

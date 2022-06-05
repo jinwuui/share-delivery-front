@@ -1,13 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/order_form_register.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/payment_detail.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/recruit_detail.dart';
-
-// TODO: 나의 주문 메뉴 + 다른 사람의 주문 메뉴
-// 주도자인지 참여자인지 구분해서 UI 변경
-// 주문 진행 상태에 따라서 UI 변경 해야함 status 상태 하나 두어서 rebuild 시키기
 
 class OrderTabView extends StatelessWidget {
   const OrderTabView({Key? key}) : super(key: key);
@@ -15,21 +17,53 @@ class OrderTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = DeliveryOrderController.to;
+    int leaderId =
+        DeliveryRoomInfoDetailController.to.deliveryRoom.leader.accountId;
+    User user = AuthenticationController.to.state.props.first as User;
+    Logger().w(controller.deliveryOrderStatus.value);
+    return Column(
+      children: [
+        _buildDeliveryRoomStatus(),
+        Expanded(
+          child: Obx(() {
+            if (controller.deliveryOrderStatus.value ==
+                DeliveryRoomState.OPEN) {
+              return DeliveryRecruitDetail();
+            } else if (controller.deliveryOrderStatus.value ==
+                DeliveryRoomState.WAITING_PAYMENT) {
+              return leaderId == user.accountId
+                  ? RegisterOrderForm()
+                  : Container(
+                      child: Text("주도자가 주문 진행 중"),
+                    );
+            } else if (controller.deliveryOrderStatus.value ==
+                DeliveryRoomState.WAITING_DELIVERY) {
+              return DeliveryPaymentDetail();
+            } else if (controller.deliveryOrderStatus.value ==
+                DeliveryRoomState.DELETED) {
+              return Center(
+                child: Text("deleted"),
+              );
+            } else {
+              return Container();
+            }
+          }),
+        ),
+      ],
+    );
+  }
 
-    return Obx(() {
-      if (controller.deliveryOrderStatus.value ==
-              DeliveryOrderStatus.recuritmentWaiting ||
-          controller.deliveryOrderStatus.value == DeliveryOrderStatus.none) {
-        return DeliveryRecruitDetail();
-      } else if (controller.deliveryOrderStatus.value ==
-          DeliveryOrderStatus.recuritmentCompleted) {
-        return RegisterOrderForm();
-      } else if (controller.deliveryOrderStatus.value ==
-          DeliveryOrderStatus.orderCompleted) {
-        return DeliveryPaymentDetail();
-      } else {
-        return Container();
-      }
-    });
+  Widget _buildDeliveryRoomStatus() {
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(
+            describeEnum(DeliveryOrderController.to.deliveryOrderStatus.value),
+            style: TextStyle(fontSize: 20, color: Colors.red),
+          ),
+        ),
+      ),
+    );
   }
 }

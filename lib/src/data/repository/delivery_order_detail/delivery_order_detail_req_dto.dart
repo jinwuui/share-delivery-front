@@ -6,7 +6,8 @@ part 'delivery_order_detail_req_dto.g.dart';
 @Freezed()
 class DeliveryOrderDetailReqDTO with _$DeliveryOrderDetailReqDTO {
   const factory DeliveryOrderDetailReqDTO({
-    required List<DiscountModel> discounts,
+    @Default(0) int deliveryFee,
+    @Default([]) List<DiscountModel> discounts,
   }) = _DeliveryOrderDetailReqDTO;
 
   factory DeliveryOrderDetailReqDTO.fromJson(Map<String, dynamic> json) =>

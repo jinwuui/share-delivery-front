@@ -6,6 +6,7 @@ import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
+import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_payment_detail_res_dto.dart';
 
 part 'delivery_order_detail_api_client.g.dart';
 
@@ -20,17 +21,18 @@ abstract class DeliveryOrderDetailApiClient {
       @Path('deliveryRoomId') int deliveryRoomId);
 
   // 주도자 배달 주문 정보 등록(B) TEST
-  @POST('/api/delivery-rooms/{deliveryRoomId}/order-detail')
+  @POST('/api/delivery-rooms/{deliveryRoomId}/completed-order')
   @MultiPart()
-  Future registerDeliveryRoomOrderDeatil(
+  Future<String> registerDeliveryRoomOrderDeatil(
     @Path('deliveryRoomId') int deliveryRoomId,
     @Part(name: 'orderDetail') DeliveryOrderDetailReqDTO deliveryOrderDetailDto,
     @Part() List<File> orderFormList,
   );
 
   // 최종 배달 주문 정보 조회(C) TEST
-  @GET('/api/delivery-order-detail/{deliveryRoomId}')
-  Future getDeliveryOrderDetail(@Path('deliveryRoomId') int deliveryRoomId);
+  @GET('/api/delivery-rooms/{deliveryRoomId}/order-detail')
+  Future<DeliveryPaymentDetailResDTO> getDeliveryPaymentDetail(
+      @Path() int deliveryRoomId);
 
   // 모집글 상세정보 조회 TEST
   @GET('/api/delivery-rooms/{deliveryRoomId}')

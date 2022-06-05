@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/data/model/authentication/login_req_dto.dart';
 import 'package:share_delivery/src/data/model/authentication/sign_up_req_dto.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
@@ -56,10 +57,9 @@ class AuthenticationRepository {
 
   Future<User?> login(String phoneNumber, String verificationCode) async {
     LoginReqDTO loginReqDTO = LoginReqDTO(
-      phoneNumber: phoneNumber,
-      verificationCode: verificationCode,
-      fcmToken: "dummyToken", // TODO: FCM 토큰 받아오기
-    );
+        phoneNumber: phoneNumber,
+        verificationCode: verificationCode,
+        fcmToken: NotificationController.to.fcmToken);
 
     User? account;
 

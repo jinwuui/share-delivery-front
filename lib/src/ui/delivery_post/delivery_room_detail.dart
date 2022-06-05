@@ -6,6 +6,7 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_rec
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/ui/chat/delivery_room_chat.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
@@ -117,12 +118,13 @@ class DeliveryRoomDetail extends StatelessWidget {
                   controller: DeliveryOrderTabController.to.controller,
                   children: [
                     DeliveryRoomInfoDetail(),
-                    OrderTabView(),
+                    Obx(() =>
+                        DeliveryRoomInfoDetailController.to.isLoad.value == true
+                            ? OrderTabView()
+                            : Container()),
                     Obx(
-                      () => DeliveryOrderController.to.status ==
-                                  DeliveryOrderStatus.recuritmentCompleted ||
-                              DeliveryOrderController.to.status ==
-                                  DeliveryOrderStatus.orderCompleted
+                      () => DeliveryOrderController.to.status !=
+                              DeliveryRoomState.OPEN
                           ? DeliveryRoomChat()
                           : Center(
                               child: Text("인원 모집이 끝난 후 채팅을 이용해주세요."),

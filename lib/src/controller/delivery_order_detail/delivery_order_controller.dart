@@ -1,12 +1,7 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-
-enum DeliveryOrderStatus {
-  none,
-  recuritmentWaiting,
-  recuritmentCompleted,
-  orderCompleted
-}
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 
 class DeliveryOrderController extends FullLifeCycleController
     with FullLifeCycleMixin {
@@ -14,13 +9,13 @@ class DeliveryOrderController extends FullLifeCycleController
 
   DeliveryOrderController();
 
-  final deliveryOrderStatus = DeliveryOrderStatus.none.obs;
+  final deliveryOrderStatus = DeliveryRoomState.OPEN.obs;
   final refreshPage = false.obs;
 
   get status => deliveryOrderStatus;
   set status(value) => deliveryOrderStatus.value = value;
 
-  changeStatus(DeliveryOrderStatus value) {
+  Future<void> changeStatus(DeliveryRoomState value) async {
     Logger().d("changeStatus", value);
 
     deliveryOrderStatus.value = value;
@@ -41,6 +36,7 @@ class DeliveryOrderController extends FullLifeCycleController
   @override
   void onInactive() {
     Logger().d('Delivery Order Controller - onInative called');
+
     // fetchDeliveryOrderDetail();
   }
 

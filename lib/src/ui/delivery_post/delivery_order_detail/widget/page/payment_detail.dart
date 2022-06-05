@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_order_and_total_payment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/order_form_screen_shot.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_remit_of_user_section.dart';
@@ -8,20 +11,29 @@ import 'package:share_delivery/src/ui/widgets/receiving_location.dart';
 // OrderFormRegister 컨트롤러 그대로 가져오기 ( 주문서, 주문 내역 )
 // PaymentDetail - 송금했는지 체크하기 위한 컨트롤러 필요
 
-class DeliveryPaymentDetail extends StatelessWidget {
+class DeliveryPaymentDetail extends GetView<DeliveryPaymentDetailController> {
   const DeliveryPaymentDetail({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          RecevingLocation(),
-          OrderFormScreenShotSection(),
-          CheckOrderAndTotalPaymentSection(registerDiscountButton: false),
-          CheckRemitOfUserSection(),
-        ],
-      ),
-    );
+    Get.put(DeliveryPaymentDetailController());
+    return Obx(() => controller.isLoad.value == true
+        ? SingleChildScrollView(
+            child: Column(
+              children: [
+                RecevingLocation(),
+                OrderFormScreenShotSection(),
+                CheckOrderAndTotalPaymentSection(
+                    registerDiscountButton: false), // TODO:  변경 필요
+                CheckRemitOfUserSection(), // TODO:  controller 추가 필요
+              ],
+            ),
+          )
+        : Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.white,
+            ),
+          ));
   }
 }

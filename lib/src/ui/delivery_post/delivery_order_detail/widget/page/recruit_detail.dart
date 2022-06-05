@@ -6,6 +6,7 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_rec
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/payment_of_order.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/user_order.dart';
 
@@ -24,6 +25,7 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
           child: Obx(
             () => Column(
               children: [
+                // _buildDeliveryRoomStatus(),
                 ...userWithOrderList!
                     .map((e) => UserOrder(
                           userWithOrderModel: e,
@@ -78,8 +80,8 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
         ),
         onPressed: () async {
           await DeliveryRecruitController.to.completeRecurit();
-          DeliveryOrderController.to
-              .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
+          await DeliveryOrderController.to
+              .changeStatus(DeliveryRoomState.WAITING_PAYMENT);
         },
         child: Text("주문 진행 확인"),
       ),

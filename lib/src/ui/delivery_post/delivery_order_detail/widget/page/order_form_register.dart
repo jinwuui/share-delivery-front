@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/check_order_and_total_payment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/register_order_form_screen_shot.dart';
-
-// TODO:
-// 주도자인지 참여자인지 구분해서 UI 변경
 
 class RegisterOrderForm extends StatelessWidget {
   const RegisterOrderForm({Key? key}) : super(key: key);
@@ -47,20 +45,11 @@ class RegisterOrderForm extends StatelessWidget {
             return;
           }
 
-          Get.snackbar(
-            "주문 상세 정보 등록 완료",
-            "배달 대기 화면으로 이동",
-            backgroundColor: Colors.white,
-            duration: Duration(
-              seconds: 1,
-            ),
-          );
+          await OrderFormRegisterController.to
+              .registerDeliveryRoomOrderDetail();
 
-          // await OrderFormRegisterController.to
-          //     .registerDeliveryRoomOrderDetail();
-
-          DeliveryOrderController.to
-              .changeStatus(DeliveryOrderStatus.orderCompleted);
+          await DeliveryOrderController.to
+              .changeStatus(DeliveryRoomState.WAITING_DELIVERY);
         },
         child: Text("배달 주문 정보 등록 완료"),
       ),

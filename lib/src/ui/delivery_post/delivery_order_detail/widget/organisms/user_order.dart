@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/order_detail.dart';
 
 class UserOrder extends StatelessWidget {
@@ -14,6 +16,7 @@ class UserOrder extends StatelessWidget {
   Widget build(BuildContext context) {
     int leaderId =
         DeliveryRoomInfoDetailController.to.deliveryRoom.leader.accountId;
+    User user = AuthenticationController.to.state.props.first as User;
 
     return Container(
       width: double.infinity,
@@ -29,7 +32,7 @@ class UserOrder extends StatelessWidget {
           Expanded(
               flex: 3,
               child: OrderDetail(userWithOrderModel: userWithOrderModel)),
-          userWithOrderModel.accountId != leaderId
+          user.accountId == leaderId && userWithOrderModel.accountId != leaderId
               ? Expanded(
                   child: Column(
                     children: [
@@ -40,14 +43,13 @@ class UserOrder extends StatelessWidget {
                           side: BorderSide(
                               width: 1.0, color: Colors.grey.shade300),
                         ),
-                        onPressed: () {
-                          Get.snackbar("주문 취소", "다른 사용자의 주문을 취소하였습니다.");
-
-                          DeliveryRecruitController.to.deleteUserWithOrder(
-                              userWithOrderModel.accountId);
+                        onPressed: () async {
+                          await DeliveryRecruitController.to
+                              .deleteUserWithOrder(
+                                  userWithOrderModel.accountId);
                         },
                         child: Text(
-                          "취소",
+                          "거절",
                           style: TextStyle(
                             color: Colors.black,
                           ),
