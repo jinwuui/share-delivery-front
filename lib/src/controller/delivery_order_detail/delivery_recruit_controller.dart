@@ -68,7 +68,13 @@ class DeliveryRecruitController extends GetxController
 
     for (var element in orderMenuList) {
       for (var e in element.menus) {
-        totalMenuPrice += e.price;
+        totalMenuPrice += e.price * e.quantity;
+        print(totalMenuPrice);
+        totalMenuPrice += e.optionMenus.fold(
+            0,
+            (previousValue, element) =>
+                previousValue + element.price * e.quantity);
+        print(totalMenuPrice);
       }
     }
     totalPaymentMoney.value = totalMenuPrice;

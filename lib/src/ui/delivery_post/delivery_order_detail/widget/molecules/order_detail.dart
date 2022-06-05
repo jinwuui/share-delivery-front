@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/element_with_money.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/user_menu.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/user_with_date.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
@@ -57,12 +57,10 @@ class OrderDetail extends StatelessWidget {
   }
 
   Widget _buildMenu() {
-    List<ElementWithMoney> menuList = userWithOrderModel.menus
+    List<UserMenu> menuList = userWithOrderModel.menus
         .map(
-          (e) => ElementWithMoney(
-            elementName: e.menuName,
-            money: e.price.toString(),
-            quantity: e.quantity,
+          (e) => UserMenu(
+            menuModel: e,
             axisAlignment: MainAxisAlignment.start,
             textStyle: paymentTextStyle,
           ),

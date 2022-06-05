@@ -12,8 +12,7 @@ class DeliveryManageController extends GetxService {
 
   Future<DeliveryManageController> init() async {
     var box = await Hive.openBox('deliveryRoom');
-  final deliveryRooms = {}.obs; // key : roomId, value : DeliveryRoomModel
-  final deliveryRoomCountInProgress = 0.obs;
+    box.clear();
     try {
       roomId.value = box.keyAt(0);
       status.value = box.getAt(0);

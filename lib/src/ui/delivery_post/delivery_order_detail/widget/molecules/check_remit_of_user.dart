@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/element_with_money.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/user_menu.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 
 class CheckRemitOfUser extends StatefulWidget {
@@ -31,12 +31,12 @@ class _CheckRemitOfUserState extends State<CheckRemitOfUser> {
                     style: TextStyle(fontWeight: FontWeight.w800),
                   ),
                 ),
-                ElementWithMoney(
-                  elementName: '황금올리브 치킨',
-                  money: '14000',
-                  axisAlignment: MainAxisAlignment.center,
-                  textStyle: menuTextStyle,
-                )
+                // ElementWithMoney(
+                //   elementName: '황금올리브 치킨',
+                //   money: '14000',
+                //   axisAlignment: MainAxisAlignment.center,
+                //   textStyle: menuTextStyle,
+                // )
               ],
             ),
           ),
