@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/receiving_location/receiving_location_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 
@@ -20,6 +21,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
 
     try {
       deliveryRoom = await getDeliveryRoomInfo(roomId.value);
+      await ReceivingLocationController.to.refreshLocation();
       isLoad.value = true;
     } catch (e) {
       print(e);
