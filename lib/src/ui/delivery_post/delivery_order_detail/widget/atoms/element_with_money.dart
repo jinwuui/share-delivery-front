@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:share_delivery/src/utils/create_number_with_comma.dart';
 
 class ElementWithMoney extends StatelessWidget {
-  const ElementWithMoney({
+  ElementWithMoney({
     Key? key,
     required this.elementName,
     required this.money,
     required this.axisAlignment,
     required this.textStyle,
+    this.quantity,
   }) : super(key: key);
 
   final String elementName;
   final String money;
+  int? quantity;
   final MainAxisAlignment axisAlignment;
   final TextStyle textStyle;
 
@@ -27,6 +29,9 @@ class ElementWithMoney extends StatelessWidget {
             numberWithComma(int.parse(money)) + "원",
             style: textStyle,
           ),
+          quantity != null
+              ? Text(" x " + quantity.toString())
+              : SizedBox.shrink(),
         ],
       ),
     );

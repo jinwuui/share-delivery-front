@@ -50,30 +50,28 @@ class OrderDetail extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-          child: _buildDiscountWidget(),
+          child: _buildMenu(),
         )
       ],
     );
   }
 
-  Widget _buildDiscountWidget() {
-    return Text("hello");
-    // List<ElementWithMoney> discountList = [];
+  Widget _buildMenu() {
+    List<ElementWithMoney> menuList = userWithOrderModel.menus
+        .map(
+          (e) => ElementWithMoney(
+            elementName: e.menuName,
+            money: e.price.toString(),
+            quantity: e.quantity,
+            axisAlignment: MainAxisAlignment.start,
+            textStyle: paymentTextStyle,
+          ),
+        )
+        .toList();
 
-    // userWithOrderModel.menuList.forEach((key, value) {
-    //   discountList.add(
-    //     ElementWithMoney(
-    //       elementName: key,
-    //       money: value.toString(),
-    //       axisAlignment: MainAxisAlignment.start,
-    //       textStyle: paymentTextStyle,
-    //     ),
-    //   );
-    // });
-
-    // return Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: discountList,
-    // );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: menuList,
+    );
   }
 }
