@@ -26,10 +26,8 @@ class DeliveryRoomInfoDetailController extends GetxController {
       deliveryRoom = await getDeliveryRoomInfo(roomId.value);
       await ReceivingLocationController.to.refreshLocation();
       final status = deliveryRoom.status;
-      Logger().w(status);
       DeliveryRoomState roomState = DeliveryRoomState.values
           .firstWhere((e) => e.toString() == 'DeliveryRoomState.' + status);
-      Logger().w(status);
       await DeliveryOrderController.to.changeStatus(roomState);
       isLoad.value = true;
     } catch (e) {

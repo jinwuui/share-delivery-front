@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
 
 enum DeliveryRoomState {
   OPEN, //인원 모집 중
@@ -13,7 +14,8 @@ enum DeliveryRoomState {
   DELETED, // 삭제된 주문
 }
 
-class DeliveryManageController extends GetxService {
+class DeliveryManageController extends FullLifeCycleController
+    with FullLifeCycleMixin {
   static DeliveryManageController get to => Get.find();
 
   final roomId = 0.obs;
@@ -21,12 +23,12 @@ class DeliveryManageController extends GetxService {
 
   Future<DeliveryManageController> init() async {
     var box = await Hive.openBox('deliveryRoom');
-    box.clear();
+
     try {
       roomId.value = box.keyAt(0);
       status.value = box.getAt(0);
 
-      Logger().i(roomId.value.toString() + status.value);
+      Logger().i("진행 중인 공유 배달", roomId.value.toString() + status.value);
     } catch (e) {
       Logger().w("진행중인 공유 배달 모집이 없습니다.");
     }
@@ -36,25 +38,43 @@ class DeliveryManageController extends GetxService {
   Future<void> addDeliveryRoom(int roomId, DeliveryRoom deliveryRoom) async {
     Logger().w("addDeliveryRoom");
     var box = Hive.box('deliveryRoom');
+    box.clear();
 
     this.roomId.value = roomId;
     status.value = deliveryRoom.status;
     box.put(roomId, deliveryRoom.status);
 
-    NotificationController.to
-        .showOngoingNotification(deliveryRoom.status, deliveryRoom.content);
+    NotificationController.to.showOngoingNotification(
+        getDeliveryRoomStateWithColor(deliveryRoom.status).name,
+        deliveryRoom.content);
   }
 
-  Future<void> deleteDeliveryRoom(int roomId) async {
+  Future<void> deleteDeliveryRoom() async {
+    Logger().w("deleteDeliveryRoom");
     var box = Hive.box('deliveryRoom');
-    box.delete(roomId);
-    this.roomId.value = 0;
+
+    box.clear();
+    roomId.value = 0;
     status.value = "";
+
+    await NotificationController.to.cancelAllNotifications();
   }
 
   Future<void> changeStatus(String status) async {
-    var box = Hive.box('deliveryRoom');
-    box.put(roomId, status);
     this.status.value = status;
   }
+
+  @override
+  void onDetached() {
+    deleteDeliveryRoom();
+  }
+
+  @override
+  void onInactive() {}
+
+  @override
+  void onPaused() {}
+
+  @override
+  void onResumed() {}
 }

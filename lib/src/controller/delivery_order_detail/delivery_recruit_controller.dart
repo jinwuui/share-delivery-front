@@ -5,6 +5,7 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_roo
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 
 class DeliveryRecruitController extends GetxController
     with StateMixin<List<OrderMenuModel>> {
@@ -161,6 +162,7 @@ class DeliveryRecruitController extends GetxController
 
                 Get.offAllNamed('/');
                 Get.snackbar("삭제 완료", "모집글이 삭제되었습니다.");
+                await DeliveryManageController.to.deleteDeliveryRoom();
               } catch (e) {
                 Get.back();
                 Get.back();

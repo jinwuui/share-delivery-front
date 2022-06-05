@@ -26,7 +26,7 @@ class AlarmService extends GetxService {
 
   @override
   void onClose() async {
-    await NotificationController.to.cancelAllNotifications();
+    // await NotificationController.to.cancelAllNotifications();
   }
 
   //TODO: alarm service box clear

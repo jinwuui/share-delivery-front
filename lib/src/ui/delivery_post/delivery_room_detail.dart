@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
@@ -72,6 +73,8 @@ class DeliveryRoomDetail extends StatelessWidget {
                             await DeliveryRecruitController.to.exitDeliveryRoom(
                                 DeliveryRoomInfoDetailController
                                     .to.deliveryRoom.roomId);
+                            await DeliveryManageController.to
+                                .deleteDeliveryRoom();
                           },
                         );
                       }
