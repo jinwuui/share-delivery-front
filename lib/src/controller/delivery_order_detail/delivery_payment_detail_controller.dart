@@ -75,6 +75,14 @@ class DeliveryPaymentDetailController extends GetxController {
         duration: Duration(seconds: 1),
       );
     } catch (e) {
+      Get.snackbar(
+        "실패",
+        "배달 완료 버튼을 누른 후 가능합니다.",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        duration: Duration(seconds: 1),
+      );
       print(e);
     }
   }

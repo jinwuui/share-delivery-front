@@ -68,13 +68,10 @@ class DeliveryRoomDetail extends StatelessWidget {
                                   icon: Icon(Icons.exit_to_app),
                                   text: "퇴장하기",
                                   callback: () async {
-                                    // TODO: test
                                     await DeliveryRecruitController.to
                                         .exitDeliveryRoom(
                                             DeliveryRoomInfoDetailController
                                                 .to.deliveryRoom.roomId);
-                                    // await DeliveryManageController.to
-                                    //     .deleteDeliveryRoom();
                                   },
                                 )
                         ],

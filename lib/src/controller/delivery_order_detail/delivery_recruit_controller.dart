@@ -182,5 +182,6 @@ class DeliveryRecruitController extends GetxController
 
   Future<void> exitDeliveryRoom(int deliveryRoomsId) async {
     await repository.exitDeliveryRoom(deliveryRoomsId);
+    Get.offAllNamed(Routes.INITIAL);
   }
 }

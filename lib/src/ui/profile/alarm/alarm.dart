@@ -50,8 +50,8 @@ class Alarm extends GetView<AlarmController> {
                       accountId: element.accountId,
                     ));
                   }
-
-                  return ListView.builder(
+                  alarmList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+                  return ListView.separated(
                     itemCount: alarmList.length,
                     itemBuilder: (context, index) {
                       return _buildAlarmListTile(
@@ -59,17 +59,12 @@ class Alarm extends GetView<AlarmController> {
                         index,
                       );
                     },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(
+                        color: Colors.grey.shade500,
+                      );
+                    },
                   );
-
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: alarmBox.values.length,
-                      itemBuilder: (_, index) {
-                        return _buildAlarmListTile(
-                            alarmBox.values
-                                .elementAt(alarmBox.values.length - index - 1),
-                            alarmBox.values.length - index - 1);
-                      });
                 }),
           )
         : Container());
