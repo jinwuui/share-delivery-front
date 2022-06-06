@@ -39,7 +39,6 @@ class WritingComment extends GetView<PostDetailController> {
                 child: Stack(
                   children: [
                     SingleChildScrollView(
-                      controller: controller.writingCommentScrollController,
                       child: Column(
                         children: [
                           comments(),
@@ -514,10 +513,7 @@ class WritingComment extends GetView<PostDetailController> {
                           ? IconButton(
                               onPressed: () async {
                                 int parentId = Get.arguments;
-                                await controller.sendComment(
-                                  controller.writingCommentScrollController,
-                                  parentId,
-                                );
+                                await controller.sendComment(parentId);
                               },
                               color: Colors.orange,
                               icon: Icon(Icons.send_rounded),

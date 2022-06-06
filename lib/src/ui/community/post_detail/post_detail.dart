@@ -49,7 +49,6 @@ class PostDetail extends GetView<PostDetailController> {
                     child: Stack(
                       children: [
                         SingleChildScrollView(
-                          // controller: controller.postDetailScrollController,
                           child: Column(
                             children: [
                               profile(controller.postInfo.value.post!),
@@ -888,9 +887,7 @@ class PostDetail extends GetView<PostDetailController> {
                       suffixIcon: controller.onSendComment.value
                           ? IconButton(
                               onPressed: () async {
-                                await controller.sendComment(
-                                  controller.postDetailScrollController,
-                                );
+                                await controller.sendComment();
                               },
                               color: Colors.orange,
                               icon: Icon(Icons.send_rounded),
