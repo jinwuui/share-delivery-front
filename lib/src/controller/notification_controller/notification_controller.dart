@@ -8,7 +8,6 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_roo
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/services/alarm_model.dart';
 import 'package:share_delivery/src/services/alarm_service.dart';
-import 'package:share_delivery/src/ui/home/home.dart';
 
 // create new AndroidNotificationChannel
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -47,7 +46,7 @@ Future<void> showNotificationView(RemoteMessage message) async {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
-      notification.body,
+      notification.body ?? notification.title,
       NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,
@@ -116,13 +115,12 @@ class NotificationController extends GetxController {
       // local notification to show to users using the created channel.
       showNotificationView(message);
 
-      // handleForegroundMessage(message);
-
       final data = message.data;
       final title = message.notification!.title;
       final body = message.notification!.body;
 
       Logger().w("title :  $title\n body : $body\n data : $data");
+      handleDeliveryRoomMessage(message);
     });
 
     // FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOnClick);
@@ -131,7 +129,7 @@ class NotificationController extends GetxController {
   // click notification event
   void _handleMessageOnClick(RemoteMessage message) {
     final eventType = message.data['type'];
-    final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
+    final roomId = message.data['roomId'];
 
     addFcmInAlarmList(message);
 
@@ -162,7 +160,7 @@ class NotificationController extends GetxController {
     AlarmModel alarmModel = AlarmModel(
       type: eventType,
       title: title!,
-      content: body!,
+      content: body ?? title,
       createdAt: message.sentTime!,
     );
 
@@ -170,53 +168,56 @@ class NotificationController extends GetxController {
   }
 
   // fcm 상태에 따라 방 상태 변경
-  void handleForegroundMessage(RemoteMessage message) {
+  Future<void> handleDeliveryRoomMessage(RemoteMessage message) async {
     final eventType = message.data['type'];
-    final roomId = message.data['roomId'] ?? 1; // TODO: test용 roomId 1
+    final roomId = message.data['roomId'];
 
-    // delivery history page에 없는 경우에는 페이지 이동
-    if (!Get.isRegistered<DeliveryOrderController>()) {
-      Get.toNamed(
-        Routes.DELIVERY_HISTORY_DETAIL,
-        arguments: {'deliveryRoomId': roomId},
-      );
-      return;
-    }
+    addFcmInAlarmList(message);
 
-    // A B C 데이터 api 호출
+    if (Get.isRegistered<DeliveryOrderController>()) {}
+    // // A B C 데이터 api 호출
     switch (eventType) {
-      case 'recuritmentCompleted':
-        if (Get.isRegistered<DeliveryOrderController>()) {
-          DeliveryRecruitController.to.getOrderList(
-              deliveryRoomId:
-                  DeliveryRoomInfoDetailController.to.deliveryRoom.roomId);
-          break;
+      case 'ENTRY_ORDERS':
+      case 'CLOSE_RECRUIT':
+      case 'WAITING_DELIVERY':
+        // delivery history page에 없는 경우에는 페이지 이동
+        if (!Get.isRegistered<DeliveryOrderController>()) {
+          Get.toNamed(
+            Routes.DELIVERY_HISTORY_DETAIL,
+            arguments: {'deliveryRoomId': roomId},
+          );
+          return;
         }
+
+        await DeliveryRoomInfoDetailController.to.getDeliveryRoomInfo();
+        DeliveryRecruitController.to.getOrderList(
+            deliveryRoomId:
+                DeliveryRoomInfoDetailController.to.deliveryRoom.roomId);
+
         break;
-      case 'deliveryRoomUpdated':
-        break;
-      case 'completed':
+      case 'ORDER_REJECTED':
+        Get.offAllNamed(Routes.INITIAL);
         break;
       default:
         break;
     }
   }
 
-  Future<void> showOngoingNotification(String title, String body) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(channel.id, channel.name,
-            channelDescription: 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ongoing: true,
-            autoCancel: false);
+  // Future<void> showOngoingNotification(String title, String body) async {
+  //   AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(channel.id, channel.name,
+  //           channelDescription: 'your channel description',
+  //           importance: Importance.max,
+  //           priority: Priority.high,
+  //           ongoing: true,
+  //           autoCancel: false);
 
-    NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
+  //   NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
-        0, title, body, platformChannelSpecifics);
-  }
+  //   await flutterLocalNotificationsPlugin.show(
+  //       0, title, body, platformChannelSpecifics);
+  // }
 
   Future<void> cancelAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();

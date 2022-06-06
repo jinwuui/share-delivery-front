@@ -56,6 +56,7 @@ class AuthenticationRepository {
   }
 
   Future<User?> login(String phoneNumber, String verificationCode) async {
+    Logger().i("login", NotificationController.to.fcmToken);
     LoginReqDTO loginReqDTO = LoginReqDTO(
         phoneNumber: phoneNumber,
         verificationCode: verificationCode,

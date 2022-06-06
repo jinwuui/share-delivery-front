@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/remittance_res_dto.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
@@ -50,5 +51,17 @@ class DeliveryOrderDetailRepository {
   Future<DeliveryPaymentDetailResDTO> getDeliveryPaymentDetail(
       int deliveryRoomId) async {
     return await apiClient.getDeliveryPaymentDetail(deliveryRoomId);
+  }
+
+  Future<List<RemittanceResDTO>> getRemittance(int roomId) async {
+    return await apiClient.getRemittance(roomId);
+  }
+
+  Future<bool> checkRemittance(int roomId, int remittanceId) async {
+    return await apiClient.checkRemittance(roomId, remittanceId);
+  }
+
+  Future<void> completeDelivery(int roomId) async {
+    return await apiClient.completeDelivery(roomId);
   }
 }

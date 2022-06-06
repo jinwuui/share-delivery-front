@@ -104,9 +104,15 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                             backgroundImage: controller
                                         .profileImagePath.value ==
                                     ""
-                                ? customNetworkImage((AuthenticationController
-                                        .to.state.props.first as User)
-                                    .profileImageUrl)
+                                ? (AuthenticationController.to.state.props.first
+                                                as User)
+                                            .profileImageUrl ==
+                                        ''
+                                    ? randomProfileImage()
+                                    : customNetworkImage(
+                                        (AuthenticationController
+                                                .to.state.props.first as User)
+                                            .profileImageUrl)
                                 : FileImage(
                                         File(controller.profileImagePath.value))
                                     as ImageProvider,

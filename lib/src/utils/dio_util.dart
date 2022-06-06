@@ -10,7 +10,7 @@ class DioUtil {
         requestBody: true,
         responseBody: true,
         responseHeader: false,
-        requestHeader: false));
+        requestHeader: true));
 
     dio.interceptors.add(
       InterceptorsWrapper(

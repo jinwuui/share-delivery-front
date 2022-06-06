@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/order_form_image.dart';
 
-class OrderFormScreenShotSection
+class PaymentOrderFormScreenShotSection
     extends GetView<DeliveryPaymentDetailController> {
-  const OrderFormScreenShotSection({Key? key}) : super(key: key);
+  const PaymentOrderFormScreenShotSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,7 @@ class OrderFormScreenShotSection
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(children: []
-                  //  controller.deliveryPaymentDetail.orderFormUrlList
+                  // controller.deliveryPaymentDetail.orderFormUrlList
                   //     .map(
                   //       (url) => OrderFormImage(
                   //         imageURL: url,

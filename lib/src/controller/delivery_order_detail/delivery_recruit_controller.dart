@@ -40,6 +40,9 @@ class DeliveryRecruitController extends GetxController
 
       orderMenuList.value = await repository.getOrderList(deliveryRoomId);
 
+      orderMenuList
+          .sort((a, b) => a.createdDateTime.compareTo(b.createdDateTime));
+
       Logger().d("getOrderList success");
 
       change(orderMenuList, status: RxStatus.success());

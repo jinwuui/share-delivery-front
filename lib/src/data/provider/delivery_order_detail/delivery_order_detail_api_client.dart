@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
+import 'package:share_delivery/src/data/model/delivery_order_detail/remittance_res_dto.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_payment_detail_res_dto.dart';
@@ -57,4 +58,17 @@ abstract class DeliveryOrderDetailApiClient {
   // 참여 모집글 퇴장
   @GET('/api/delivery-rooms/{deliveryRoomsId}/exit-room')
   Future<void> exitDeliveryRoom(@Path() int deliveryRoomsId);
+
+  // 송금 목록 조회
+  @GET('/api/delivery-rooms/{deliveryRoomId}/remittances')
+  Future<List<RemittanceResDTO>> getRemittance(@Path() int deliveryRoomId);
+
+  // 결제 확인 완료
+  @GET(
+      '/api/delivery-rooms/{deliveryRoomId}/remittances/{remittanceId}/approve')
+  Future<bool> checkRemittance(
+      @Path() int deliveryRoomId, @Path() int remittanceId);
+
+  @GET('/api/delivery-rooms/{deliveryRoomId}/completed-delivery')
+  Future<void> completeDelivery(@Path() int deliveryRoomId);
 }

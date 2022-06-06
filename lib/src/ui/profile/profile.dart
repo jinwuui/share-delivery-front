@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -92,14 +94,16 @@ class Profile extends GetView<ProfileController> {
                     Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
                       "imagePath": user.profileImageUrl == ''
-                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
+                          ? randomProfileImage()
                           : user.profileImageUrl,
                       "title": "프로필 사진"
                     },
                   ),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: customNetworkImage(user.profileImageUrl),
+                    backgroundImage: user.profileImageUrl == ''
+                        ? randomProfileImage()
+                        : customNetworkImage(user.profileImageUrl),
                     backgroundColor: Colors.grey.shade300,
                   ),
                 ),

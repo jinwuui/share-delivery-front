@@ -100,8 +100,6 @@ class DeliveryRoomRegisterController extends GetxController {
           Routes.DELIVERY_HISTORY_DETAIL,
           arguments: {"deliveryRoomId": deliveryRoom.roomId},
         );
-
-        Get.snackbar("모집글 생성 완료", "");
       } else {
         print("   모집글 등록 실패");
         throw Exception("등록 실패");

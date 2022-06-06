@@ -44,9 +44,9 @@ class DeliveryManageController extends FullLifeCycleController
     status.value = deliveryRoom.status;
     box.put(roomId, deliveryRoom.status);
 
-    NotificationController.to.showOngoingNotification(
-        getDeliveryRoomStateWithColor(deliveryRoom.status).name,
-        deliveryRoom.content);
+    // NotificationController.to.showOngoingNotification(
+    //     getDeliveryRoomStateWithColor(deliveryRoom.status).name,
+    //     deliveryRoom.content);
   }
 
   Future<void> deleteDeliveryRoom() async {
@@ -66,6 +66,8 @@ class DeliveryManageController extends FullLifeCycleController
 
   @override
   void onDetached() {
+    Logger().w("onDetached");
+    NotificationController.to.cancelAllNotifications();
     deleteDeliveryRoom();
   }
 

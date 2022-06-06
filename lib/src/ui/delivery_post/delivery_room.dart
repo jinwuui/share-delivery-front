@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_tab_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
@@ -8,11 +8,11 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_roo
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
-import 'package:share_delivery/src/ui/chat/delivery_room_chat.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/delivery_room_info_detail.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
+import 'package:share_delivery/src/ui/delivery_post/chat/delivery_room_chat.dart';
+import 'package:share_delivery/src/ui/delivery_post/detail/delivery_room_info_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/delivery_order.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
-
-import 'delivery_order_detail/delivery_order_tabview.dart';
 
 class DeliveryRoomDetail extends StatelessWidget {
   const DeliveryRoomDetail({Key? key}) : super(key: key);
@@ -21,7 +21,6 @@ class DeliveryRoomDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         toolbarHeight: 50,
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
@@ -35,6 +34,7 @@ class DeliveryRoomDetail extends StatelessWidget {
         ),
         backgroundColor: Colors.transparent,
         actions: [
+          _buildDeliveryRoomStatus(),
           Obx(() => DeliveryOrderController.to.status == DeliveryRoomState.OPEN
               ? IconButton(
                   icon: Icon(Icons.more_vert, size: 30),
@@ -56,7 +56,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                                       .to.deliveryRoom.leader.accountId
                               ? BottomSheetItem(
                                   icon: Icon(Icons.delete),
-                                  text: "모집글 삭제 하기",
+                                  text: "모집글 삭제하기",
                                   callback: () async {
                                     await DeliveryRecruitController.to
                                         .deleteDeliveryRoom(
@@ -66,7 +66,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                                 )
                               : BottomSheetItem(
                                   icon: Icon(Icons.exit_to_app),
-                                  text: "퇴장 하기",
+                                  text: "퇴장하기",
                                   callback: () async {
                                     // TODO: test
                                     await DeliveryRecruitController.to
@@ -122,7 +122,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                     DeliveryRoomInfoDetail(),
                     Obx(() =>
                         DeliveryRoomInfoDetailController.to.isLoad.value == true
-                            ? OrderTabView()
+                            ? DeliveryOrder()
                             : Container()),
                     Obx(
                       () => DeliveryOrderController.to.status !=
@@ -137,6 +137,26 @@ class DeliveryRoomDetail extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDeliveryRoomStatus() {
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(
+            getDeliveryRoomStateWithColor(describeEnum(
+                    DeliveryOrderController.to.deliveryOrderStatus.value))
+                .name,
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.orange,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

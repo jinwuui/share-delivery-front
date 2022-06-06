@@ -10,7 +10,7 @@ class DeliveryPaymentDetailResDTO with _$DeliveryPaymentDetailResDTO {
   const factory DeliveryPaymentDetailResDTO({
     required int roomId,
     required Leader leader,
-    required List<Order> orders,
+    required List<OrderMenuModel> orders,
     required List<Discount> discounts,
     required int deliveryFee,
     required int totalDiscountAmount,
@@ -45,20 +45,20 @@ class BankAccount with _$BankAccount {
       _$BankAccountFromJson(json);
 }
 
-@Freezed()
-class Order with _$Order {
-  const factory Order({
-    required int entryOrderId,
-    required int accountId,
-    required String nickName,
-    required String type,
-    required String status,
-    required List<Menu> menus,
-    required DateTime createdDateTime,
-  }) = _Order;
+// @Freezed()
+// class Order with _$Order {
+//   const factory Order({
+//     required int entryOrderId,
+//     required int accountId,
+//     required String nickName,
+//     required String type,
+//     required String status,
+//     required List<Menu> menus,
+//     required DateTime createdDateTime,
+//   }) = _Order;
 
-  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
-}
+//   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+// }
 
 @Freezed()
 class Discount with _$Discount {

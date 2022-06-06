@@ -44,7 +44,6 @@ class ModifyAccountController extends GetxController {
   Future<void> updateAccountInfo() async {
     AccountUpdateReqDTO dto =
         AccountUpdateReqDTO(email: email.value, nickname: nickname.value);
-    Logger().w(dto);
     File? profileImage;
 
     if (profileImagePath.value != "") {

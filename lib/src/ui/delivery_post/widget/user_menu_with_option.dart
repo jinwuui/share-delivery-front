@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/utils/create_number_with_comma.dart';
 
-class UserMenu extends StatelessWidget {
-  UserMenu({
+class UserMenuWithOption extends StatelessWidget {
+  UserMenuWithOption({
     Key? key,
     required this.axisAlignment,
     required this.textStyle,
@@ -42,15 +42,15 @@ class UserMenu extends StatelessWidget {
   List<Widget> _buildOptionMenu() {
     List<Widget> optionMenuList = menuModel.optionMenus.map((e) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
         child: Row(
           children: [
-            Text(e.menuName + " ", style: TextStyle(fontSize: 12)),
+            Text(e.menuName + " ", style: TextStyle(fontSize: 14)),
             Text(
               numberWithComma(e.price) + "원",
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 14),
             ),
-            Text(" x " + e.quantity.toString(), style: TextStyle(fontSize: 12)),
+            Text(" x " + e.quantity.toString(), style: TextStyle(fontSize: 14)),
           ],
         ),
       );

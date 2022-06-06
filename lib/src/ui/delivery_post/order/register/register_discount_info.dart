@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/custom_text_form_field.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/register/discount_text_form_field.dart';
 
 class RegisterDiscountInfo extends StatefulWidget {
   const RegisterDiscountInfo({Key? key}) : super(key: key);
@@ -36,7 +36,7 @@ class _RegisterDiscountInfoState extends State<RegisterDiscountInfo> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CustomTextFormField(
+                DiscountTextFormField(
                   label: '할인 정보',
                   onSaved: (val) {
                     setState(() {
@@ -51,7 +51,7 @@ class _RegisterDiscountInfoState extends State<RegisterDiscountInfo> {
                     return null;
                   },
                 ),
-                CustomTextFormField(
+                DiscountTextFormField(
                   label: '금액',
                   onSaved: (val) {
                     setState(() {
@@ -64,6 +64,10 @@ class _RegisterDiscountInfoState extends State<RegisterDiscountInfo> {
                     }
                     if (int.tryParse(val) == null) {
                       return "금액은 숫자로 입력해주세요.";
+                    }
+                    if (int.tryParse(val)! >
+                        DeliveryRecruitController.to.totalPaymentMoney.value) {
+                      return "할인 금액은 주문 금액보다 클 수 없습니다.";
                     }
                     return null;
                   },

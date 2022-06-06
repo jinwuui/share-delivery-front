@@ -7,12 +7,13 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_roo
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/order_form_register.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/payment_detail.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/page/recruit_detail.dart';
+import 'package:share_delivery/src/services/setting_service.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/payment/delivery_payment_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/recruit/recruit.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/register/register_order_form.dart';
 
-class OrderTabView extends StatelessWidget {
-  const OrderTabView({Key? key}) : super(key: key);
+class DeliveryOrder extends StatelessWidget {
+  const DeliveryOrder({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,26 +24,32 @@ class OrderTabView extends StatelessWidget {
     Logger().w(controller.deliveryOrderStatus.value);
     return Column(
       children: [
-        _buildDeliveryRoomStatus(),
         Expanded(
           child: Obx(() {
             if (controller.deliveryOrderStatus.value ==
                 DeliveryRoomState.OPEN) {
-              return DeliveryRecruitDetail();
+              return DeliveryRecruit();
             } else if (controller.deliveryOrderStatus.value ==
                 DeliveryRoomState.WAITING_PAYMENT) {
               return leaderId == user.accountId
                   ? RegisterOrderForm()
-                  : Container(
-                      child: Text("주도자가 주문 진행 중"),
+                  : Center(
+                      child: Text("주도자가 배달 주문 진행 중 입니다."),
                     );
             } else if (controller.deliveryOrderStatus.value ==
-                DeliveryRoomState.WAITING_DELIVERY) {
+                    DeliveryRoomState.WAITING_DELIVERY ||
+                controller.deliveryOrderStatus.value ==
+                    DeliveryRoomState.WAITING_REMITTANCE) {
               return DeliveryPaymentDetail();
+            } else if (controller.deliveryOrderStatus.value ==
+                DeliveryRoomState.COMPLETED) {
+              return Center(
+                child: Text("평가 신고 페이지"),
+              );
             } else if (controller.deliveryOrderStatus.value ==
                 DeliveryRoomState.DELETED) {
               return Center(
-                child: Text("deleted"),
+                child: Text("해당 모집글은 삭제되었습니다."),
               );
             } else {
               return Container();
@@ -50,20 +57,6 @@ class OrderTabView extends StatelessWidget {
           }),
         ),
       ],
-    );
-  }
-
-  Widget _buildDeliveryRoomStatus() {
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Text(
-            describeEnum(DeliveryOrderController.to.deliveryOrderStatus.value),
-            style: TextStyle(fontSize: 20, color: Colors.red),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -21,9 +21,12 @@ class DeliveryRoomInfoDetailController extends GetxController {
     super.onInit();
 
     roomId.value = Get.arguments['deliveryRoomId'];
+    await getDeliveryRoomInfo();
+  }
 
+  Future<void> getDeliveryRoomInfo() async {
     try {
-      deliveryRoom = await getDeliveryRoomInfo(roomId.value);
+      deliveryRoom = await repository.getDeliveryRoomInfoDetail(roomId.value);
       await ReceivingLocationController.to.refreshLocation();
       final status = deliveryRoom.status;
       DeliveryRoomState roomState = DeliveryRoomState.values
@@ -33,9 +36,5 @@ class DeliveryRoomInfoDetailController extends GetxController {
     } catch (e) {
       print(e);
     }
-  }
-
-  Future<DeliveryRoom> getDeliveryRoomInfo(int deliveryRoomId) async {
-    return await repository.getDeliveryRoomInfoDetail(deliveryRoomId);
   }
 }

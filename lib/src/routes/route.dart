@@ -21,7 +21,7 @@ import 'package:share_delivery/src/ui/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/ui/community/post_register/post_register.dart';
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/community/writing_comment.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/delivery_post/delivery_room.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';

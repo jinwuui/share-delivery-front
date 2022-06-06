@@ -81,6 +81,8 @@ Future<void> initialize() async {
 
   // 알림 세팅
   await Get.putAsync(() => AlarmService().init());
+
+  Get.put(NotificationController());
 }
 
 class MyApp extends GetView<AuthenticationController> {
@@ -99,7 +101,6 @@ class MyApp extends GetView<AuthenticationController> {
       debugShowCheckedModeBanner: false,
       initialBinding: BindingsBuilder(() {
         Get.put(RootController());
-        Get.put(NotificationController());
       }),
       title: 'Share Delivery',
       theme: ThemeData(
