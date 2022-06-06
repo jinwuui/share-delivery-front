@@ -114,7 +114,7 @@ class WritingComment extends GetView<PostDetailController> {
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
-                          controller.uiType == PostDetailUI.writer
+                          comment.writer.accountId == controller.currentUserId
                               ? const Text(
                                   " 작성자",
                                   style: writerBadge,
@@ -216,7 +216,7 @@ class WritingComment extends GetView<PostDetailController> {
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
-                          controller.uiType == PostDetailUI.writer
+                          comment.writer.accountId == controller.currentUserId
                               ? const Text(
                                   " 작성자",
                                   style: writerBadge,
