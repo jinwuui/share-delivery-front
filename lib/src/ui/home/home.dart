@@ -97,8 +97,7 @@ class Home extends GetView<HomeController> {
       heroTag: "deliveryRoomRegisterFAB",
       backgroundColor: Colors.orange,
       onPressed: () {
-        Get.toNamed(Routes.RATING_USER);
-        // Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
+        Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
       },
       child: const Icon(Icons.add_rounded, size: 40),
     );

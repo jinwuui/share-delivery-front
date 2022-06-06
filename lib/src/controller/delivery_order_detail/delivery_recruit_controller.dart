@@ -165,7 +165,7 @@ class DeliveryRecruitController extends GetxController
 
                 Get.offAllNamed('/');
                 Get.snackbar("삭제 완료", "모집글이 삭제되었습니다.");
-                await DeliveryManageController.to.deleteDeliveryRoom();
+                // await DeliveryManageController.to.deleteDeliveryRoom();
               } catch (e) {
                 Get.back();
                 Get.back();

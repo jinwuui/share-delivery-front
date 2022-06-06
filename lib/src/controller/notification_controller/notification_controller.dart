@@ -180,6 +180,8 @@ class NotificationController extends GetxController {
       case 'ENTRY_ORDERS':
       case 'CLOSE_RECRUIT':
       case 'WAITING_DELIVERY':
+      case 'COMPLETED_ORDER':
+      case 'COMPLETE_DELIVERY':
         // delivery history page에 없는 경우에는 페이지 이동
         if (!Get.isRegistered<DeliveryOrderController>()) {
           Get.toNamed(
@@ -188,7 +190,7 @@ class NotificationController extends GetxController {
           );
           return;
         }
-
+        1.delay();
         await DeliveryRoomInfoDetailController.to.getDeliveryRoomInfo();
         DeliveryRecruitController.to.getOrderList(
             deliveryRoomId:

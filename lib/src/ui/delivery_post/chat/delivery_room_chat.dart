@@ -96,7 +96,7 @@ class DeliveryRoomChat extends GetView<DeliveryRoomChatController> {
                             String message =
                                 controller.messageController.text.trim();
                             ChatModel chat = ChatModel(
-                                accountId: 1,
+                                accountId: user.accountId,
                                 message: message,
                                 sendDateTime: DateTime.now().toLocal());
                             controller.sendMessage(chat);
@@ -121,60 +121,12 @@ class DeliveryRoomChat extends GetView<DeliveryRoomChatController> {
   }
 }
 
-class ChatAlarm extends StatelessWidget {
-  final String message;
-
-  const ChatAlarm({Key? key, required this.message}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            margin: const EdgeInsets.symmetric(vertical: 5.0),
-            constraints: BoxConstraints(maxWidth: size.width * .5),
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(11),
-                topLeft: Radius.circular(11),
-                bottomRight: Radius.circular(11),
-                bottomLeft: Radius.circular(0),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  message,
-                  textAlign: TextAlign.start,
-                  softWrap: true,
-                  style:
-                      const TextStyle(color: Color(0xFF2E1963), fontSize: 14),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class ChatBubble extends StatelessWidget {
   final bool isMe;
   final String message;
   final DateTime date;
 
   ChatBubble({
-    Key? key,
     required this.message,
     this.isMe = true,
     required this.date,
@@ -190,64 +142,101 @@ class ChatBubble extends StatelessWidget {
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
-          Row(
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-                // margin: const EdgeInsets.symmetric(vertical: 5.0),
-                constraints: BoxConstraints(maxWidth: size.width * .6),
-                decoration: BoxDecoration(
-                  color: isMe
-                      ? Colors.yellowAccent.shade400
-                      : const Color(0xFFFFFFFF),
-                  borderRadius: isMe
-                      ? const BorderRadius.only(
-                          topRight: Radius.circular(10),
-                          topLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(15),
-                        )
-                      : const BorderRadius.only(
-                          topRight: Radius.circular(15),
-                          topLeft: Radius.circular(15),
-                          bottomRight: Radius.circular(15),
-                          bottomLeft: Radius.circular(0),
-                        ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      message,
-                      textAlign: TextAlign.start,
-                      softWrap: true,
-                      style: const TextStyle(
-                          color: Color(0xFF2E1963), fontSize: 16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(vertical: 5.0),
+            constraints: BoxConstraints(maxWidth: size.width * .5),
+            decoration: BoxDecoration(
+              color: isMe ? Colors.yellow.shade200 : Color(0xFFFFFFFF),
+              borderRadius: isMe
+                  ? const BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      topLeft: Radius.circular(11),
+                      bottomRight: Radius.circular(0),
+                      bottomLeft: Radius.circular(11),
+                    )
+                  : const BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      topLeft: Radius.circular(11),
+                      bottomRight: Radius.circular(11),
+                      bottomLeft: Radius.circular(0),
                     ),
-                  ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(
+                  message,
+                  textAlign: TextAlign.start,
+                  softWrap: true,
+                  style:
+                      const TextStyle(color: Color(0xFF2E1963), fontSize: 14),
                 ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 7),
-                  child: Text(
-                    TimeUtil.timeAgo(date),
-                    textAlign: TextAlign.end,
-                    style:
-                        const TextStyle(color: Color(0xFF594097), fontSize: 9),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 7),
+                    child: Text(
+                      TimeUtil.timeAgo(date),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(
+                          color: Color(0xFF594097), fontSize: 9),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+// class ChatAlarm extends StatelessWidget {
+//   final String message;
+
+//   const ChatAlarm({Key? key, required this.message}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     Size size = MediaQuery.of(context).size;
+//     return Container(
+//       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         crossAxisAlignment: CrossAxisAlignment.center,
+//         children: [
+//           Container(
+//             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//             margin: const EdgeInsets.symmetric(vertical: 5.0),
+//             constraints: BoxConstraints(maxWidth: size.width * .5),
+//             decoration: BoxDecoration(
+//               color: Colors.grey,
+//               borderRadius: const BorderRadius.only(
+//                 topRight: Radius.circular(11),
+//                 topLeft: Radius.circular(11),
+//                 bottomRight: Radius.circular(11),
+//                 bottomLeft: Radius.circular(0),
+//               ),
+//             ),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               mainAxisSize: MainAxisSize.min,
+//               children: <Widget>[
+//                 Text(
+//                   message,
+//                   textAlign: TextAlign.start,
+//                   softWrap: true,
+//                   style:
+//                       const TextStyle(color: Color(0xFF2E1963), fontSize: 14),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

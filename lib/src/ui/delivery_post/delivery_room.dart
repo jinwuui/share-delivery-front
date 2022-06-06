@@ -73,8 +73,8 @@ class DeliveryRoomDetail extends StatelessWidget {
                                         .exitDeliveryRoom(
                                             DeliveryRoomInfoDetailController
                                                 .to.deliveryRoom.roomId);
-                                    await DeliveryManageController.to
-                                        .deleteDeliveryRoom();
+                                    // await DeliveryManageController.to
+                                    //     .deleteDeliveryRoom();
                                   },
                                 )
                         ],
@@ -129,7 +129,7 @@ class DeliveryRoomDetail extends StatelessWidget {
                               DeliveryRoomState.OPEN
                           ? DeliveryRoomChat()
                           : Center(
-                              child: Text("인원 모집이 끝난 후 채팅을 이용해주세요."),
+                              child: Text("인원 모집이 끝난 후 채팅방 이용이 가능합니다."),
                             ),
                     ),
                   ],

@@ -63,8 +63,6 @@ class OrderFormRegisterController extends GetxController {
           deliveryRoomId: deliveryRoomId,
           orderFormFileList: orderFormFileList);
 
-      if (res != "WAITING_DELIVERY") throw Exception();
-
       Get.snackbar(
         "주문 상세 정보 등록 완료",
         "배달 대기 화면으로 이동",

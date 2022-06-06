@@ -84,8 +84,8 @@ class ParticipateRoomController extends GetxController {
 
     if (result == ParticipateRoomState.accepted) {
       // 배달 관리에 등록
-      DeliveryManageController.to
-          .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
+      // DeliveryManageController.to
+      //     .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
 
       // history refresh
       await DeliveryHistoryController.to.onRefresh();

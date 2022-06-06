@@ -88,8 +88,8 @@ class DeliveryRoomRegisterController extends GetxController {
         await DeliveryHistoryController.to.onRefresh();
 
         // 배달 관리 컨트롤러에 등록
-        DeliveryManageController.to
-            .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
+        // DeliveryManageController.to
+        //     .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
 
         // 내 배달 -> 모집글 상세정보 조회 페이지로 이동
         Get.until((route) => Get.currentRoute == Routes.INITIAL);

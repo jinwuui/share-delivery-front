@@ -82,9 +82,9 @@ class DeliveryRecruit extends GetView<DeliveryRecruitController> {
           await DeliveryRecruitController.to.completeRecurit();
           await DeliveryOrderController.to
               .changeStatus(DeliveryRoomState.WAITING_PAYMENT);
-          await DeliveryManageController.to.changeStatus(
-            describeEnum(DeliveryRoomState.WAITING_PAYMENT),
-          );
+          // await DeliveryManageController.to.changeStatus(
+          //   describeEnum(DeliveryRoomState.WAITING_PAYMENT),
+          // );
         },
         child: Text("주문 진행 확인"),
       ),
