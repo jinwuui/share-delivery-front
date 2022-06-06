@@ -13,6 +13,7 @@ import 'package:share_delivery/src/bindings/profile/account_binding.dart';
 import 'package:share_delivery/src/bindings/profile/app_setting_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/profile/other_user_profile_binding.dart';
+import 'package:share_delivery/src/bindings/report/report_binding.dart';
 import 'package:share_delivery/src/bindings/root_binding.dart';
 import 'package:share_delivery/src/bindings/widgets/pick_user_location_binding.dart';
 import 'package:share_delivery/src/root.dart';
@@ -22,6 +23,14 @@ import 'package:share_delivery/src/ui/community/post_register/post_register.dart
 import 'package:share_delivery/src/ui/community/post_register/setting_post_category.dart';
 import 'package:share_delivery/src/ui/community/writing_comment.dart';
 import 'package:share_delivery/src/ui/delivery_post/delivery_room_detail.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/account_manage.dart';
+import 'package:share_delivery/src/ui/profile/account_manage/select_bank.dart';
+import 'package:share_delivery/src/ui/profile/app_setting/app_setting.dart';
+import 'package:share_delivery/src/ui/profile/friend/friend.dart';
+import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
+import 'package:share_delivery/src/ui/profile/other_user_profile/other_user_profile.dart';
+import 'package:share_delivery/src/ui/report/report.dart';
+import 'package:share_delivery/src/ui/widgets/expanded_image_page.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_info.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/delivery_room_register.dart';
 import 'package:share_delivery/src/ui/home/delivery_room_register/pick_receiving_location.dart';
@@ -89,6 +98,9 @@ abstract class Routes {
 
   // 친구 관리
   static const FRIEND = "/friend";
+
+  // 신고
+  static const REPORT = "/report";
 
   // 알림함
   static const ALARM = "/alarm";
@@ -226,6 +238,11 @@ class AppPages {
     GetPage(
       name: Routes.EXPANDED_POST_IMAGE,
       page: () => const ExpandedPostImage(),
+    ),
+    GetPage(
+      name: Routes.REPORT,
+      page: () => Report(),
+      binding: ReportBinding(),
     ),
   ];
 }
