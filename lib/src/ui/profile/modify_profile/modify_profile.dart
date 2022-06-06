@@ -8,7 +8,7 @@ import 'package:share_delivery/src/controller/login/authentication_controller.da
 import 'package:share_delivery/src/controller/profile/account/modify_account_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/ui/widgets/profile_textform.dart';
-import 'package:share_delivery/src/utils/image_path.dart';
+import 'package:share_delivery/src/utils/image_util.dart';
 
 class ModifyProfile extends GetView<ModifyAccountController> {
   ModifyProfile({Key? key}) : super(key: key);
@@ -104,10 +104,15 @@ class ModifyProfile extends GetView<ModifyAccountController> {
                             backgroundImage: controller
                                         .profileImagePath.value ==
                                     ""
-                                ? NetworkImage(imagePathWithHost(
-                                    (AuthenticationController
-                                            .to.state.props.first as User)
-                                        .profileImageUrl))
+                                ? (AuthenticationController.to.state.props.first
+                                                as User)
+                                            .profileImageUrl ==
+                                        ''
+                                    ? randomProfileImage()
+                                    : customNetworkImage(
+                                        (AuthenticationController
+                                                .to.state.props.first as User)
+                                            .profileImageUrl)
                                 : FileImage(
                                         File(controller.profileImagePath.value))
                                     as ImageProvider,

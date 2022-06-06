@@ -5,6 +5,7 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_roo
 import 'package:share_delivery/src/data/model/delivery_order_detail/order_menu_model.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 
 class DeliveryRecruitController extends GetxController
     with StateMixin<List<OrderMenuModel>> {
@@ -15,6 +16,7 @@ class DeliveryRecruitController extends GetxController
 
   final orderMenuList = <OrderMenuModel>[].obs;
   final totalPaymentMoney = 0.obs;
+  late final int deliveryRoomId;
 
   @override
   void onInit() {
@@ -27,7 +29,7 @@ class DeliveryRecruitController extends GetxController
   @override
   void onReady() async {
     super.onReady();
-    int deliveryRoomId = Get.arguments['deliveryRoomId'];
+    deliveryRoomId = Get.arguments['deliveryRoomId'];
     await getOrderList(deliveryRoomId: deliveryRoomId);
   }
 
@@ -37,6 +39,9 @@ class DeliveryRecruitController extends GetxController
       int deliveryRoomId = Get.arguments['deliveryRoomId'];
 
       orderMenuList.value = await repository.getOrderList(deliveryRoomId);
+
+      orderMenuList
+          .sort((a, b) => a.createdDateTime.compareTo(b.createdDateTime));
 
       Logger().d("getOrderList success");
 
@@ -51,15 +56,42 @@ class DeliveryRecruitController extends GetxController
   }
 
   Future<void> deleteUserWithOrder(int userId) async {
-    try {
-      int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
-      await repository.rejectUserOrder(userId, roomId);
+    await Get.dialog(AlertDialog(
+      title: Text("주문 거절"),
+      content: Text("해당 사용자의 주문을 거절하시겠습니까?"),
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.red),
+          child: Text("취소"),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(primary: Colors.red),
+          child: Text(
+            "확인",
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () async {
+            try {
+              int roomId =
+                  DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
+              await repository.rejectUserOrder(userId, roomId);
 
-      orderMenuList.value =
-          orderMenuList.where((e) => e.accountId != userId).toList();
-    } catch (e) {
-      print(e);
-    }
+              orderMenuList.value =
+                  orderMenuList.where((e) => e.accountId != userId).toList();
+              Get.back();
+              Get.snackbar("주문 취소", "다른 사용자의 주문을 취소하였습니다.");
+            } catch (e) {
+              Get.back();
+              Get.snackbar("주문 취소 실패", "다른 사용자의 주문을 취소하는데 실패하였습니다.");
+              Logger().w(e);
+            }
+          },
+        ),
+      ],
+    ));
   }
 
   Future<void> calculateTotalPaymentMoney() async {
@@ -67,15 +99,41 @@ class DeliveryRecruitController extends GetxController
 
     for (var element in orderMenuList) {
       for (var e in element.menus) {
-        totalMenuPrice += e.price;
+        totalMenuPrice += e.price * e.quantity;
+        totalMenuPrice += e.optionMenus.fold(
+            0,
+            (previousValue, element) =>
+                previousValue + element.price * e.quantity);
       }
     }
     totalPaymentMoney.value = totalMenuPrice;
   }
 
   Future<void> completeRecurit() async {
-    int roomId = DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
-    await repository.completeDeliveryRecruit(roomId);
+    try {
+      int res = await repository.completeDeliveryRecruit(deliveryRoomId);
+      if (res != deliveryRoomId) {
+        throw Exception();
+      }
+      Get.snackbar(
+        "주문 진행 확인",
+        "주문 상세 정보 입력 페이지로 이동",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+    } catch (e) {
+      Get.snackbar(
+        "주문 진행 확인",
+        "주문 상세 정보 입력 페이지로 이동 실패",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+      Logger().w(e);
+    }
   }
 
   Future<void> deleteDeliveryRoom(int deliveryRoomId) async {
@@ -107,6 +165,7 @@ class DeliveryRecruitController extends GetxController
 
                 Get.offAllNamed('/');
                 Get.snackbar("삭제 완료", "모집글이 삭제되었습니다.");
+                await DeliveryManageController.to.deleteDeliveryRoom();
               } catch (e) {
                 Get.back();
                 Get.back();

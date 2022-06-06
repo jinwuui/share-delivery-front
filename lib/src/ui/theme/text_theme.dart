@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final TextStyle paymentTextStyle = TextStyle(
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.bold,
 );
 

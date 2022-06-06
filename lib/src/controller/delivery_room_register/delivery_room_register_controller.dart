@@ -13,6 +13,7 @@ import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delive
 import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/delivery_room_register/delivery_room_register_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/utils/categories.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 
@@ -84,22 +85,21 @@ class DeliveryRoomRegisterController extends GetxController {
         await Get.find<HomeController>().onRefresh();
 
         // delivery history ui 갱신
-        DeliveryHistoryController.to.addPost(deliveryRoom);
+        await DeliveryHistoryController.to.onRefresh();
 
         // 배달 관리 컨트롤러에 등록
-        // DeliveryManageController.to.addDeliveryRoom(room.roomId, room);
-
-        // 홈화면 모집글 새로 고침
-        // await Get.find<HomeController>().onRefresh();
+        DeliveryManageController.to
+            .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
 
         // 내 배달 -> 모집글 상세정보 조회 페이지로 이동
         Get.until((route) => Get.currentRoute == Routes.INITIAL);
         Get.find<RootController>().changeRootPageIndex(1);
+
+        // 생성된 페이지로 이동
         Get.toNamed(
           Routes.DELIVERY_HISTORY_DETAIL,
-          arguments: {"deliveryRoomId": 1},
+          arguments: {"deliveryRoomId": deliveryRoom.roomId},
         );
-        Get.snackbar("모집글 생성 완료", "");
       } else {
         print("   모집글 등록 실패");
         throw Exception("등록 실패");

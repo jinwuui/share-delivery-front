@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -6,11 +7,12 @@ import 'package:share_delivery/src/controller/delivery_order_detail/delivery_rec
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/payment_of_order.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/organisms/user_order.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/recruit/total_of_orders.dart';
+import 'package:share_delivery/src/ui/delivery_post/widget/user_order.dart';
 
-class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
-  const DeliveryRecruitDetail({Key? key}) : super(key: key);
+class DeliveryRecruit extends GetView<DeliveryRecruitController> {
+  const DeliveryRecruit({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,10 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
               children: [
                 ...userWithOrderList!
                     .map((e) => UserOrder(
-                          userWithOrderModel: e,
+                          orderMenuModel: e,
                         ))
                     .toList(),
-                _buildAmountOfOrder(),
+                _buildPaymentOfOrders(),
               ],
             ),
           ),
@@ -55,7 +57,7 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
     );
   }
 
-  Widget _buildAmountOfOrder() {
+  Widget _buildPaymentOfOrders() {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),
@@ -64,7 +66,7 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
         color: Colors.white60,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: PaymentOfOrder(),
+      child: TotalOfOrders(),
     );
   }
 
@@ -76,18 +78,13 @@ class DeliveryRecruitDetail extends GetView<DeliveryRecruitController> {
         style: ElevatedButton.styleFrom(
           primary: Colors.orange,
         ),
-        onPressed: () {
-          Get.snackbar(
-            "주문 진행 확인",
-            "주문 상세 정보 입력 페이지로 이동",
-            backgroundColor: Colors.white,
-            duration: Duration(
-              seconds: 1,
-            ),
+        onPressed: () async {
+          await DeliveryRecruitController.to.completeRecurit();
+          await DeliveryOrderController.to
+              .changeStatus(DeliveryRoomState.WAITING_PAYMENT);
+          await DeliveryManageController.to.changeStatus(
+            describeEnum(DeliveryRoomState.WAITING_PAYMENT),
           );
-          DeliveryRecruitController.to.completeRecurit();
-          DeliveryOrderController.to
-              .changeStatus(DeliveryOrderStatus.recuritmentCompleted);
         },
         child: Text("주문 진행 확인"),
       ),

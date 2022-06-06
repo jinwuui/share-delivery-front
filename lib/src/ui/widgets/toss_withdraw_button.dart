@@ -5,15 +5,12 @@ import 'package:url_launcher/url_launcher.dart';
 class TossWithdrawButton extends StatelessWidget {
   static const String tossPrefixUrl = "supertoss://send";
 
-  final int amount;
+  int? amount;
   final String bank;
   final String account;
 
-  const TossWithdrawButton(
-      {Key? key,
-      required this.bank,
-      required this.account,
-      required this.amount})
+  TossWithdrawButton(
+      {Key? key, required this.bank, required this.account, this.amount})
       : super(key: key);
 
   @override

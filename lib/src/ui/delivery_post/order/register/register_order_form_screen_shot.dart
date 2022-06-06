@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/atoms/order_form_image.dart';
+import 'package:share_delivery/src/ui/delivery_post/widget/order_form_image.dart';
 
-class OrderFormScreenShotSection extends StatelessWidget {
-  const OrderFormScreenShotSection({Key? key}) : super(key: key);
+class RegisterOrderFormScreenShotSection extends StatelessWidget {
+  const RegisterOrderFormScreenShotSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,21 +36,46 @@ class OrderFormScreenShotSection extends StatelessWidget {
               child: Obx(
                 () => Row(
                   children: [
-                    ...Get.find<OrderFormRegisterController>()
-                        .orderForms
+                    ...OrderFormRegisterController.to.orderForms
                         .map(
                           (image) => OrderFormImage(
                             imageURL: image.path,
-                            deleteButton: false,
+                            deleteButton: true,
                           ),
                         )
-                        .toList()
+                        .toList(),
+                    _buildAddOrderFormButton(),
                   ],
                 ),
               ),
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildAddOrderFormButton() {
+    return GestureDetector(
+      onTap: () async {
+        try {
+          await OrderFormRegisterController.to.pickImage();
+        } catch (e) {
+          print(e);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(10.0),
+        width: 100.0,
+        height: 150.0,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            color: Colors.grey.shade400),
+        child: Icon(
+          Icons.add_a_photo,
+          size: 40,
+        ),
       ),
     );
   }

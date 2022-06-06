@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
 import 'package:share_delivery/src/data/repository/delivery_history/delivery_history_res_dto.dart';
 
@@ -16,54 +17,49 @@ class DeliveryHistory extends GetView<DeliveryHistoryController> {
     Get.put(DeliveryHistoryController());
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        title: Text(
-          "내 배달",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15,
+        appBar: AppBar(
+          centerTitle: true,
+          iconTheme: IconThemeData(
+            color: Colors.black, //change your color here
           ),
-        ),
-        backgroundColor: Colors.transparent,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(1.0),
-        ),
-        elevation: 0.0,
-      ),
-      body: controller.obx(
-          (historyPostList) => Obx(() {
-                //TODO: historyPostList 정렬
-                return Center(
-                  child: ListView.separated(
-                    itemBuilder: (context, index) => DeliveryHistoryPost(
-                      deliveryRoomModel: historyPostList![index],
-                    ),
-                    separatorBuilder: (_, index) => Divider(
-                      endIndent: 20,
-                      indent: 20,
-                      color: Colors.grey.shade300,
-                      height: 0.5,
-                      thickness: 1,
-                    ),
-                    itemCount: historyPostList!.length,
-                  ),
-                );
-              }),
-          onLoading: Center(
-            child: SpinKitThreeBounce(
-              size: 25,
+          title: Text(
+            "내 배달",
+            style: TextStyle(
               color: Colors.black,
+              fontSize: 15,
             ),
-          )),
-    );
+          ),
+          backgroundColor: Colors.transparent,
+          bottom: PreferredSize(
+            child: Container(
+              color: Colors.grey.shade300,
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(1.0),
+          ),
+          elevation: 0.0,
+        ),
+        body: Obx(() {
+          //TODO: historyPostList 정렬
+          return SmartRefresher(
+            controller: controller.refreshController,
+            onRefresh: controller.onRefresh,
+            enablePullDown: true,
+            child: ListView.separated(
+              itemBuilder: (context, index) => DeliveryHistoryPost(
+                deliveryRoomModel: controller.historyPostList[index],
+              ),
+              separatorBuilder: (_, index) => Divider(
+                endIndent: 20,
+                indent: 20,
+                color: Colors.grey.shade300,
+                height: 0.5,
+                thickness: 1,
+              ),
+              itemCount: controller.historyPostList.length,
+            ),
+          );
+        }));
   }
 }
 

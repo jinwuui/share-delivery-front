@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:share_delivery/src/data/model/profile/profile.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
@@ -53,7 +54,8 @@ abstract class ProfileApiClient {
   @PATCH('/api/accounts')
   @MultiPart()
   Future<User> updateUser({
-    @Part(name: 'accountDetail') required AccountUpdateReqDTO accountDetail,
+    @Part(name: 'accountDetail', contentType: 'application/json')
+        required AccountUpdateReqDTO accountDetail,
     @Part() File? profileImage,
   });
 
