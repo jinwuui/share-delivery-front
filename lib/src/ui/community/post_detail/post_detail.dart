@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -11,7 +10,7 @@ import 'package:share_delivery/src/ui/community/post_register/post_register.dart
 import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
-import 'package:share_delivery/src/utils/image_path.dart';
+import 'package:share_delivery/src/utils/image_util.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
 class PostDetail extends GetView<PostDetailController> {
@@ -313,7 +312,7 @@ class PostDetail extends GetView<PostDetailController> {
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
-                          controller.uiType == PostDetailUI.writer
+                          comment.writer.accountId == controller.currentUserId
                               ? const Text(
                                   " 작성자",
                                   style: writerBadge,
@@ -443,7 +442,7 @@ class PostDetail extends GetView<PostDetailController> {
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
-                          controller.uiType == PostDetailUI.writer
+                          comment.writer.accountId == controller.currentUserId
                               ? const Text(
                                   " 작성자",
                                   style: writerBadge,
@@ -522,7 +521,8 @@ class PostDetail extends GetView<PostDetailController> {
     return IconButton(
       onPressed: () {
         // TODO : 댓글 메뉴 열기 - 작성자의 댓글이면 [수정, 삭제, 닫기], 작성자가 아니라면 [신고, 닫기]
-        bool isWriter = controller.currentUserId == comment.writer.accountId;
+        bool isWriter = (controller.currentUserId == comment.writer.accountId);
+
         Get.bottomSheet(
           isWriter
               ? writerCommentActionSheet(comment)
@@ -725,9 +725,7 @@ class PostDetail extends GetView<PostDetailController> {
             print('PostDetail.appBar');
             bool isWriter = controller.uiType == PostDetailUI.writer;
             Get.bottomSheet(
-              isWriter || true
-                  ? writerPostActionSheet()
-                  : readerPostActionSheet(),
+              isWriter ? writerPostActionSheet() : readerPostActionSheet(),
               barrierColor: Colors.black26,
             );
           },
