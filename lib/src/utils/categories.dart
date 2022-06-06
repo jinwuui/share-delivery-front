@@ -11,6 +11,7 @@ final List<FoodCategory> foodCategories = [
   FoodCategory(kor: "패스트푸드", eng: "FASTFOOD"),
   FoodCategory(kor: "야식", eng: "LATE_NIGHT"),
   FoodCategory(kor: "도시락", eng: "LUNCHBOX"),
+  FoodCategory(kor: "디저트", eng: "DESERT"),
 ];
 
 class FoodCategory {
@@ -29,4 +30,14 @@ const List<String> postCategories = [
   "분실/실종",
   "품앗이",
   "기타",
+];
+
+const List<String> reportCategories = [
+  "돈을 지불하지 않았어요",
+  "욕설을 해요",
+  "성희롱을 해요",
+  "시간 약속을 안 지켜요",
+  "비매너 행동을 했어요",
+  "주문을 제대로 진행하지 않았어요",
+  "연락이 두절됐어요",
 ];

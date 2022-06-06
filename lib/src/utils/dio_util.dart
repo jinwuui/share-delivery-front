@@ -19,6 +19,8 @@ class DioUtil {
           final accessToken = SharedPrefsUtil.instance.getString("accessToken");
 
           // 헤더 지정
+          // NOTE: 로컬로 돌릴때 열기
+          // options.baseUrl = "http://192.168.219.100:8080";
           options.headers["Authorization"] = "Bearer $accessToken";
           options.headers["Content-Type"] = "application/json";
 
@@ -97,9 +99,9 @@ class DioUtil {
             return handler.resolve(clonedRequest);
           } else {
             print("ERROR: $error");
-            print('DioUtil.getDio: 401 제외한 에러');
-            print(error.response?.statusCode);
-            print(error.response?.data);
+            print('DioUtil.getDio: 에러');
+            print("statusCode: ${error.response?.statusCode}");
+            print("data: ${error.response?.data}");
             return handler.next(error);
           }
         },

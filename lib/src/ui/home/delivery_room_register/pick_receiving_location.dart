@@ -286,73 +286,77 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
   }
 
   Widget page1() {
-    return SizedBox(
-      height: Get.height,
-      width: Get.width,
-      child: Column(
-        children: [
-          moveToMap(),
-          controller.histories.isNotEmpty
-              ? Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: controller.histories.length,
-                    itemBuilder: (BuildContext context, int index) =>
-                        locationRecord(index),
-                  ),
-                )
-              : Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(50.0),
-                      child: Image.asset(
-                        "assets/images/icons/empty3.png",
-                        width: 150,
-                      ),
+    return Obx(
+      () => SizedBox(
+        height: Get.height,
+        width: Get.width,
+        child: Column(
+          children: [
+            moveToMap(),
+            controller.histories.isNotEmpty
+                ? Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: controller.histories.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          locationRecord(index),
                     ),
-                    Text("저장된 집결지 기록이 없습니다", style: infoTextStyle),
-                  ],
-                ),
-        ],
+                  )
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(50.0),
+                        child: Image.asset(
+                          "assets/images/icons/empty3.png",
+                          width: 150,
+                        ),
+                      ),
+                      Text("저장된 집결지 기록이 없습니다", style: infoTextStyle),
+                    ],
+                  ),
+          ],
+        ),
       ),
     );
   }
 
   Widget page2() {
-    return SizedBox(
-      height: Get.height - kToolbarHeight - 10,
-      width: Get.width,
-      child: controller.isPrepared.value
-          ? Stack(
-              children: [
-                WebView(
-                  initialUrl: controller.getHTML(),
-                  onWebViewCreated: (ctrl) =>
-                      controller.setWebViewController(ctrl),
-                  javascriptMode: JavascriptMode.unrestricted,
-                  javascriptChannels: controller.getChannels,
-                  gestureRecognizers: <Factory<VerticalDragGestureRecognizer>>{}
-                    ..add(Factory<VerticalDragGestureRecognizer>(
-                        () => VerticalDragGestureRecognizer())),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  child: Center(
-                    child: Icon(
-                      Icons.location_pin,
-                      size: 50,
-                      color: Colors.grey[800],
+    return Obx(
+      () => SizedBox(
+        height: Get.height - kToolbarHeight - 10,
+        width: Get.width,
+        child: controller.isPrepared.value
+            ? Stack(
+                children: [
+                  WebView(
+                    initialUrl: controller.getHTML(),
+                    onWebViewCreated: (ctrl) =>
+                        controller.setWebViewController(ctrl),
+                    javascriptMode: JavascriptMode.unrestricted,
+                    javascriptChannels: controller.getChannels,
+                    gestureRecognizers:
+                        <Factory<VerticalDragGestureRecognizer>>{}
+                          ..add(Factory<VerticalDragGestureRecognizer>(
+                              () => VerticalDragGestureRecognizer())),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Center(
+                      child: Icon(
+                        Icons.location_pin,
+                        size: 50,
+                        color: Colors.grey[800],
+                      ),
                     ),
                   ),
-                ),
-                addressDescription(),
-              ],
-            )
-          : const Center(
-              child: CircularProgressIndicator(color: Colors.grey),
-            ),
+                  addressDescription(),
+                ],
+              )
+            : const Center(
+                child: CircularProgressIndicator(color: Colors.grey),
+              ),
+      ),
     );
-    // return ;
   }
 
   Widget moveToMap() {
@@ -426,49 +430,28 @@ class PickReceivingLocation extends GetView<PickReceivingLocationController> {
   }
 
   Widget addressDescription() {
-    return SizedBox(
-      height: Get.height * 0.10,
-      child: Center(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 15),
-          child: TextField(
-            controller: controller.locationDescription,
-            onChanged: (text) => controller.setIsDescriptionEmpty(text),
-            maxLength: 13,
-            decoration: InputDecoration(
-              fillColor: Colors.white,
-              filled: true,
-              isDense: true,
-              contentPadding:
-                  Get.width < 400 ? EdgeInsets.all(10.0) : EdgeInsets.all(15.0),
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(),
-              hintText: "집결지 위치 (ex. CU앞, OO 건물)",
-              counterText: "",
-            ),
-          ),
-        ),
-      ),
-    );
-
-    return SizedBox(
-      height: Get.height * 0.10,
-      width: Get.width,
-      child: Center(
-        child: Container(
-          color: Colors.white,
-          width: Get.width * 0.9,
-          height: Get.height * 0.08,
-          child: TextField(
-            controller: controller.locationDescription,
-            onChanged: (text) => controller.setIsDescriptionEmpty(text),
-            maxLength: 13,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(left: 15.0),
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(),
-              hintText: "집결지 위치 (ex. CU앞, OO 건물)",
-              counterText: "",
+    return Obx(
+      () => SizedBox(
+        height: Get.height * 0.10,
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 15),
+            child: TextField(
+              controller: controller.locationDescription.value,
+              onChanged: (text) => controller.setIsDescriptionEmpty(text),
+              maxLength: 13,
+              decoration: InputDecoration(
+                fillColor: Colors.white,
+                filled: true,
+                isDense: true,
+                contentPadding: Get.width < 400
+                    ? EdgeInsets.all(10.0)
+                    : EdgeInsets.all(15.0),
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(),
+                hintText: "집결지 위치 (ex. CU앞, OO 건물)",
+                counterText: "",
+              ),
             ),
           ),
         ),

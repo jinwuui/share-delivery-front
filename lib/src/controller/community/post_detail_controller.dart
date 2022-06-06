@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/community/community_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/community/comment/comment.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
@@ -8,6 +9,7 @@ import 'package:share_delivery/src/data/model/community/post_detail/post_detail.
 import 'package:share_delivery/src/data/model/community/toggle_like_response_dto/toggle_like_response_dto.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/data/repository/community/post_detail/post_detail_repository.dart';
+import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 enum PostDetailUI {
@@ -16,62 +18,50 @@ enum PostDetailUI {
   reader,
 }
 
+enum LoadingStatus {
+  none,
+  loading,
+  complete,
+  error,
+}
+
 class PostDetailController extends GetxController {
   PostDetailRepository repository;
 
   PostDetailController({required this.repository});
 
+  final isLoad = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
-    post = Get.arguments;
-    findPostDetail();
-    findComment();
+    postInfo.value.post = Get.arguments;
+
+    loadingStatus.value = LoadingStatus.loading;
+
+    await findPostDetail();
+    await findComment();
     initUiType();
+    isLoad.value = true;
+    loadingStatus.value = LoadingStatus.complete;
   }
 
   // UI 관련
   PostDetailUI uiType = PostDetailUI.undecided;
+  Rx<LoadingStatus> loadingStatus = LoadingStatus.none.obs;
   int currentUserId = -1;
   RxBool onSendComment = false.obs;
+  RxBool isLikedPost = false.obs;
 
-  late final Post post;
-  PostDetail? postDetail = PostDetail(
-    postId: 13,
-    sharePlace: null,
-    likes: 12,
-    isLiked: true,
-    viewCounts: 112,
-  );
+  ScrollController postDetailScrollController = ScrollController();
+  ScrollController writingCommentScrollController = ScrollController();
 
-  var comments = <Comment>[
-    Comment(
-      id: 12,
-      parentId: 12,
-      content: "댓글1",
-      createdDateTime: DateTime.now(),
-      writer: Writer(
-        accountId: 13,
-        nickname: "닉네임",
-        mannerScore: 35.4,
-      ),
-      likes: 3,
-      isLiked: true,
-    ),
-    Comment(
-      id: 13,
-      parentId: 12,
-      content: "대댓글1",
-      createdDateTime: DateTime.now(),
-      writer: Writer(
-        accountId: 14,
-        nickname: "닉네임2",
-        mannerScore: 98.3,
-      ),
-      likes: 7,
-      isLiked: false,
-    ),
-  ].obs;
+  // late final Post post;
+  // PostDetail? postDetail;
+
+  var postInfo = PostInfo().obs;
+
+  var comments = <Comment>[].obs;
 
   TextEditingController commentTextField = TextEditingController();
 
@@ -84,7 +74,7 @@ class PostDetailController extends GetxController {
 
       print("게시글 상세조회 UI 타입 변경 - User : $user");
 
-      if (user.accountId == post.writer.accountId) {
+      if (user.accountId == postInfo.value.post!.writer.accountId) {
         // 글쓴이 == 사용자  --->  작성자 UI
         uiType = PostDetailUI.writer;
       } else {
@@ -93,7 +83,7 @@ class PostDetailController extends GetxController {
       }
 
       // 댓글의 사용자 여부 확인을 위해서 현재 유저 id 저장
-      currentUserId = post.writer.accountId;
+      currentUserId = postInfo.value.post!.writer.accountId;
     } catch (e) {
       print("게시글 상세조회 UI 타입 변경 에러  -  $e");
     }
@@ -101,21 +91,46 @@ class PostDetailController extends GetxController {
 
   // 게시글 상세정보 가져오기
   Future<void> findPostDetail() async {
-    postDetail = await repository.findDetailById(post.postId);
-    Logger().v("게시글 상세정보 조회 ", postDetail);
+    postInfo.value.postDetail =
+        await repository.findDetailById(postInfo.value.post!.postId);
+    Logger().v(postInfo.value.postDetail);
+    isLikedPost.value = postInfo.value.postDetail!.isLiked;
   }
 
   // 게시글의 댓글 가져오기
   Future<void> findComment() async {
-    comments.value = await repository.findCommentById(post.postId);
-    Logger().v("게시글 상세정보 댓글 조회 ", comments);
+    Map<int, List<Comment>> mp = {};
+
+    List<Comment> list =
+        await repository.findCommentById(postInfo.value.post!.postId);
+
+    list.sort((a, b) => a.createdDateTime.isBefore(b.createdDateTime) ? -1 : 1);
+
+    for (int i = 0; i < list.length; i++) {
+      if (!mp.containsKey(list[i].parentId)) {
+        mp[list[i].parentId] = <Comment>[];
+      }
+
+      mp[list[i].parentId]!.add(list[i]);
+    }
+
+    List<List<Comment>> mpList = <List<Comment>>[];
+    mp.forEach((k, e) => mpList.add(e));
+    mpList.sort((a, b) =>
+        a.first.createdDateTime.isBefore(b.first.createdDateTime) ? -1 : 1);
+
+    comments.value = mpList.expand((x) => x).toList();
   }
 
   // 게시글 삭제
-  void deletePost() {
-    print('PostDetailController.deletePost');
+  Future<void> deletePost() async {
+    // TODO : 게시글 삭제되면 화면을 커뮤니티로 이동해야함
+    await repository.deletePost(postInfo.value.post!.postId);
 
-    repository.deletePost(post.postId);
+    // 게시글 삭제되면 커뮤니티 화면으로 이동
+    await CommunityController.to.onRefresh();
+
+    Get.until((route) => Get.currentRoute == Routes.INITIAL);
   }
 
   // 게시글 좋아요
@@ -123,39 +138,49 @@ class PostDetailController extends GetxController {
     PostLikeResponseDTO postLikeResponseDTO =
         await repository.togglePostLike(postId);
 
-    if (postDetail == null) {
+    if (postInfo.value.isEmpty()) {
       await findPostDetail();
     }
 
-    postDetail = postDetail!.copyWith(
+    postInfo.value.postDetail = postInfo.value.postDetail!.copyWith(
       likes: postLikeResponseDTO.likes,
       isLiked: postLikeResponseDTO.isLiked,
     );
+
+    isLikedPost.value = postLikeResponseDTO.isLiked;
   }
 
   // 게시글 신고
   Future<void> reportPost() async {
     print('PostDetailController.reportPost - 게시글 신고');
-    repository.reportPost(post.postId);
+    repository.reportPost(postInfo.value.post!.postId);
   }
 
   // 댓글 작성
-  Future<void> sendComment([int? parentId]) async {
+  Future<void> sendComment(ScrollController scroller, [int? parentId]) async {
     if (commentTextField.text.trim().isEmpty) {
       GetSnackbar.on("알림", "공백은 댓글로 입력할 수 없습니다.");
       return;
     }
 
-    print('PostDetailController.sendComment - 댓글 작성');
+    String text = commentTextField.text;
+    commentTextField.clear();
+    FocusManager.instance.primaryFocus?.unfocus();
 
-    Comment comment;
-    if (parentId == null) {
-      comment = await repository.sendComment(commentTextField.text);
-    } else {
-      comment = await repository.sendComment(commentTextField.text, parentId);
-    }
+    Comment? comment = await repository.sendComment(
+      postInfo.value.post!.postId,
+      text,
+      parentId,
+    );
 
-    comments.add(comment);
+    await findComment();
+    await 0.3.delay();
+
+    scroller.animateTo(
+      scroller.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   // 댓글 수정
@@ -167,7 +192,8 @@ class PostDetailController extends GetxController {
   // 댓글 삭제
   Future<void> deleteComment(int commentId) async {
     print('PostDetailController.deleteComment');
-    repository.deleteComment(commentId);
+    await repository.deleteComment(commentId);
+    findComment();
   }
 
   // 댓글 좋아요
@@ -175,7 +201,7 @@ class PostDetailController extends GetxController {
     CommentLikeResponseDTO commentLikeResponseDTO =
         await repository.toggleCommentLike(comment.id);
 
-    if (postDetail == null) {
+    if (postInfo.value.isEmpty()) {
       await findPostDetail();
     }
 
@@ -193,7 +219,7 @@ class PostDetailController extends GetxController {
   }
 
   bool isParentComment(int idx) {
-    return comments[idx].id == comments[idx].parentId;
+    return comments[idx].parentId == comments[idx].id;
   }
 
   bool isLastComment(int idx) {
@@ -205,7 +231,7 @@ class PostDetailController extends GetxController {
 
     if (cur.id == cur.parentId) return false;
 
-    int parentId = cur.parentId;
+    int? parentId = cur.parentId;
 
     for (Comment comment in comments) {
       if (comment.parentId != parentId || comment.id == cur.id) continue;
@@ -230,5 +256,20 @@ class PostDetailController extends GetxController {
     }
 
     return list;
+  }
+}
+
+class PostInfo {
+  Post? post;
+  PostDetail? postDetail;
+
+  PostInfo({this.post, this.postDetail});
+
+  bool isEmpty() {
+    return post == null || postDetail == null;
+  }
+
+  bool isNotEmpty() {
+    return !isEmpty();
   }
 }

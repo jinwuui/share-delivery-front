@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/community/post_detail_controller.dart';
 import 'package:share_delivery/src/data/model/community/comment/comment.dart';
@@ -19,31 +21,44 @@ class WritingComment extends GetView<PostDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: appBar(),
-        body: GestureDetector(
-          onTap: () {
-            if (MediaQuery.of(context).viewInsets.bottom != 0) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-          },
-          child: Container(
-            color: Colors.white,
-            height: Get.height,
-            width: Get.width,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      comments(),
-                      const SizedBox(width: 30, height: 68),
-                    ],
-                  ),
+    return Obx(
+      () => SafeArea(
+        child: LoaderOverlay(
+          child: Scaffold(
+            appBar: appBar(),
+            body: GestureDetector(
+              onTap: () {
+                if (MediaQuery.of(context).viewInsets.bottom != 0) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              },
+              child: Container(
+                color: Colors.white,
+                height: Get.height,
+                width: Get.width,
+                child: Stack(
+                  children: [
+                    SingleChildScrollView(
+                      controller: controller.writingCommentScrollController,
+                      child: Column(
+                        children: [
+                          comments(),
+                          const SizedBox(width: 30, height: 68),
+                        ],
+                      ),
+                    ),
+                    commentTextField(context),
+                  ],
                 ),
-                commentTextField(),
-              ],
+              ),
+            ),
+          ),
+          overlayColor: Colors.transparent,
+          useDefaultLoading: false,
+          overlayWidget: const Center(
+            child: SpinKitThreeBounce(
+              size: 25,
+              color: Colors.grey,
             ),
           ),
         ),
@@ -92,9 +107,20 @@ class WritingComment extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        comment.writer.nickname,
-                        style: postTitleStyle,
+                      child: Row(
+                        children: [
+                          Text(
+                            comment.writer.nickname,
+                            style: postTitleStyle,
+                          ),
+                          const SizedBox(width: 5),
+                          controller.uiType == PostDetailUI.writer
+                              ? const Text(
+                                  " 작성자",
+                                  style: writerBadge,
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
                     ),
                     Padding(
@@ -183,9 +209,20 @@ class WritingComment extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        comment.writer.nickname,
-                        style: postTitleStyle,
+                      child: Row(
+                        children: [
+                          Text(
+                            comment.writer.nickname,
+                            style: postTitleStyle,
+                          ),
+                          const SizedBox(width: 5),
+                          controller.uiType == PostDetailUI.writer
+                              ? const Text(
+                                  " 작성자",
+                                  style: writerBadge,
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
                     ),
                     Padding(
@@ -414,7 +451,7 @@ class WritingComment extends GetView<PostDetailController> {
     );
   }
 
-  Widget commentTextField() {
+  Widget commentTextField(BuildContext context) {
     const double iconSize = 27.0;
 
     return Obx(
@@ -475,12 +512,12 @@ class WritingComment extends GetView<PostDetailController> {
                       prefix: const SizedBox(width: 20),
                       suffixIcon: controller.onSendComment.value
                           ? IconButton(
-                              onPressed: () {
-                                print(
-                                    "댓글 작성 - ${controller.commentTextField.text}");
-                                // TODO: 대댓글 등록 로직 필요
+                              onPressed: () async {
                                 int parentId = Get.arguments;
-                                controller.sendComment(parentId);
+                                await controller.sendComment(
+                                  controller.writingCommentScrollController,
+                                  parentId,
+                                );
                               },
                               color: Colors.orange,
                               icon: Icon(Icons.send_rounded),

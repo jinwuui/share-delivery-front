@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,15 +9,12 @@ import 'package:flutter_persistent_keyboard_height/flutter_persistent_keyboard_h
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/controller/notification_controller/notification_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_api_client.dart';
 import 'package:share_delivery/src/data/provider/authentication/authentication_local_client.dart';
-import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
 import 'package:share_delivery/src/data/repository/authentication_repository.dart';
-import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/services/alarm_service.dart';
 import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
@@ -66,11 +64,14 @@ Future<void> initialize() async {
   // 배달 관리 controller
   await Get.putAsync(() => DeliveryManageController().init(), permanent: true);
 
+  Dio dio = DioUtil.loginDio();
+  String host = dotenv.get('SERVER_HOST');
+
   // 인증 컨트롤러 Get 세팅
   Get.put(
     AuthenticationController(
       repository: AuthenticationRepository(
-        apiClient: AuthenticationApiClient(DioUtil.loginDio()),
+        apiClient: AuthenticationApiClient(dio, baseUrl: host),
         localClient: AuthenticationLocalClient(),
       ),
     ),

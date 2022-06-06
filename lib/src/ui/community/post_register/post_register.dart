@@ -217,7 +217,7 @@ class PostRegister extends GetView<PostRegisterController> {
   Widget build(BuildContext context) {
     bool isRegistered = Get.isRegistered<PostRegisterController>();
 
-    if (post != null && postDetail != null) {
+    if (post != null && postDetail != null && !isRegistered) {
       print('PostRegister.build - 게시글 수정');
       Get.put(
         PostRegisterController(

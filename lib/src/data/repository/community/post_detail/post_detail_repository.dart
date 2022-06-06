@@ -11,7 +11,9 @@ class PostDetailRepository {
 
   // 게시글 상세정보 조회
   Future<PostDetail> findDetailById(int postId) async {
-    return await apiClient.findPostDetailById(postId);
+    PostDetail postDetail = await apiClient.findPostDetailById(postId);
+    print('PostDetailRepository.findDetailById - $postDetail');
+    return postDetail;
   }
 
   // 게시글 댓글 조회
@@ -31,9 +33,14 @@ class PostDetailRepository {
   }
 
   // 댓글 등록
-  Future<Comment> sendComment(String content, [int? parentId]) async {
+  Future<Comment> sendComment(int postId, String content,
+      [int? parentId]) async {
     CommentRegisterRequestDTO commentRegisterRequestDTO =
-        CommentRegisterRequestDTO(parentId: parentId, content: content);
+        CommentRegisterRequestDTO(
+      postId: postId,
+      parentId: parentId,
+      content: content,
+    );
 
     return await apiClient.registerComment(commentRegisterRequestDTO);
   }

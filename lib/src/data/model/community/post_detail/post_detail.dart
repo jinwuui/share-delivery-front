@@ -8,10 +8,10 @@ part 'post_detail.g.dart';
 class PostDetail with _$PostDetail {
   const factory PostDetail({
     required int postId,
-    required SharePlace? sharePlace,
+    required PlaceShare? placeShare,
     required int likes,
     required bool isLiked,
-    required int viewCounts,
+    required int viewCount,
     @Default([]) List<String> images,
   }) = _PostDetail;
 

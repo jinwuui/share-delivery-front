@@ -6,6 +6,7 @@ part 'comment_register_request_dto.g.dart';
 @Freezed()
 class CommentRegisterRequestDTO with _$CommentRegisterRequestDTO {
   const factory CommentRegisterRequestDTO({
+    required int postId,
     required int? parentId,
     required String content,
   }) = _CommentRegisterRequestDTO;

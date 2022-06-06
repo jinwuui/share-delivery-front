@@ -30,7 +30,7 @@ class CommunityController extends GetxController {
   ].obs;
   UserLocation? userLocation;
 
-  void onRefresh() async {
+  Future<void> onRefresh() async {
     print('CommunityController.onRefresh - 1');
     if (!isExistUserLocation()) {
       refresher.value.refreshFailed();
@@ -40,32 +40,32 @@ class CommunityController extends GetxController {
     try {
       List<Post> result = [];
       if (category.value == postCategories[0]) {
-        // result = await repository.refreshPost(userLocation!);
+        result = await repository.refreshPost(userLocation!);
       } else {
-        // result = await repository.refreshPostByCategory(
-        //     userLocation!, category.value);
+        result = await repository.refreshPostByCategory(
+            userLocation!, category.value);
       }
 
       // TODO : 임시로 해둠 = 삭제할 것
       await Future.delayed(Duration(milliseconds: 500));
       print('CommunityController.onRefresh - 3');
+      posts.value = result;
 
-      if (result.isEmpty) {
+      if (posts.value.isEmpty) {
         // GetSnackbar.on("알림", "검색된 게시글이 없습니다!");
         refresher.value.loadNoData();
         refresher.value.refreshFailed();
         return;
       }
 
-      posts.value = result;
       // TODO : 아래 코드 삭제할 것
-      posts.add(Post(
-        category: '',
-        content: '',
-        writer: Writer(accountId: 123, nickname: '', mannerScore: 13),
-        createdDateTime: DateTime.now(),
-        postId: 123,
-      ));
+      // posts.add(Post(
+      //   category: '',
+      //   content: '',
+      //   writer: Writer(accountId: 123, nickname: '', mannerScore: 13),
+      //   createdDateTime: DateTime.now(),
+      //   postId: 123,
+      // ));
 
       refresher.value.resetNoData();
       refresher.value.refreshCompleted();
@@ -90,12 +90,11 @@ class CommunityController extends GetxController {
     try {
       List<Post> result = [];
       if (category.value == postCategories[0]) {
-        // result = await repository.loadingPost(
-        //     userLocation!, posts.last.createdDateTime);
-
+        result = await repository.loadingPost(
+            userLocation!, posts.last.createdDateTime);
       } else {
-        // result = await repository.loadingPostByCategory(
-        //     userLocation!, category.value, posts.last.createdDateTime);
+        result = await repository.loadingPostByCategory(
+            userLocation!, category.value, posts.last.createdDateTime);
       }
 
       // TODO : 임시로 해둠 = 삭제할 것

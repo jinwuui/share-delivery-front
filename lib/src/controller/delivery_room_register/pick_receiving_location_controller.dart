@@ -28,7 +28,8 @@ class PickReceivingLocationController extends GetxController {
   Rx<LocationData> locationData = LocationData.fromMap({"isMock": true}).obs;
   final _serviceEnabled = false.obs;
   RxInt curPage = 0.obs; // pick_receiving_location_controller.dart 의 페이지 인덱스
-  final TextEditingController locationDescription = TextEditingController();
+  final Rx<TextEditingController> locationDescription =
+      TextEditingController().obs;
   RxBool isDescriptionEmpty = true.obs;
   double receivingLocationLat = -1.0;
   double receivingLocationLng = -1.0;
@@ -53,7 +54,7 @@ class PickReceivingLocationController extends GetxController {
       locationData.value = await location.getLocation();
       receivingLocationLat = locationData.value.latitude!;
       receivingLocationLng = locationData.value.longitude!;
-      locationDescription.text = "";
+      locationDescription.value.text = "";
       await Future.delayed(Duration(milliseconds: 500));
       isPrepared.value = true;
     } else {
@@ -160,7 +161,7 @@ class PickReceivingLocationController extends GetxController {
   }
 
   void completePickLocation() {
-    String description = locationDescription.text;
+    String description = locationDescription.value.text;
     double latitude = receivingLocationLat;
     double longitude = receivingLocationLng;
 
@@ -199,8 +200,8 @@ class PickReceivingLocationController extends GetxController {
     locationData.value = LocationData.fromMap(
         {"latitude": location.latitude, "longitude": location.longitude});
 
-    locationDescription.text = location.description;
-    setIsDescriptionEmpty(locationDescription.text);
+    locationDescription.value.text = location.description;
+    setIsDescriptionEmpty(locationDescription.value.text);
     receivingLocationLat = location.latitude;
     receivingLocationLng = location.longitude;
   }
