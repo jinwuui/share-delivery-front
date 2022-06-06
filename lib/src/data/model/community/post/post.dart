@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
 
 part 'post.freezed.dart';
 part 'post.g.dart';
@@ -23,6 +22,7 @@ class Writer with _$Writer {
     required int accountId,
     required String nickname,
     required double mannerScore,
+    required String profileImage,
   }) = _Writer;
 
   factory Writer.fromJson(Map<String, dynamic> json) => _$WriterFromJson(json);

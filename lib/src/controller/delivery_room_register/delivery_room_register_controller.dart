@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
