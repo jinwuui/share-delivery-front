@@ -144,7 +144,7 @@ class FriendItem extends StatelessWidget {
                     icon: Icon(Icons.block),
                     text: "삭제하기",
                     callback: () async {
-                      await FriendController.to
+                      await ProfileController.to
                           .deleteFriend(friendModel.accountId);
                     },
                   ),

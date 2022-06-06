@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:share_delivery/src/controller/profile/friend/friend_controller.dart';
 import 'package:share_delivery/src/controller/profile/other_user/other_user_profile_controller.dart';
+import 'package:share_delivery/src/controller/profile/profile_controller.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
@@ -12,75 +15,79 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        title: Text(
-          "프로필",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 15,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        bottom: PreferredSize(
-          child: Container(
-            color: Colors.grey.shade300,
-            height: 1.0,
-          ),
-          preferredSize: Size.fromHeight(1.0),
-        ),
-        elevation: 0.0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.more_vert, size: 30),
-            onPressed: () {
-              Get.bottomSheet(
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Divider(
-                        indent: 170,
-                        endIndent: 170,
-                        thickness: 5,
-                        height: 20,
-                        color: Colors.black54),
-                    BottomSheetItem(
-                      icon: Icon(Icons.report),
-                      text: "신고하기",
-                      callback: () {}, // TODO:
-                    ),
-                    BottomSheetItem(
-                      icon: Icon(Icons.block),
-                      text: "차단하기",
-                      callback: () {}, // TODO:
-                    ),
-                  ],
+    return Obx(() => controller.isLoad.value == true
+        ? Scaffold(
+            appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: Colors.black, //change your color here
+              ),
+              title: Text(
+                "프로필",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
                 ),
-                backgroundColor: Colors.white,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10.0),
-                      topRight: Radius.circular(10.0)),
+              ),
+              backgroundColor: Colors.transparent,
+              bottom: PreferredSize(
+                child: Container(
+                  color: Colors.grey.shade300,
+                  height: 1.0,
                 ),
-              );
-            },
+                preferredSize: Size.fromHeight(1.0),
+              ),
+              elevation: 0.0,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.more_vert, size: 30),
+                  onPressed: () {
+                    Get.bottomSheet(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Divider(
+                              indent: 170,
+                              endIndent: 170,
+                              thickness: 5,
+                              height: 20,
+                              color: Colors.black54),
+                          // BottomSheetItem(
+                          //   icon: Icon(Icons.report),
+                          //   text: "신고하기",
+                          //   callback: () {}, // TODO:
+                          // ),
+                          BottomSheetItem(
+                            icon: Icon(Icons.block),
+                            text: "친구 삭제",
+                            callback: () {
+                              ProfileController.to.deleteFriend(
+                                  controller.user.value.accountId);
+                            }, // TODO:
+                          ),
+                        ],
+                      ),
+                      backgroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0)),
+                      ),
+                    );
+                  },
+                )
+              ],
+            ),
+            body: Container(
+              color: Colors.grey.shade200,
+              child: Column(
+                children: [
+                  _buildProfile(),
+                ],
+              ),
+            ),
           )
-        ],
-      ),
-      body: Container(
-        color: Colors.grey.shade200,
-        child: Column(
-          children: [
-            _buildProfile(),
-            // _buildMenuList(),
-          ],
-        ),
-      ),
-    );
+        : Center(child: CircularProgressIndicator()));
   }
 
   Widget _buildProfile() {
@@ -99,21 +106,15 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                   onTap: () => Get.toNamed(
                     Routes.EXPANDED_IMAGE_PAGE,
                     arguments: {
-                      "imagePath": controller.user.value.profileImageUrl == ''
-                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
-                          : imagePathWithHost(
-                              controller.user.value.profileImageUrl),
+                      "imagePath": imagePathWithHost(
+                          controller.user.value.profileImageUrl),
                       "title": "프로필 사진"
                     },
                   ),
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(
-                      controller.user.value.profileImageUrl == ''
-                          ? "https://cdn.pixabay.com/photo/2016/01/20/13/05/cat-1151519__480.jpg"
-                          : imagePathWithHost(
-                              controller.user.value.profileImageUrl),
-                    ),
+                    backgroundImage: customNetworkImage(
+                        controller.user.value.profileImageUrl),
                     backgroundColor: Colors.grey.shade300,
                   ),
                 ),
@@ -121,7 +122,7 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      controller.user.value.nickname, // TODO: 닉네임
+                      controller.user.value.nickname,
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 18,
@@ -144,9 +145,10 @@ class OtherUserProfile extends GetView<OtherUserProfileController> {
                     elevation: 0.0,
                     minimumSize: Size.fromHeight(45.0),
                   ),
-                  onPressed: () => Get.to(ModifyProfile()),
+                  onPressed: () => ProfileController.to
+                      .addFriend(controller.user.value.accountId),
                   child: Text(
-                    "평가하기",
+                    "친구 추가",
                     style: TextStyle(
                       color: Colors.black87,
                       fontWeight: FontWeight.w700,

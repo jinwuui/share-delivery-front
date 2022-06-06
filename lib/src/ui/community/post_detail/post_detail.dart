@@ -119,9 +119,17 @@ class PostDetail extends GetView<PostDetailController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.OTHER_USER_PROFILE, arguments: {
+                      "accountId":
+                          controller.postInfo.value.post!.writer.accountId
+                    });
+                  },
                   child: Padding(
                     padding: EdgeInsets.only(right: normal),
                     child: CircleAvatar(
+                      //TODO: profile
+
                       radius: parentAvatar,
                       backgroundColor: Colors.grey,
                     ),
@@ -278,9 +286,15 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.OTHER_USER_PROFILE,
+                      arguments: {"accountId": comment.writer.accountId});
+                },
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
+                    //TODO: profile
+
                     radius: parentAvatar,
                     backgroundColor: Colors.grey,
                   ),
@@ -402,9 +416,15 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.OTHER_USER_PROFILE,
+                      arguments: {"accountId": comment.writer.accountId});
+                },
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
+                    //TODO: profile
+
                     radius: childAvatar,
                     backgroundColor: Colors.grey,
                   ),
@@ -628,6 +648,7 @@ class PostDetail extends GetView<PostDetailController> {
             Padding(
               padding: EdgeInsets.only(right: normal),
               child: CircleAvatar(
+                //TODO: profile
                 radius: childAvatar,
                 backgroundColor: Colors.grey,
               ),
