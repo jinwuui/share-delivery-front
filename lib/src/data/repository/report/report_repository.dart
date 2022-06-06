@@ -1,6 +1,5 @@
 import 'package:share_delivery/src/data/model/report/report.dart';
 import 'package:share_delivery/src/data/provider/report/report_api_client.dart';
-import 'package:share_delivery/src/data/repository/profile/account_bank_dto.dart';
 import 'package:share_delivery/src/data/repository/report/report_req_dto.dart';
 
 class ReportRepository {
@@ -12,7 +11,17 @@ class ReportRepository {
     return await apiClient.readReportList();
   }
 
-  Future<void> createReport(ReportReqDTO reportReqDTO) async {
+  Future<void> createReport(
+    int reportedAccountId,
+    String reportCategory,
+    String reportType,
+  ) async {
+    ReportReqDTO reportReqDTO = ReportReqDTO(
+      reportedAccountId: reportedAccountId,
+      reportCategory: reportCategory,
+      reportType: reportType,
+    );
+
     return await apiClient.createReport(reportReqDTO);
   }
 }

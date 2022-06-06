@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/home/home_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -84,7 +83,7 @@ class DeliveryRoomRegisterController extends GetxController {
         await Get.find<HomeController>().onRefresh();
 
         // delivery history ui 갱신
-        DeliveryHistoryController.to.addPost(deliveryRoom);
+        // DeliveryHistoryController.to.addPost(deliveryRoom);
 
         // 배달 관리 컨트롤러에 등록
         // DeliveryManageController.to.addDeliveryRoom(room.roomId, room);

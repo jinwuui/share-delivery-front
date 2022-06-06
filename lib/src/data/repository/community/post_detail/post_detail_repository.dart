@@ -33,9 +33,14 @@ class PostDetailRepository {
   }
 
   // 댓글 등록
-  Future<Comment> sendComment(String content, [int? parentId]) async {
+  Future<Comment> sendComment(int postId, String content,
+      [int? parentId]) async {
     CommentRegisterRequestDTO commentRegisterRequestDTO =
-        CommentRegisterRequestDTO(parentId: parentId, content: content);
+        CommentRegisterRequestDTO(
+      postId: postId,
+      parentId: parentId,
+      content: content,
+    );
 
     return await apiClient.registerComment(commentRegisterRequestDTO);
   }

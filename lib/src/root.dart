@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
@@ -20,7 +19,9 @@ class Root extends GetView<RootController> {
             children: [
               Home(),
               DeliveryHistory(),
-              controller.isFirstOpenCommunity.value ? SizedBox.shrink() : Community(),
+              controller.isFirstOpenCommunity.value
+                  ? SizedBox.shrink()
+                  : Community(),
               Profile(),
             ],
           ),

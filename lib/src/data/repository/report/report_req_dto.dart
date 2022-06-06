@@ -6,10 +6,10 @@ part 'report_req_dto.g.dart';
 @Freezed()
 class ReportReqDTO with _$ReportReqDTO {
   const factory ReportReqDTO({
-    //TODO: property
-    required int reportTargetAccountId,
+    required int reportedAccountId,
+    required String reportCategory,
     required String reportType,
-    required String reportContent,
+    @Default("dummy") String description,
   }) = _ReportReqDTO;
 
   factory ReportReqDTO.fromJson(Map<String, dynamic> json) =>

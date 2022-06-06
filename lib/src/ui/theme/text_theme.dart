@@ -106,6 +106,12 @@ const TextStyle receivingLocationDone = TextStyle(
   color: Colors.black,
 );
 
+const TextStyle writerBadge = TextStyle(
+  fontSize: 13,
+  fontWeight: FontWeight.w700,
+  color: Colors.black54,
+);
+
 // 빠른 매칭
 const TextStyle fastMatchingNickname = TextStyle(
   fontSize: 20,
@@ -123,4 +129,20 @@ final TextStyle fastMatchingDistance = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w700,
   color: Colors.grey.shade600,
+);
+
+// 신고/평가
+const TextStyle ratingActionBtn = TextStyle(
+  fontSize: 20,
+  color: Colors.white,
+  fontWeight: FontWeight.w600,
+);
+
+const TextStyle unselectedEvaluation = TextStyle(
+  fontWeight: FontWeight.w800,
+);
+
+const TextStyle selectedEvaluation = TextStyle(
+  fontWeight: FontWeight.w800,
+  color: Colors.white,
 );

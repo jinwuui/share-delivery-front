@@ -31,3 +31,13 @@ const List<String> postCategories = [
   "품앗이",
   "기타",
 ];
+
+const List<String> reportCategories = [
+  "돈을 지불하지 않았어요",
+  "욕설을 해요",
+  "성희롱을 해요",
+  "시간 약속을 안 지켜요",
+  "비매너 행동을 했어요",
+  "주문을 제대로 진행하지 않았어요",
+  "연락이 두절됐어요",
+];

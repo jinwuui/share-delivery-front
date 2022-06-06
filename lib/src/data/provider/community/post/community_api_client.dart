@@ -8,6 +8,7 @@ import 'package:share_delivery/src/data/model/community/comment_register_request
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_detail/post_detail.dart';
 import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
+import 'package:share_delivery/src/data/model/community/post_update_request_dto/post_update_request_dto.dart';
 import 'package:share_delivery/src/data/model/community/toggle_like_response_dto/toggle_like_response_dto.dart';
 
 part 'community_api_client.g.dart';
@@ -50,7 +51,7 @@ abstract class CommunityApiClient {
   @MultiPart()
   Future<Post> updatePost(
     @Path() int postId,
-    @Part(name: "post") PostRegisterRequestDTO postRegisterRequestDTO,
+    @Part(name: "post") PostUpdateRequestDTO postUpdateRequestDTO,
     @Part(name: "postImages") List<File> postImages,
   );
 

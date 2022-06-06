@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/data/model/community/post/post.dart';
 import 'package:share_delivery/src/data/model/community/post_register_request_dto/post_register_request_dto.dart';
+import 'package:share_delivery/src/data/model/community/post_update_request_dto/post_update_request_dto.dart';
 import 'package:share_delivery/src/data/model/user/user_location/user_location.dart';
 import 'package:share_delivery/src/data/provider/community/post/community_api_client.dart';
 import 'package:share_delivery/src/data/provider/widgets/user_location_local_client.dart';
@@ -76,10 +77,10 @@ class PostRegisterRepository {
     );
 
     // 작성할 글
-    PostRegisterRequestDTO post = PostRegisterRequestDTO(
+    PostUpdateRequestDTO post = PostUpdateRequestDTO(
       coordinate: coordinate,
-      category: content,
-      content: category,
+      category: category,
+      content: content,
     );
 
     // 이미지
@@ -90,17 +91,19 @@ class PostRegisterRepository {
           'PostRegisterRepository.registerPost - image file - ${File(images[i])}');
     }
 
-    return null;
+    print('PostRegisterRepository.updatePost - $post');
 
     // 글 수정 요청
-    await apiClient.updatePost(postId, post, postImages).then((value) {
+    Post? result =
+        await apiClient.updatePost(postId, post, postImages).then((value) {
       Logger().i(value);
       return value;
     }).catchError((err) {
       Logger().e(err);
+      return null;
     });
 
-    return null;
+    return result;
   }
 
   UserLocation? getUserLocation() {

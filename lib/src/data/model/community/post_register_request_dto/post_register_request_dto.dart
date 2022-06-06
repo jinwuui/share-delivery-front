@@ -9,7 +9,7 @@ class PostRegisterRequestDTO with _$PostRegisterRequestDTO {
     required PostLocation coordinate,
     required String content,
     required String category,
-    SharePlace? sharePlace,
+    PlaceShare? placeShare,
   }) = _PostRegisterRequestDTO;
 
   factory PostRegisterRequestDTO.fromJson(Map<String, dynamic> json) =>
@@ -28,13 +28,14 @@ class PostLocation with _$PostLocation {
 }
 
 @Freezed()
-class SharePlace with _$SharePlace {
-  const factory SharePlace({
+class PlaceShare with _$PlaceShare {
+  const factory PlaceShare({
+    int? placeShareId,
     required String description,
     required double latitude,
     required double longitude,
-  }) = _SharePlace;
+  }) = _PlaceShare;
 
-  factory SharePlace.fromJson(Map<String, dynamic> json) =>
-      _$SharePlaceFromJson(json);
+  factory PlaceShare.fromJson(Map<String, dynamic> json) =>
+      _$PlaceShareFromJson(json);
 }

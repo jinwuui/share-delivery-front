@@ -30,7 +30,7 @@ class CommunityController extends GetxController {
   ].obs;
   UserLocation? userLocation;
 
-  void onRefresh() async {
+  Future<void> onRefresh() async {
     print('CommunityController.onRefresh - 1');
     if (!isExistUserLocation()) {
       refresher.value.refreshFailed();
@@ -42,8 +42,8 @@ class CommunityController extends GetxController {
       if (category.value == postCategories[0]) {
         result = await repository.refreshPost(userLocation!);
       } else {
-        // result = await repository.refreshPostByCategory(
-        //     userLocation!, category.value);
+        result = await repository.refreshPostByCategory(
+            userLocation!, category.value);
       }
 
       // TODO : 임시로 해둠 = 삭제할 것
@@ -90,12 +90,11 @@ class CommunityController extends GetxController {
     try {
       List<Post> result = [];
       if (category.value == postCategories[0]) {
-        // result = await repository.loadingPost(
-        //     userLocation!, posts.last.createdDateTime);
-
+        result = await repository.loadingPost(
+            userLocation!, posts.last.createdDateTime);
       } else {
-        // result = await repository.loadingPostByCategory(
-        //     userLocation!, category.value, posts.last.createdDateTime);
+        result = await repository.loadingPostByCategory(
+            userLocation!, category.value, posts.last.createdDateTime);
       }
 
       // TODO : 임시로 해둠 = 삭제할 것

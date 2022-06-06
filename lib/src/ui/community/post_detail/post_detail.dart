@@ -11,6 +11,7 @@ import 'package:share_delivery/src/ui/community/post_register/post_register.dart
 import 'package:share_delivery/src/ui/theme/button_theme.dart';
 import 'package:share_delivery/src/ui/theme/container_theme.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
+import 'package:share_delivery/src/utils/image_path.dart';
 import 'package:share_delivery/src/utils/time_util.dart';
 
 class PostDetail extends GetView<PostDetailController> {
@@ -23,134 +24,144 @@ class PostDetail extends GetView<PostDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    Post post = controller.post;
-
-    return SafeArea(
-      maintainBottomViewPadding: true,
-      child: Scaffold(
-        appBar: appBar(context),
-        body: GestureDetector(
-          onTap: () {
-            if (MediaQuery.of(context).viewInsets.bottom != 0) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            }
-          },
-          child: Container(
-            color: Colors.white,
-            height: Get.height,
-            width: Get.width,
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      profile(post),
-                      content(post),
-                      postImages(),
-                      controller.comments.isEmpty ? noComments() : comments(),
-                      const SizedBox(width: 30, height: 68),
-                    ],
+    return Obx(
+      () => controller.isLoad.value == false
+          ? SafeArea(
+              child: Scaffold(
+                appBar: appBar(context),
+                bottomSheet: commentTextField(context),
+              ),
+            )
+          : SafeArea(
+              maintainBottomViewPadding: true,
+              child: Scaffold(
+                appBar: appBar(context),
+                body: GestureDetector(
+                  onTap: () {
+                    if (MediaQuery.of(context).viewInsets.bottom != 0) {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                    }
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    height: Get.height,
+                    width: Get.width,
+                    child: Stack(
+                      children: [
+                        SingleChildScrollView(
+                          // controller: controller.postDetailScrollController,
+                          child: Column(
+                            children: [
+                              profile(controller.postInfo.value.post!),
+                              content(controller.postInfo.value.post!),
+                              postImages(),
+                              const Divider(
+                                color: Colors.black12,
+                                thickness: 1,
+                                height: 0,
+                              ),
+                              controller.comments.isEmpty
+                                  ? noComments()
+                                  : comments(),
+                              const SizedBox(width: 30, height: 68),
+                            ],
+                          ),
+                        ),
+                        commentTextField(context),
+                      ],
+                    ),
                   ),
                 ),
-                commentTextField(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 
   Widget profile(Post post) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            postTopic(post.category),
-            Padding(
-              padding: const EdgeInsets.only(right: normal),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  print("게시글 좋아요 기능");
-                  controller.togglePostLike(post.postId);
-                },
-                icon: Icon(
-                  Icons.thumb_up_alt_rounded,
-                  size: 20,
-                ),
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  primary: Colors.transparent,
-                  onPrimary: controller.loadingStatus.value ==
-                              LoadingStatus.complete &&
-                          controller.postDetail != null &&
-                          controller.postDetail!.isLiked
-                      ? Colors.orange
-                      : Colors.grey.shade700,
-                  splashFactory: NoSplash.splashFactory,
-                  textStyle: const TextStyle(fontWeight: FontWeight.w800),
-                ),
-                label: Text(
-                  controller.loadingStatus.value == LoadingStatus.complete &&
-                          controller.postDetail != null
-                      ? controller.postDetail!.likes.toString()
-                      : "-",
-                ),
-              ),
-            ),
-          ],
-        ),
-        Container(
-          decoration: bottomBorderBox,
-          margin: const EdgeInsets.only(left: big, right: big),
-          padding: const EdgeInsets.only(bottom: big),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                child: Padding(
-                  padding: EdgeInsets.only(right: normal),
-                  child: CircleAvatar(
-                    radius: parentAvatar,
-                    backgroundColor: Colors.grey,
+              postTopic(post.category),
+              Padding(
+                padding: EdgeInsets.only(right: normal),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    controller.togglePostLike(post.postId);
+                  },
+                  icon: Icon(
+                    Icons.thumb_up_alt_rounded,
+                    size: 20,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    primary: Colors.transparent,
+                    onPrimary: controller.isLikedPost.value
+                        ? Colors.orange
+                        : Colors.grey.shade700,
+                    splashFactory: NoSplash.splashFactory,
+                    textStyle: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  label: Text(
+                    controller.postInfo.value.postDetail!.likes.toString(),
                   ),
                 ),
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(post.writer.nickname, style: postTitleStyle),
-                    const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Text(
-                          "매너온도 ${post.writer.mannerScore}",
-                          style: postDetailStyle,
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(4.0),
-                          child: Icon(
-                            Icons.fiber_manual_record,
-                            size: 3,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        Text(
-                          TimeUtil.timeAgo(post.createdDateTime),
-                          style: postDetailStyle,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
-        ),
-      ],
+          Container(
+            decoration: bottomBorderBox,
+            margin: const EdgeInsets.only(left: big, right: big),
+            padding: const EdgeInsets.only(bottom: big),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: normal),
+                    child: CircleAvatar(
+                      radius: parentAvatar,
+                      backgroundColor: Colors.grey,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(post.writer.nickname, style: postTitleStyle),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Text(
+                            "매너온도 ${post.writer.mannerScore}",
+                            style: postDetailStyle,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: Icon(
+                              Icons.fiber_manual_record,
+                              size: 3,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Text(
+                            TimeUtil.timeAgo(post.createdDateTime),
+                            style: postDetailStyle,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -158,7 +169,6 @@ class PostDetail extends GetView<PostDetailController> {
     return Container(
       padding: const EdgeInsets.all(big),
       width: double.infinity,
-      // decoration: bottomBorderBox,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -168,7 +178,6 @@ class PostDetail extends GetView<PostDetailController> {
           ),
         ],
       ),
-      // child: ,
     );
   }
 
@@ -177,27 +186,40 @@ class PostDetail extends GetView<PostDetailController> {
     double imageMargin = Get.width < 400 ? 10.0 : 12.0;
 
     return Obx(
-      () => controller.loadingStatus.value == LoadingStatus.complete &&
-              controller.postDetail!.images.isNotEmpty
-          ? Container(
-              decoration: bottomBorderBox,
-              height: imageSize + imageMargin * 2,
-              padding: EdgeInsets.symmetric(horizontal: normal),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: controller.postDetail!.images.length,
-                itemBuilder: (_, i) {
-                  return PostImage(
-                    index: i,
-                    imageURLs: controller.postDetail!.images,
-                    deleteButton: false,
-                    size: imageSize,
-                    margin: imageMargin,
-                  );
-                },
-              ),
-            )
-          : SizedBox.shrink(),
+      () {
+        if (controller.postInfo.value.isNotEmpty() &&
+            controller.postInfo.value.postDetail!.images.isNotEmpty) {
+          List<String> hostImageUrls = [];
+          for (int i = 0;
+              i < controller.postInfo.value.postDetail!.images.length;
+              i++) {
+            hostImageUrls.add(imagePathWithHost(
+                controller.postInfo.value.postDetail!.images[i]));
+            print(imagePathWithHost(
+                controller.postInfo.value.postDetail!.images[i]));
+          }
+
+          return Container(
+            height: imageSize + imageMargin * 2,
+            padding: EdgeInsets.symmetric(horizontal: normal),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.postInfo.value.postDetail!.images.length,
+              itemBuilder: (_, i) {
+                return PostImage(
+                  index: i,
+                  imageURLs: hostImageUrls,
+                  deleteButton: false,
+                  size: imageSize,
+                  margin: imageMargin,
+                );
+              },
+            ),
+          );
+        } else {
+          return SizedBox.shrink();
+        }
+      },
     );
   }
 
@@ -271,9 +293,20 @@ class PostDetail extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        comment.writer.nickname,
-                        style: postTitleStyle,
+                      child: Row(
+                        children: [
+                          Text(
+                            comment.writer.nickname,
+                            style: postTitleStyle,
+                          ),
+                          const SizedBox(width: 5),
+                          controller.uiType == PostDetailUI.writer
+                              ? const Text(
+                                  " 작성자",
+                                  style: writerBadge,
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
                     ),
                     Padding(
@@ -322,13 +355,17 @@ class PostDetail extends GetView<PostDetailController> {
             padding: const EdgeInsets.only(left: parentAvatar * 2 + normal),
             child: Row(
               children: [
-                TextButton(
-                  onPressed: () {
-                    print("댓글 좋아요 기능");
-                    controller.toggleCommentLike(comment);
-                  },
-                  child: Text("좋아요 ${comment.likes.toString()}"),
-                  style: comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
+                Obx(
+                  () => TextButton(
+                    onPressed: () {
+                      print("댓글 좋아요 기능");
+                      controller.toggleCommentLike(comment);
+                    },
+                    child: Text(
+                        "좋아요 ${controller.comments[idx].likes.toString()}"),
+                    style:
+                        comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
+                  ),
                 ),
                 const SizedBox(width: 10),
                 TextButton(
@@ -380,9 +417,20 @@ class PostDetail extends GetView<PostDetailController> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(bottom: 4.0),
-                      child: Text(
-                        comment.writer.nickname,
-                        style: postTitleStyle,
+                      child: Row(
+                        children: [
+                          Text(
+                            comment.writer.nickname,
+                            style: postTitleStyle,
+                          ),
+                          const SizedBox(width: 5),
+                          controller.uiType == PostDetailUI.writer
+                              ? const Text(
+                                  " 작성자",
+                                  style: writerBadge,
+                                )
+                              : const SizedBox.shrink(),
+                        ],
                       ),
                     ),
                     Padding(
@@ -640,18 +688,18 @@ class PostDetail extends GetView<PostDetailController> {
         icon: Icon(Icons.arrow_back_rounded, color: Colors.black),
       ),
       actions: [
-        IconButton(
-          onPressed: () {
-            print("click notifications_rounded");
-          },
-          icon: Icon(Icons.notifications_rounded, color: Colors.black),
-        ),
-        IconButton(
-          onPressed: () {
-            print("click ios_share");
-          },
-          icon: Icon(Icons.ios_share, color: Colors.black),
-        ),
+        // IconButton(
+        //   onPressed: () {
+        //     print("click notifications_rounded");
+        //   },
+        //   icon: Icon(Icons.notifications_rounded, color: Colors.black),
+        // ),
+        // IconButton(
+        //   onPressed: () {
+        //     print("click ios_share");
+        //   },
+        //   icon: Icon(Icons.ios_share, color: Colors.black),
+        // ),
         IconButton(
           onPressed: () {
             print('PostDetail.appBar');
@@ -697,8 +745,8 @@ class PostDetail extends GetView<PostDetailController> {
               print('PostDetail.writerPostActionSheet - 게시글 수정');
               Get.bottomSheet(
                 PostRegister(
-                  post: controller.post,
-                  postDetail: controller.postDetail,
+                  post: controller.postInfo.value.post,
+                  postDetail: controller.postInfo.value.postDetail,
                 ),
                 isScrollControlled: true,
                 ignoreSafeArea: false,
@@ -778,7 +826,7 @@ class PostDetail extends GetView<PostDetailController> {
     );
   }
 
-  Widget commentTextField() {
+  Widget commentTextField(BuildContext context) {
     const double iconSize = 27.0;
 
     return Obx(
@@ -839,8 +887,10 @@ class PostDetail extends GetView<PostDetailController> {
                       prefix: const SizedBox(width: 20),
                       suffixIcon: controller.onSendComment.value
                           ? IconButton(
-                              onPressed: () {
-                                controller.sendComment();
+                              onPressed: () async {
+                                await controller.sendComment(
+                                  controller.postDetailScrollController,
+                                );
                               },
                               color: Colors.orange,
                               icon: Icon(Icons.send_rounded),
@@ -920,9 +970,9 @@ class PostDetail extends GetView<PostDetailController> {
             style: cancelBtn,
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (isPost) {
-                controller.deletePost();
+                await controller.deletePost();
               } else {
                 if (commentId == null) {
                   Logger().e("댓글 삭제를 위해서는 댓글 ID를 파라미터에 넣어줘야함");

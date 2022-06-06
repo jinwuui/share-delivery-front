@@ -19,6 +19,8 @@ class DioUtil {
           final accessToken = SharedPrefsUtil.instance.getString("accessToken");
 
           // 헤더 지정
+          // NOTE: 로컬로 돌릴때 열기
+          // options.baseUrl = "http://192.168.219.100:8080";
           options.headers["Authorization"] = "Bearer $accessToken";
           options.headers["Content-Type"] = "application/json";
 
