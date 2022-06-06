@@ -141,13 +141,18 @@ class Alarm extends GetView<AlarmController> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: ListTile(
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                alarm.title,
-                style: TextStyle(fontSize: 18),
+              Expanded(
+                flex: 4,
+                child: Text(
+                  alarm.title,
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
               SizedBox(width: 10),
-              Text(TimeUtil.timeAgo(alarm.createdAt.toLocal())),
+              Expanded(
+                  child: Text(TimeUtil.timeAgo(alarm.createdAt.toLocal()))),
             ],
           ),
           subtitle: Text(alarm.content),
