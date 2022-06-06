@@ -19,8 +19,7 @@ class DeliveryRoomChatController extends GetxController {
   late final int deliveryRoomId;
   @override
   void onInit() async {
-    // deliveryRoomId = Get.arguments['deliveryRoomId'];
-    deliveryRoomId = 1; //TODO: deliveryRoom ID 교체
+    deliveryRoomId = Get.arguments['deliveryRoomId'];
     await socketInit();
     super.onInit();
   }

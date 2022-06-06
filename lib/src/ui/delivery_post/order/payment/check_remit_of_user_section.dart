@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:share_delivery/src/ui/delivery_post/delivery_order_detail/widget/molecules/check_remit_of_user.dart';
+import 'package:get/get.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
+import 'package:share_delivery/src/controller/login/authentication_controller.dart';
+import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:share_delivery/src/ui/delivery_post/order/payment/check_remit_of_user.dart';
 import 'package:share_delivery/src/ui/theme/text_theme.dart';
 import 'package:share_delivery/src/ui/widgets/toss_withdraw_button.dart';
 
-class CheckRemitOfUserSection extends StatelessWidget {
+class CheckRemitOfUserSection extends GetView<DeliveryPaymentDetailController> {
   const CheckRemitOfUserSection({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +18,11 @@ class CheckRemitOfUserSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "입금 받아야 할 금액",
+            (AuthenticationController.to.state.props.first as User).accountId ==
+                    DeliveryPaymentDetailController
+                        .to.deliveryPaymentDetail.leader.accountId
+                ? "입금 받아야 할 금액"
+                : "주도자 계좌 정보",
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w800,
@@ -36,10 +44,27 @@ class CheckRemitOfUserSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // TODO: if 주도자 아닌 경우, 주도자 계좌번호 은행 송금 링크 뜨도록
                   _buildLeaderAccountInfo(),
-                  CheckRemitOfUser(),
-                  CheckRemitOfUser(),
+                  (AuthenticationController.to.state.props.first as User)
+                              .accountId ==
+                          DeliveryPaymentDetailController
+                              .to.deliveryPaymentDetail.leader.accountId
+                      ? Obx(
+                          () => Column(
+                              children: DeliveryPaymentDetailController
+                                  .to.remittances
+                                  .map((e) {
+                            if (e.accountId ==
+                                DeliveryPaymentDetailController.to
+                                    .deliveryPaymentDetail.leader.accountId) {
+                              return Container();
+                            }
+                            return CheckRemitOfUser(
+                              remittance: e,
+                            );
+                          }).toList()),
+                        )
+                      : Container(),
                 ],
               ),
             ),
@@ -50,6 +75,12 @@ class CheckRemitOfUserSection extends StatelessWidget {
   }
 
   Widget _buildLeaderAccountInfo() {
+    String bank = controller.deliveryPaymentDetail.leader.bankAccount.bank;
+    String accountHolder =
+        controller.deliveryPaymentDetail.leader.bankAccount.accountHolder;
+    String accountNumber =
+        controller.deliveryPaymentDetail.leader.bankAccount.accountNumber;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 8.0),
       child: Row(
@@ -74,23 +105,20 @@ class CheckRemitOfUserSection extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: Column(
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          //TODO: 계좌정보 fetch
-
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("농협 은행 박진우", style: menuTextStyle),
+                            Text("$bank $accountHolder", style: menuTextStyle),
                             SizedBox(height: 5),
                             Text(
-                              "35212545454",
+                              accountNumber,
                               style: menuTextStyle,
                             ),
                           ],
                         ),
                       ),
                       TossWithdrawButton(
-                        bank: "농협",
-                        account: "3521264915483",
-                        amount: 10000,
+                        bank: bank,
+                        account: accountNumber,
                       ),
                     ],
                   ),

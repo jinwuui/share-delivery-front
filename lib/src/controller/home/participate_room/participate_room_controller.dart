@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/controller/delivery_history/delivery_history_controller.dart';
 import 'package:share_delivery/src/controller/delivery_room_register/writing_menu_controller.dart';
 import 'package:share_delivery/src/controller/root_controller.dart';
 import 'package:share_delivery/src/data/model/delivery_room/delivery_room/delivery_room.dart';
 import 'package:share_delivery/src/data/model/delivery_room/menu/menu.dart';
 import 'package:share_delivery/src/data/repository/home/participate_room_repository.dart';
 import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
 import 'package:share_delivery/src/utils/get_snackbar.dart';
 
 enum ParticipateRoomState {
@@ -81,8 +83,14 @@ class ParticipateRoomController extends GetxController {
         await repository.participateDeliveryRoom(deliveryRoom.roomId, list);
 
     if (result == ParticipateRoomState.accepted) {
-      // NOTE : 모집글 참여 신청 완료 시, 페이지 이동
+      // 배달 관리에 등록
+      DeliveryManageController.to
+          .addDeliveryRoom(deliveryRoom.roomId, deliveryRoom);
 
+      // history refresh
+      await DeliveryHistoryController.to.onRefresh();
+
+      // NOTE : 모집글 참여 신청 완료 시, 페이지 이동
       // NOTE : 1안 - 홈화면까지 pop -> DELIVERY_HISTORY_DETAIL 로 이동
       Get.until((route) => Get.currentRoute == Routes.INITIAL);
       Get.find<RootController>().changeRootPageIndex(1);

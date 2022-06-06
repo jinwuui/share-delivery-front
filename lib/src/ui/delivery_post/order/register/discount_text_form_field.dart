@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField(
+class DiscountTextFormField extends StatelessWidget {
+  const DiscountTextFormField(
       {Key? key,
       required this.label,
       required this.onSaved,

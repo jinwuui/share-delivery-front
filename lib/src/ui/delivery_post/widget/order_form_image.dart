@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/order_form_register_controller.dart';
+import 'package:share_delivery/src/routes/route.dart';
+import 'package:share_delivery/src/utils/image_util.dart';
 
 class OrderFormImage extends StatelessWidget {
-  const OrderFormImage({Key? key, required this.imageURL, required this.deleteButton})
+  const OrderFormImage(
+      {Key? key, required this.imageURL, required this.deleteButton})
       : super(key: key);
 
   final String imageURL;
@@ -16,7 +19,7 @@ class OrderFormImage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.toNamed(
-          '/exapndedImagePage',
+          Routes.EXPANDED_IMAGE_PAGE,
           arguments: {"imagePath": imageURL, "title": "주문서 확인"},
         );
       },
@@ -31,7 +34,7 @@ class OrderFormImage extends StatelessWidget {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 image: imageURL.substring(0, 4) == "http"
-                    ? NetworkImage(imageURL)
+                    ? customNetworkImage(imageURL)
                     : FileImage(File(imageURL)) as ImageProvider,
               ),
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -43,8 +46,8 @@ class OrderFormImage extends StatelessWidget {
                   right: -10,
                   top: -10,
                   child: IconButton(
-                    onPressed: () {
-                      Get.find<OrderFormRegisterController>()
+                    onPressed: () async {
+                      await OrderFormRegisterController.to
                           .deleteImage(imageURL);
                     },
                     icon: Icon(

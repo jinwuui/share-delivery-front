@@ -32,11 +32,5 @@ class DeliveryRoomDetailBinding extends Bindings {
       ),
     ));
     Get.put(DeliveryOrderController());
-
-    Get.put(OrderFormRegisterController(
-      repository: DeliveryOrderDetailRepository(
-        apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host),
-      ),
-    ));
   }
 }

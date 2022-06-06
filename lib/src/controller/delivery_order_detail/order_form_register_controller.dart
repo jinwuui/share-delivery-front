@@ -1,18 +1,30 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_recruit_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
+import 'package:share_delivery/src/data/provider/delivery_order_detail/delivery_order_detail_api_client.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_req_dto.dart';
 import 'package:share_delivery/src/data/repository/delivery_order_detail/delivery_order_detail_repository.dart';
+import 'package:share_delivery/src/utils/dio_util.dart';
 
 class OrderFormRegisterController extends GetxController {
-  final DeliveryOrderDetailRepository repository;
+  late final DeliveryOrderDetailRepository repository;
 
   static OrderFormRegisterController get to => Get.find();
-  OrderFormRegisterController({required this.repository});
+  OrderFormRegisterController() {
+    Dio dio = DioUtil.getDio();
+    final String host = dotenv.get('SERVER_HOST');
+
+    repository = DeliveryOrderDetailRepository(
+      apiClient: DeliveryOrderDetailApiClient(dio, baseUrl: host),
+    );
+  }
 
   final orderForms = <XFile>[].obs;
   final orders = [].obs;
@@ -32,6 +44,7 @@ class OrderFormRegisterController extends GetxController {
   Future<void> registerDeliveryRoomOrderDetail() async {
     DeliveryOrderDetailReqDTO deliveryOrderDetailReqDTO =
         DeliveryOrderDetailReqDTO(
+      deliveryFee: DeliveryRoomInfoDetailController.to.deliveryRoom.deliveryTip,
       discounts: discountModels,
     );
 
@@ -44,10 +57,33 @@ class OrderFormRegisterController extends GetxController {
     int deliveryRoomId =
         DeliveryRoomInfoDetailController.to.deliveryRoom.roomId;
 
-    await repository.registerDeliveryRoomOrderDetail(
-        deliveryOrderDetailDTO: deliveryOrderDetailReqDTO,
-        deliveryRoomId: deliveryRoomId,
-        orderFormFileList: orderFormFileList);
+    try {
+      String res = await repository.registerDeliveryRoomOrderDetail(
+          deliveryOrderDetailDTO: deliveryOrderDetailReqDTO,
+          deliveryRoomId: deliveryRoomId,
+          orderFormFileList: orderFormFileList);
+
+      if (res != "WAITING_DELIVERY") throw Exception();
+
+      Get.snackbar(
+        "주문 상세 정보 등록 완료",
+        "배달 대기 화면으로 이동",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+    } catch (e) {
+      Get.snackbar(
+        "주문 상세 정보 등록 실패",
+        "재시도 해주세요",
+        backgroundColor: Colors.white,
+        duration: Duration(
+          seconds: 1,
+        ),
+      );
+      print(e);
+    }
   }
 
   Future<void> pickImage() async {
