@@ -6,7 +6,7 @@ import 'package:share_delivery/src/controller/profile/profile_controller.dart';
 import 'package:share_delivery/src/data/repository/profile/friend_res_dto.dart';
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
-import 'package:share_delivery/src/utils/image_path.dart';
+import 'package:share_delivery/src/utils/image_util.dart';
 
 class FriendPage extends GetView<FriendController> {
   const FriendPage({Key? key}) : super(key: key);

@@ -5,7 +5,7 @@ import 'package:share_delivery/src/controller/profile/other_user/other_user_prof
 import 'package:share_delivery/src/routes/route.dart';
 import 'package:share_delivery/src/ui/profile/modify_profile/modify_profile.dart';
 import 'package:share_delivery/src/ui/widgets/bottom_sheet_item.dart';
-import 'package:share_delivery/src/utils/image_path.dart';
+import 'package:share_delivery/src/utils/image_util.dart';
 
 class OtherUserProfile extends GetView<OtherUserProfileController> {
   const OtherUserProfile({Key? key}) : super(key: key);
