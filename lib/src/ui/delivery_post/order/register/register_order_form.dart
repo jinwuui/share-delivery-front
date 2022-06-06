@@ -54,9 +54,9 @@ class RegisterOrderForm extends StatelessWidget {
           await DeliveryOrderController.to
               .changeStatus(DeliveryRoomState.WAITING_DELIVERY);
 
-          await DeliveryManageController.to.changeStatus(
-            describeEnum(DeliveryRoomState.WAITING_DELIVERY),
-          );
+          // await DeliveryManageController.to.changeStatus(
+          //   describeEnum(DeliveryRoomState.WAITING_DELIVERY),
+          // );
         },
         child: Text("배달 주문 정보 등록 완료"),
       ),

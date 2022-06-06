@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:share_delivery/src/controller/community/community_controller.dart';
@@ -52,9 +52,6 @@ class PostDetailController extends GetxController {
   int currentUserId = -1;
   RxBool onSendComment = false.obs;
   RxBool isLikedPost = false.obs;
-
-  ScrollController postDetailScrollController = ScrollController();
-  ScrollController writingCommentScrollController = ScrollController();
 
   // late final Post post;
   // PostDetail? postDetail;
@@ -157,7 +154,7 @@ class PostDetailController extends GetxController {
   }
 
   // 댓글 작성
-  Future<void> sendComment(ScrollController scroller, [int? parentId]) async {
+  Future<void> sendComment([int? parentId]) async {
     if (commentTextField.text.trim().isEmpty) {
       GetSnackbar.on("알림", "공백은 댓글로 입력할 수 없습니다.");
       return;
@@ -175,12 +172,6 @@ class PostDetailController extends GetxController {
 
     await findComment();
     await 0.3.delay();
-
-    scroller.animateTo(
-      scroller.position.maxScrollExtent,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
   }
 
   // 댓글 수정

@@ -13,7 +13,7 @@ class DeliveryRoomInfoDetailController extends GetxController {
   DeliveryRoomInfoDetailController({required this.repository});
 
   final roomId = 0.obs;
-  late final DeliveryRoom deliveryRoom;
+  late DeliveryRoom deliveryRoom;
   final isLoad = false.obs;
 
   @override
@@ -36,5 +36,17 @@ class DeliveryRoomInfoDetailController extends GetxController {
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> changeStatus() async {
+    deliveryRoom = await repository.getDeliveryRoomInfoDetail(roomId.value);
+    Logger().w(deliveryRoom);
+
+    final status = deliveryRoom.status;
+
+    DeliveryRoomState roomState = DeliveryRoomState.values
+        .firstWhere((e) => e.toString() == 'DeliveryRoomState.' + status);
+
+    await DeliveryOrderController.to.changeStatus(roomState);
   }
 }

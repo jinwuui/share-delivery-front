@@ -39,13 +39,10 @@ class DeliveryOrder extends StatelessWidget {
             } else if (controller.deliveryOrderStatus.value ==
                     DeliveryRoomState.WAITING_DELIVERY ||
                 controller.deliveryOrderStatus.value ==
-                    DeliveryRoomState.WAITING_REMITTANCE) {
+                    DeliveryRoomState.WAITING_REMITTANCE ||
+                controller.deliveryOrderStatus.value ==
+                    DeliveryRoomState.COMPLETED) {
               return DeliveryPaymentDetail();
-            } else if (controller.deliveryOrderStatus.value ==
-                DeliveryRoomState.COMPLETED) {
-              return Center(
-                child: Text("평가 신고 페이지"),
-              );
             } else if (controller.deliveryOrderStatus.value ==
                 DeliveryRoomState.DELETED) {
               return Center(

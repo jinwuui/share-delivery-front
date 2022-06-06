@@ -62,7 +62,7 @@ Future<void> initialize() async {
   await Hive.initFlutter();
 
   // 배달 관리 controller
-  await Get.putAsync(() => DeliveryManageController().init(), permanent: true);
+  // await Get.putAsync(() => DeliveryManageController().init(), permanent: true);
 
   Dio dio = DioUtil.loginDio();
   String host = dotenv.get('SERVER_HOST');

@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_order_controller.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
+import 'package:share_delivery/src/controller/delivery_order_detail/delivery_room_info_detail_controller.dart';
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
 import 'package:share_delivery/src/services/delivery_room_manage_service.dart';
@@ -62,6 +63,7 @@ class DeliveryPaymentDetail extends GetView<DeliveryPaymentDetailController> {
               ),
               onPressed: () async {
                 await DeliveryPaymentDetailController.to.completeDelivery();
+                await DeliveryRoomInfoDetailController.to.getDeliveryRoomInfo();
               },
               child: Text("배달 완료"),
             ),

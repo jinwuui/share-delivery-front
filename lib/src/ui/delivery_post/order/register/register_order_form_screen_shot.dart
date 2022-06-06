@@ -40,6 +40,7 @@ class RegisterOrderFormScreenShotSection extends StatelessWidget {
                         .map(
                           (image) => OrderFormImage(
                             imageURL: image.path,
+                            isNetworkImage: false,
                             deleteButton: true,
                           ),
                         )
