@@ -289,10 +289,12 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: state != "DELETED" ? () {
-                  Get.toNamed(Routes.OTHER_USER_PROFILE,
-                      arguments: {"accountId": comment.writer.accountId});
-                } : null,
+                onTap: state != "DELETED"
+                    ? () {
+                        Get.toNamed(Routes.OTHER_USER_PROFILE,
+                            arguments: {"accountId": comment.writer.accountId});
+                      }
+                    : null,
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
@@ -428,10 +430,12 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
-                onTap: state != "DELETED" ? () {
-                  Get.toNamed(Routes.OTHER_USER_PROFILE,
-                      arguments: {"accountId": comment.writer.accountId});
-                }: null,
+                onTap: state != "DELETED"
+                    ? () {
+                        Get.toNamed(Routes.OTHER_USER_PROFILE,
+                            arguments: {"accountId": comment.writer.accountId});
+                      }
+                    : null,
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
