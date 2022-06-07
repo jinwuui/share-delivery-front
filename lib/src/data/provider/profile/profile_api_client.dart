@@ -32,7 +32,7 @@ abstract class ProfileApiClient {
 
   // 친구 신청 처리
   @PATCH('/api/friends/{accountId}')
-  Future acceptFriend(@Path() int accountId, @Body() int friendType);
+  Future<String> acceptFriend(@Path() int accountId, @Body() int friendType);
 
   // 계좌 조회
   @GET('/api/accounts/bank-account')

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:share_delivery/src/utils/shared_preferences_util.dart';
+import 'package:socket_io_client/socket_io_client.dart';
+
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/chat/chat.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
@@ -25,8 +28,6 @@ class DeliveryRoomChatController extends GetxController {
 
   @override
   void onClose() {
-    // socket disconnect
-
     Logger().w("disconnect socket");
     socket.emit('disconnect', deliveryRoomId);
     socket.disconnect();
@@ -35,11 +36,9 @@ class DeliveryRoomChatController extends GetxController {
 
   Future<void> socketInit() async {
     try {
-      String hostName = dotenv.get('SERVER_HOST');
-      // TODO: jwt token
-      // String jwtToken = SharedPrefsUtil.instance.getString('accessToken');
-      String jwtToken =
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NvdW50SWQiOjEsInBob25lTnVtYmVyIjoiMDEwMDAwMDAwMDEiLCJyb2xlIjoiUk9MRV9VU0VSIiwiaXNzIjoia2l0Y2Quc2hhcmUtZGVsaXZlcnkiLCJleHAiOjE2NTY1MDI0Mjd9.gzW_MYwJfzErl0kpj0G5zao5ZPdGOUYCoStt91jF_q4";
+      String hostName = dotenv.get('CHAT_SERVER_HOST');
+      // String hostName = 'http://192.168.219.109:8000';
+      String jwtToken = SharedPrefsUtil.instance.getString('accessToken')!;
 
       socket = io(
         hostName,
@@ -59,7 +58,7 @@ class DeliveryRoomChatController extends GetxController {
         enterRoom(deliveryRoomId);
       });
 
-      socket.on("connect_Error", (data) => print(data));
+      socket.on("connect_error", (data) => print(data));
 
       socket.on('message', (data) {
         final message = ChatModel.fromJson(data);
@@ -91,6 +90,7 @@ class DeliveryRoomChatController extends GetxController {
       if (!data['isSuccess']) Logger().w("data is null");
 
       for (var chat in data['messageList']) {
+        print(chat);
         messages.add(ChatModel.fromJson(chat));
       }
     });

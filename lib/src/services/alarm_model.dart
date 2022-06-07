@@ -16,15 +16,14 @@ class AlarmModel extends HiveObject {
   @HiveField(3)
   final DateTime createdAt;
 
+  @HiveField(4)
+  int? accountId;
+
   AlarmModel({
     required this.type,
     required this.title,
     required this.content,
     required this.createdAt,
+    this.accountId,
   });
-
-  @override
-  String toString() {
-    return 'AlarmModel(type: $type, title: $title, content: $content, createdAt: $createdAt)';
-  }
 }

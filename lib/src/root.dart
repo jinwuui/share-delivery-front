@@ -45,11 +45,9 @@ class Root extends GetView<RootController> {
                   activeIcon: Icon(Icons.home),
                 ),
                 BottomNavigationBarItem(
-                  icon: countProgressShareDeliveryCountBadge(
-                      Icon(Icons.delivery_dining_outlined)),
+                  icon: Icon(Icons.delivery_dining_outlined),
                   label: "내 배달",
-                  activeIcon: countProgressShareDeliveryCountBadge(
-                      Icon(Icons.delivery_dining)),
+                  activeIcon: Icon(Icons.delivery_dining),
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.feed_outlined),
@@ -76,16 +74,16 @@ class Root extends GetView<RootController> {
     );
   }
 
-  Widget countProgressShareDeliveryCountBadge(Icon icon) {
-    return Obx(
-      () => Badge(
-        showBadge: DeliveryManageController.to.roomId.value == 0 ? false : true,
-        padding: const EdgeInsets.all(4.0),
-        badgeContent: Text(
-          "1",
-        ),
-        child: Icon(Icons.delivery_dining_outlined),
-      ),
-    );
-  }
+  // Widget countProgressShareDeliveryCountBadge(Icon icon) {
+  //   return Obx(
+  //     () => Badge(
+  //       showBadge: DeliveryManageController.to.roomId.value == 0 ? false : true,
+  //       padding: const EdgeInsets.all(4.0),
+  //       badgeContent: Text(
+  //         "1",
+  //       ),
+  //       child: Icon(Icons.delivery_dining_outlined),
+  //     ),
+  //   );
+  // }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_delivery/src/controller/delivery_order_detail/delivery_payment_detail_controller.dart';
+import 'package:share_delivery/src/ui/delivery_post/widget/order_form_image.dart';
 
 class PaymentOrderFormScreenShotSection
     extends GetView<DeliveryPaymentDetailController> {
@@ -33,16 +34,16 @@ class PaymentOrderFormScreenShotSection
             ),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(children: []
-                  // controller.deliveryPaymentDetail.orderFormUrlList
-                  //     .map(
-                  //       (url) => OrderFormImage(
-                  //         imageURL: url,
-                  //         deleteButton: false,
-                  //       ),
-                  //     )
-                  //     .toList(),
-                  ),
+              child: Row(
+                children: controller.deliveryPaymentDetail.orderFormUrlList
+                    .map(
+                      (url) => OrderFormImage(
+                          imageURL: url,
+                          deleteButton: false,
+                          isNetworkImage: true),
+                    )
+                    .toList(),
+              ),
             ),
           )
         ],

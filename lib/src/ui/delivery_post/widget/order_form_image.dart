@@ -8,11 +8,15 @@ import 'package:share_delivery/src/utils/image_util.dart';
 
 class OrderFormImage extends StatelessWidget {
   const OrderFormImage(
-      {Key? key, required this.imageURL, required this.deleteButton})
+      {Key? key,
+      required this.imageURL,
+      required this.deleteButton,
+      required this.isNetworkImage})
       : super(key: key);
 
   final String imageURL;
   final bool deleteButton;
+  final bool isNetworkImage;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,10 @@ class OrderFormImage extends StatelessWidget {
       onTap: () {
         Get.toNamed(
           Routes.EXPANDED_IMAGE_PAGE,
-          arguments: {"imagePath": imageURL, "title": "주문서 확인"},
+          arguments: {
+            "imagePath": imagePathWithHost(imageURL),
+            "title": "주문서 확인"
+          },
         );
       },
       child: Stack(
@@ -33,7 +40,7 @@ class OrderFormImage extends StatelessWidget {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: imageURL.substring(0, 4) == "http"
+                image: isNetworkImage == true
                     ? customNetworkImage(imageURL)
                     : FileImage(File(imageURL)) as ImageProvider,
               ),

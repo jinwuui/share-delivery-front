@@ -105,9 +105,6 @@ class Home extends GetView<HomeController> {
       heroTag: "deliveryRoomRegisterFAB",
       backgroundColor: Colors.orange,
       onPressed: () {
-        // Get.to(FastMatchingChat());
-        // List<int> list = [1, 2, 3];
-        // Get.toNamed(Routes.RATING_USER, arguments: list);
         Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
       },
       child: const Icon(Icons.add_rounded, size: 40),

@@ -11,6 +11,7 @@ import 'package:share_delivery/src/bindings/login/phone_number_authentication_bi
 import 'package:share_delivery/src/bindings/participate_room/participate_room_binding.dart';
 import 'package:share_delivery/src/bindings/profile/account_bank_binding.dart';
 import 'package:share_delivery/src/bindings/profile/account_binding.dart';
+import 'package:share_delivery/src/bindings/profile/alarm_binding.dart';
 import 'package:share_delivery/src/bindings/profile/app_setting_binding.dart';
 import 'package:share_delivery/src/bindings/profile/friend_binding.dart';
 import 'package:share_delivery/src/bindings/profile/other_user_profile_binding.dart';
@@ -235,7 +236,7 @@ class AppPages {
     GetPage(
       name: Routes.ALARM,
       page: () => Alarm(),
-      binding: AccountBinding(),
+      binding: AlarmBinding(),
     ),
     GetPage(
       name: Routes.EXPANDED_POST_IMAGE,

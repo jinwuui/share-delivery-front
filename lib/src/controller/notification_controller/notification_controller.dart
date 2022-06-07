@@ -46,7 +46,7 @@ Future<void> showNotificationView(RemoteMessage message) async {
     flutterLocalNotificationsPlugin.show(
       notification.hashCode,
       notification.title,
-      notification.body ?? notification.title,
+      notification.body == "null" ? "" : notification.body,
       NotificationDetails(
         android: AndroidNotificationDetails(
           channel.id,
@@ -174,12 +174,13 @@ class NotificationController extends GetxController {
 
     addFcmInAlarmList(message);
 
-    if (Get.isRegistered<DeliveryOrderController>()) {}
-    // // A B C 데이터 api 호출
     switch (eventType) {
       case 'ENTRY_ORDERS':
       case 'CLOSE_RECRUIT':
       case 'WAITING_DELIVERY':
+      case 'COMPLETED_ORDER':
+      case 'COMPLETE_DELIVERY':
+      case 'EXIT_ROOM':
         // delivery history page에 없는 경우에는 페이지 이동
         if (!Get.isRegistered<DeliveryOrderController>()) {
           Get.toNamed(
@@ -188,7 +189,7 @@ class NotificationController extends GetxController {
           );
           return;
         }
-
+        1.delay();
         await DeliveryRoomInfoDetailController.to.getDeliveryRoomInfo();
         DeliveryRecruitController.to.getOrderList(
             deliveryRoomId:
@@ -196,7 +197,16 @@ class NotificationController extends GetxController {
 
         break;
       case 'ORDER_REJECTED':
+      case 'DELETE_DELIVERY':
         Get.offAllNamed(Routes.INITIAL);
+        break;
+      case 'COMPLETE_DELIVERY_ROOM':
+        if (Get.isRegistered<DeliveryOrderController>()) {
+          await DeliveryRoomInfoDetailController.to.getDeliveryRoomInfo();
+          DeliveryRecruitController.to.getOrderList(
+              deliveryRoomId:
+                  DeliveryRoomInfoDetailController.to.deliveryRoom.roomId);
+        }
         break;
       default:
         break;

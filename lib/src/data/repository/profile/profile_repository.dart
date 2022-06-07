@@ -56,7 +56,7 @@ class ProfileRepository {
     return await apiClient.addFriend(accountId);
   }
 
-  Future acceptFriend(int accountId, int friendType) async {
+  Future<String> acceptFriend(int accountId, int friendType) async {
     return await apiClient.acceptFriend(accountId, friendType);
   }
 }
