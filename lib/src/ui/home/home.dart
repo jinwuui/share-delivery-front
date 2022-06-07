@@ -72,7 +72,11 @@ class Home extends GetView<HomeController> {
             onPressed: () => Get.toNamed(Routes.PICK_USER_LOCATION),
             child: const Text(
               "위치 설정",
-              style: TextStyle(fontSize: 15, color: Colors.black),
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
           Container(
@@ -84,7 +88,11 @@ class Home extends GetView<HomeController> {
             onPressed: () => Get.toNamed(Routes.FAST_MATCHING),
             child: const Text(
               "빠른 매칭",
-              style: TextStyle(fontSize: 15, color: Colors.black),
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],
@@ -97,8 +105,10 @@ class Home extends GetView<HomeController> {
       heroTag: "deliveryRoomRegisterFAB",
       backgroundColor: Colors.orange,
       onPressed: () {
-        Get.toNamed(Routes.RATING_USER);
-        // Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
+        // Get.to(FastMatchingChat());
+        // List<int> list = [1, 2, 3];
+        // Get.toNamed(Routes.RATING_USER, arguments: list);
+        Get.toNamed(Routes.DELIVERY_ROOM_REGISTER);
       },
       child: const Icon(Icons.add_rounded, size: 40),
     );

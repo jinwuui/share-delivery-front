@@ -48,7 +48,6 @@ class PostDetail extends GetView<PostDetailController> {
                     child: Stack(
                       children: [
                         SingleChildScrollView(
-                          // controller: controller.postDetailScrollController,
                           child: Column(
                             children: [
                               profile(controller.postInfo.value.post!),
@@ -123,7 +122,10 @@ class PostDetail extends GetView<PostDetailController> {
                     padding: EdgeInsets.only(right: normal),
                     child: CircleAvatar(
                       radius: parentAvatar,
-                      backgroundColor: Colors.grey,
+                      backgroundImage: post.writer.profileImage == ''
+                          ? randomProfileImage()
+                          : customNetworkImage(post.writer.profileImage),
+                      backgroundColor: Colors.grey.shade300,
                     ),
                   ),
                 ),
@@ -188,15 +190,15 @@ class PostDetail extends GetView<PostDetailController> {
       () {
         if (controller.postInfo.value.isNotEmpty() &&
             controller.postInfo.value.postDetail!.images.isNotEmpty) {
-          List<String> hostImageUrls = [];
-          for (int i = 0;
-              i < controller.postInfo.value.postDetail!.images.length;
-              i++) {
-            hostImageUrls.add(imagePathWithHost(
-                controller.postInfo.value.postDetail!.images[i]));
-            print(imagePathWithHost(
-                controller.postInfo.value.postDetail!.images[i]));
-          }
+          // List<String> hostImageUrls = [];
+          // for (int i = 0;
+          //     i < controller.postInfo.value.postDetail!.images.length;
+          //     i++) {
+          //   hostImageUrls.add(imagePathWithHost(
+          //       controller.postInfo.value.postDetail!.images[i]));
+          //   print(imagePathWithHost(
+          //       controller.postInfo.value.postDetail!.images[i]));
+          // }
 
           return Container(
             height: imageSize + imageMargin * 2,
@@ -207,7 +209,7 @@ class PostDetail extends GetView<PostDetailController> {
               itemBuilder: (_, i) {
                 return PostImage(
                   index: i,
-                  imageURLs: hostImageUrls,
+                  imageURLs: controller.postInfo.value.postDetail!.images,
                   deleteButton: false,
                   size: imageSize,
                   margin: imageMargin,
@@ -264,6 +266,7 @@ class PostDetail extends GetView<PostDetailController> {
 
   Widget parentComment(int idx) {
     Comment comment = controller.comments[idx];
+    String state = comment.state;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -278,11 +281,20 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
+                onTap: state != "DELETED" ? () {} : null,
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
                     radius: parentAvatar,
-                    backgroundColor: Colors.grey,
+                    backgroundImage: state == "DELETED"
+                        ? null
+                        : comment.writer.profileImage == ''
+                            ? randomProfileImage()
+                            : customNetworkImage(comment.writer.profileImage),
+                    child: state != "DELETED"
+                        ? null
+                        : Icon(Icons.block_rounded, color: Colors.black),
+                    backgroundColor: Colors.grey.shade300,
                   ),
                 ),
               ),
@@ -295,7 +307,9 @@ class PostDetail extends GetView<PostDetailController> {
                       child: Row(
                         children: [
                           Text(
-                            comment.writer.nickname,
+                            state != "DELETED"
+                                ? comment.writer.nickname
+                                : "알 수 없는 사용자",
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
@@ -334,7 +348,7 @@ class PostDetail extends GetView<PostDetailController> {
                   ],
                 ),
               ),
-              commentMoreVert(comment),
+              state != "DELETED" ? commentMoreVert(comment) : SizedBox.shrink(),
             ],
           ),
           Container(
@@ -346,7 +360,7 @@ class PostDetail extends GetView<PostDetailController> {
               top: 6.0,
             ),
             child: Text(
-              comment.content,
+              state != "DELETED" ? comment.content : "삭제된 댓글입니다.",
               style: commentStyle,
             ),
           ),
@@ -362,18 +376,18 @@ class PostDetail extends GetView<PostDetailController> {
                     },
                     child: Text(
                         "좋아요 ${controller.comments[idx].likes.toString()}"),
-                    style:
-                        comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
+                    style: controller.comments[idx].isLiked
+                        ? likedCommentBtn
+                        : unlikedCommentBtn,
                   ),
                 ),
                 const SizedBox(width: 10),
                 TextButton(
                   onPressed: () {
                     FocusManager.instance.primaryFocus?.unfocus();
-                    Get.toNamed(
-                      Routes.WRITING_COMMENT,
-                      arguments: comment.parentId,
-                    );
+                    controller.currentWritingCommentParentId.value =
+                        comment.parentId;
+                    Get.toNamed(Routes.WRITING_COMMENT);
                   },
                   child: Text("댓글쓰기"),
                   style: commentBtn,
@@ -388,6 +402,7 @@ class PostDetail extends GetView<PostDetailController> {
 
   Widget childComment(int idx) {
     Comment comment = controller.comments[idx];
+    String state = comment.state;
 
     return Padding(
       padding: EdgeInsets.only(
@@ -402,11 +417,20 @@ class PostDetail extends GetView<PostDetailController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               GestureDetector(
+                onTap: state != "DELETED" ? () {} : null,
                 child: Padding(
                   padding: EdgeInsets.only(right: normal),
                   child: CircleAvatar(
                     radius: childAvatar,
-                    backgroundColor: Colors.grey,
+                    backgroundImage: state != "DELETED"
+                        ? comment.writer.profileImage == ''
+                            ? randomProfileImage()
+                            : customNetworkImage(comment.writer.profileImage)
+                        : null,
+                    child: state != "DELETED"
+                        ? null
+                        : Icon(Icons.block_rounded, color: Colors.black),
+                    backgroundColor: Colors.grey.shade300,
                   ),
                 ),
               ),
@@ -419,7 +443,9 @@ class PostDetail extends GetView<PostDetailController> {
                       child: Row(
                         children: [
                           Text(
-                            comment.writer.nickname,
+                            state != "DELETED"
+                                ? comment.writer.nickname
+                                : "알 수 없는 사용자",
                             style: postTitleStyle,
                           ),
                           const SizedBox(width: 5),
@@ -458,7 +484,7 @@ class PostDetail extends GetView<PostDetailController> {
                   ],
                 ),
               ),
-              commentMoreVert(comment),
+              state != "DELETED" ? commentMoreVert(comment) : SizedBox.shrink(),
             ],
           ),
           Container(
@@ -469,7 +495,7 @@ class PostDetail extends GetView<PostDetailController> {
               right: normal,
             ),
             child: Text(
-              comment.content,
+              state != "DELETED" ? comment.content : "삭제된 댓글입니다.",
               style: commentStyle,
             ),
           ),
@@ -486,7 +512,9 @@ class PostDetail extends GetView<PostDetailController> {
                   controller.toggleCommentLike(comment);
                 },
                 child: Text("좋아요 ${comment.likes.toString()}"),
-                style: comment.isLiked ? likedCommentBtn : unlikedCommentBtn,
+                style: controller.comments[idx].isLiked
+                    ? likedCommentBtn
+                    : unlikedCommentBtn,
               ),
             ),
           ),
@@ -535,8 +563,11 @@ class PostDetail extends GetView<PostDetailController> {
         children: [
           bottomSheetAction(
             func: () {
-              print('PostDetail.writerCommentActionSheet - 수정');
-              // TODO: 댓글 수정페이지
+              // 수정할 댓글을 선택
+              controller.setCurrentEditComment(comment);
+
+              if (Get.isBottomSheetOpen!) Get.back();
+              Get.toNamed(Routes.EDIT_COMMENT);
             },
             color: Colors.blue,
             content: "수정",
@@ -622,7 +653,8 @@ class PostDetail extends GetView<PostDetailController> {
       child: GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
-          Get.toNamed(Routes.WRITING_COMMENT, arguments: parentId);
+          controller.currentWritingCommentParentId.value = parentId;
+          Get.toNamed(Routes.WRITING_COMMENT);
         },
         child: Row(
           children: [
@@ -630,7 +662,9 @@ class PostDetail extends GetView<PostDetailController> {
               padding: EdgeInsets.only(right: normal),
               child: CircleAvatar(
                 radius: childAvatar,
-                backgroundColor: Colors.grey,
+                backgroundColor: Colors.grey.shade300,
+                child:
+                    Icon(Icons.person_outline_rounded, color: Colors.black54),
               ),
             ),
             Expanded(
@@ -712,13 +746,6 @@ class PostDetail extends GetView<PostDetailController> {
           icon: Icon(Icons.more_vert, color: Colors.black),
         ),
       ],
-    );
-  }
-
-  Widget androidActionSheet() {
-    return Container(
-      color: Colors.red,
-      height: Get.height * 0.4,
     );
   }
 
@@ -834,30 +861,30 @@ class PostDetail extends GetView<PostDetailController> {
           decoration: topBorderBox,
           child: Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
-                // padding: EdgeInsets.zero,
-                constraints: BoxConstraints(),
-                icon: Icon(
-                  Icons.location_on_outlined,
-                  size: iconSize,
-                  color: Colors.grey[600],
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                // padding: EdgeInsets.zero,
-                padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
-                constraints: BoxConstraints(),
-                icon: Icon(
-                  Icons.image_outlined,
-                  size: iconSize,
-                  color: Colors.grey[600],
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {},
+              //   padding: const EdgeInsets.fromLTRB(10, 0, 5, 0),
+              //   // padding: EdgeInsets.zero,
+              //   constraints: BoxConstraints(),
+              //   icon: Icon(
+              //     Icons.location_on_outlined,
+              //     size: iconSize,
+              //     color: Colors.grey[600],
+              //   ),
+              // ),
+              // IconButton(
+              //   onPressed: () {},
+              //   // padding: EdgeInsets.zero,
+              //   padding: const EdgeInsets.fromLTRB(5, 0, 10, 0),
+              //   constraints: BoxConstraints(),
+              //   icon: Icon(
+              //     Icons.image_outlined,
+              //     size: iconSize,
+              //     color: Colors.grey[600],
+              //   ),
+              // ),
               SizedBox(
-                width: Get.width - 90,
+                width: Get.width,
                 child: Card(
                   elevation: 0,
                   color: Colors.grey[100],
@@ -886,9 +913,7 @@ class PostDetail extends GetView<PostDetailController> {
                       suffixIcon: controller.onSendComment.value
                           ? IconButton(
                               onPressed: () async {
-                                await controller.sendComment(
-                                  controller.postDetailScrollController,
-                                );
+                                await controller.sendComment();
                               },
                               color: Colors.orange,
                               icon: Icon(Icons.send_rounded),
@@ -899,24 +924,6 @@ class PostDetail extends GetView<PostDetailController> {
                   ),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(
-              //     bottom: 8.0,
-              //     right: 5.0,
-              //     left: 2,
-              //   ),
-              //   child: CircleAvatar(
-              //     radius: 25,
-              //     backgroundColor: Colors.orangeAccent,
-              //     child: IconButton(
-              //       icon: Icon(
-              //         Icons.mic,
-              //         color: Colors.white,
-              //       ),
-              //       onPressed: () {},
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -977,8 +984,11 @@ class PostDetail extends GetView<PostDetailController> {
                   return;
                 }
 
-                controller.deleteComment(commentId);
+                await controller.deleteComment(commentId);
               }
+
+              if (Get.isDialogOpen!) Get.back();
+              if (Get.isBottomSheetOpen!) Get.back();
             },
             child: Text("  삭제  "),
             style: deleteBtn,

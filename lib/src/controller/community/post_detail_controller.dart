@@ -52,9 +52,7 @@ class PostDetailController extends GetxController {
   int currentUserId = -1;
   RxBool onSendComment = false.obs;
   RxBool isLikedPost = false.obs;
-
-  ScrollController postDetailScrollController = ScrollController();
-  ScrollController writingCommentScrollController = ScrollController();
+  RxInt currentWritingCommentParentId = (-1).obs;
 
   // late final Post post;
   // PostDetail? postDetail;
@@ -157,7 +155,7 @@ class PostDetailController extends GetxController {
   }
 
   // 댓글 작성
-  Future<void> sendComment(ScrollController scroller, [int? parentId]) async {
+  Future<void> sendComment([int? parentId]) async {
     if (commentTextField.text.trim().isEmpty) {
       GetSnackbar.on("알림", "공백은 댓글로 입력할 수 없습니다.");
       return;
@@ -165,6 +163,7 @@ class PostDetailController extends GetxController {
 
     String text = commentTextField.text;
     commentTextField.clear();
+    setOnSendComment(commentTextField.text.isNotEmpty);
     FocusManager.instance.primaryFocus?.unfocus();
 
     Comment? comment = await repository.sendComment(
@@ -175,18 +174,6 @@ class PostDetailController extends GetxController {
 
     await findComment();
     await 0.3.delay();
-
-    scroller.animateTo(
-      scroller.position.maxScrollExtent,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  // 댓글 수정
-  Future<void> updateComment() async {
-    print('PostDetailController.updateComment');
-    // repository.updateComment(commentId, content);
   }
 
   // 댓글 삭제
@@ -210,6 +197,8 @@ class PostDetailController extends GetxController {
       likes: commentLikeResponseDTO.likes,
       isLiked: commentLikeResponseDTO.isLiked,
     );
+
+    changeCommentStatus(comment);
   }
 
   // 댓글 신고
@@ -256,6 +245,48 @@ class PostDetailController extends GetxController {
     }
 
     return list;
+  }
+
+  void changeCommentStatus(Comment comment) {
+    for (int i = 0; i < comments.length; i++) {
+      if (comment.id == comments[i].id) {
+        comments[i] = comment.copyWith();
+        return;
+      }
+    }
+  }
+
+  // 현재 수정 중인 댓글
+  Comment? currentEditComment;
+  Rx<TextEditingController> commentEditController = TextEditingController().obs;
+  RxBool isAbleEditComment = true.obs;
+
+  // 현재 수정 중인 댓글 변경
+  void setCurrentEditComment(Comment comment) {
+    currentEditComment = comment;
+    commentEditController.value.clear();
+    commentEditController.value.text = currentEditComment!.content;
+  }
+
+  // 댓글 수정을 위한 검증 (공백 X)
+  void validateEditComment(String text) {
+    isAbleEditComment.value = text.trim().isNotEmpty;
+  }
+
+  // 댓글 수정
+  Future<void> updateComment() async {
+    if (currentEditComment == null) return;
+
+    await repository.updateComment(
+      currentEditComment!.id,
+      commentEditController.value.text,
+    );
+
+    currentEditComment = null;
+
+    // 댓글 수정이 끝나면 다시 post_detail 화면으로 이동
+    findComment();
+    Get.back();
   }
 }
 

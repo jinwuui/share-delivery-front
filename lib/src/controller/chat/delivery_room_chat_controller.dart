@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:socket_io_client/socket_io_client.dart';
-
 import 'package:share_delivery/src/controller/login/authentication_controller.dart';
 import 'package:share_delivery/src/data/model/chat/chat.dart';
 import 'package:share_delivery/src/data/model/user/user/user.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class DeliveryRoomChatController extends GetxController {
   static DeliveryRoomChatController get to => Get.find();
