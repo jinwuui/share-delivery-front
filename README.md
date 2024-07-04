@@ -4,7 +4,7 @@
 
 [일본어](#概要)
 
-[앱 화면 (アプリ画面)](#앱-화면 (アプリ画面))
+[앱 화면(アプリ画面)](#앱-화면)
 
 ---
 
@@ -46,7 +46,7 @@ Flutter / Kakao Map API
     - 使用者/飲食店の位置及び距離情報に活用
 
 ---
-# 앱 화면 (アプリ画面)
+# 앱 화면
 
 <img width="250" alt="share-delivery-1" src="https://github.com/KIT-Capston-Design/share-delivery-front/assets/97392729/d45e661b-8727-40ce-a8d4-a5932e7e3302">
 <img width="250" alt="share-delivery-2" src="https://github.com/KIT-Capston-Design/share-delivery-front/assets/97392729/b8cf4fb5-b773-41b9-b631-6f0b9303f567">
