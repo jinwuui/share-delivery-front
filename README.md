@@ -12,7 +12,7 @@
 
 ## 2. 기술 스택
 
-Frontend: Dart / Flutter
+Frontend: Dart / Flutter / GetX
 
 <br/>
 
